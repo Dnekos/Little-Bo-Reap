@@ -9,8 +9,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float maxMoveSpeed;
     [SerializeField] float acceleration;
     [SerializeField] float haltRate;
+    bool isMoving;
     Vector3 moveDirection;
     Vector2 moveValue; //input value
+    Rigidbody rb;
 
     [Header("Jump Variables")]
     [SerializeField] float jumpForce;
@@ -35,19 +37,22 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Transform playerOrientation;
     Vector3 modelRotateNormal;
 
-
-
-    Rigidbody rb;
+    [Header("Animations")]
+    [SerializeField] string jumpAnimation;
+    [SerializeField] string dashAnimation;
+    Animator animator;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
     }
 
     private void Update()
     {
         GroundCheck();
         RotatePlayer();
+        UpdateAnimation();
     }
     private void FixedUpdate()
     {
@@ -105,6 +110,10 @@ public class PlayerMovement : MonoBehaviour
 
         if (moveValue.magnitude != 0 && moveDirection != Vector3.zero) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Vector3.Cross(modelRotateNormal, moveDirection)), modelRotateSpeed * Time.deltaTime);
     }
+    void UpdateAnimation()
+    {
+        animator.SetBool("isMoving", isMoving);
+    }
     void Move()
     {
         moveDirection = playerOrientation.forward * moveValue.x + playerOrientation.right * -moveValue.y;
@@ -115,6 +124,10 @@ public class PlayerMovement : MonoBehaviour
     }
     void SpeedCheck()
     {
+        //check if moving
+        if (moveValue.magnitude != 0) isMoving = true;
+        else isMoving = false;
+
         //check current velocity
         Vector3 velocityCheck = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
@@ -139,6 +152,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if(isGrounded)
         {
+            animator.Play(jumpAnimation);
             rb.AddForce(Vector3.up * jumpForce);
         }
     }
@@ -147,6 +161,8 @@ public class PlayerMovement : MonoBehaviour
         if(canDash)
         {
             canDash = false;
+
+            animator.Play(dashAnimation);
 
             //halt player
             rb.AddForce(-rb.velocity, ForceMode.VelocityChange);
