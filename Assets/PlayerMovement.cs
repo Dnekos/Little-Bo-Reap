@@ -159,7 +159,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 rb.AddForce(playerOrientation.forward * dashForce);
             }
-            else rb.AddForce(moveDirection * dashForce);
+            else rb.AddForce(Vector3.Cross(modelRotateNormal, (moveDirection * dashForce)));
 
 
             StartCoroutine(DashCooldown());
