@@ -29,7 +29,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Transform groundCheckOriginFront;
     [SerializeField] Transform groundCheckOriginBack;
     [SerializeField] float groundCheckDistance;
-    bool isGrounded = false;
+    public bool isGrounded = false;
 
     [Header("Model Orientation")]
     [SerializeField] float modelRotateSpeed = 10f;
