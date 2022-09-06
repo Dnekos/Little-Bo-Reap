@@ -42,6 +42,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] string dashAnimation;
     Animator animator;
 
+    private void Awake()
+    {
+        //set this as player in game manager
+        GameManager.Instance.SetPlayer(this.transform);
+    }
     void Start()
     {
         rb = GetComponent<Rigidbody>();

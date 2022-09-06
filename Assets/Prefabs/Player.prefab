@@ -696,6 +696,7 @@ GameObject:
   - component: {fileID: 3870380308813204384}
   - component: {fileID: 3870380308813204399}
   - component: {fileID: 7373631756108789204}
+  - component: {fileID: 8268160106776874863}
   - component: {fileID: 3171854317779054766}
   m_Layer: 7
   m_Name: Player_Body
@@ -924,6 +925,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 36f1a8f6-bb56-459c-aca6-04483d3e795e
     m_ActionName: PlayerMovement/HeavyAttack[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8268160106776874863}
+        m_TargetAssemblyTypeName: PlayerSheepAbilities, Assembly-CSharp
+        m_MethodName: OnSummonSheep
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: a6eca5f5-b4ce-4f87-b4b0-67cbf3be8da7
+    m_ActionName: PlayerMovement/SummonSheep[/Keyboard/e]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerMovement
@@ -1000,6 +1017,26 @@ MonoBehaviour:
   heavyAirAnimation: Test_Player_Attack_Heavy_Windup_Air
   airUpForce: 1000
   airDownForce: 2500
+--- !u!114 &8268160106776874863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3870380308813204390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 650a50908be0e3146b3833ca948a5751, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activeSheep: []
+  sheepPrefab: {fileID: 7642856465436953991, guid: ca3915b86adfee943ae15cfd94cbd72f,
+    type: 3}
+  amountToSummon: 100
+  summonRadius: 10
+  summonIntervalMin: 0
+  summonIntervalMax: 0.75
+  summonCooldown: 5
 --- !u!95 &3171854317779054766
 Animator:
   serializedVersion: 4
