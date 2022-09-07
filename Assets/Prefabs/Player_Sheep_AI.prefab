@@ -35,7 +35,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7642856465436953987
 MeshFilter:
@@ -97,7 +97,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
+  m_Radius: 1
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
@@ -136,8 +136,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentSheepState: 0
+  baseSpeed: 20
   avoidPlayerDistance: 2.5
-  wanderRadius: 0
+  avoidPlayerSpeed: 25
+  wanderSpeed: 5
+  wanderRadius: 20
+  wanderStopDistance: 0
+  wanderDelayMin: 1
+  wanderDelayMax: 4
+  chargeSpeed: 25
+  chargePointRadius: 5
+  chargeStopDistance: 0
 --- !u!54 &7642856465436953996
 Rigidbody:
   m_ObjectHideFlags: 0

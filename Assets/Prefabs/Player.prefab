@@ -941,6 +941,38 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: a6eca5f5-b4ce-4f87-b4b0-67cbf3be8da7
     m_ActionName: PlayerMovement/SummonSheep[/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8268160106776874863}
+        m_TargetAssemblyTypeName: PlayerSheepAbilities, Assembly-CSharp
+        m_MethodName: OnSheepCharge
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: c00b0f8d-1ae7-4803-ac2f-1bfa7399fd8e
+    m_ActionName: PlayerMovement/SheepCharge[/Keyboard/1]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8268160106776874863}
+        m_TargetAssemblyTypeName: PlayerSheepAbilities, Assembly-CSharp
+        m_MethodName: OnRecallSheep
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 90d9266a-db84-4e15-a7a5-eb0ac7b38f73
+    m_ActionName: PlayerMovement/RecallSheep[/Keyboard/q]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerMovement
@@ -1032,11 +1064,18 @@ MonoBehaviour:
   activeSheep: []
   sheepPrefab: {fileID: 7642856465436953991, guid: ca3915b86adfee943ae15cfd94cbd72f,
     type: 3}
-  amountToSummon: 100
+  amountToSummon: 10
   summonRadius: 10
   summonIntervalMin: 0
   summonIntervalMax: 0.75
   summonCooldown: 5
+  summonAnimation: Test_Player_Spell
+  sheepChargePointPrefab: {fileID: 1751060722446382379, guid: 9034eb190968b01468884f5079c22703,
+    type: 3}
+  chargeTargetLayers:
+    serializedVersion: 2
+    m_Bits: 64
+  chargeAnimation: Test_Player_Spell
 --- !u!95 &3171854317779054766
 Animator:
   serializedVersion: 4
