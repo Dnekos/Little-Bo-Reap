@@ -182,7 +182,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //halt player if not moving commands
-        if (!isMoving || !GetComponent<PlayerAttacks>().canAttack)
+        if (!isMoving && isGrounded && canDash || !GetComponent<PlayerAttacks>().canAttack && isGrounded && canDash)
         {
             rb.AddForce(-rb.velocity * haltRate);
         }
