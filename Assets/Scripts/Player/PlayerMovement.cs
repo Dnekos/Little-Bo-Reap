@@ -14,6 +14,11 @@ public class PlayerMovement : MonoBehaviour
     Vector2 moveValue; //input value
     Rigidbody rb;
 
+    //slope crap I hate slopes
+    RaycastHit slopeHit;
+    Vector3 slopeMoveDirection;
+
+
     [Header("Jump Variables")]
     [SerializeField] float jumpForce;
     [SerializeField] float fallRate;
@@ -86,48 +91,78 @@ public class PlayerMovement : MonoBehaviour
     }
     void RotatePlayer()
     {
-        bool frontCheck = false;
-        bool backCheck = false;
-        Vector3 frontNormal;
-        Vector3 backNormal;
+        //am i on a slope?
+        slopeMoveDirection = Vector3.ProjectOnPlane(moveDirection, slopeHit.normal);
 
-        //set rotate check
-        RaycastHit hitFront;
-        frontCheck = Physics.Raycast(groundCheckOriginFront.position, Vector3.down, out hitFront, orientCheckDistance, groundLayer);
-        //if canJump, groundNormal = hit.normal, else groudnnormal = vector3.up  v ternary operater
-        frontNormal = frontCheck ? hitFront.normal : Vector3.up;
 
-        RaycastHit hitBack;
-        backCheck = Physics.Raycast(groundCheckOriginBack.position, Vector3.down, out hitBack, orientCheckDistance, groundLayer);
-        backNormal = backCheck ? hitBack.normal : Vector3.up;
+        //bool frontCheck = false;
+        //bool backCheck = false;
+        //Vector3 frontNormal;
+        //Vector3 backNormal;
+        //
+        ////set rotate check
+        //RaycastHit hitFront;
+        //frontCheck = Physics.Raycast(groundCheckOriginFront.position, Vector3.down, out hitFront, orientCheckDistance, groundLayer);
+        ////if canJump, groundNormal = hit.normal, else groudnnormal = vector3.up  v ternary operater
+        //frontNormal = frontCheck ? hitFront.normal : Vector3.up;
+        //
+        //RaycastHit hitBack;
+        //backCheck = Physics.Raycast(groundCheckOriginBack.position, Vector3.down, out hitBack, orientCheckDistance, groundLayer);
+        //backNormal = backCheck ? hitBack.normal : Vector3.up;
+        //
+        //modelRotateNormal = (frontNormal + backNormal) * 0.5f;
+        //
+        ////Up is just the rotate normal
+        //Vector3 up = modelRotateNormal;
+        ////Make sure the velocity is normalized
+        //Vector3 vel = transform.forward.normalized;
+        ////Project the two vectors using the dot product
+        //Vector3 forward = vel - up * Vector3.Dot(vel, up);
+        //
+        ////Set the rotation with relative forward and up axes
+        //rb.MoveRotation(Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(forward.normalized, up), Time.deltaTime * modelRotateSpeed));
+        //if (moveValue.magnitude != 0 && moveDirection != Vector3.zero) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Vector3.Cross(modelRotateNormal, moveDirection)), modelRotateSpeed * Time.deltaTime);
 
-        modelRotateNormal = (frontNormal + backNormal) * 0.5f;
-
-        //Up is just the rotate normal
-        Vector3 up = modelRotateNormal;
-        //Make sure the velocity is normalized
-        Vector3 vel = transform.forward.normalized;
-        //Project the two vectors using the dot product
-        Vector3 forward = vel - up * Vector3.Dot(vel, up);
-
-        //Set the rotation with relative forward and up axes
-        rb.MoveRotation(Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(forward.normalized, up), Time.deltaTime * modelRotateSpeed));
-
-        if (moveValue.magnitude != 0 && moveDirection != Vector3.zero) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Vector3.Cross(modelRotateNormal, moveDirection)), modelRotateSpeed * Time.deltaTime);
+        //rotate the player body
+        if (moveValue.magnitude != 0 && moveDirection != Vector3.zero) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(moveDirection), modelRotateSpeed * Time.deltaTime);
     }
     void UpdateAnimation()
     {
         animator.SetBool("isMoving", isMoving);
     }
+
+    bool OnSlope()
+    {
+        if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, orientCheckDistance, groundLayer))
+        {
+            if (slopeHit.normal != Vector3.up)
+            {
+                return true;
+            }
+            else return false;
+        }
+        return false;
+    }
     void Move()
     {
-		if (!GetComponent<PlayerAttacks>().canAttack) // TODO: make this not shit
-			return;
+        if (!GetComponent<PlayerAttacks>().canAttack) // TODO: make this not shit
+            return;
 
-        moveDirection = playerOrientation.forward * moveValue.x + playerOrientation.right * -moveValue.y;
+        //moveDirection = playerOrientation.forward * moveValue.x + playerOrientation.right * -moveValue.y;
         //rb.AddForce(moveDirection * acceleration);
 
-        rb.AddForce(Vector3.Cross(modelRotateNormal, (moveDirection * acceleration)));
+        moveDirection = playerOrientation.forward * moveValue.y + playerOrientation.right * moveValue.x;
+
+        if (OnSlope())
+        {
+            rb.AddForce(slopeMoveDirection * acceleration);
+        }
+        else
+        {
+            rb.AddForce(moveDirection * acceleration);
+        }
+
+        //rb.AddForce(Vector3.Cross(modelRotateNormal, (moveDirection * acceleration)));
         // Vector3.Cross(modelRotateNormal, -(transform.right * moveValue * moveSpeed))
     }
     void SpeedCheck()
@@ -144,6 +179,12 @@ public class PlayerMovement : MonoBehaviour
         {
             Vector3 velocityLimit = velocityCheck.normalized * maxMoveSpeed;
             rb.velocity = new Vector3(velocityLimit.x, rb.velocity.y, velocityLimit.z);
+        }
+
+        //halt player if not moving commands
+        if (!isMoving || !GetComponent<PlayerAttacks>().canAttack)
+        {
+            rb.AddForce(-rb.velocity * haltRate);
         }
 
         //apply gravity if falling
@@ -179,11 +220,14 @@ public class PlayerMovement : MonoBehaviour
             if (!isGrounded) rb.AddForce(transform.up * dashAirborneLiftForce);
 
             //apply the dash
-            if(moveDirection.magnitude == 0)
+            if (moveDirection.magnitude == 0)
             {
                 rb.AddForce(playerOrientation.forward * dashForce);
             }
-            else rb.AddForce(Vector3.Cross(modelRotateNormal, (moveDirection * dashForce)));
+            else
+            {
+                rb.AddForce(moveDirection * dashForce);
+            }
 
 
             StartCoroutine(DashCooldown());
