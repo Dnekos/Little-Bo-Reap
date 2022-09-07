@@ -42,12 +42,17 @@ public class PlayerSheepAI : MonoBehaviour
     Vector3 chargePoint;
     bool isCharging;
 
+    [Header("Defend State Variables")]
+    [SerializeField] float defendSpeed = 35f;
+    [SerializeField] float defendStopDistance = 0f;
+    Transform defendPoint;
+
    
 
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        agent.speed = GetRandomSheepBaseSpeed(); ;
+        baseSpeedCurrent = GetRandomSheepBaseSpeed(); ;
         agentStoppingDistance = agent.stoppingDistance;
         player = GameManager.Instance.GetPlayer();
     }
@@ -85,6 +90,7 @@ public class PlayerSheepAI : MonoBehaviour
         }
     }
 
+    #region Utility Functions
     public void KillSheep()
     {
         Destroy(gameObject);
@@ -102,7 +108,12 @@ public class PlayerSheepAI : MonoBehaviour
         float speed = Random.Range(baseSpeedMin, baseSpeedMax);
         return speed;
     }
+    #endregion
 
+    #region Follow Player
+    //NEED TO EDIT
+    //RIGHT NOW THIS SHIT IS CALLED EERY FRAME FOR EVERY SHEEP
+    //THIS IS BAD I SHOULD MAKE FIX IT MAYBE D:
     void DoFollowPlayer()
     {
         //if player is too close, part the red sea!
@@ -123,13 +134,15 @@ public class PlayerSheepAI : MonoBehaviour
         }
         else
         {
-            //otherwise follow
-            agent.speed = GetRandomSheepBaseSpeed();
+            //set speed and follow distance
+            agent.speed = baseSpeedCurrent;
             agent.stoppingDistance = agentStoppingDistance;
             agent.SetDestination(player.position);
         }
     }
-    
+    #endregion
+
+    #region Wander
     void DoWander()
     {
         //if stopped, pick new point to wander!
@@ -163,7 +176,9 @@ public class PlayerSheepAI : MonoBehaviour
         yield return new WaitForSeconds(randTime);
         canWander = true;
     }
+    #endregion
 
+    #region Charge
     void DoCharge()
     {
         //if agent reaches charge point, go into wander mode
@@ -207,10 +222,24 @@ public class PlayerSheepAI : MonoBehaviour
         //set sheep state
         currentSheepState = SheepStates.CHARGE;
     }
+    #endregion
 
+    #region Defend Player
     void DoDefendPlayer()
     {
-
+        agent.SetDestination(defendPoint.position);
     }
+    public void BeginDefendPlayer(Transform theDefendPoint)
+    {
+        //set defened mode
+        defendPoint = theDefendPoint;
+
+        //set speed
+        agent.speed = defendSpeed;
+        agent.stoppingDistance = defendStopDistance;
+
+        currentSheepState = SheepStates.DEFEND_PLAYER;
+    }
+    #endregion
 
 }

@@ -34,6 +34,74 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1359982928964029009
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6145056365066389885}
+  m_Layer: 7
+  m_Name: Sheep_Defend_Point3
+  m_TagString: Untagged
+  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6145056365066389885
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1359982928964029009}
+  m_LocalRotation: {x: -0, y: 0.86602527, z: -0, w: -0.50000024}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7224856639458476861}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1760125602327802897
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7224856639458476861}
+  m_Layer: 7
+  m_Name: Sheep_Defend_Points
+  m_TagString: Untagged
+  m_Icon: {fileID: 8418204508859773708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7224856639458476861
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1760125602327802897}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 640480015000480680}
+  - {fileID: 201184947909430875}
+  - {fileID: 6145056365066389885}
+  - {fileID: 7489052625738141}
+  - {fileID: 3066455461855584963}
+  - {fileID: 745201583296635927}
+  m_Father: {fileID: 3870380308813204389}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2541323418122727776
 GameObject:
   m_ObjectHideFlags: 0
@@ -132,6 +200,37 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 5, y: 1.25, z: 5}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &3514968866510619974
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 640480015000480680}
+  m_Layer: 7
+  m_Name: Sheep_Defend_Point1
+  m_TagString: Untagged
+  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &640480015000480680
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3514968866510619974}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7224856639458476861}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3870380307216974261
 GameObject:
   m_ObjectHideFlags: 0
@@ -162,6 +261,7 @@ Transform:
   m_Children:
   - {fileID: 3870380308533912744}
   - {fileID: 3870380307503015548}
+  - {fileID: 8630855891053651535}
   m_Father: {fileID: 6219005127216546937}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -477,7 +577,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3870380308472901120}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: -7}
+  m_LocalPosition: {x: 0, y: 2, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -582,7 +682,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   zSlideRate: 25
   zSlideMin: -5
-  zSlideMax: -7
+  zSlideMax: -10
   zValue: 0
   innerCollideRadius: 1
   collideLayers:
@@ -692,6 +792,7 @@ GameObject:
   - component: {fileID: 3870380308813204385}
   - component: {fileID: 3870380308813204386}
   - component: {fileID: 3870380308813204387}
+  - component: {fileID: 30184203928915622}
   - component: {fileID: 3870380308813204388}
   - component: {fileID: 3870380308813204384}
   - component: {fileID: 3870380308813204399}
@@ -720,6 +821,7 @@ Transform:
   - {fileID: 3870380308248943667}
   - {fileID: 3870380308655863547}
   - {fileID: 3870380307688567448}
+  - {fileID: 7224856639458476861}
   m_Father: {fileID: 6219005127216546937}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -785,6 +887,20 @@ CapsuleCollider:
   m_Enabled: 1
   m_Radius: 0.5
   m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!136 &30184203928915622
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3870380308813204390}
+  m_Material: {fileID: 13400000, guid: 25da4401e30c4fe439898c47c3b83dbb, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.55
+  m_Height: 1.9
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &3870380308813204388
@@ -973,6 +1089,38 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 90d9266a-db84-4e15-a7a5-eb0ac7b38f73
     m_ActionName: PlayerMovement/RecallSheep[/Keyboard/q]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8268160106776874863}
+        m_TargetAssemblyTypeName: PlayerSheepAbilities, Assembly-CSharp
+        m_MethodName: OnSheepDefend
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 4a884deb-20d3-4d2d-ad28-8b437cd7911d
+    m_ActionName: PlayerMovement/SheepDefend[/Keyboard/2]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8268160106776874863}
+        m_TargetAssemblyTypeName: PlayerSheepAbilities, Assembly-CSharp
+        m_MethodName: OnSheepLaunch
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 31bb77aa-fa27-4092-8373-921feaf5562f
+    m_ActionName: PlayerMovement/LaunchSheep[/Keyboard/3]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerMovement
@@ -1006,7 +1154,7 @@ MonoBehaviour:
   groundCheckDistance: 0.25
   isGrounded: 0
   modelRotateSpeed: 10
-  orientCheckDistance: 5
+  orientCheckDistance: 1.5
   playerOrientation: {fileID: 3870380307216974260}
   jumpAnimation: Test_Player_Jump
   dashAnimation: Test_Player_Dash
@@ -1027,11 +1175,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ee7fb0a0521b7cd40aba52bab569dc81, type: 2}
   - {fileID: 11400000, guid: 089b72cb1a51cd3429a14b29ea07d538, type: 2}
   timeframeToChainAttacks: 0.75
-  heavyDamage: 0
-  heavyKnockback: 0
+  canAttack: 1
+  heavyAttack: {fileID: 11400000, guid: bd8e5e98cb85a7e4d8951e3d5f329765, type: 2}
   heavyChargeTime: 0.5
   heavyChargeAnimation: Test_Player_Attack_Heavy_Windup
-  heavyAttackAnimation: Test_Player_Attack_Heavy
   heavyParticle: {fileID: 7302312219567745433, guid: e5deab723eadcc243a6518fed70b7315,
     type: 3}
   particleOrigin: {fileID: 3000223651566003515}
@@ -1055,7 +1202,7 @@ MonoBehaviour:
   activeSheep: []
   sheepPrefab: {fileID: 7642856465436953991, guid: ca3915b86adfee943ae15cfd94cbd72f,
     type: 3}
-  amountToSummon: 10
+  amountToSummon: 12
   summonRadius: 10
   summonIntervalMin: 0
   summonIntervalMax: 0.75
@@ -1067,6 +1214,25 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   chargeAnimation: Test_Player_Spell
+  defendPoints:
+  - {fileID: 640480015000480680}
+  - {fileID: 201184947909430875}
+  - {fileID: 6145056365066389885}
+  - {fileID: 7489052625738141}
+  - {fileID: 3066455461855584963}
+  - {fileID: 745201583296635927}
+  defendPointPivot: {fileID: 7224856639458476861}
+  defendPivotRotateSpeed: 225
+  defendDistance: 3.5
+  defendAnimation: 
+  launchForce: 2500
+  launchForceLift: 250
+  launchProjectile: {fileID: 1802569736148475655, guid: 8e3d8eb4f51c618419d4eb16a2779cb9,
+    type: 3}
+  launchOrigin: {fileID: 8630855891053651535}
+  launchCooldown: 1
+  minDistanceToLaunch: 10
+  launchAnimation: Test_Player_Attack_Light1
 --- !u!95 &3171854317779054766
 Animator:
   serializedVersion: 4
@@ -1087,6 +1253,37 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!1 &3998477978670805813
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 201184947909430875}
+  m_Layer: 7
+  m_Name: Sheep_Defend_Point2
+  m_TagString: Untagged
+  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &201184947909430875
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3998477978670805813}
+  m_LocalRotation: {x: -0, y: 0.8660256, z: -0, w: 0.49999973}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7224856639458476861}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4038421814507617708
 GameObject:
   m_ObjectHideFlags: 0
@@ -1230,6 +1427,37 @@ TrailRenderer:
   m_Autodestruct: 0
   m_Emitting: 0
   m_ApplyActiveColorSpace: 1
+--- !u!1 &4989208907124252461
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8630855891053651535}
+  m_Layer: 7
+  m_Name: Sheep_Launch_Origin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8630855891053651535
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4989208907124252461}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.5, z: 1.25}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3870380307216974260}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7015347868531016254
 GameObject:
   m_ObjectHideFlags: 0
@@ -1260,5 +1488,98 @@ Transform:
   m_Children:
   - {fileID: 6246718439843260393}
   m_Father: {fileID: 3870380307688567448}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7394347714885472443
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7489052625738141}
+  m_Layer: 7
+  m_Name: Sheep_Defend_Point4
+  m_TagString: Untagged
+  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7489052625738141
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7394347714885472443}
+  m_LocalRotation: {x: -0, y: 0.49999917, z: -0, w: 0.8660259}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7224856639458476861}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7493445706340530406
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3066455461855584963}
+  m_Layer: 7
+  m_Name: Sheep_Defend_Point5
+  m_TagString: Untagged
+  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3066455461855584963
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7493445706340530406}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0.0000006258487}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7224856639458476861}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8941133753487836138
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 745201583296635927}
+  m_Layer: 7
+  m_Name: Sheep_Defend_Point6
+  m_TagString: Untagged
+  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &745201583296635927
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8941133753487836138}
+  m_LocalRotation: {x: -0, y: 0.50000066, z: -0, w: -0.8660251}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7224856639458476861}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

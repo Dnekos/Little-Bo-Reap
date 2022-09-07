@@ -27,15 +27,39 @@ public class PlayerSheepAbilities : MonoBehaviour
     Vector3 chargePosition;
     bool isPreparingCharge;
 
+    [Header("Sheep Defend Variables")]
+    [SerializeField] List<Transform> defendPoints;
+    [SerializeField] Transform defendPointPivot;
+    [SerializeField] float defendPivotRotateSpeed = 1f;
+    [SerializeField] float defendDistance = 3f;
+    [SerializeField] string defendAnimation;
+
+    [Header("Sheep Launch Variables")]
+    [SerializeField] float launchForce = 2500f;
+    [SerializeField] float launchForceLift = 250f;
+    [SerializeField] GameObject launchProjectile;
+    [SerializeField] Transform launchOrigin;
+    [SerializeField] float launchCooldown = 1f;
+    [SerializeField] float minDistanceToLaunch = 10f;
+    [SerializeField] string launchAnimation;
+    bool canLaunch = true;
+
     Animator animator;
 
     private void Start()
     {
         animator = GetComponent<Animator>();
+
+        //set defend distance of each defence point
+        for(int i = 0; i < defendPoints.Count; i++)
+        {
+            defendPoints[i].position += defendPoints[i].forward * defendDistance;
+        }
     }
     private void Update()
     {
         CheckCharge();
+        CheckDefend();
     }
 
     #region Sheep Summon and Recall
@@ -142,7 +166,7 @@ public class PlayerSheepAbilities : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, Mathf.Infinity, chargeTargetLayers))
             {
-                for(int i = 0; i <activeSheep.Count; i++)
+                for(int i = 0; i < activeSheep.Count; i++)
                 {
                     if(activeSheep[i].GetSheepState() != SheepStates.WANDER) activeSheep[i]?.BeginCharge(hit.point);
                 }
@@ -167,6 +191,68 @@ public class PlayerSheepAbilities : MonoBehaviour
             }
 
         }
+    }
+    #endregion
+
+    #region Sheep Defend
+    void CheckDefend()
+    {
+        defendPointPivot.Rotate(0f, defendPivotRotateSpeed * Time.deltaTime, 0f);
+    }
+    public void OnSheepDefend(InputAction.CallbackContext context)
+    {
+        if(context.started)
+        {
+            animator.Play(defendAnimation);
+
+            int pointIndex = 0;
+        
+            for (int i = 0; i < activeSheep.Count; i++)
+            {
+                 if (activeSheep[i].GetSheepState() != SheepStates.WANDER) activeSheep[i]?.BeginDefendPlayer(defendPoints[pointIndex]);
+
+                pointIndex++;
+                if (pointIndex >= defendPoints.Count) pointIndex = 0;
+            }
+        }
+    }
+    #endregion
+
+    #region Sheep Launch
+    public void OnSheepLaunch(InputAction.CallbackContext context)
+    {
+        if(context.started && canLaunch)
+        {
+            //do we have any sheep? 
+            if(activeSheep.Count > 0)
+            {
+                //are sheep nearby?
+                for(int i = 0; i < activeSheep.Count; i++)
+                {
+                    if(Vector3.Distance(transform.position, activeSheep[i].transform.position) <= minDistanceToLaunch)
+                    {
+                        animator.Play(launchAnimation);
+
+                        //break loop and launch that mf
+                        var launchSheep = Instantiate(launchProjectile, launchOrigin.position, launchOrigin.rotation);
+                        launchSheep.GetComponent<Rigidbody>()?.AddForce(launchOrigin.transform.forward * launchForce + launchOrigin.transform.up * launchForceLift);
+                        launchSheep.GetComponent<Rigidbody>()?.AddTorque(100f, 100f, 100f);
+
+                        activeSheep[i].KillSheep();
+                        activeSheep.Remove(activeSheep[i]);
+
+                        break;
+                    }
+                }
+            }
+
+            StartCoroutine(SheepLaunchCooldown());
+        }
+    }
+    IEnumerator SheepLaunchCooldown()
+    {
+        yield return new WaitForSeconds(launchCooldown);
+        canLaunch = true;
     }
     #endregion
 
