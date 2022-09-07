@@ -17,17 +17,15 @@ public class PlayerAttacks : MonoBehaviour
     }
  
     [Header("Light Attack Variables")]
-    [SerializeField] List<LightAttack> lightAttacks;
+    [SerializeField] List<Attack> lightAttacks;
     [SerializeField] float timeframeToChainAttacks = 0.75f;
-    bool canAttack = true;
+    public bool canAttack = true;
     int currentAttackChain = 0;
 
-    [Header("Grounded Heavy Attack Variables")]
-    [SerializeField] float heavyDamage;
-    [SerializeField] float heavyKnockback;
+	[Header("Grounded Heavy Attack Variables")]
+	[SerializeField] Attack heavyAttack;
     [SerializeField] float heavyChargeTime = 0.5f;
     [SerializeField] string heavyChargeAnimation;
-    [SerializeField] string heavyAttackAnimation;
     [SerializeField] GameObject heavyParticle;
     [SerializeField] Transform particleOrigin;
     float heavyChargeTimeCurrent = 0f;
@@ -40,6 +38,10 @@ public class PlayerAttacks : MonoBehaviour
     [SerializeField] float airUpForce;
     [SerializeField] float airDownForce;
     bool isFalling = false;
+
+	// current stuff
+	Attack activeAttack;
+	List<Damageable> enemiesHitThisAttack;
 
     PlayerMovement playerMovement;
     Animator animator;
@@ -78,10 +80,13 @@ public class PlayerAttacks : MonoBehaviour
 
             //do current light attack
             animator.Play(lightAttacks[currentAttackChain].animation);
-            //TODO set knockback and damage of crook depending on what attack it is
 
-            //apply lift if in air
-            if (!playerMovement.isGrounded) rb.AddForce(Vector3.up * lightAttacks[currentAttackChain].airborneLift);
+			// mark attack as active
+			activeAttack = lightAttacks[currentAttackChain];
+			enemiesHitThisAttack = new List<Damageable>(); // clear the cache
+
+			//apply lift if in air
+			if (!playerMovement.isGrounded) rb.AddForce(Vector3.up * lightAttacks[currentAttackChain].airborneLift);
 
             //increase attack chain
             currentAttackChain++;
@@ -114,8 +119,11 @@ public class PlayerAttacks : MonoBehaviour
     }
     public void SpawnHeavyParticle()
     {
-        Instantiate(heavyParticle, particleOrigin.position, particleOrigin.rotation);
-    }
+		GameObject explode = Instantiate(heavyParticle, particleOrigin.position, particleOrigin.rotation);
+
+		// give it a reference to the attack
+		explode.GetComponent<Explosion>().activeAttack = heavyAttack;
+	}
     public void HeavySlamDown()
     {
         //called from animator, slam down!!
@@ -133,7 +141,7 @@ public class PlayerAttacks : MonoBehaviour
             animator.Play(heavyAirAnimation);
             animator.SetBool("isFalling", isFalling);
 
-            rb.AddForce(Vector3.up * airUpForce);
+            rb.AddForce(Vector3.up * heavyAttack.airborneLift);
         }
 
         //charge heavy attack if grounded
@@ -151,7 +159,7 @@ public class PlayerAttacks : MonoBehaviour
             isChargingHeavyAttack = false;
 
             //do heavy attack
-            animator.Play(heavyAttackAnimation);
+            animator.Play(heavyAttack.animation);
             //TODO set knockback and damage of crook depending on what attack it is
 
             animator.SetBool("isChargingHeavyAttack", isChargingHeavyAttack);
@@ -166,5 +174,19 @@ public class PlayerAttacks : MonoBehaviour
     }
 
 
-    #endregion
+	#endregion
+
+	#region Attack Collision
+	private void OnTriggerEnter(Collider other)
+	{
+		// we use in parent cause the collider may be on an child due to amimations
+		Damageable enemy = other.GetComponentInParent<Damageable>();
+		if (enemy != null && !enemiesHitThisAttack.Contains(enemy)) // make sure we dont double tap
+		{
+			Vector3 attackVector = enemy.transform.position - transform.position;
+			enemy.TakeDamage(activeAttack, attackVector.normalized);
+			enemiesHitThisAttack.Add(enemy);
+		}
+	}
+	#endregion
 }

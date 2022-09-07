@@ -121,6 +121,9 @@ public class PlayerMovement : MonoBehaviour
     }
     void Move()
     {
+		if (!GetComponent<PlayerAttacks>().canAttack) // TODO: make this not shit
+			return;
+
         moveDirection = playerOrientation.forward * moveValue.x + playerOrientation.right * -moveValue.y;
         //rb.AddForce(moveDirection * acceleration);
 
