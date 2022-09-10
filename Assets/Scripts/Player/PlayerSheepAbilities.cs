@@ -168,7 +168,7 @@ public class PlayerSheepAbilities : MonoBehaviour
             {
                 for(int i = 0; i < activeSheep.Count; i++)
                 {
-                    if(activeSheep[i].GetSheepState() != SheepStates.WANDER) activeSheep[i]?.BeginCharge(hit.point);
+                    if(activeSheep[i].IsCommandable()) activeSheep[i]?.BeginCharge(hit.point);
                 }
             }
         }
@@ -209,7 +209,7 @@ public class PlayerSheepAbilities : MonoBehaviour
         
             for (int i = 0; i < activeSheep.Count; i++)
             {
-                 if (activeSheep[i].GetSheepState() != SheepStates.WANDER) activeSheep[i]?.BeginDefendPlayer(defendPoints[pointIndex]);
+                 if (activeSheep[i].IsCommandable()) activeSheep[i]?.BeginDefendPlayer(defendPoints[pointIndex]);
 
                 pointIndex++;
                 if (pointIndex >= defendPoints.Count) pointIndex = 0;
