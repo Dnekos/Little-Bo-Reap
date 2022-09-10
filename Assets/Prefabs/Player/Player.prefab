@@ -1121,6 +1121,38 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 31bb77aa-fa27-4092-8373-921feaf5562f
     m_ActionName: PlayerMovement/LaunchSheep[/Keyboard/3]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8268160106776874863}
+        m_TargetAssemblyTypeName: PlayerSheepAbilities, Assembly-CSharp
+        m_MethodName: OnChangeSheepFlock
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 4a6a57a9-3ec2-4a16-9344-e2f236e81c20
+    m_ActionName: PlayerMovement/ChangeFlock[/Keyboard/tab]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8268160106776874863}
+        m_TargetAssemblyTypeName: PlayerSheepAbilities, Assembly-CSharp
+        m_MethodName: OnRecallAllSheep
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 0a932ea2-3d48-46a8-b7a2-2bfe8e6afa9f
+    m_ActionName: PlayerMovement/RecallAllSheep[/Keyboard/q]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerMovement
@@ -1199,14 +1231,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 650a50908be0e3146b3833ca948a5751, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeSheep: []
-  sheepPrefab: {fileID: 7642856465436953991, guid: ca3915b86adfee943ae15cfd94cbd72f,
+  activeSheepBuild: []
+  activeSheepRam: []
+  activeSheepFluffy: []
+  sheepPrefabBuild: {fileID: 7642856465436953991, guid: ca3915b86adfee943ae15cfd94cbd72f,
     type: 3}
-  amountToSummon: 12
+  sheepPrefabRam: {fileID: 6004376925630106851, guid: 1b18939e8b2a93143b8bf77b2ed37d0b,
+    type: 3}
+  sheepPrefabFluffy: {fileID: 7540781576734803946, guid: b6bd9641b83340d44821e82bc6953a2e,
+    type: 3}
+  currentFlockType: 0
+  amountToSummonBuild: 12
+  amountToSummonRam: 6
+  amountToSummonFluffy: 3
   summonRadius: 10
   summonIntervalMin: 0
   summonIntervalMax: 0.75
-  summonCooldown: 5
+  summonCooldown: 0.5
   summonAnimation: Test_Player_Spell
   sheepChargePointPrefab: {fileID: 1751060722446382379, guid: 9034eb190968b01468884f5079c22703,
     type: 3}

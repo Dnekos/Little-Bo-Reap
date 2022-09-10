@@ -4,14 +4,28 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.AI;
 
+public enum SheepTypes
+{
+    BUILD = 0,
+    RAM = 1,
+    FLUFFY = 2
+}
 public class PlayerSheepAbilities : MonoBehaviour
 {
-    [Header("Base Sheep Variables")]
-    [SerializeField] List<PlayerSheepAI> activeSheep;
-    [SerializeField] GameObject sheepPrefab;
+    [Header("Sheep Flock Variables")]
+    [SerializeField] List<PlayerSheepAI> activeSheepBuild;
+    [SerializeField] List<PlayerSheepAI> activeSheepRam;
+    [SerializeField] List<PlayerSheepAI> activeSheepFluffy;
+    [SerializeField] GameObject sheepPrefabBuild;
+    [SerializeField] GameObject sheepPrefabRam;
+    [SerializeField] GameObject sheepPrefabFluffy;
+    [SerializeField] SheepTypes currentFlockType;
+    int currentFlockIndex;
 
     [Header("Sheep Summon Variables")]
-    [SerializeField] float amountToSummon = 3f;
+    [SerializeField] int amountToSummonBuild;
+    [SerializeField] int amountToSummonRam;
+    [SerializeField] int amountToSummonFluffy;
     [SerializeField] float summonRadius = 20f;
     [SerializeField] float summonIntervalMin = 0f;
     [SerializeField] float summonIntervalMax = 0.5f;
@@ -50,6 +64,8 @@ public class PlayerSheepAbilities : MonoBehaviour
     {
         animator = GetComponent<Animator>();
 
+        currentFlockIndex = (int)currentFlockType;
+
         //set defend distance of each defence point
         for(int i = 0; i < defendPoints.Count; i++)
         {
@@ -62,18 +78,127 @@ public class PlayerSheepAbilities : MonoBehaviour
         CheckDefend();
     }
 
+    #region Sheep Flock Functions
+    public void OnChangeSheepFlock(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            //go to next sheep type
+            currentFlockIndex++;
+            if (currentFlockIndex >= 3) currentFlockIndex = 0; //dont try to set to an enum that doesnt exist 
+            currentFlockType = (SheepTypes)currentFlockIndex;
+
+            Debug.Log("Current Flock is: " + currentFlockType);
+        }
+    }
+    public List<PlayerSheepAI> GetCurrentSheepFlock(SheepTypes theFlockType)
+    {
+        switch(theFlockType)
+        {
+            case SheepTypes.BUILD:
+                {
+                    return activeSheepBuild;
+                }
+            case SheepTypes.RAM:
+                {
+                    return activeSheepRam;
+                }
+            case SheepTypes.FLUFFY:
+                {
+                    return activeSheepFluffy;
+                }
+            default:
+                {
+                    Debug.LogWarning("GetCurrentSheepFlock defaulted! This should never happen!!");
+                    return activeSheepBuild;
+                }
+        }
+    }
+    public GameObject GetCurrentSheepPrefab(SheepTypes theFlockType)
+    {
+        switch (theFlockType)
+        {
+            case SheepTypes.BUILD:
+                {
+                    return sheepPrefabBuild;
+                }
+            case SheepTypes.RAM:
+                {
+                    return sheepPrefabRam;
+                }
+            case SheepTypes.FLUFFY:
+                {
+                    return sheepPrefabFluffy;
+                }
+            default:
+                {
+                    Debug.LogWarning("GetCurrentSheepPrefab defaulted! This should never happen!!");
+                    return sheepPrefabBuild;
+                }
+        }
+    }
+    public int GetSheepAmountToSummon(SheepTypes theFlockType)
+    {
+        switch (theFlockType)
+        {
+            case SheepTypes.BUILD:
+                {
+                    return amountToSummonBuild;
+                }
+            case SheepTypes.RAM:
+                {
+                    return amountToSummonRam;
+                }
+            case SheepTypes.FLUFFY:
+                {
+                    return amountToSummonFluffy;
+                }
+            default:
+                {
+                    Debug.LogWarning("GetSheepAmountToSummon defaulted! This should never happen!!");
+                    return amountToSummonBuild;
+                }
+        }
+    }
+    #endregion
+
     #region Sheep Summon and Recall
     public void OnRecallSheep(InputAction.CallbackContext context)
+    {
+        if(context.started)
+        {
+            //get flock type
+            SheepTypes flockType = currentFlockType;
+
+            //play animation
+            animator.Play(summonAnimation);
+
+            //recall current flock!
+            for (int i = 0; i < GetCurrentSheepFlock(flockType).Count; i++)
+            {
+                GetCurrentSheepFlock(flockType)[i]?.RecallSheep();
+            }
+        }
+    }
+    public void OnRecallAllSheep(InputAction.CallbackContext context)
     {
         if(context.performed)
         {
             //play animation
             animator.Play(summonAnimation);
 
-            //recall all sheep!
-            for (int i = 0; i < activeSheep.Count; i++)
+            //SUMMON THE HORDE!
+            for (int i = 0; i < activeSheepBuild.Count; i++)
             {
-                activeSheep[i]?.RecallSheep();
+                activeSheepBuild[i]?.RecallSheep();
+            }
+            for (int i = 0; i < activeSheepRam.Count; i++)
+            {
+                activeSheepRam[i]?.RecallSheep();
+            }
+            for (int i = 0; i < activeSheepFluffy.Count; i++)
+            {
+                activeSheepFluffy[i]?.RecallSheep();
             }
         }
     }
@@ -84,27 +209,32 @@ public class PlayerSheepAbilities : MonoBehaviour
             //disallow summoning
             canSummonSheep = false;
 
+            //get flock type
+            SheepTypes flockType = currentFlockType;
+
             //play animation
             animator.Play(summonAnimation);
 
             //delete all active sheep
-            for(int i = 0; i < activeSheep.Count; i++)
+            for(int i = 0; i < GetCurrentSheepFlock(flockType).Count; i++)
             {
-                activeSheep[i].KillSheep();
+                GetCurrentSheepFlock(flockType)[i].KillSheep();
             }
-            activeSheep.Clear();
+            GetCurrentSheepFlock(flockType).Clear();
+
+            int amountToSummon = GetSheepAmountToSummon(flockType);
 
             //summon sheep!
             for(int i = 0; i < amountToSummon; i++)
             {
-                StartCoroutine(SummonSheep());
+                StartCoroutine(SummonSheep(flockType));
             }
 
             //start cooldown
             StartCoroutine(SummonSheepCooldown());
         }
     }
-    IEnumerator SummonSheep()
+    IEnumerator SummonSheep(SheepTypes theSheepType)
     {
         //get random interval
         float summonDelay = Random.Range(summonIntervalMin, summonIntervalMax);
@@ -123,8 +253,8 @@ public class PlayerSheepAbilities : MonoBehaviour
             summonPosition = hit.position;
 
             //spawn sheep
-            var sheep = Instantiate(sheepPrefab, summonPosition, Quaternion.identity) as GameObject;
-            activeSheep.Add(sheep.GetComponent<PlayerSheepAI>());
+            var sheep = Instantiate(GetCurrentSheepPrefab(theSheepType), summonPosition, Quaternion.identity) as GameObject;
+            GetCurrentSheepFlock(theSheepType).Add(sheep.GetComponent<PlayerSheepAI>());
         }
         else
         {
@@ -153,6 +283,8 @@ public class PlayerSheepAbilities : MonoBehaviour
 
         if(context.canceled)
         {
+            SheepTypes flockType = currentFlockType;
+
             //stop charging
             isPreparingCharge = false;
 
@@ -166,9 +298,9 @@ public class PlayerSheepAbilities : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, Mathf.Infinity, chargeTargetLayers))
             {
-                for(int i = 0; i < activeSheep.Count; i++)
+                for(int i = 0; i < GetCurrentSheepFlock(flockType).Count; i++)
                 {
-                    if(activeSheep[i].IsCommandable()) activeSheep[i]?.BeginCharge(hit.point);
+                    if(GetCurrentSheepFlock(flockType)[i].IsCommandable()) GetCurrentSheepFlock(flockType)[i]?.BeginCharge(hit.point);
                 }
             }
         }
@@ -203,13 +335,15 @@ public class PlayerSheepAbilities : MonoBehaviour
     {
         if(context.started)
         {
+            SheepTypes flockType = currentFlockType;
+
             animator.Play(defendAnimation);
 
             int pointIndex = 0;
         
-            for (int i = 0; i < activeSheep.Count; i++)
+            for (int i = 0; i < GetCurrentSheepFlock(flockType).Count; i++)
             {
-                 if (activeSheep[i].IsCommandable()) activeSheep[i]?.BeginDefendPlayer(defendPoints[pointIndex]);
+                 if (GetCurrentSheepFlock(flockType)[i].IsCommandable()) GetCurrentSheepFlock(flockType)[i]?.BeginDefendPlayer(defendPoints[pointIndex]);
 
                 pointIndex++;
                 if (pointIndex >= defendPoints.Count) pointIndex = 0;
@@ -223,13 +357,15 @@ public class PlayerSheepAbilities : MonoBehaviour
     {
         if(context.started && canLaunch)
         {
+            SheepTypes flockType = currentFlockType;
+
             //do we have any sheep? 
-            if(activeSheep.Count > 0)
+            if(GetCurrentSheepFlock(flockType).Count > 0)
             {
                 //are sheep nearby?
-                for(int i = 0; i < activeSheep.Count; i++)
+                for(int i = 0; i < GetCurrentSheepFlock(flockType).Count; i++)
                 {
-                    if(Vector3.Distance(transform.position, activeSheep[i].transform.position) <= minDistanceToLaunch)
+                    if(Vector3.Distance(transform.position, GetCurrentSheepFlock(flockType)[i].transform.position) <= minDistanceToLaunch)
                     {
                         animator.Play(launchAnimation);
 
@@ -238,8 +374,8 @@ public class PlayerSheepAbilities : MonoBehaviour
                         launchSheep.GetComponent<Rigidbody>()?.AddForce(launchOrigin.transform.forward * launchForce + launchOrigin.transform.up * launchForceLift);
                         launchSheep.GetComponent<Rigidbody>()?.AddTorque(100f, 100f, 100f);
 
-                        activeSheep[i].KillSheep();
-                        activeSheep.Remove(activeSheep[i]);
+                        GetCurrentSheepFlock(flockType)[i].KillSheep();
+                        GetCurrentSheepFlock(flockType).Remove(GetCurrentSheepFlock(flockType)[i]);
 
                         break;
                     }

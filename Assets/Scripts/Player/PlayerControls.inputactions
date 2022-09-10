@@ -87,6 +87,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "RecallAllSheep",
+                    "type": "Button",
+                    "id": "0a932ea2-3d48-46a8-b7a2-2bfe8e6afa9f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "MultiTap",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "SheepDefend",
                     "type": "Button",
                     "id": "4a884deb-20d3-4d2d-ad28-8b437cd7911d",
@@ -99,6 +108,15 @@
                     "name": "LaunchSheep",
                     "type": "Button",
                     "id": "31bb77aa-fa27-4092-8373-921feaf5562f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ChangeFlock",
+                    "type": "Button",
+                    "id": "4a6a57a9-3ec2-4a16-9344-e2f236e81c20",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -268,6 +286,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "LaunchSheep",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cc899c30-2471-4529-a499-b204a99a463f",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChangeFlock",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3dd76438-c6d1-44cc-a7a4-40739ab56a3f",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RecallAllSheep",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
