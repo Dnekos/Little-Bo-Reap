@@ -9,6 +9,7 @@ public enum SheepStates
     WANDER = 1,
     CHARGE = 2,
     DEFEND_PLAYER = 3,
+	CONSTRUCT = 4
 }
 
 [RequireComponent(typeof(NavMeshAgent))]
@@ -47,6 +48,8 @@ public class PlayerSheepAI : MonoBehaviour
     [SerializeField] float defendStopDistance = 0f;
     Transform defendPoint;
 
+	//[Header("Construct State Variables")]
+	SheepConstruct owningConstruct;
    
 
     private void Start()
@@ -82,6 +85,8 @@ public class PlayerSheepAI : MonoBehaviour
                     DoDefendPlayer();
                     break;
                 }
+			case SheepStates.CONSTRUCT:
+				break;
             default:
                 {
                     Debug.LogWarning("PlayerSheepAI should never default!");
@@ -98,23 +103,29 @@ public class PlayerSheepAI : MonoBehaviour
     public void RecallSheep()
     {
         currentSheepState = SheepStates.FOLLOW_PLAYER;
-    }
-    public SheepStates GetSheepState()
+
+		EndConstruct();
+	}
+	public SheepStates GetSheepState()
     {
         return currentSheepState;
     }
+	public bool IsCommandable()
+	{
+		return currentSheepState == SheepStates.CHARGE || currentSheepState == SheepStates.DEFEND_PLAYER || currentSheepState == SheepStates.FOLLOW_PLAYER;
+	}
     float GetRandomSheepBaseSpeed()
     {
         float speed = Random.Range(baseSpeedMin, baseSpeedMax);
         return speed;
     }
-    #endregion
+	#endregion
 
-    #region Follow Player
-    //NEED TO EDIT
-    //RIGHT NOW THIS SHIT IS CALLED EERY FRAME FOR EVERY SHEEP
-    //THIS IS BAD I SHOULD MAKE FIX IT MAYBE D:
-    void DoFollowPlayer()
+	#region Follow Player
+	//NEED TO EDIT
+	//RIGHT NOW THIS SHIT IS CALLED EERY FRAME FOR EVERY SHEEP
+	//THIS IS BAD I SHOULD MAKE FIX IT MAYBE D:
+	void DoFollowPlayer()
     {
         //if player is too close, part the red sea!
         float checkDistance = Vector3.Distance(transform.position, player.position);
@@ -240,6 +251,27 @@ public class PlayerSheepAI : MonoBehaviour
 
         currentSheepState = SheepStates.DEFEND_PLAYER;
     }
-    #endregion
+	#endregion
 
+	#region Sheep Construct
+	public void DoConstruct(SheepConstruct cons)
+	{
+		owningConstruct = cons;
+		currentSheepState = SheepStates.CONSTRUCT;
+		agent.enabled = false;
+	}
+	public void EndConstruct()
+	{
+		agent.enabled = true;
+		if (owningConstruct != null)
+		{
+			owningConstruct.RemoveSheep(transform);
+			owningConstruct = null;
+		}
+
+		// if not already changed, make sure its not on CONSTRUCT
+		if (currentSheepState == SheepStates.CONSTRUCT)
+			currentSheepState = SheepStates.WANDER;
+	}
+	#endregion
 }
