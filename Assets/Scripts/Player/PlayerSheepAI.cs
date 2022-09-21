@@ -40,6 +40,7 @@ public class PlayerSheepAI : MonoBehaviour
     [SerializeField] float chargeSpeed = 35f;
     [SerializeField] float chargePointRadius = 10f;
     [SerializeField] float chargeStopDistance = 0f;
+    [SerializeField] float chargeEndDistance = 1f;
     Vector3 chargePoint;
     bool isCharging;
 
@@ -193,7 +194,7 @@ public class PlayerSheepAI : MonoBehaviour
     void DoCharge()
     {
         //if agent reaches charge point, go into wander mode
-        if(Vector3.Distance(transform.position, agent.destination) <= 1f)
+        if(Vector3.Distance(transform.position, agent.destination) <= chargeEndDistance)
         {
             isCharging = false;
             agent.speed = wanderSpeed;

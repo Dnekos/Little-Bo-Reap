@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.AI;
+using TMPro;
 
 public enum SheepTypes
 {
@@ -12,6 +13,10 @@ public enum SheepTypes
 }
 public class PlayerSheepAbilities : MonoBehaviour
 {
+    [Header("UI Test")]
+    [SerializeField] TextMeshProUGUI sheepTypeText;
+    [SerializeField] List<Color> sheepTypeColors;
+
     [Header("Sheep Flock Variables")]
     [SerializeField] List<PlayerSheepAI> activeSheepBuild;
     [SerializeField] List<PlayerSheepAI> activeSheepRam;
@@ -49,9 +54,9 @@ public class PlayerSheepAbilities : MonoBehaviour
     [SerializeField] string defendAnimation;
 
     [Header("Sheep Launch Variables")]
-    [SerializeField] float launchForce = 2500f;
-    [SerializeField] float launchForceLift = 250f;
-    [SerializeField] GameObject launchProjectile;
+    //[SerializeField] float launchForce = 2500f;
+    //[SerializeField] float launchForceLift = 250f;
+    [SerializeField] List<GameObject> launchProjectiles;
     [SerializeField] Transform launchOrigin;
     [SerializeField] float launchCooldown = 1f;
     [SerializeField] float minDistanceToLaunch = 10f;
@@ -89,6 +94,8 @@ public class PlayerSheepAbilities : MonoBehaviour
             currentFlockType = (SheepTypes)currentFlockIndex;
 
             Debug.Log("Current Flock is: " + currentFlockType);
+            sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
+            sheepTypeText.color = sheepTypeColors[(int)currentFlockType];
         }
     }
     public List<PlayerSheepAI> GetCurrentSheepFlock(SheepTypes theFlockType)
@@ -370,9 +377,10 @@ public class PlayerSheepAbilities : MonoBehaviour
                         animator.Play(launchAnimation);
 
                         //break loop and launch that mf
-                        var launchSheep = Instantiate(launchProjectile, launchOrigin.position, launchOrigin.rotation);
-                        launchSheep.GetComponent<Rigidbody>()?.AddForce(launchOrigin.transform.forward * launchForce + launchOrigin.transform.up * launchForceLift);
-                        launchSheep.GetComponent<Rigidbody>()?.AddTorque(100f, 100f, 100f);
+                        var launchSheep = Instantiate(launchProjectiles[(int)currentFlockType], launchOrigin.position, launchOrigin.rotation);
+                        launchSheep.GetComponent<PlayerSheepProjectile>().LaunchProjectile();
+                        //launchSheep.GetComponent<Rigidbody>()?.AddForce(launchOrigin.transform.forward * launchForce + launchOrigin.transform.up * launchForceLift);
+                        //launchSheep.GetComponent<Rigidbody>()?.AddTorque(100f, 100f, 100f);
 
                         GetCurrentSheepFlock(flockType)[i].KillSheep();
                         GetCurrentSheepFlock(flockType).Remove(GetCurrentSheepFlock(flockType)[i]);

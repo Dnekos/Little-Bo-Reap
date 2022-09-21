@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -46,6 +47,18 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] string jumpAnimation;
     [SerializeField] string dashAnimation;
     Animator animator;
+
+    #region Debug Stuff
+    public void OnDebugRestart(InputAction.CallbackContext context)
+    {
+        if(context.started)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+    }
+    #endregion
+
+
 
     private void Awake()
     {

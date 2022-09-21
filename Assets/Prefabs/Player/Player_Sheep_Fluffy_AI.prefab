@@ -119,7 +119,7 @@ Transform:
   m_Children:
   - {fileID: 5057775747618805048}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7540781576734803950
 MeshFilter:
@@ -225,13 +225,14 @@ MonoBehaviour:
   avoidPlayerDistance: 2.5
   avoidPlayerSpeed: 25
   wanderSpeed: 5
-  wanderRadius: 20
+  wanderRadius: 25
   wanderStopDistance: 0
   wanderDelayMin: 1
   wanderDelayMax: 4
   chargeSpeed: 25
   chargePointRadius: 5
   chargeStopDistance: 0
+  chargeEndDistance: 2
   defendSpeed: 40
   defendStopDistance: 0
 --- !u!54 &7540781576734803937
