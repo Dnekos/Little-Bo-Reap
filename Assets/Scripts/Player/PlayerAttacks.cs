@@ -141,7 +141,8 @@ public class PlayerAttacks : MonoBehaviour
             animator.Play(heavyAirAnimation);
             animator.SetBool("isFalling", isFalling);
 
-            rb.AddForce(Vector3.up * heavyAttack.airborneLift);
+            rb.AddForce(-rb.velocity * 0.5f, ForceMode.VelocityChange);
+            rb.AddForce(Vector3.up * airUpForce);
         }
 
         //charge heavy attack if grounded

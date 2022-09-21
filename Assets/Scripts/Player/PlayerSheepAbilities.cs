@@ -37,6 +37,7 @@ public class PlayerSheepAbilities : MonoBehaviour
     [SerializeField] float summonCooldown = 5f;
     [SerializeField] string summonAnimation;
     bool canSummonSheep = true;
+    bool canSummonAllSheep = true;
 
     [Header("Sheep Charge Variables")]
     [SerializeField] GameObject sheepChargePointPrefab;
@@ -241,6 +242,40 @@ public class PlayerSheepAbilities : MonoBehaviour
             StartCoroutine(SummonSheepCooldown());
         }
     }
+    public void OnSummonAllSheep(InputAction.CallbackContext context)
+    {
+        if (context.performed && canSummonAllSheep)
+        {
+            canSummonAllSheep = false;
+
+            //play animation
+            animator.Play(summonAnimation);
+
+            //delete all sheep
+            for (int i = 0; i < 3; i++) //for each sheep type, delete list and clear it
+            {
+                //delete all active sheep
+                for (int j = 0; j < GetCurrentSheepFlock((SheepTypes)i).Count; j++)
+                {
+                    GetCurrentSheepFlock((SheepTypes)i)[j].KillSheep();
+                }
+                GetCurrentSheepFlock((SheepTypes)i).Clear();
+            }
+
+            //SUMMON THE HORDE
+            for (int i = 0; i < 3; i++) //for each sheep type, delete list and clear it
+            {
+                for (int j = 0; j < GetSheepAmountToSummon((SheepTypes)i); j++)
+                {
+                    StartCoroutine(SummonSheep((SheepTypes)i));
+                }
+            }
+
+            //start cooldown
+            StartCoroutine(SummonAllSheepCooldown());
+        }
+    }
+
     IEnumerator SummonSheep(SheepTypes theSheepType)
     {
         //get random interval
@@ -272,6 +307,11 @@ public class PlayerSheepAbilities : MonoBehaviour
     {
         yield return new WaitForSeconds(summonCooldown);
         canSummonSheep = true;
+    }
+    IEnumerator SummonAllSheepCooldown()
+    {
+        yield return new WaitForSeconds(summonCooldown);
+        canSummonAllSheep = true;
     }
     #endregion
 

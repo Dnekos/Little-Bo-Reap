@@ -56,6 +56,10 @@ public class PlayerMovement : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
+    public void OnDebugQuit(InputAction.CallbackContext context)
+    {
+        Application.Quit();
+    }
     #endregion
 
 
@@ -64,9 +68,12 @@ public class PlayerMovement : MonoBehaviour
     {
         //set this as player in game manager
         GameManager.Instance.SetPlayer(this.transform);
+
     }
     void Start()
     {
+
+
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
     }
@@ -87,18 +94,21 @@ public class PlayerMovement : MonoBehaviour
     {
         bool frontCheck = false;
         bool backCheck = false;
-        Vector3 frontNormal;
-        Vector3 backNormal;
+       //Vector3 frontNormal;
+       //Vector3 backNormal;
+       //
+       ////set ground check
+       //RaycastHit hitFront;
+       //frontCheck = Physics.Raycast(groundCheckOriginFront.position, Vector3.down, out hitFront, groundCheckDistance, groundLayer);
+       ////if canJump, groundNormal = hit.normal, else groudnnormal = vector3.up  v ternary operater
+       //frontNormal = frontCheck ? hitFront.normal : Vector3.up;
+       //
+       //RaycastHit hitBack;
+       //backCheck = Physics.Raycast(groundCheckOriginBack.position, Vector3.down, out hitBack, groundCheckDistance, groundLayer);
+       //backNormal = backCheck ? hitBack.normal : Vector3.up;
 
-        //set ground check
-        RaycastHit hitFront;
-        frontCheck = Physics.Raycast(groundCheckOriginFront.position, Vector3.down, out hitFront, groundCheckDistance, groundLayer);
-        //if canJump, groundNormal = hit.normal, else groudnnormal = vector3.up  v ternary operater
-        frontNormal = frontCheck ? hitFront.normal : Vector3.up;
-
-        RaycastHit hitBack;
-        backCheck = Physics.Raycast(groundCheckOriginBack.position, Vector3.down, out hitBack, groundCheckDistance, groundLayer);
-        backNormal = backCheck ? hitBack.normal : Vector3.up;
+        frontCheck = Physics.CheckSphere(groundCheckOriginFront.position, groundCheckDistance, groundLayer);
+        backCheck = Physics.CheckSphere(groundCheckOriginBack.position, groundCheckDistance, groundLayer);
 
         isGrounded = frontCheck || backCheck;
     }
@@ -212,7 +222,7 @@ public class PlayerMovement : MonoBehaviour
     }
     public void OnJump(InputAction.CallbackContext context)
     {
-        if(isGrounded)
+        if(isGrounded && context.started)
         {
             animator.Play(jumpAnimation);
             rb.AddForce(Vector3.up * jumpForce);
@@ -220,7 +230,7 @@ public class PlayerMovement : MonoBehaviour
     }
     public void OnDash(InputAction.CallbackContext context)
     {
-        if(canDash)
+        if(canDash && context.started)
         {
             canDash = false;
 

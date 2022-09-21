@@ -69,6 +69,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "SummonAllSheep",
+                    "type": "Button",
+                    "id": "0620d62b-b81b-498b-ae56-a5e4b21b6fe9",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "MultiTap",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "SheepCharge",
                     "type": "Button",
                     "id": "c00b0f8d-1ae7-4803-ac2f-1bfa7399fd8e",
@@ -126,6 +135,15 @@
                     "name": "DEBUG_Restart_Scene",
                     "type": "Button",
                     "id": "305affdf-7276-4777-b611-b40fff74eae2",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "DEBUG_Quit_Game",
+                    "type": "Button",
+                    "id": "d84d85ee-ef0f-4898-bc87-1b11c8d4d83d",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -328,6 +346,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "DEBUG_Restart_Scene",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8bb9dd1a-0a54-4b76-a34b-dc5fa5516164",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SummonAllSheep",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bb2a3782-ea33-4e0d-baed-17c8fb1622b9",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DEBUG_Quit_Game",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

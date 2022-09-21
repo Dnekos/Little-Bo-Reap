@@ -165,7 +165,7 @@ Transform:
   m_Children:
   - {fileID: 426741378263486879}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!195 &426741378606355001
 NavMeshAgent:
@@ -203,8 +203,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Health: 100
   MaxHealth: 100
-  currentEnemyState: 1
+  currentEnemyState: 3
   StunTime: 0.3
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 128
   groundLayer:
     serializedVersion: 2
     m_Bits: 64

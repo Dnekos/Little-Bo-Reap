@@ -7,7 +7,8 @@ enum EnemyStates
 {
 	WANDER = 0,
 	CHASE_PLAYER = 1,
-	HITSTUN = 2
+	HITSTUN = 2,
+	IDLE = 3
 }
 
 public class EnemyAI : Damageable
@@ -16,6 +17,7 @@ public class EnemyAI : Damageable
 	[SerializeField] EnemyStates currentEnemyState;
 
 	[SerializeField] float StunTime = 0.3f;
+	[SerializeField] LayerMask playerLayer;
 	EnemyStates stunState;
 
 	[Header("Ground Check")]
@@ -49,12 +51,20 @@ public class EnemyAI : Damageable
 				break;
 			case EnemyStates.HITSTUN:
 				break;
+			case EnemyStates.IDLE:
+				DoIdle();
+				break;
 			default:
 				Debug.LogWarning("Enemy at unexpected state and defaulted!");
 				break;
 		}
 	}
 
+	void DoIdle()
+    {
+		//debug idle state
+		if (Physics.CheckSphere(transform.position, 20f, playerLayer)) currentEnemyState = EnemyStates.CHASE_PLAYER;
+    }
 
 	void DoChase()
 	{

@@ -425,7 +425,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3870380307503015549}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.9, z: -0.5}
+  m_LocalPosition: {x: 0, y: -0.95, z: -0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -676,7 +676,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3870380308248943668}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.9, z: 0.5}
+  m_LocalPosition: {x: 0, y: -0.95, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -878,7 +878,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3870380308533912745}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.9, z: 0.5}
+  m_LocalPosition: {x: 0, y: -0.95, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -909,7 +909,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3870380308655863548}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.9, z: -0.5}
+  m_LocalPosition: {x: 0, y: -0.95, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1305,6 +1305,38 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 305affdf-7276-4777-b611-b40fff74eae2
     m_ActionName: PlayerMovement/DEBUG_Restart_Scene[/Keyboard/p]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8268160106776874863}
+        m_TargetAssemblyTypeName: PlayerSheepAbilities, Assembly-CSharp
+        m_MethodName: OnSummonAllSheep
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 0620d62b-b81b-498b-ae56-a5e4b21b6fe9
+    m_ActionName: PlayerMovement/SummonAllSheep[/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3870380308813204399}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: OnDebugQuit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: d84d85ee-ef0f-4898-bc87-1b11c8d4d83d
+    m_ActionName: PlayerMovement/DEBUG_Quit_Game[/Keyboard/escape]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerMovement
@@ -1325,7 +1357,7 @@ MonoBehaviour:
   maxMoveSpeed: 20
   acceleration: 200
   haltRate: 10
-  jumpForce: 750
+  jumpForce: 1250
   fallRate: 50
   dashForce: 1500
   dashAirborneLiftForce: 375
@@ -1369,8 +1401,8 @@ MonoBehaviour:
   heavyAirDamage: 0
   heavyAirKnockback: 0
   heavyAirAnimation: Test_Player_Attack_Heavy_Windup_Air
-  airUpForce: 1000
-  airDownForce: 2500
+  airUpForce: 1500
+  airDownForce: 5000
 --- !u!114 &8268160106776874863
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1423,8 +1455,6 @@ MonoBehaviour:
   defendPivotRotateSpeed: 225
   defendDistance: 3.5
   defendAnimation: 
-  launchForce: 2500
-  launchForceLift: 250
   launchProjectiles:
   - {fileID: 1802569736148475655, guid: 8e3d8eb4f51c618419d4eb16a2779cb9, type: 3}
   - {fileID: 5609754029084736080, guid: 869d2c9d10ff4604bbdff72cdfe55fe7, type: 3}
