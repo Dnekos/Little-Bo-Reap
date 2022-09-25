@@ -50,7 +50,7 @@ public class PlayerSheepAI : MonoBehaviour
     Transform defendPoint;
 
 	//[Header("Construct State Variables")]
-	SheepConstruct owningConstruct;
+	SheepHolder owningConstruct;
    
 
     private void Start()
@@ -255,7 +255,7 @@ public class PlayerSheepAI : MonoBehaviour
 	#endregion
 
 	#region Sheep Construct
-	public void DoConstruct(SheepConstruct cons)
+	public void DoConstruct(SheepHolder cons)
 	{
 		owningConstruct = cons;
 		currentSheepState = SheepStates.CONSTRUCT;

@@ -2,16 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SheepConstruct : MonoBehaviour
+public class SheepConstruct : SheepHolder
 {
-	[SerializeField] List<Transform> containedSheep;
-
-	[Header("Layers")]
-	[SerializeField] int SheepLayer = 10;
-	[SerializeField] int GroundLayer = 6;
-
 	[Header("Shown for Debug Visibility")]
-	[SerializeField] float Height = -1;
 	float SheepRadius = 1;
 	[SerializeField]  int layerCount = 0;
 	[SerializeField]  Vector3 sheepPlacement;
@@ -31,21 +24,13 @@ public class SheepConstruct : MonoBehaviour
 		containedSheep = new List<Transform>();
 	}
 
-	public void RemoveSheep(Transform sheep)
-	{
-		containedSheep.Remove(sheep);
-		sheep.gameObject.layer = SheepLayer;
-		// make new height? maybe? or just collapse the whole thing?
-		if (containedSheep.Count != 0)
-			Height = containedSheep[containedSheep.Count - 1].position.y;
-	}
-
 	#region Adding Sheep
 	private void OnTriggerEnter(Collider other)
 	{
 		// only add charging sheep
 		if (other.GetComponent<PlayerSheepAI>() == null || other.GetComponent<PlayerSheepAI>().GetSheepState() != SheepStates.CHARGE)
 			return;
+
 
 		// approximate radius
 		/* 
@@ -60,7 +45,7 @@ public class SheepConstruct : MonoBehaviour
 
 		// set height if this is the first sheep
 		if (containedSheep.Count == 0)
-			Height = box.bounds.min.y + SheepRadius;
+			Height = 0 + SheepRadius;
 
 		// add the little guy
 		AddSheep(other.transform);
