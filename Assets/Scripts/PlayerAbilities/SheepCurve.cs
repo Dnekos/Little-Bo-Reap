@@ -28,11 +28,9 @@ public class SheepCurve : SheepHolder
 	float HeightStep = 0.5f;
 
 	// components
-	BoxCollider box;
 
 	private void Start()
 	{
-		box = GetComponent<BoxCollider>();
 		containedSheep = new List<Transform>();
 	}
 
@@ -82,12 +80,9 @@ public class SheepCurve : SheepHolder
 	#region Adding Sheep
 	private void OnTriggerEnter(Collider other)
 	{
-		Debug.Log("colliding with something");
-
 		// only add charging sheep
 		if (other.GetComponent<PlayerSheepAI>() == null || other.GetComponent<PlayerSheepAI>().GetSheepState() != SheepStates.CHARGE)
 			return;
-		Debug.Log("this is a sheep");
 
 		// approximate radius
 		/* 
@@ -112,33 +107,30 @@ public class SheepCurve : SheepHolder
 	{
 		float RandomCount = 0;
 		// don't add sheep if the box is filled
+		Plane slice = new Plane(Differentiate(Height), CalcCurvePoint(Height));
+		int SheepChecked = 0;
+
 		while (Height + (0.5f * SheepRadius) < limits.y)
 		{
 			Vector3 randInCircle = Random.insideUnitSphere * radius;
-			Plane slice = new Plane(Differentiate(Height), CalcCurvePoint(Height));
 
 			// make a guess at a good spot to place sheep, within collider bounds
 			sheepPlacement = slice.ClosestPointOnPlane(randInCircle + CalcCurvePoint(Height));
-			Debug.Log("checking point " + sheepPlacement);
-
+			//Debug.Log("checking point " + sheepPlacement);
+			
 			// check if the spot is filled
 			bool Filled = false;
 			foreach (Transform sheep in containedSheep)
 			{
+				float distToPlane = slice.GetDistanceToPoint(sheep.position);
 				// we dont need to check sheep who are significantly lower than the current height
-				if (sheep.position.y < Height - 1.1f * SheepRadius)
+				if (distToPlane > 1.1f * SheepRadius)
 					continue;
+				SheepChecked++;
 
 				// check the position, left/right/front/back and below the position.
-				float displacement = Vector3.Distance(sheep.position, slice.ClosestPointOnPlane(sheep.position));
-				Filled = Filled || ContainsSheep(sheep, sheepPlacement, displacement)
-					|| ContainsSheep(sheep, sheepPlacement + Vector3.right * SheepRadius, displacement)
-					|| ContainsSheep(sheep, sheepPlacement + Vector3.forward * SheepRadius, displacement)
-					|| ContainsSheep(sheep, sheepPlacement + Vector3.left * SheepRadius, displacement)
-					|| ContainsSheep(sheep, sheepPlacement + Vector3.down * SheepRadius, displacement)
-					|| ContainsSheep(sheep, sheepPlacement + Vector3.back * SheepRadius, displacement)
-					|| ContainsSheep(sheep, sheepPlacement + Vector3.up * SheepRadius, displacement);
-
+				//float displacement = Vector3.Distance(sheep.position, slice.ClosestPointOnPlane(sheep.position));
+				Filled = Filled || SheepIntersection(sheep, sheepPlacement);
 
 				// stop checking if we found a filled spot
 				if (Filled)
@@ -147,10 +139,10 @@ public class SheepCurve : SheepHolder
 			if (!Filled)
 			{
 				// if empty, place sheep there
-				Debug.Log("took " + RandomCount + " tries");
 				newSheep.position = sheepPlacement;
 				newSheep.gameObject.layer = GroundLayer;
 				containedSheep.Add(newSheep);
+				Debug.Log("Sheep " + containedSheep.Count +" took " + RandomCount + " tries and checked "+ SheepChecked+" sheep");
 
 				// set state of AI
 				newSheep.GetComponent<PlayerSheepAI>()?.DoConstruct(this);
@@ -166,10 +158,13 @@ public class SheepCurve : SheepHolder
 				RandomCount = 0;
 				Height += HeightStep * SheepRadius;
 				layerCount++;
+
+				// recalculate the plane 
+				slice = new Plane(Differentiate(Height), CalcCurvePoint(Height));
 			}
 		}
 		if (RandomCount != 0)
-			Debug.Log("failed to place sheed :( took "+ RandomCount);
+			Debug.Log("failed to place sheep :( took "+ RandomCount);
 	}
 
 	// TODO: if collider on final sheep ends up being a capsule, will need new math for calculating displacement
@@ -179,6 +174,11 @@ public class SheepCurve : SheepHolder
 			SheepRadius : // if the checking sheep is at the same height, dont do the math (else it gives NaN)
 			Mathf.Sqrt((SheepRadius * SheepRadius) - (centerDisplacement * centerDisplacement)); // Pythagorean, gets radius of circle in a sphere's slice
 		return Mathf.Pow(pos.x - sheep.position.x, 2) + Mathf.Pow(pos.z - sheep.position.z, 2) < radius * radius; // equation to see if point is in circle
+	}
+
+	bool SheepIntersection(Transform sheep, Vector3 pos)
+	{
+		return Vector3.Distance(sheep.position, pos) < (SheepRadius + SheepRadius);
 	}
 	#endregion
 }

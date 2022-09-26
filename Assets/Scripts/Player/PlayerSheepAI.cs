@@ -9,7 +9,8 @@ public enum SheepStates
     WANDER = 1,
     CHARGE = 2,
     DEFEND_PLAYER = 3,
-	CONSTRUCT = 4
+	CONSTRUCT = 4,
+	STUN // TODO, make this the same as the enemy's
 }
 
 [RequireComponent(typeof(NavMeshAgent))]
@@ -23,8 +24,9 @@ public class PlayerSheepAI : MonoBehaviour
     float agentStoppingDistance;
     Transform player;
     NavMeshAgent agent;
+	Rigidbody rb;
 
-    [Header("Follow State Variables")]
+	[Header("Follow State Variables")]
     [SerializeField] float avoidPlayerDistance;
     [SerializeField] float avoidPlayerSpeed = 40f;
 
@@ -49,14 +51,15 @@ public class PlayerSheepAI : MonoBehaviour
     [SerializeField] float defendStopDistance = 0f;
     Transform defendPoint;
 
-	//[Header("Construct State Variables")]
+	[Header("Stun State Variables")]
+	[SerializeField] float StunTime = 1;
 	SheepHolder owningConstruct;
-   
 
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        baseSpeedCurrent = GetRandomSheepBaseSpeed(); ;
+		rb = GetComponent<Rigidbody>();
+		baseSpeedCurrent = GetRandomSheepBaseSpeed(); ;
         agentStoppingDistance = agent.stoppingDistance;
         player = GameManager.Instance.GetPlayer();
     }
@@ -152,10 +155,26 @@ public class PlayerSheepAI : MonoBehaviour
             agent.SetDestination(player.position);
         }
     }
-    #endregion
+	#endregion
 
-    #region Wander
-    void DoWander()
+	#region
+	IEnumerator OnHitStun(SheepStates stateAfterStun)
+	{
+		// save current state and set to Hitstun
+		currentSheepState = SheepStates.STUN;
+
+		//turn on rb and turn off navmesh (turned on in GroundCheck (which cant be called when hitstunned))
+		rb.isKinematic = false;
+		agent.enabled = false;
+
+		yield return new WaitForSeconds(StunTime);
+
+		currentSheepState = stateAfterStun;
+	}
+	#endregion
+
+	#region Wander
+	void DoWander()
     {
         //if stopped, pick new point to wander!
         if (Vector3.Distance(transform.position, agent.destination) <= 1f && canWander)
@@ -272,7 +291,7 @@ public class PlayerSheepAI : MonoBehaviour
 
 		// if not already changed, make sure its not on CONSTRUCT
 		if (currentSheepState == SheepStates.CONSTRUCT)
-			currentSheepState = SheepStates.WANDER;
+			StartCoroutine(OnHitStun(SheepStates.WANDER));
 	}
 	#endregion
 }
