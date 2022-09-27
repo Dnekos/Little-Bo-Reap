@@ -168,9 +168,6 @@ public class PlayerMovement : MonoBehaviour
     }
     void Move()
     {
-        if (!GetComponent<PlayerAttacks>().canAttack) // TODO: make this not shit
-            return;
-
         //moveDirection = playerOrientation.forward * moveValue.x + playerOrientation.right * -moveValue.y;
         //rb.AddForce(moveDirection * acceleration);
 
@@ -205,7 +202,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //halt player if not moving commands
-        if (!isMoving && isGrounded && canDash || !GetComponent<PlayerAttacks>().canAttack && isGrounded && canDash)
+        if (!isMoving && isGrounded && canDash)
         {
             rb.AddForce(-rb.velocity * haltRate);
         }

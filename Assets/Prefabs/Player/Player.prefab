@@ -932,7 +932,7 @@ GameObject:
   - component: {fileID: 3870380308813204388}
   - component: {fileID: 3870380308813204384}
   - component: {fileID: 3870380308813204399}
-  - component: {fileID: 7373631756108789204}
+  - component: {fileID: 2643546360396193640}
   - component: {fileID: 8268160106776874863}
   - component: {fileID: 3171854317779054766}
   m_Layer: 7
@@ -1146,26 +1146,6 @@ MonoBehaviour:
     m_ActionId: e1211aa8-4046-4a8c-bf04-58603676129c
     m_ActionName: PlayerMovement/Dash[/Keyboard/shift]
   - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 5b97bcb0-f8c8-4baa-9c04-ae42d73e6300
-    m_ActionName: PlayerMovement/LightAttack[/Mouse/leftButton]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7373631756108789204}
-        m_TargetAssemblyTypeName: PlayerAttacks, Assembly-CSharp
-        m_MethodName: OnHeavyAttack
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 36f1a8f6-bb56-459c-aca6-04483d3e795e
-    m_ActionName: PlayerMovement/HeavyAttack[/Mouse/rightButton]
-  - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8268160106776874863}
         m_TargetAssemblyTypeName: PlayerSheepAbilities, Assembly-CSharp
@@ -1325,6 +1305,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: d84d85ee-ef0f-4898-bc87-1b11c8d4d83d
     m_ActionName: PlayerMovement/DEBUG_Quit_Game[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2643546360396193640}
+        m_TargetAssemblyTypeName: PlayerGroundPound, Assembly-CSharp
+        m_MethodName: OnHeavyAttack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 735a6ce6-7551-405d-a3a9-54ce15ed6fd0
+    m_ActionName: PlayerMovement/GroundPound[/Keyboard/4]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerMovement
@@ -1362,35 +1358,26 @@ MonoBehaviour:
   playerOrientation: {fileID: 3870380307216974260}
   jumpAnimation: Test_Player_Jump
   dashAnimation: Test_Player_Dash
---- !u!114 &7373631756108789204
+--- !u!114 &2643546360396193640
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3870380308813204390}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4962f0742234cf543934627eef99b88d, type: 3}
+  m_Script: {fileID: 11500000, guid: c05353875f6249d478db4e23335fde10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lightAttacks:
-  - {fileID: 11400000, guid: bf819abc1e3014949b63762321e33b65, type: 2}
-  - {fileID: 11400000, guid: ee7fb0a0521b7cd40aba52bab569dc81, type: 2}
-  - {fileID: 11400000, guid: 089b72cb1a51cd3429a14b29ea07d538, type: 2}
-  timeframeToChainAttacks: 0.75
-  canAttack: 1
-  heavyAttack: {fileID: 11400000, guid: bd8e5e98cb85a7e4d8951e3d5f329765, type: 2}
-  heavyChargeTime: 0.5
-  heavyChargeAnimation: Test_Player_Attack_Heavy_Windup
-  heavyParticle: {fileID: 7302312219567745433, guid: e5deab723eadcc243a6518fed70b7315,
-    type: 3}
-  particleOrigin: {fileID: 3000223651566003515}
   heavyAirDamage: 0
   heavyAirKnockback: 0
   heavyAirAnimation: Test_Player_Attack_Heavy_Windup_Air
-  airUpForce: 1500
+  airUpForce: 2500
   airDownForce: 5000
+  heavyParticle: {fileID: 7302312219567745433, guid: e5deab723eadcc243a6518fed70b7315,
+    type: 3}
+  particleOrigin: {fileID: 3870380308813204389}
 --- !u!114 &8268160106776874863
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -42,24 +42,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "LightAttack",
-                    "type": "Button",
-                    "id": "5b97bcb0-f8c8-4baa-9c04-ae42d73e6300",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "HeavyAttack",
-                    "type": "Button",
-                    "id": "36f1a8f6-bb56-459c-aca6-04483d3e795e",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "SummonSheep",
                     "type": "Button",
                     "id": "a6eca5f5-b4ce-4f87-b4b0-67cbf3be8da7",
@@ -75,15 +57,6 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "MultiTap",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "SheepCharge",
-                    "type": "Button",
-                    "id": "c00b0f8d-1ae7-4803-ac2f-1bfa7399fd8e",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
                     "initialStateCheck": false
                 },
                 {
@@ -105,6 +78,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "SheepCharge",
+                    "type": "Button",
+                    "id": "c00b0f8d-1ae7-4803-ac2f-1bfa7399fd8e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "SheepDefend",
                     "type": "Button",
                     "id": "4a884deb-20d3-4d2d-ad28-8b437cd7911d",
@@ -117,6 +99,15 @@
                     "name": "LaunchSheep",
                     "type": "Button",
                     "id": "31bb77aa-fa27-4092-8373-921feaf5562f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "GroundPound",
+                    "type": "Button",
+                    "id": "735a6ce6-7551-405d-a3a9-54ce15ed6fd0",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -241,45 +232,12 @@
                 },
                 {
                     "name": "",
-                    "id": "849af9dc-ac19-40e9-a600-909aecb913c3",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "LightAttack",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "7bffc43b-a4fc-4365-8b21-3cd43d6bece6",
-                    "path": "<Keyboard>/4",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "HeavyAttack",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "c45b227e-d322-4434-a497-a375e237375a",
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "SummonSheep",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "9b983c23-e0c5-4a51-9fa3-5c2fd041a9bc",
-                    "path": "<Keyboard>/1",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "SheepCharge",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -368,6 +326,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "DEBUG_Quit_Game",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9b983c23-e0c5-4a51-9fa3-5c2fd041a9bc",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SheepCharge",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2bd16227-5d85-4932-8d57-b05b2e06e682",
+                    "path": "<Keyboard>/4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "GroundPound",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

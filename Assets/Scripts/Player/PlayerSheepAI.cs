@@ -180,8 +180,9 @@ public class PlayerSheepAI : MonoBehaviour
             agent.speed = avoidPlayerSpeed;
             agent.stoppingDistance = 0;
             agent.SetDestination(avoidDestination);
+
+            return;
         }
-        //if you're the leader, follow the player!
         else
         {
             //set speed and follow distance
@@ -189,6 +190,7 @@ public class PlayerSheepAI : MonoBehaviour
             agent.stoppingDistance = agentStoppingDistance;
             agent.SetDestination(player.position);
         }
+
     }
     #endregion
 
