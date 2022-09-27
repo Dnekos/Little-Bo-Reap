@@ -27,6 +27,9 @@ public class PlayerSheepAbilities : MonoBehaviour
     [SerializeField] SheepTypes currentFlockType;
     int currentFlockIndex;
 
+    [Header("Sheep Flock Leaders")]
+    public List<PlayerSheepAI> leaderSheep;
+
     [Header("Sheep Summon Variables")]
     [SerializeField] int amountToSummonBuild;
     [SerializeField] int amountToSummonRam;
@@ -168,6 +171,12 @@ public class PlayerSheepAbilities : MonoBehaviour
                 }
         }
     }
+
+    public void RemoveSheepFromList(SheepTypes theType, PlayerSheepAI theSheep)
+    {
+        GetCurrentSheepFlock(theType).Remove(theSheep);
+    }
+
     #endregion
 
     #region Sheep Summon and Recall
@@ -226,7 +235,7 @@ public class PlayerSheepAbilities : MonoBehaviour
             //delete all active sheep
             for(int i = 0; i < GetCurrentSheepFlock(flockType).Count; i++)
             {
-                GetCurrentSheepFlock(flockType)[i].KillSheep();
+                GetCurrentSheepFlock(flockType)[i].DestroySheep();
             }
             GetCurrentSheepFlock(flockType).Clear();
 
@@ -238,6 +247,7 @@ public class PlayerSheepAbilities : MonoBehaviour
                 StartCoroutine(SummonSheep(flockType));
             }
 
+
             //start cooldown
             StartCoroutine(SummonSheepCooldown());
         }
@@ -247,21 +257,21 @@ public class PlayerSheepAbilities : MonoBehaviour
         if (context.performed && canSummonAllSheep)
         {
             canSummonAllSheep = false;
-
+   
             //play animation
             animator.Play(summonAnimation);
-
+   
             //delete all sheep
             for (int i = 0; i < 3; i++) //for each sheep type, delete list and clear it
             {
                 //delete all active sheep
                 for (int j = 0; j < GetCurrentSheepFlock((SheepTypes)i).Count; j++)
                 {
-                    GetCurrentSheepFlock((SheepTypes)i)[j].KillSheep();
+                    GetCurrentSheepFlock((SheepTypes)i)[j].DestroySheep();
                 }
                 GetCurrentSheepFlock((SheepTypes)i).Clear();
             }
-
+   
             //SUMMON THE HORDE
             for (int i = 0; i < 3; i++) //for each sheep type, delete list and clear it
             {
@@ -269,8 +279,10 @@ public class PlayerSheepAbilities : MonoBehaviour
                 {
                     StartCoroutine(SummonSheep((SheepTypes)i));
                 }
+                
             }
-
+   
+   
             //start cooldown
             StartCoroutine(SummonAllSheepCooldown());
         }
@@ -423,7 +435,7 @@ public class PlayerSheepAbilities : MonoBehaviour
                         //launchSheep.GetComponent<Rigidbody>()?.AddTorque(100f, 100f, 100f);
 
                         GetCurrentSheepFlock(flockType)[i].KillSheep();
-                        GetCurrentSheepFlock(flockType).Remove(GetCurrentSheepFlock(flockType)[i]);
+                        //GetCurrentSheepFlock(flockType).Remove(GetCurrentSheepFlock(flockType)[i]);
 
                         break;
                     }

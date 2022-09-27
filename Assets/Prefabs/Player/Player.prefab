@@ -1146,19 +1146,7 @@ MonoBehaviour:
     m_ActionId: e1211aa8-4046-4a8c-bf04-58603676129c
     m_ActionName: PlayerMovement/Dash[/Keyboard/shift]
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7373631756108789204}
-        m_TargetAssemblyTypeName: PlayerAttacks, Assembly-CSharp
-        m_MethodName: OnLightAttack
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: 5b97bcb0-f8c8-4baa-9c04-ae42d73e6300
     m_ActionName: PlayerMovement/LightAttack[/Mouse/leftButton]
   - m_PersistentCalls:
@@ -1381,7 +1369,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3870380308813204390}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4962f0742234cf543934627eef99b88d, type: 3}
   m_Name: 
@@ -1425,11 +1413,15 @@ MonoBehaviour:
   activeSheepFluffy: []
   sheepPrefabBuild: {fileID: 7642856465436953991, guid: ca3915b86adfee943ae15cfd94cbd72f,
     type: 3}
-  sheepPrefabRam: {fileID: 6004376925630106851, guid: 1b18939e8b2a93143b8bf77b2ed37d0b,
+  sheepPrefabRam: {fileID: 5053043160987223685, guid: 9e71b1a880e5f494495d5d247e69482c,
     type: 3}
-  sheepPrefabFluffy: {fileID: 7540781576734803946, guid: b6bd9641b83340d44821e82bc6953a2e,
+  sheepPrefabFluffy: {fileID: 2475062628944767209, guid: 6335529050bb0f44c86a6184fabeca9d,
     type: 3}
   currentFlockType: 0
+  leaderSheep:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   amountToSummonBuild: 18
   amountToSummonRam: 12
   amountToSummonFluffy: 6

@@ -17,6 +17,7 @@ public enum SheepStates
 public class PlayerSheepAI : MonoBehaviour
 {
     [Header("Sheep State Variables")]
+    [SerializeField] SheepTypes sheepType;
     [SerializeField] SheepStates currentSheepState;
     [SerializeField] float baseSpeedMin = 15f;
     [SerializeField] float baseSpeedMax = 20f;
@@ -26,9 +27,15 @@ public class PlayerSheepAI : MonoBehaviour
     NavMeshAgent agent;
 	Rigidbody rb;
 
+   
+
 	[Header("Follow State Variables")]
     [SerializeField] float avoidPlayerDistance;
     [SerializeField] float avoidPlayerSpeed = 40f;
+
+    [Header("Leader Variables")]
+    public PlayerSheepAI leaderSheep;
+    public bool isLeader;
 
     [Header("Wander State Variables")]
     [SerializeField] float wanderSpeed = 10f;
@@ -62,10 +69,33 @@ public class PlayerSheepAI : MonoBehaviour
 		baseSpeedCurrent = GetRandomSheepBaseSpeed(); ;
         agentStoppingDistance = agent.stoppingDistance;
         player = GameManager.Instance.GetPlayer();
+
+      
+        FindLeader();
+    }
+    void FindLeader()
+    {
+        //if leader exists, assign 
+        if (player.GetComponent<PlayerSheepAbilities>().leaderSheep[((int)sheepType)] != null)
+        {
+            leaderSheep = player.GetComponent<PlayerSheepAbilities>().leaderSheep[((int)sheepType)];
+        }
+        //if no leader, congrats, ur the leader
+        else
+        {
+            isLeader = true;
+            player.GetComponent<PlayerSheepAbilities>().leaderSheep[((int)sheepType)] = this;
+        }
+    }
+    void CheckLeader()
+    {
+        if (leaderSheep == null) FindLeader();
     }
 
     private void Update()
     {
+        CheckLeader();
+
         //state machine
         switch(currentSheepState)
         {
@@ -100,9 +130,16 @@ public class PlayerSheepAI : MonoBehaviour
     }
 
     #region Utility Functions
-    public void KillSheep()
+    //ok so due to some bullshit you CANNOT remove sheep from list in a for loop? so use this and clear list after for resummoning sheep
+    public void DestroySheep()
     {
         Destroy(gameObject);
+    }
+    //this is called to kill an indvidual sheep and remove it from list
+    public void KillSheep()
+    {
+        player.GetComponent<PlayerSheepAbilities>().RemoveSheepFromList(sheepType, this);
+        DestroySheep();
     }
     public void RecallSheep()
     {
@@ -126,9 +163,6 @@ public class PlayerSheepAI : MonoBehaviour
 	#endregion
 
 	#region Follow Player
-	//NEED TO EDIT
-	//RIGHT NOW THIS SHIT IS CALLED EERY FRAME FOR EVERY SHEEP
-	//THIS IS BAD I SHOULD MAKE FIX IT MAYBE D:
 	void DoFollowPlayer()
     {
         //if player is too close, part the red sea!
@@ -147,6 +181,7 @@ public class PlayerSheepAI : MonoBehaviour
             agent.stoppingDistance = 0;
             agent.SetDestination(avoidDestination);
         }
+        //if you're the leader, follow the player!
         else
         {
             //set speed and follow distance
@@ -155,10 +190,10 @@ public class PlayerSheepAI : MonoBehaviour
             agent.SetDestination(player.position);
         }
     }
-	#endregion
+    #endregion
 
-	#region
-	IEnumerator OnHitStun(SheepStates stateAfterStun)
+    #region Sheep Stun Demetri Name your regions idiot +2 baby points
+    IEnumerator OnHitStun(SheepStates stateAfterStun)
 	{
 		// save current state and set to Hitstun
 		currentSheepState = SheepStates.STUN;
@@ -171,9 +206,11 @@ public class PlayerSheepAI : MonoBehaviour
 
 		currentSheepState = stateAfterStun;
 	}
-	#endregion
+	#endregion 
 
 	#region Wander
+
+
 	void DoWander()
     {
         //if stopped, pick new point to wander!

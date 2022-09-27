@@ -199,7 +199,7 @@ NavMeshAgent:
   m_Acceleration: 200
   avoidancePriority: 50
   m_AngularSpeed: 720
-  m_StoppingDistance: 6
+  m_StoppingDistance: 5
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -219,21 +219,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17310ee7d1b92074db1f8d6546879b05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sheepType: 0
   currentSheepState: 0
-  baseSpeedMin: 15
-  baseSpeedMax: 20
+  baseSpeedMin: 25
+  baseSpeedMax: 35
   avoidPlayerDistance: 2.5
   avoidPlayerSpeed: 25
+  leaderSheep: {fileID: 0}
+  isLeader: 0
+  leaderFollowRadius: 10
+  followLeaderStopDistance: 0
+  destinationDistance: 3
   wanderSpeed: 5
   wanderRadius: 20
   wanderStopDistance: 0
   wanderDelayMin: 1
   wanderDelayMax: 4
-  chargeSpeed: 25
+  chargeSpeed: 40
   chargePointRadius: 5
   chargeStopDistance: 0
-  defendSpeed: 40
+  chargeEndDistance: 1
+  defendSpeed: 45
   defendStopDistance: 0
+  StunTime: 1
 --- !u!54 &7642856465436953996
 Rigidbody:
   m_ObjectHideFlags: 0
