@@ -32,8 +32,11 @@ public class PlayerSheepAI : MonoBehaviour
 	[Header("Follow State Variables")]
     [SerializeField] float avoidPlayerDistance;
     [SerializeField] float avoidPlayerSpeed = 40f;
+    [SerializeField] float followStoppingDistanceMin = 5f;
+    [SerializeField] float followStoppingDistanceMax = 10f;
 
     [Header("Leader Variables")]
+    [SerializeField] GameObject leaderIndicator;
     public PlayerSheepAI leaderSheep;
     public bool isLeader;
 
@@ -66,11 +69,14 @@ public class PlayerSheepAI : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
 		rb = GetComponent<Rigidbody>();
-		baseSpeedCurrent = GetRandomSheepBaseSpeed(); ;
-        agentStoppingDistance = agent.stoppingDistance;
+		baseSpeedCurrent = GetRandomSheepBaseSpeed();
         player = GameManager.Instance.GetPlayer();
 
-      
+        //get random follow stopping distance
+        //this prevents sheep from clumping up and getting jittery when in a flock behind player
+        agentStoppingDistance = Random.Range(followStoppingDistanceMin, followStoppingDistanceMax);
+
+
         FindLeader();
     }
     void FindLeader()
@@ -85,6 +91,7 @@ public class PlayerSheepAI : MonoBehaviour
         {
             isLeader = true;
             player.GetComponent<PlayerSheepAbilities>().leaderSheep[((int)sheepType)] = this;
+            leaderIndicator.SetActive(true);
         }
     }
     void CheckLeader()

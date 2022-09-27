@@ -9,10 +9,12 @@ public class PlayerGroundPound : MonoBehaviour
     [SerializeField] float heavyAirDamage;
     [SerializeField] float heavyAirKnockback;
     [SerializeField] string heavyAirAnimation;
+    [SerializeField] float coolDown = 3f;
     [SerializeField] float airUpForce;
     [SerializeField] float airDownForce;
     [SerializeField] GameObject heavyParticle;
     [SerializeField] Transform particleOrigin;
+    [SerializeField] AbilityIcon groundPoundIcon;
     bool isFalling = false;
     bool canAttack = true;
 
@@ -54,11 +56,22 @@ public class PlayerGroundPound : MonoBehaviour
         //if airborne, do a little lift then slam down into the ground!
         if (context.started && canAttack)
         {
+            canAttack = false;
+            StartCoroutine(GroundPoundCooldown());
+
+            groundPoundIcon.CooldownUIEffect(coolDown);
+
             animator.Play(heavyAirAnimation);
 
 
             rb.AddForce(-rb.velocity * 0.5f, ForceMode.VelocityChange);
             rb.AddForce(Vector3.up * airUpForce);
         }
+    }
+
+    IEnumerator GroundPoundCooldown()
+    {
+        yield return new WaitForSeconds(coolDown);
+        canAttack = true;
     }
 }

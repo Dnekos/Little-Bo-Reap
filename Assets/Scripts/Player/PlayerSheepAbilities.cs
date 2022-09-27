@@ -25,6 +25,7 @@ public class PlayerSheepAbilities : MonoBehaviour
     [SerializeField] GameObject sheepPrefabRam;
     [SerializeField] GameObject sheepPrefabFluffy;
     [SerializeField] SheepTypes currentFlockType;
+    [SerializeField] float maxDistanceToUseAbilities = 30f;
     int currentFlockIndex;
 
     [Header("Sheep Flock Leaders")]
@@ -38,6 +39,7 @@ public class PlayerSheepAbilities : MonoBehaviour
     [SerializeField] float summonIntervalMin = 0f;
     [SerializeField] float summonIntervalMax = 0.5f;
     [SerializeField] float summonCooldown = 5f;
+    [SerializeField] AbilityIcon summonIcon;
     [SerializeField] string summonAnimation;
     bool canSummonSheep = true;
     bool canSummonAllSheep = true;
@@ -46,6 +48,9 @@ public class PlayerSheepAbilities : MonoBehaviour
     [SerializeField] GameObject sheepChargePointPrefab;
     [SerializeField] LayerMask chargeTargetLayers;
     [SerializeField] string chargeAnimation;
+    [SerializeField] AbilityIcon chargeIcon;
+    [SerializeField] float chargeCooldown = 1f;
+    bool canCharge = true;
     GameObject sheepChargePoint;
     Vector3 chargePosition;
     bool isPreparingCharge;
@@ -56,15 +61,19 @@ public class PlayerSheepAbilities : MonoBehaviour
     [SerializeField] float defendPivotRotateSpeed = 1f;
     [SerializeField] float defendDistance = 3f;
     [SerializeField] string defendAnimation;
+    [SerializeField] AbilityIcon defendIcon;
+    [SerializeField] float defendCooldown = 1f;
+    bool canDefend = true;
 
     [Header("Sheep Launch Variables")]
     //[SerializeField] float launchForce = 2500f;
     //[SerializeField] float launchForceLift = 250f;
     [SerializeField] List<GameObject> launchProjectiles;
     [SerializeField] Transform launchOrigin;
-    [SerializeField] float launchCooldown = 1f;
     [SerializeField] float minDistanceToLaunch = 10f;
     [SerializeField] string launchAnimation;
+    [SerializeField] AbilityIcon launchIcon;
+    [SerializeField] float launchCooldown = 1f;
     bool canLaunch = true;
 
     Animator animator;
@@ -177,6 +186,15 @@ public class PlayerSheepAbilities : MonoBehaviour
         GetCurrentSheepFlock(theType).Remove(theSheep);
     }
 
+    bool CheckIfCloseToLeader(SheepTypes theSheepType)
+    {
+        float checkDistance = Vector3.Distance(transform.position, leaderSheep[(int)theSheepType].transform.position);
+
+        //if you're close to a given leader, you can use an ability.
+        if (checkDistance <= maxDistanceToUseAbilities) return true;
+        else return false;
+    }
+
     #endregion
 
     #region Sheep Summon and Recall
@@ -250,6 +268,8 @@ public class PlayerSheepAbilities : MonoBehaviour
 
             //start cooldown
             StartCoroutine(SummonSheepCooldown());
+
+            summonIcon.CooldownUIEffect(summonCooldown);
         }
     }
     public void OnSummonAllSheep(InputAction.CallbackContext context)
@@ -330,39 +350,52 @@ public class PlayerSheepAbilities : MonoBehaviour
     #region Sheep Charge
     public void OnSheepCharge(InputAction.CallbackContext context)
     {
-        if(context.started)
+        if(canCharge)
         {
-            //spawn icon
-            var chargePoint = Instantiate(sheepChargePointPrefab, transform.position, Quaternion.identity) as GameObject;
-            sheepChargePoint = chargePoint;
-
-            //prepare to charge
-            isPreparingCharge = true;
-        }
-
-        if(context.canceled)
-        {
-            SheepTypes flockType = currentFlockType;
-
-            //stop charging
-            isPreparingCharge = false;
-
-            //play animation
-            animator.Play(chargeAnimation);
-
-            //get rid of icon
-            Destroy(sheepChargePoint);
-
-            //send sheep to point if valid!
-            RaycastHit hit;
-            if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, Mathf.Infinity, chargeTargetLayers))
+            if (context.started)
             {
-                for(int i = 0; i < GetCurrentSheepFlock(flockType).Count; i++)
+                //spawn icon
+                var chargePoint = Instantiate(sheepChargePointPrefab, transform.position, Quaternion.identity) as GameObject;
+                sheepChargePoint = chargePoint;
+
+                //prepare to charge
+                isPreparingCharge = true;
+            }
+
+            if (context.canceled)
+            {
+                SheepTypes flockType = currentFlockType;
+
+                //stop charging
+                isPreparingCharge = false;
+
+                //play animation
+                animator.Play(chargeAnimation);
+
+                //get rid of icon
+                Destroy(sheepChargePoint);
+
+                if (CheckIfCloseToLeader(flockType))
                 {
-                    if(GetCurrentSheepFlock(flockType)[i].IsCommandable()) GetCurrentSheepFlock(flockType)[i]?.BeginCharge(hit.point);
+                    //send sheep to point if valid!
+                    RaycastHit hit;
+                    if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, Mathf.Infinity, chargeTargetLayers))
+                    {
+                        for (int i = 0; i < GetCurrentSheepFlock(flockType).Count; i++)
+                        {
+                            if (GetCurrentSheepFlock(flockType)[i].IsCommandable()) GetCurrentSheepFlock(flockType)[i]?.BeginCharge(hit.point);
+                        }
+                    }
                 }
+
+                //start cooldown
+                canCharge = false;
+                chargeIcon.CooldownUIEffect(chargeCooldown);
+                StartCoroutine(ChargeCooldown());
+
             }
         }
+        
     }
     void CheckCharge()
     {
@@ -383,6 +416,12 @@ public class PlayerSheepAbilities : MonoBehaviour
 
         }
     }
+
+    IEnumerator ChargeCooldown()
+    {
+        yield return new WaitForSeconds(chargeCooldown);
+        canCharge = true;
+    }
     #endregion
 
     #region Sheep Defend
@@ -392,22 +431,42 @@ public class PlayerSheepAbilities : MonoBehaviour
     }
     public void OnSheepDefend(InputAction.CallbackContext context)
     {
-        if(context.started)
+        if(canDefend)
         {
-            SheepTypes flockType = currentFlockType;
-
-            animator.Play(defendAnimation);
-
-            int pointIndex = 0;
-        
-            for (int i = 0; i < GetCurrentSheepFlock(flockType).Count; i++)
+            if (context.started)
             {
-                 if (GetCurrentSheepFlock(flockType)[i].IsCommandable()) GetCurrentSheepFlock(flockType)[i]?.BeginDefendPlayer(defendPoints[pointIndex]);
+                SheepTypes flockType = currentFlockType;
 
-                pointIndex++;
-                if (pointIndex >= defendPoints.Count) pointIndex = 0;
+                //if close to flock leader, defense mode activate
+                if (CheckIfCloseToLeader(flockType))
+                {
+                    animator.Play(defendAnimation);
+
+                    int pointIndex = 0;
+
+                    for (int i = 0; i < GetCurrentSheepFlock(flockType).Count; i++)
+                    {
+                        if (GetCurrentSheepFlock(flockType)[i].IsCommandable()) GetCurrentSheepFlock(flockType)[i]?.BeginDefendPlayer(defendPoints[pointIndex]);
+
+                        pointIndex++;
+                        if (pointIndex >= defendPoints.Count) pointIndex = 0;
+                    }
+                }
+                //else do a boo womp sound D:
+
+                //start cooldown
+                canDefend = false;
+                defendIcon.CooldownUIEffect(defendCooldown);
+                StartCoroutine(DefendCooldown());
+
             }
-        }
+        } 
+    }
+
+    IEnumerator DefendCooldown()
+    {
+        yield return new WaitForSeconds(chargeCooldown);
+        canDefend = true;
     }
     #endregion
 
@@ -442,6 +501,9 @@ public class PlayerSheepAbilities : MonoBehaviour
                 }
             }
 
+            //start cooldown
+            canLaunch = false;
+            launchIcon.CooldownUIEffect(launchCooldown);
             StartCoroutine(SheepLaunchCooldown());
         }
     }
