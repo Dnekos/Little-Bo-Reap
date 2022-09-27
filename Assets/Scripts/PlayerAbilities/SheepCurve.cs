@@ -110,27 +110,33 @@ public class SheepCurve : SheepHolder
 		Plane slice = new Plane(Differentiate(Height), CalcCurvePoint(Height));
 		int SheepChecked = 0;
 
+		// math estimating the likely amount of sheep needed to check
+		float V_c = Mathf.PI * radius * radius * SheepRadius * 3f;
+		float V_s = 1.333f * Mathf.PI * SheepRadius * SheepRadius * SheepRadius;
+		int sheeptocheck = Mathf.CeilToInt( 0.7f * V_c / V_s);
+
 		while (Height + (0.5f * SheepRadius) < limits.y)
 		{
-			Vector3 randInCircle = Random.insideUnitSphere * radius;
+			// try a point
+			Vector3 randInCircle = Random.insideUnitSphere * (radius - SheepRadius);
 
 			// make a guess at a good spot to place sheep, within collider bounds
 			sheepPlacement = slice.ClosestPointOnPlane(randInCircle + CalcCurvePoint(Height));
-			//Debug.Log("checking point " + sheepPlacement);
 			
 			// check if the spot is filled
 			bool Filled = false;
-			foreach (Transform sheep in containedSheep)
+			for (int i = containedSheep.Count - 1; i >= Mathf.Max(0, containedSheep.Count - sheeptocheck); i--) 
 			{
-				float distToPlane = slice.GetDistanceToPoint(sheep.position);
+				/*
+				float distToPlane = slice.GetDistanceToPoint(containedSheep[i].position);
 				// we dont need to check sheep who are significantly lower than the current height
 				if (distToPlane > 1.1f * SheepRadius)
-					continue;
+					continue;*/
 				SheepChecked++;
 
 				// check the position, left/right/front/back and below the position.
 				//float displacement = Vector3.Distance(sheep.position, slice.ClosestPointOnPlane(sheep.position));
-				Filled = Filled || SheepIntersection(sheep, sheepPlacement);
+				Filled = Filled || SheepIntersection(containedSheep[i], sheepPlacement);
 
 				// stop checking if we found a filled spot
 				if (Filled)

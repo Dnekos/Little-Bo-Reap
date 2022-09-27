@@ -63,6 +63,7 @@ public class PlayerSheepAI : MonoBehaviour
 
 	[Header("Stun State Variables")]
 	[SerializeField] float StunTime = 1;
+	bool stunned = false;
 	SheepHolder owningConstruct;
 
     private void Start()
@@ -215,7 +216,14 @@ public class PlayerSheepAI : MonoBehaviour
 
 		currentSheepState = stateAfterStun;
 	}
-	#endregion 
+
+	private void OnCollisionEnter(Collision collision)
+	{
+		if (currentSheepState == SheepStates.STUN && stunned && collision.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
+
+
+	}
+	#endregion
 
 	#region Wander
 
