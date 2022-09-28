@@ -40,6 +40,10 @@ public class PlayerSheepAI : MonoBehaviour
     public PlayerSheepAI leaderSheep;
     public bool isLeader;
 
+    [Header("Black Sheep Variables")]
+    public bool isBlackSheep = false;
+    [SerializeField] GameObject blackSheepParticles;
+
     [Header("Wander State Variables")]
     [SerializeField] float wanderSpeed = 10f;
     [SerializeField] float wanderRadius;
@@ -95,6 +99,9 @@ public class PlayerSheepAI : MonoBehaviour
 
 
         FindLeader();
+
+        //check black sheep stuff
+        if (isBlackSheep) blackSheepParticles.SetActive(true);
     }
     void FindLeader()
     {

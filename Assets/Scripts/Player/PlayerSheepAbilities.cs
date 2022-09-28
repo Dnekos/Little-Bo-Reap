@@ -38,6 +38,7 @@ public class PlayerSheepAbilities : MonoBehaviour
     bool isInFlockMenu = false;
 
     [Header("Sheep Summon Variables")]
+    [SerializeField] float summonBloodCost = 25f;
     [SerializeField] int amountToSummonBuild;
     [SerializeField] int amountToSummonRam;
     [SerializeField] int amountToSummonFluffy;
@@ -45,10 +46,12 @@ public class PlayerSheepAbilities : MonoBehaviour
     [SerializeField] float summonIntervalMin = 0f;
     [SerializeField] float summonIntervalMax = 0.5f;
     [SerializeField] float summonCooldown = 5f;
+    [SerializeField] float summonBlackSheepPercent = 10f;
     [SerializeField] AbilityIcon summonIcon;
     [SerializeField] string summonAnimation;
     bool canSummonSheep = true;
     bool canSummonAllSheep = true;
+    PlayerSummoningResource summonResource;
 
     [Header("Sheep Charge Variables")]
     [SerializeField] Vector3 chargePointOffset;
@@ -87,8 +90,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 
     private void Start()
     {
-        
-
+        summonResource = GetComponent<PlayerSummoningResource>();
         animator = GetComponent<Animator>();
         currentFlockIndex = (int)currentFlockType;
 
@@ -287,8 +289,10 @@ public class PlayerSheepAbilities : MonoBehaviour
     }
     public void OnSummonSheep(InputAction.CallbackContext context)
     {
-        if(context.performed && canSummonSheep)
+        if(context.performed && canSummonSheep && summonResource.GetCurrentBlood() >= summonBloodCost)
         {
+            summonResource.ChangeBloodAmount(-summonBloodCost);
+
             //disallow summoning
             canSummonSheep = false;
 
@@ -377,6 +381,10 @@ public class PlayerSheepAbilities : MonoBehaviour
             //spawn sheep
             var sheep = Instantiate(GetCurrentSheepPrefab(theSheepType), summonPosition, Quaternion.identity) as GameObject;
             GetCurrentSheepFlock(theSheepType).Add(sheep.GetComponent<PlayerSheepAI>());
+
+            //determine if it's a black sheep
+            float rand = Random.Range(0f, 100f);
+            if (rand <= summonBlackSheepPercent) sheep.GetComponent<PlayerSheepAI>().isBlackSheep = true;
         }
         else
         {
