@@ -51,9 +51,13 @@ public class PlayerSheepAI : MonoBehaviour
     [Header("Attack State Variables")]
     [SerializeField] LayerMask enemyLayer;
     [SerializeField] float attackDetectionRadius;
-    [SerializeField] EnemyAI attackTarget;
+    [SerializeField] EnemyAI attackTargetCurrent;
+    [SerializeField] List<EnemyAI> attackTargets;
     [SerializeField] string attackAnimation;
     [SerializeField] float attackCooldown = 1.5f;
+    [SerializeField] float distanceToAttack;
+    public Attack attackBase;
+    public float attackDamage = 5f;
     [SerializeField] bool canAttack = true;
 
     [Header("Charge State Variables")]
@@ -61,6 +65,9 @@ public class PlayerSheepAI : MonoBehaviour
     [SerializeField] float chargePointRadius = 10f;
     [SerializeField] float chargeStopDistance = 0f;
     [SerializeField] float chargeEndDistance = 1f;
+    [SerializeField] float chargeCheckTime = 1f;
+    [SerializeField] float chargeCheckSpeed = 2f;
+    float chargeCheckCurrent = 0;
     Vector3 chargePoint;
     bool isCharging;
 
@@ -135,6 +142,7 @@ public class PlayerSheepAI : MonoBehaviour
             case SheepStates.CHARGE:
                 {
                     DoCharge();
+                    CheckCharge();
                     break;
                 }
             case SheepStates.DEFEND_PLAYER:
@@ -249,33 +257,36 @@ public class PlayerSheepAI : MonoBehaviour
 	#endregion
 
 	#region Wander
+    void GoWandering()
+    {
+        //stop wander call
+        canWander = false;
 
+        //get random point inside radius
+        Vector3 destination = Vector3.zero;
+        Vector3 randomPosition = Random.insideUnitSphere * wanderRadius;
+        randomPosition += transform.position;
+
+        //if inside navmesh, charge!
+        if (NavMesh.SamplePosition(randomPosition, out NavMeshHit hit, wanderRadius, 1))
+        {
+            //get charge
+            destination = hit.position;
+
+            //set agent destination
+            agent.destination = destination;
+        }
+
+        //wander cooldown
+        StartCoroutine(WanderCooldown());
+    }
 
 	void DoWander()
     {
         //if stopped, pick new point to wander!
         if (Vector3.Distance(transform.position, agent.destination) <= 1f && canWander)
         {
-            //stop wander call
-            canWander = false;
-
-            //get random point inside radius
-            Vector3 destination = Vector3.zero;
-            Vector3 randomPosition = Random.insideUnitSphere * wanderRadius;
-            randomPosition += transform.position;
-
-            //if inside navmesh, charge!
-            if (NavMesh.SamplePosition(randomPosition, out NavMeshHit hit, wanderRadius, 1))
-            {
-                //get charge
-                destination = hit.position;
-
-                //set agent destination
-                agent.destination = destination;
-            }
-
-            //wander cooldown
-            StartCoroutine(WanderCooldown());
+            GoWandering();
         }
 
 
@@ -283,8 +294,9 @@ public class PlayerSheepAI : MonoBehaviour
         //Demetri I am using Physics.CheckSphere against your wishes
         if(Physics.CheckSphere(transform.position, attackDetectionRadius, enemyLayer))
         {
-            //Debug.Log("Found enemy");
+            FindAttackTargets();
             currentSheepState = SheepStates.ATTACK;
+            agent.speed = baseSpeedCurrent;
         }
     }
     IEnumerator WanderCooldown()
@@ -298,45 +310,65 @@ public class PlayerSheepAI : MonoBehaviour
     #region Attack
     void DoAttack()
     {  
-        if(attackTarget!= null) agent.SetDestination(attackTarget.transform.position);
+        if(attackTargetCurrent!= null) agent.SetDestination(attackTargetCurrent.transform.position);
 
 
         if (canAttack)
         {
-            //first check if we have a target
-            if (attackTarget != null)
+            //first check if we have a target and are in range
+            if (attackTargetCurrent != null && Vector3.Distance(transform.position, attackTargetCurrent.transform.position) <= distanceToAttack)
             {
-                transform.LookAt(attackTarget.transform);
+                agent.SetDestination(transform.position);
+                transform.LookAt(attackTargetCurrent.transform);
                 animator.Play(attackAnimation);
                 canAttack = false;
                 StartCoroutine(AttackCooldown());
             }
-            //if no target, find one!
-            else
+            //if no target, go to next in list or find one!
+            else if (attackTargetCurrent == null)
             {
-                attackTarget = FindAttackTarget();
+                attackTargetCurrent = GetAttackTarget();
 
                 //still no target? then go back to wander state
-                if (attackTarget == null) currentSheepState = SheepStates.WANDER;
+                if (attackTargetCurrent == null)
+                {
+                    Debug.Log("Attack target is null, going to wander");
+                    agent.SetDestination(transform.position);
+                    agent.speed = wanderSpeed;
+                    agent.stoppingDistance = wanderStopDistance;
+                    currentSheepState = SheepStates.WANDER;
+
+                    GoWandering();
+                }
             }
         }
 
     }
-
-    EnemyAI FindAttackTarget()
+    EnemyAI GetAttackTarget()
     {
+        //find targets to attack
+        FindAttackTargets();
+
+        if(attackTargets.Count > 0)
+        {
+            //return a random one
+            int rand = Random.Range(0, attackTargets.Count);
+            return attackTargets[rand];
+        }
+        else return null;
+    }
+
+    void FindAttackTargets()
+    {
+        attackTargets.Clear();
+
         //check if there are enemies nearby
         //Demetri I am using Physics.OverlapSphere against your wishes
         Collider[] enemyHits = (Physics.OverlapSphere(transform.position, attackDetectionRadius, enemyLayer));
-
-        //FOR NOW
-        //get a random enemy in hits list to attack
-        if(enemyHits.Length > 0)
+        foreach(Collider enemy in enemyHits)
         {
-            int rand = Random.Range(0, enemyHits.Length);
-            return enemyHits[rand]?.GetComponent<EnemyAI>();
+            if (enemy.GetComponent<EnemyAI>() !=null ) attackTargets?.Add(enemy.GetComponent<EnemyAI>());
         }
-        else return null;
     }
 
     IEnumerator AttackCooldown()
@@ -359,10 +391,29 @@ public class PlayerSheepAI : MonoBehaviour
             currentSheepState = SheepStates.WANDER;
         }
     }
+
+    //check here to make sure our sheep arent stuck in charge or caught on something.
+    void CheckCharge()
+    {
+        chargeCheckCurrent += Time.deltaTime;
+
+        //if time is past threshold and our movement velocity is too low, end charge early.
+        if(chargeCheckCurrent > chargeCheckTime && agent.velocity.magnitude <= chargeCheckSpeed)
+        {
+            isCharging = false;
+            agent.speed = wanderSpeed;
+            agent.stoppingDistance = wanderStopDistance;
+            currentSheepState = SheepStates.WANDER;
+        }
+    }
+
     public void BeginCharge(Vector3 theChargePosition)
     {
         //CHARGE!
         isCharging = true;
+
+        //set timer to 0
+        chargeCheckCurrent = 0;
 
         //set destination
         //get random point inside radius
