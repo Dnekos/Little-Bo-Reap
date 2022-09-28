@@ -51,6 +51,7 @@ public class PlayerSheepAbilities : MonoBehaviour
     bool canSummonAllSheep = true;
 
     [Header("Sheep Charge Variables")]
+    [SerializeField] Vector3 chargePointOffset;
     [SerializeField] GameObject sheepChargePointPrefab;
     [SerializeField] LayerMask chargeTargetLayers;
     [SerializeField] string chargeAnimation;
@@ -230,10 +231,15 @@ public class PlayerSheepAbilities : MonoBehaviour
 
     bool CheckIfCloseToLeader(SheepTypes theSheepType)
     {
-        float checkDistance = Vector3.Distance(transform.position, leaderSheep[(int)theSheepType].transform.position);
+        //make sure you have a flock!
+        if (GetCurrentSheepFlock(theSheepType).Count > 0)
+        {
+            float checkDistance = Vector3.Distance(transform.position, leaderSheep[(int)theSheepType].transform.position);
 
-        //if you're close to a given leader, you can use an ability.
-        if (checkDistance <= maxDistanceToUseAbilities) return true;
+            //if you're close to a given leader, you can use an ability.
+            if (checkDistance <= maxDistanceToUseAbilities) return true;
+            else return false;
+        }
         else return false;
     }
 
@@ -421,7 +427,7 @@ public class PlayerSheepAbilities : MonoBehaviour
                 {
                     //send sheep to point if valid!
                     RaycastHit hit;
-                    if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, Mathf.Infinity, chargeTargetLayers))
+                    if (Physics.Raycast(Camera.main.transform.position + chargePointOffset, Camera.main.transform.forward, out hit, Mathf.Infinity, chargeTargetLayers))
                     {
                         for (int i = 0; i < GetCurrentSheepFlock(flockType).Count; i++)
                         {
@@ -445,7 +451,7 @@ public class PlayerSheepAbilities : MonoBehaviour
         {
             //draw ray from camera forward to point
             RaycastHit hit;
-            if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, Mathf.Infinity, chargeTargetLayers))
+            if (Physics.Raycast(Camera.main.transform.position + chargePointOffset, Camera.main.transform.forward, out hit, Mathf.Infinity, chargeTargetLayers))
             {
                 //draw charge point
                 sheepChargePoint.transform.position = hit.point;

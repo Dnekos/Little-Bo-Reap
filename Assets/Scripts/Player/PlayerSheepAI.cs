@@ -10,6 +10,7 @@ public enum SheepStates
     CHARGE = 2,
     DEFEND_PLAYER = 3,
 	CONSTRUCT = 4,
+    ATTACK = 5,
 	STUN // TODO, make this the same as the enemy's
 }
 
@@ -26,8 +27,7 @@ public class PlayerSheepAI : MonoBehaviour
     Transform player;
     NavMeshAgent agent;
 	Rigidbody rb;
-
-   
+    Animator animator;
 
 	[Header("Follow State Variables")]
     [SerializeField] float avoidPlayerDistance;
@@ -47,6 +47,14 @@ public class PlayerSheepAI : MonoBehaviour
     [SerializeField] float wanderDelayMin = 1f;
     [SerializeField] float wanderDelayMax = 3f;
     bool canWander = true;
+
+    [Header("Attack State Variables")]
+    [SerializeField] LayerMask enemyLayer;
+    [SerializeField] float attackDetectionRadius;
+    [SerializeField] EnemyAI attackTarget;
+    [SerializeField] string attackAnimation;
+    [SerializeField] float attackCooldown = 1.5f;
+    [SerializeField] bool canAttack = true;
 
     [Header("Charge State Variables")]
     [SerializeField] float chargeSpeed = 35f;
@@ -68,6 +76,7 @@ public class PlayerSheepAI : MonoBehaviour
 
     private void Start()
     {
+        animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
 		rb = GetComponent<Rigidbody>();
 		baseSpeedCurrent = GetRandomSheepBaseSpeed();
@@ -99,9 +108,15 @@ public class PlayerSheepAI : MonoBehaviour
     {
         if (leaderSheep == null) FindLeader();
     }
+    void CheckAnimation()
+    {
+        if (agent.velocity.magnitude > 1) animator.SetBool("isMoving", true);
+        else animator.SetBool("isMoving", false);
+    }
 
     private void Update()
     {
+        CheckAnimation();
         CheckLeader();
 
         //state machine
@@ -129,6 +144,11 @@ public class PlayerSheepAI : MonoBehaviour
                 }
 			case SheepStates.CONSTRUCT:
 				break;
+            case SheepStates.ATTACK:
+                {
+                    DoAttack();
+                    break;
+                }
             default:
                 {
                     Debug.LogWarning("PlayerSheepAI should never default!");
@@ -220,6 +240,9 @@ public class PlayerSheepAI : MonoBehaviour
 	private void OnCollisionEnter(Collision collision)
 	{
 		if (currentSheepState == SheepStates.STUN && stunned && collision.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        {
+
+        }
 
 
 	}
@@ -254,6 +277,15 @@ public class PlayerSheepAI : MonoBehaviour
             //wander cooldown
             StartCoroutine(WanderCooldown());
         }
+
+
+        //then, check if there are enemies nearby
+        //Demetri I am using Physics.CheckSphere against your wishes
+        if(Physics.CheckSphere(transform.position, attackDetectionRadius, enemyLayer))
+        {
+            //Debug.Log("Found enemy");
+            currentSheepState = SheepStates.ATTACK;
+        }
     }
     IEnumerator WanderCooldown()
     {
@@ -261,6 +293,58 @@ public class PlayerSheepAI : MonoBehaviour
         yield return new WaitForSeconds(randTime);
         canWander = true;
     }
+    #endregion
+
+    #region Attack
+    void DoAttack()
+    {  
+        if(attackTarget!= null) agent.SetDestination(attackTarget.transform.position);
+
+
+        if (canAttack)
+        {
+            //first check if we have a target
+            if (attackTarget != null)
+            {
+                transform.LookAt(attackTarget.transform);
+                animator.Play(attackAnimation);
+                canAttack = false;
+                StartCoroutine(AttackCooldown());
+            }
+            //if no target, find one!
+            else
+            {
+                attackTarget = FindAttackTarget();
+
+                //still no target? then go back to wander state
+                if (attackTarget == null) currentSheepState = SheepStates.WANDER;
+            }
+        }
+
+    }
+
+    EnemyAI FindAttackTarget()
+    {
+        //check if there are enemies nearby
+        //Demetri I am using Physics.OverlapSphere against your wishes
+        Collider[] enemyHits = (Physics.OverlapSphere(transform.position, attackDetectionRadius, enemyLayer));
+
+        //FOR NOW
+        //get a random enemy in hits list to attack
+        if(enemyHits.Length > 0)
+        {
+            int rand = Random.Range(0, enemyHits.Length);
+            return enemyHits[rand]?.GetComponent<EnemyAI>();
+        }
+        else return null;
+    }
+
+    IEnumerator AttackCooldown()
+    {
+        yield return new WaitForSeconds(attackCooldown);
+        canAttack = true;
+    }
+
     #endregion
 
     #region Charge
