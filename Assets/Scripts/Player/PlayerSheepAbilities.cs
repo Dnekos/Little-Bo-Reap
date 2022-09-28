@@ -31,6 +31,12 @@ public class PlayerSheepAbilities : MonoBehaviour
     [Header("Sheep Flock Leaders")]
     public List<PlayerSheepAI> leaderSheep;
 
+    [Header("Sheep Swap Variables")]
+    [SerializeField] PlayerFlockSelectMenu flockSelectMenu;
+    [SerializeField] float flockMenuTimescale = 0.25f;
+    [SerializeField] float defaultTimescale = 1;
+    bool isInFlockMenu = false;
+
     [Header("Sheep Summon Variables")]
     [SerializeField] int amountToSummonBuild;
     [SerializeField] int amountToSummonRam;
@@ -80,8 +86,9 @@ public class PlayerSheepAbilities : MonoBehaviour
 
     private void Start()
     {
-        animator = GetComponent<Animator>();
+        
 
+        animator = GetComponent<Animator>();
         currentFlockIndex = (int)currentFlockType;
 
         //set defend distance of each defence point
@@ -99,16 +106,51 @@ public class PlayerSheepAbilities : MonoBehaviour
     #region Sheep Flock Functions
     public void OnChangeSheepFlock(InputAction.CallbackContext context)
     {
-        if (context.started)
+        //if held down, open menu and slow time. if pressed, just go to next in list
+        if(context.performed)
         {
-            //go to next sheep type
-            currentFlockIndex++;
-            if (currentFlockIndex >= 3) currentFlockIndex = 0; //dont try to set to an enum that doesnt exist 
-            currentFlockType = (SheepTypes)currentFlockIndex;
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
 
-            Debug.Log("Current Flock is: " + currentFlockType);
-            sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
-            sheepTypeText.color = sheepTypeColors[(int)currentFlockType];
+            isInFlockMenu = true;
+            Debug.Log("in flock menu");
+
+            //enable flock select menu
+            Time.timeScale = flockMenuTimescale;
+            Time.fixedDeltaTime = 0.02F * Time.timeScale; //evil physics timescale hack to make it smooth
+            flockSelectMenu.gameObject.SetActive(true);
+        }
+        if (context.canceled)
+        {
+            if(isInFlockMenu)
+            {
+                currentFlockType = flockSelectMenu.flockToChangeTo;
+                currentFlockIndex = (int)currentFlockType;
+
+                Debug.Log("Current Flock is: " + currentFlockType);
+                sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
+                sheepTypeText.color = sheepTypeColors[(int)currentFlockType];
+
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+
+                //disable flock select menu
+                isInFlockMenu = false;
+                Time.timeScale = defaultTimescale;
+                Time.fixedDeltaTime = 0.02F; //evil physics timescale hack
+                flockSelectMenu.gameObject.SetActive(false);
+            }
+            else
+            {
+                //go to next sheep type
+                currentFlockIndex++;
+                if (currentFlockIndex >= 3) currentFlockIndex = 0; //dont try to set to an enum that doesnt exist 
+                currentFlockType = (SheepTypes)currentFlockIndex;
+
+                Debug.Log("Current Flock is: " + currentFlockType);
+                sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
+                sheepTypeText.color = sheepTypeColors[(int)currentFlockType];
+            }
         }
     }
     public List<PlayerSheepAI> GetCurrentSheepFlock(SheepTypes theFlockType)
