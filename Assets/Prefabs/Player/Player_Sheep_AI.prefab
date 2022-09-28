@@ -5241,6 +5241,7 @@ GameObject:
   - component: {fileID: 7642856465436953987}
   - component: {fileID: 7642856465436953984}
   - component: {fileID: 7642856465436953985}
+  - component: {fileID: -2200354341938741082}
   - component: {fileID: 7642856465436953990}
   - component: {fileID: 7642856465436953997}
   - component: {fileID: 7642856465436953996}
@@ -5335,6 +5336,19 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &-2200354341938741082
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7642856465436953991}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2, y: 2, z: 2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!195 &7642856465436953990
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -5405,6 +5419,8 @@ MonoBehaviour:
   chargeEndDistance: 1
   chargeCheckTime: 1
   chargeCheckSpeed: 2
+  chargeAttack: {fileID: 11400000, guid: b740dd87fcb9fe8459980650ccd49c36, type: 2}
+  chargeCollider: {fileID: -2200354341938741082}
   defendSpeed: 55
   defendStopDistance: 0
   StunTime: 1

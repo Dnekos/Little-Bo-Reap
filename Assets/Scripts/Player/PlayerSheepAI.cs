@@ -71,6 +71,8 @@ public class PlayerSheepAI : MonoBehaviour
     [SerializeField] float chargeEndDistance = 1f;
     [SerializeField] float chargeCheckTime = 1f;
     [SerializeField] float chargeCheckSpeed = 2f;
+    [SerializeField] Attack chargeAttack;
+    [SerializeField] Collider chargeCollider;
     float chargeCheckCurrent = 0;
     Vector3 chargePoint;
     bool isCharging;
@@ -172,6 +174,30 @@ public class PlayerSheepAI : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        switch (currentSheepState)
+        {
+            case SheepStates.CHARGE:
+                {
+                    if (other.CompareTag("Enemy"))
+                    {
+                        other?.GetComponent<EnemyAI>().TakeDamage(chargeAttack, transform.forward);
+                    }
+                    break;
+                }
+            case SheepStates.DEFEND_PLAYER:
+                {
+                    break;
+                }
+            default:
+                {
+                    break;
+                }
+        }
+
+    }
+
     #region Utility Functions
     //ok so due to some bullshit you CANNOT remove sheep from list in a for loop? so use this and clear list after for resummoning sheep
     public void DestroySheep()
@@ -254,6 +280,7 @@ public class PlayerSheepAI : MonoBehaviour
 
 	private void OnCollisionEnter(Collision collision)
 	{
+
 		if (currentSheepState == SheepStates.STUN && stunned && collision.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
 
