@@ -298,8 +298,11 @@ public class PlayerSheepAbilities : MonoBehaviour
             //play animation
             animator.Play(summonAnimation);
 
-            //delete all active sheep
-            for(int i = 0; i < GetCurrentSheepFlock(flockType).Count; i++)
+			// remove list slots that are null (dead sheep)
+			GetCurrentSheepFlock(flockType).RemoveAll(x => x == null);
+			
+			//delete all active sheep
+			for (int i = 0; i < GetCurrentSheepFlock(flockType).Count; i++)
             {
                 GetCurrentSheepFlock(flockType)[i].DestroySheep();
             }

@@ -12,10 +12,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float haltRate;
     bool isMoving;
     Vector3 moveDirection;
-    Vector2 moveValue; //input value
+    Vector2 moveValue; // input value
     Rigidbody rb;
 
-    //slope crap I hate slopes
+    // slope crap I hate slopes
     RaycastHit slopeHit;
     Vector3 slopeMoveDirection;
 
@@ -48,6 +48,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] string dashAnimation;
     Animator animator;
 
+	PlayerHealth health;
+	
     #region Debug Stuff
     public void OnDebugRestart(InputAction.CallbackContext context)
     {
@@ -72,9 +74,8 @@ public class PlayerMovement : MonoBehaviour
     }
     void Start()
     {
-
-
-        rb = GetComponent<Rigidbody>();
+		health = GetComponent<PlayerHealth>();
+		rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
     }
 
@@ -147,7 +148,8 @@ public class PlayerMovement : MonoBehaviour
         //if (moveValue.magnitude != 0 && moveDirection != Vector3.zero) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Vector3.Cross(modelRotateNormal, moveDirection)), modelRotateSpeed * Time.deltaTime);
 
         //rotate the player body
-        if (moveValue.magnitude != 0 && moveDirection != Vector3.zero) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(moveDirection), modelRotateSpeed * Time.deltaTime);
+        if (moveValue.magnitude != 0 && moveDirection != Vector3.zero)
+			transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(moveDirection), modelRotateSpeed * Time.deltaTime);
     }
     void UpdateAnimation()
     {
@@ -168,6 +170,10 @@ public class PlayerMovement : MonoBehaviour
     }
     void Move()
     {
+		// cant move when stunned
+		if (health.HitStunned)
+			return;
+
         //moveDirection = playerOrientation.forward * moveValue.x + playerOrientation.right * -moveValue.y;
         //rb.AddForce(moveDirection * acceleration);
 
@@ -195,20 +201,21 @@ public class PlayerMovement : MonoBehaviour
         Vector3 velocityCheck = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
         //limit velocity if over speed
-        if (velocityCheck.magnitude > maxMoveSpeed && canDash)
+        if (velocityCheck.magnitude > maxMoveSpeed && canDash && !health.HitStunned)
         {
             Vector3 velocityLimit = velocityCheck.normalized * maxMoveSpeed;
             rb.velocity = new Vector3(velocityLimit.x, rb.velocity.y, velocityLimit.z);
         }
 
         //halt player if not moving commands
-        if (!isMoving && isGrounded && canDash)
+        if (!isMoving && isGrounded && canDash && !health.HitStunned)
         {
             rb.AddForce(-rb.velocity * haltRate);
         }
 
         //apply gravity if falling
-        if (!isGrounded) rb.AddForce(Vector3.down * fallRate);
+        if (!isGrounded)
+			rb.AddForce(Vector3.down * fallRate);
     }
 
 
@@ -227,7 +234,7 @@ public class PlayerMovement : MonoBehaviour
     }
     public void OnDash(InputAction.CallbackContext context)
     {
-        if(canDash && context.started)
+        if(canDash && context.started && !health.HitStunned)
         {
             canDash = false;
 

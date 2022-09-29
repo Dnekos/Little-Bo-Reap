@@ -1872,6 +1872,7 @@ GameObject:
   - component: {fileID: 3870380308813204399}
   - component: {fileID: 2643546360396193640}
   - component: {fileID: 8268160106776874863}
+  - component: {fileID: 4594036117130293174}
   - component: {fileID: 3171854317779054766}
   m_Layer: 7
   m_Name: Player_Body
@@ -2393,6 +2394,24 @@ MonoBehaviour:
   launchAnimation: Test_Player_Attack_Light1
   launchIcon: {fileID: 7344943566344680018}
   launchCooldown: 1
+--- !u!114 &4594036117130293174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3870380308813204390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c7c36bd6b39fb7459ffc9ec9dff5757, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Health: 50
+  MaxHealth: 50
+  HasKnockback: 0
+  HitStunned: 0
+  hitstunTimer: 0.2
+  knockbackTimer: 1
 --- !u!95 &3171854317779054766
 Animator:
   serializedVersion: 4
