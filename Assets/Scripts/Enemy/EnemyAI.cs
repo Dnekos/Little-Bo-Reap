@@ -13,6 +13,11 @@ enum EnemyStates
 
 public class EnemyAI : Damageable
 {
+	[Header("Attacking")]
+	[SerializeField] Attack ForwardAttack;
+	[SerializeField] Attack AreaAttack;
+	[SerializeField] List<PlayerSheepAI> NearbySheep;
+
 	[Header("Enemy State")]
 	[SerializeField] EnemyStates currentEnemyState;
 
@@ -36,6 +41,7 @@ public class EnemyAI : Damageable
 		base.Start();
 		agent = GetComponent<NavMeshAgent>();
 		player = GameManager.Instance.GetPlayer();
+		NearbySheep = new List<PlayerSheepAI>();
 	}
 
 	// Update is called once per frame
@@ -71,7 +77,14 @@ public class EnemyAI : Damageable
 		GroundCheck();
 		if (isGrounded)
 			agent.SetDestination(player.position);
+
+
 	}
+	private void OnTriggerEnter(Collider other)
+	{
+		
+	}
+
 
 	#region Movement
 	void GroundCheck()
