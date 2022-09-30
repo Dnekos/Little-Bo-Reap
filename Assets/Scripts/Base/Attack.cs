@@ -5,11 +5,13 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Player Attack", menuName = "ScriptableObjects/Attack", order = 1)]
 public class Attack : ScriptableObject
 {
-	[Header("Light Attack Variables")]
+	[Header("BaseVariables")]
 	public float damage;
-	public float airborneLift;
+	public float airborneLift; // possibly obsolete
 	public string animation;
+	public bool DealsHitstun = true;
 
+	[Header("Knockback")]
 	public float forwardKnockback;
 	public float upwardKnockback;
 }

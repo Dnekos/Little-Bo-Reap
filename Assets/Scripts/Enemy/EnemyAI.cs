@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-enum EnemyStates
+public enum EnemyStates
 {
 	WANDER = 0,
 	CHASE_PLAYER = 1,
@@ -13,9 +13,10 @@ enum EnemyStates
 
 public class EnemyAI : Damageable
 {
-	[Header("Enemy State")]
-	[SerializeField] EnemyStates currentEnemyState;
+	protected Coroutine QueuedAttack = null;
 
+	[Header("Enemy State")]
+	[SerializeField] protected EnemyStates currentEnemyState;
 	[SerializeField] float StunTime = 0.3f;
 	[SerializeField] LayerMask playerLayer;
 
@@ -63,16 +64,28 @@ public class EnemyAI : Damageable
 
 	void DoIdle()
     {
-		//debug idle state
-		if (Physics.CheckSphere(transform.position, 20f, playerLayer)) currentEnemyState = EnemyStates.CHASE_PLAYER;
+		//debug idle state TODO: maybe make this not every frame?
+		if (Vector3.Distance(transform.position,player.position) <= 20)
+			currentEnemyState = EnemyStates.CHASE_PLAYER;
     }
 
+	#region Chasing and Attacking
 	void DoChase()
 	{
 		GroundCheck();
 		if (isGrounded)
 			agent.SetDestination(player.position);
+
+		// if Coroutine is not running, run it
+		QueuedAttack ??= StartCoroutine(AttackCheck());
 	}
+	virtual protected IEnumerator AttackCheck()
+	{
+		yield return new WaitForSeconds(0);
+		
+		QueuedAttack = null;
+	}
+	#endregion
 
 	#region Movement
 	void GroundCheck()
@@ -103,12 +116,15 @@ public class EnemyAI : Damageable
 	}
 	#endregion
 
-	#region Damage and HitStun
+	#region Health Override and Hitstun
 	public override void TakeDamage(Attack atk, Vector3 attackForward)
 	{
 		// give them hitstun
-		StopCoroutine("OnHitStun");
-		StartCoroutine("OnHitStun");
+		if (atk.DealsHitstun)
+		{
+			StopCoroutine("OnHitStun");
+			StartCoroutine("OnHitStun");
+		}
 
 		// subtract health
 		base.TakeDamage(atk, attackForward);

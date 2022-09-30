@@ -15,7 +15,7 @@ public enum SheepStates
 }
 
 [RequireComponent(typeof(NavMeshAgent))]
-public class PlayerSheepAI : MonoBehaviour
+public class PlayerSheepAI : Damageable
 {
     [Header("Sheep State Variables")]
     [SerializeField] SheepTypes sheepType;
@@ -26,7 +26,6 @@ public class PlayerSheepAI : MonoBehaviour
     float agentStoppingDistance;
     Transform player;
     NavMeshAgent agent;
-	Rigidbody rb;
     Animator animator;
 
 	[Header("Follow State Variables")]
@@ -85,14 +84,15 @@ public class PlayerSheepAI : MonoBehaviour
 
 	[Header("Stun State Variables")]
 	[SerializeField] float StunTime = 1;
-	bool stunned = false;
+	bool isGrounded;
 	SheepHolder owningConstruct;
 
-    private void Start()
+    override protected void Start()
     {
+		base.Start();
+
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
-		rb = GetComponent<Rigidbody>();
 		baseSpeedCurrent = GetRandomSheepBaseSpeed();
         player = GameManager.Instance.GetPlayer();
 
@@ -223,6 +223,10 @@ public class PlayerSheepAI : MonoBehaviour
     }
     public void RecallSheep()
     {
+		// sheep cant be recalled when stunned
+		if (currentSheepState == SheepStates.STUN)
+			return;
+
         currentSheepState = SheepStates.FOLLOW_PLAYER;
 
 		EndConstruct();
@@ -240,6 +244,22 @@ public class PlayerSheepAI : MonoBehaviour
         float speed = Random.Range(baseSpeedMin, baseSpeedMax);
         return speed;
     }
+	#endregion
+
+	#region Health
+	protected override void OnDeath()
+	{
+		KillSheep();
+	}
+	public override void TakeDamage(Attack atk, Vector3 attackForward)
+	{
+		if (atk.DealsHitstun)
+		{
+			StartCoroutine(OnHitStun(SheepStates.WANDER));
+		}
+
+		base.TakeDamage(atk, attackForward);
+	}
 	#endregion
 
 	#region Follow Player
@@ -283,21 +303,23 @@ public class PlayerSheepAI : MonoBehaviour
 		//turn on rb and turn off navmesh (turned on in GroundCheck (which cant be called when hitstunned))
 		rb.isKinematic = false;
 		agent.enabled = false;
+		isGrounded = false;
 
 		yield return new WaitForSeconds(StunTime);
+
+		// wait until grounded
+		while (!isGrounded)
+			yield return new WaitForSeconds(0.1f);
 
 		currentSheepState = stateAfterStun;
 	}
 
 	private void OnCollisionEnter(Collision collision)
 	{
-
-		if (currentSheepState == SheepStates.STUN && stunned && collision.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
+		if (currentSheepState == SheepStates.STUN && collision.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
-
+			isGrounded = true;
         }
-
-
 	}
 	#endregion
 
