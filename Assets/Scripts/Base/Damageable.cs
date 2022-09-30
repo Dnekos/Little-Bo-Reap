@@ -25,10 +25,8 @@ public class Damageable : MonoBehaviour
 		Debug.Log(gameObject.name + " took " + atk.damage + " damage");
 
 		// add knockback
-		rb.AddForce(attackForward.x,
-					Mathf.Abs(attackForward.y) * atk.upwardKnockback,
-					attackForward.z * atk.forwardKnockback, ForceMode.Impulse);
-		
+		rb.AddForce(attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback, ForceMode.Impulse);
+
 		// invoke death
 		if (Health <= 0) 
 			OnDeath();
