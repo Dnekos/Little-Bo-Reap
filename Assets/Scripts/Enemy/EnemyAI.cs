@@ -28,6 +28,7 @@ public class EnemyAI : Damageable
 	[SerializeField] Transform groundCheckOriginBack;
 	[SerializeField] float groundCheckDistance;
 	public bool isGrounded = false;
+	[SerializeField] float fallRate = 50;
 
 	Transform player;
 	NavMeshAgent agent;
@@ -52,6 +53,10 @@ public class EnemyAI : Damageable
 				DoChase();
 				break;
 			case EnemyStates.HITSTUN:
+				//apply gravity if falling
+				if (!isGrounded)
+					rb.AddForce(Vector3.down * fallRate);
+
 				break;
 			case EnemyStates.IDLE:
 				DoIdle();
@@ -72,8 +77,7 @@ public class EnemyAI : Damageable
 	#region Chasing and Attacking
 	void DoChase()
 	{
-		GroundCheck();
-		if (isGrounded)
+		//if (isGrounded)
 			agent.SetDestination(player.position);
 
 		// if Coroutine is not running, run it
@@ -140,6 +144,13 @@ public class EnemyAI : Damageable
 		agent.enabled = false;
 
 		yield return new WaitForSeconds(StunTime);
+
+		// stay in stun until touching the ground
+		do
+		{
+			yield return new WaitForSeconds(0.01f);
+			GroundCheck();
+		} while (!isGrounded);
 
 		currentEnemyState = stunState;
 	}

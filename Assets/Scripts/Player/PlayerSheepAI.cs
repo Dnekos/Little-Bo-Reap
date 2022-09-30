@@ -84,6 +84,7 @@ public class PlayerSheepAI : Damageable
 
 	[Header("Stun State Variables")]
 	[SerializeField] float StunTime = 1;
+	[SerializeField] float fallRate = 50;
 	bool isGrounded;
 	SheepHolder owningConstruct;
 
@@ -201,7 +202,11 @@ public class PlayerSheepAI : Damageable
                     }
                     break;
                 }
-            default:
+			case SheepStates.STUN:
+				if (!isGrounded)
+					rb.AddForce(Vector3.down * fallRate);
+				break;	
+			default:
                 {
                     break;
                 }
