@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-enum EnemyStates
+public enum EnemyStates
 {
 	WANDER = 0,
 	CHASE_PLAYER = 1,
@@ -13,20 +13,10 @@ enum EnemyStates
 
 public class EnemyAI : Damageable
 {
-	[Header("Attacking")]
-	[SerializeField] Attack StickAttack;
-	[SerializeField] List<Transform> NearbyGuys;
-	[SerializeField] Collider StickCollider;
-	Coroutine QueuedAttack = null;
-	Animator anim;
-
-	[Header("Shockwave")]
-	[SerializeField] GameObject ShockwavePrefab;
-	[SerializeField] Transform ShockwaveSpawnPoint;
+	protected Coroutine QueuedAttack = null;
 
 	[Header("Enemy State")]
-	[SerializeField] EnemyStates currentEnemyState;
-
+	[SerializeField] protected EnemyStates currentEnemyState;
 	[SerializeField] float StunTime = 0.3f;
 	[SerializeField] LayerMask playerLayer;
 	EnemyStates stunState;
@@ -47,8 +37,6 @@ public class EnemyAI : Damageable
 		base.Start();
 		agent = GetComponent<NavMeshAgent>();
 		player = GameManager.Instance.GetPlayer();
-		NearbyGuys = new List<Transform>();
-		anim = GetComponent<Animator>();
 	}
 
 	// Update is called once per frame
@@ -90,65 +78,11 @@ public class EnemyAI : Damageable
 		// if Coroutine is not running, run it
 		QueuedAttack ??= StartCoroutine(AttackCheck());
 	}
-	IEnumerator AttackCheck()
+	virtual protected IEnumerator AttackCheck()
 	{
-		yield return new WaitForSeconds(3);
-		if (currentEnemyState == EnemyStates.CHASE_PLAYER)
-		{
-			// double check that there are no null sheep (possibly could happen if they are killed in the radius)
-			NearbyGuys.RemoveAll(item => item == null);
-
-			Vector3 average_pos = Vector3.zero;
-			for (int i = 0; i < NearbyGuys.Count; i++)
-			{
-				average_pos += NearbyGuys[i].position;
-			}
-
-			// check to see if most of the sheep are in front of him TODO, make this more modular
-			Vector3 heading = (average_pos / NearbyGuys.Count) - transform.position;
-			float angle = Vector3.Angle(transform.forward, heading);
-
-			if (NearbyGuys.Count != 0 && angle < 60)
-				anim.SetTrigger("Attack1");
-			else
-				anim.SetTrigger("Attack2");
-		}
+		yield return new WaitForSeconds(0);
+		
 		QueuedAttack = null;
-
-	}
-	#endregion
-
-	#region Shockwave (Stomp) Attack
-	private void OnTriggerEnter(Collider other)
-	{
-		if (other.GetComponent<PlayerSheepAI>() != null || other.GetComponent<PlayerMovement>() != null)
-		{
-			NearbyGuys.Add(other.transform);
-		}
-	}
-	private void OnTriggerExit(Collider other)
-	{
-		if (other.GetComponent<PlayerSheepAI>() != null || other.GetComponent<PlayerMovement>() != null)
-		{
-			NearbyGuys.Remove(other.transform);
-		}
-
-	}
-
-	public void SpawnShockwave()
-	{
-		Instantiate(ShockwavePrefab, ShockwaveSpawnPoint.position, new Quaternion());
-	}
-	#endregion
-
-	#region Stick Collision
-	private void OnCollisionEnter(Collision collision)
-	{
-		// double check that the collision is due to the attack
-		if (collision.GetContact(0).thisCollider == StickCollider)
-		{
-			collision.gameObject.GetComponent<Damageable>()?.TakeDamage(StickAttack, transform.forward);
-		}
 	}
 	#endregion
 

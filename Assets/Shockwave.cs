@@ -7,11 +7,11 @@ public class Shockwave : MonoBehaviour
 {
 	[SerializeField] Attack ShockWaveAttack;
 
-	[Header("TransformProperties"), SerializeField]
+	[Header("Transform Properties"), SerializeField]
 	float maxTimeAlive = 2;
 	[SerializeField]
 	Vector3 maxScale;
-	[SerializeField, Tooltip("HIGHLY dependant on torus shape and scale, dont touch this or torus shape :)")]
+	[Header("Holy SHIT do not touch"), SerializeField, Tooltip("HIGHLY dependant on torus shape and scale, dont touch this or torus shape :)")]
 	float InnerDiameter = 3.5f;
 
 	List<Damageable> hitTargets;
