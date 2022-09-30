@@ -131,6 +131,12 @@ public class PlayerSheepAI : MonoBehaviour
         else animator.SetBool("isMoving", false);
     }
 
+    public void GothMode()
+    {
+        isBlackSheep = true;
+        blackSheepParticles.SetActive(true);
+    }
+
     private void Update()
     {
         CheckAnimation();

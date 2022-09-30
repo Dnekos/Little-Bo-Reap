@@ -123,6 +123,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "GothMode",
+                    "type": "Button",
+                    "id": "80238228-5c71-489b-9d37-0b4210825d8b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "DEBUG_Restart_Scene",
                     "type": "Button",
                     "id": "305affdf-7276-4777-b611-b40fff74eae2",
@@ -348,6 +357,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "GroundPound",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "aeee59a0-5b64-4cc6-9751-d26380646928",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "GothMode",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

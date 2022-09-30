@@ -6,24 +6,30 @@ using UnityEngine.InputSystem;
 public class PlayerGroundPound : MonoBehaviour
 {
     [Header("Ground Pound Variables")]
-    [SerializeField] float heavyAirDamage;
-    [SerializeField] float heavyAirKnockback;
+    [SerializeField] AudioClip explodeSound;
     [SerializeField] string heavyAirAnimation;
     [SerializeField] float coolDown = 3f;
     [SerializeField] float airUpForce;
     [SerializeField] float airDownForce;
+
+    [Header("Explosion")]
     [SerializeField] GameObject heavyParticle;
     [SerializeField] Transform particleOrigin;
     [SerializeField] AbilityIcon groundPoundIcon;
+    [SerializeField] Attack groundPoundAttack;
+    [SerializeField] LayerMask enemyLayer;
+    [SerializeField] float attackRadius;
     bool isFalling = false;
     bool canAttack = true;
 
     PlayerMovement playerMovement;
     Animator animator;
     Rigidbody rb;
+    AudioSource audioSource;
 
     private void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         playerMovement = GetComponent<PlayerMovement>();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
@@ -36,11 +42,26 @@ public class PlayerGroundPound : MonoBehaviour
             isFalling = false;
             animator.SetBool("isFalling", isFalling);
             Instantiate(heavyParticle, transform.position, transform.rotation);
+
+            //TEMP SOUND
+            audioSource.PlayOneShot(explodeSound);
+
+            //for now, do this
+            Collider[] enemies = Physics.OverlapSphere(transform.position, attackRadius, enemyLayer);
+            foreach (Collider hit in enemies)
+            {
+                if (hit.GetComponent<EnemyAI>() != null)
+                {
+                    hit.GetComponent<EnemyAI>().TakeDamage(groundPoundAttack, transform.forward);
+                }
+            }
         }
     }
     public void SpawnHeavyParticle()
     {
         GameObject explode = Instantiate(heavyParticle, particleOrigin.position, particleOrigin.rotation);
+
+        
     }
     public void HeavySlamDown()
     {

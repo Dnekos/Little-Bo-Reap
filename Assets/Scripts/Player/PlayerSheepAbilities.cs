@@ -23,6 +23,9 @@ public class PlayerSheepAbilities : MonoBehaviour
     [SerializeField] AudioClip summonSound;
     AudioSource audioSource;
 
+    [Header("Goth Mode ")]
+    [SerializeField] GameObject gothExplosion;
+
     [Header("Sheep Flock Variables")]
     [SerializeField] List<PlayerSheepAI> activeSheepBuild;
     [SerializeField] List<PlayerSheepAI> activeSheepRam;
@@ -251,6 +254,22 @@ public class PlayerSheepAbilities : MonoBehaviour
             else return false;
         }
         else return false;
+    }
+
+    #endregion
+
+    #region Goth Mode
+    public void GoGothMode()
+    {
+        //turn each sheep into a black sheep
+        for (int i = 0; i < 3; i++) 
+        {
+            for (int j = 0; j < GetCurrentSheepFlock((SheepTypes)i).Count; j++)
+            {
+                GetCurrentSheepFlock((SheepTypes)i)[j].GothMode();
+                Instantiate(gothExplosion, GetCurrentSheepFlock((SheepTypes)i)[j].transform.position, Quaternion.identity);
+            }
+        }
     }
 
     #endregion
