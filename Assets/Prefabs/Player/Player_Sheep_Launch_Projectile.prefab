@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 1802569736148475648}
   - component: {fileID: 1802569736148475649}
   - component: {fileID: 1802569736148475654}
+  - component: {fileID: 8162525232004982428}
   - component: {fileID: 1802569736148475650}
   - component: {fileID: 7392721480897559084}
   m_Layer: 10
@@ -184,6 +185,19 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &8162525232004982428
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1802569736148475655}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2, y: 2, z: 2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &1802569736148475650
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -212,6 +226,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1781eee5c0daa6e4ca39ab2f2898485f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  launchForce: 1500
-  launchForceLift: 250
+  launchForce: 2500
+  launchForceLift: 350
   lifeTime: 10
+  lifeTimeAfterAttack: 1.5
+  launchAttack: {fileID: 11400000, guid: a64af74ed7bb6124fa923d850080cc2d, type: 2}
+  isBlackSheep: 0

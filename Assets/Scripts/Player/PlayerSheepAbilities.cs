@@ -17,6 +17,12 @@ public class PlayerSheepAbilities : MonoBehaviour
     [SerializeField] TextMeshProUGUI sheepTypeText;
     [SerializeField] List<Color> sheepTypeColors;
 
+    [Header("Temp Sounds")]
+    [SerializeField] AudioClip abilitySound;
+    [SerializeField] AudioClip launchSound;
+    [SerializeField] AudioClip summonSound;
+    AudioSource audioSource;
+
     [Header("Sheep Flock Variables")]
     [SerializeField] List<PlayerSheepAI> activeSheepBuild;
     [SerializeField] List<PlayerSheepAI> activeSheepRam;
@@ -93,6 +99,8 @@ public class PlayerSheepAbilities : MonoBehaviour
         summonResource = GetComponent<PlayerSummoningResource>();
         animator = GetComponent<Animator>();
         currentFlockIndex = (int)currentFlockType;
+
+        audioSource = GetComponent<AudioSource>();
 
         //set defend distance of each defence point
         for(int i = 0; i < defendPoints.Count; i++)
@@ -258,6 +266,9 @@ public class PlayerSheepAbilities : MonoBehaviour
             //play animation
             animator.Play(summonAnimation);
 
+            //TEMP SOUND
+            audioSource.PlayOneShot(abilitySound);
+
             //recall current flock!
             for (int i = 0; i < GetCurrentSheepFlock(flockType).Count; i++)
             {
@@ -271,6 +282,9 @@ public class PlayerSheepAbilities : MonoBehaviour
         {
             //play animation
             animator.Play(summonAnimation);
+
+            //TEMP SOUND
+            audioSource.PlayOneShot(abilitySound);
 
             //SUMMON THE HORDE!
             for (int i = 0; i < activeSheepBuild.Count; i++)
@@ -321,6 +335,9 @@ public class PlayerSheepAbilities : MonoBehaviour
             //start cooldown
             StartCoroutine(SummonSheepCooldown());
 
+            //TEMP SOUND
+            audioSource.PlayOneShot(summonSound);
+
             summonIcon.CooldownUIEffect(summonCooldown);
         }
     }
@@ -357,6 +374,9 @@ public class PlayerSheepAbilities : MonoBehaviour
    
             //start cooldown
             StartCoroutine(SummonAllSheepCooldown());
+
+            //TEMP SOUND
+            audioSource.PlayOneShot(summonSound);
         }
     }
 
@@ -428,6 +448,9 @@ public class PlayerSheepAbilities : MonoBehaviour
                 //play animation
                 animator.Play(chargeAnimation);
 
+                //TEMP SOUND
+                audioSource.PlayOneShot(abilitySound);
+
                 //get rid of icon
                 Destroy(sheepChargePoint);
 
@@ -498,6 +521,9 @@ public class PlayerSheepAbilities : MonoBehaviour
                 {
                     animator.Play(defendAnimation);
 
+                    //TEMP SOUND
+                    audioSource.PlayOneShot(abilitySound);
+
                     int pointIndex = 0;
 
                     for (int i = 0; i < GetCurrentSheepFlock(flockType).Count; i++)
@@ -542,6 +568,9 @@ public class PlayerSheepAbilities : MonoBehaviour
                     if(Vector3.Distance(transform.position, GetCurrentSheepFlock(flockType)[i].transform.position) <= minDistanceToLaunch)
                     {
                         animator.Play(launchAnimation);
+
+                        //TEMP SOUND
+                        audioSource.PlayOneShot(launchSound);
 
                         //break loop and launch that mf
                         var launchSheep = Instantiate(launchProjectiles[(int)currentFlockType], launchOrigin.position, launchOrigin.rotation);

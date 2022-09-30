@@ -7,6 +7,7 @@ public class Damageable : MonoBehaviour
 	[Header("Health")]
 	[SerializeField] float Health;
 	[SerializeField] float MaxHealth;
+	[SerializeField] GameObject gibs;
 
 	protected Rigidbody rb;
 
@@ -34,6 +35,7 @@ public class Damageable : MonoBehaviour
 	}
 	virtual protected void OnDeath()
 	{
+		Instantiate(gibs, transform.position, transform.rotation);
 		Destroy(gameObject); // base effect is deleting object
 	}	
 }

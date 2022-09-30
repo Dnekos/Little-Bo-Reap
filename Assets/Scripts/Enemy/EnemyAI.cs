@@ -18,6 +18,7 @@ public class EnemyAI : Damageable
 
 	[SerializeField] float StunTime = 0.3f;
 	[SerializeField] LayerMask playerLayer;
+
 	EnemyStates stunState;
 
 	[Header("Ground Check")]

@@ -8,6 +8,9 @@ public class PlayerSheepProjectile : MonoBehaviour
     [SerializeField] float launchForce = 2500f;
     [SerializeField] float launchForceLift = 250f;
     [SerializeField] float lifeTime = 10f;
+    [SerializeField] float lifeTimeAfterAttack = 1.5f;
+    [SerializeField] Attack launchAttack;
+    public bool isBlackSheep = false;
 
     Rigidbody rb;
 
@@ -19,7 +22,17 @@ public class PlayerSheepProjectile : MonoBehaviour
 
     public void LaunchProjectile()
     {
-        rb.AddForce(transform.forward * launchForce + transform.up * launchForceLift);
+        rb.AddForce(Camera.main.transform.forward * launchForce + transform.up * launchForceLift);
         rb.AddTorque(100f, 100f, 100f);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Enemy"))
+        {
+            other?.GetComponent<EnemyAI>().TakeDamage(launchAttack, transform.forward);
+            Destroy(gameObject, lifeTimeAfterAttack);
+        }
+
     }
 }

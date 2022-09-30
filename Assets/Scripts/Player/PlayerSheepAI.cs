@@ -80,6 +80,7 @@ public class PlayerSheepAI : MonoBehaviour
     [Header("Defend State Variables")]
     [SerializeField] float defendSpeed = 35f;
     [SerializeField] float defendStopDistance = 0f;
+    [SerializeField] Attack defendAttack;
     Transform defendPoint;
 
 	[Header("Stun State Variables")]
@@ -188,6 +189,10 @@ public class PlayerSheepAI : MonoBehaviour
                 }
             case SheepStates.DEFEND_PLAYER:
                 {
+                    if (other.CompareTag("Enemy"))
+                    {
+                        other?.GetComponent<EnemyAI>().TakeDamage(defendAttack, transform.forward);
+                    }
                     break;
                 }
             default:
