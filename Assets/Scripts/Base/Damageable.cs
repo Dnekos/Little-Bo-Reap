@@ -8,6 +8,7 @@ public class Damageable : MonoBehaviour
 	[SerializeField] float Health;
 	[SerializeField] float MaxHealth;
 	[SerializeField] GameObject gibs;
+	public bool isInvulnerable; 
 
 	protected Rigidbody rb;
 
@@ -20,16 +21,20 @@ public class Damageable : MonoBehaviour
 
 	virtual public void TakeDamage(Attack atk, Vector3 attackForward)
 	{
-		// deal damage
-		Health -= atk.damage;
-		Debug.Log(gameObject.name + " took " + atk.damage + " damage");
+		if(!isInvulnerable)
+        {
+			// deal damage
+			Health -= atk.damage;
+			Debug.Log(gameObject.name + " took " + atk.damage + " damage");
 
-		// add knockback
-		rb.AddForce(attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback, ForceMode.Impulse);
+			// add knockback
+			rb.AddForce(attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback, ForceMode.Impulse);
 
-		// invoke death
-		if (Health <= 0) 
-			OnDeath();
+			// invoke death
+			if (Health <= 0)
+				OnDeath();
+		}
+		
 	}
 	virtual protected void OnDeath()
 	{

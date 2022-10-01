@@ -35,6 +35,15 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float dashCooldown = 1f;
     bool canDash = true;
 
+    [Header("Dash Slow Time Variables")]
+    [SerializeField] float dashSlowTimescale = 0.5f;
+    [SerializeField] float dashSlowLength = 0.25f;
+    [SerializeField] GameObject slowTimeVolume;
+    [SerializeField] GameObject slowTimeUI;
+    [SerializeField] float dashTriggerRadius = 5f;
+    [SerializeField] LayerMask enemyAttackLayer;
+    float defaultTimescale = 1.0f;
+
     [Header("Ground Check")]
     [SerializeField] LayerMask groundLayer;
     [SerializeField] Transform groundCheckOriginFront;
@@ -259,6 +268,9 @@ public class PlayerMovement : MonoBehaviour
             //apply lift if in air
             if (!isGrounded) rb.AddForce(transform.up * dashAirborneLiftForce);
 
+            //apply invuln if avoiding attack
+            DidDashAvoidAttack();
+
             //apply the dash
             if (moveDirection.magnitude == 0)
             {
@@ -275,10 +287,40 @@ public class PlayerMovement : MonoBehaviour
     }
     #endregion
 
+    #region Dash
+
     IEnumerator DashCooldown()
     {
         canDash = false;
         yield return new WaitForSeconds(dashCooldown);
         canDash = true;
     }
+    public void DidDashAvoidAttack()
+    {
+        if (Physics.CheckSphere(transform.position, dashTriggerRadius, enemyAttackLayer))
+        {
+            StartCoroutine(DashSlowTime());
+        }
+    }
+    IEnumerator DashSlowTime()
+    {
+        gameObject.layer = LayerMask.NameToLayer("PlayerInvulnerable");
+        Time.timeScale = dashSlowTimescale;
+        Time.fixedDeltaTime = 0.02F * Time.timeScale;
+        slowTimeVolume.SetActive(true);
+        slowTimeUI.SetActive(true); 
+        health.isInvulnerable = true;
+
+        yield return new WaitForSeconds(dashSlowLength);
+
+        gameObject.layer = LayerMask.NameToLayer("Player");
+        Time.timeScale = defaultTimescale;
+        Time.fixedDeltaTime = 0.02F;
+        slowTimeVolume.SetActive(false);
+        slowTimeUI.SetActive(false);
+        health.isInvulnerable = false;
+        
+    }
+
+    #endregion
 }
