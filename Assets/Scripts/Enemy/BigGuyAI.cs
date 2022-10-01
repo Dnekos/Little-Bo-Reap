@@ -13,6 +13,7 @@ public class BigGuyAI : EnemyAI
 	Animator anim;
 
 	[Header("Shockwave")]
+	[SerializeField] Attack ShockwaveAttack;
 	[SerializeField] GameObject ShockwavePrefab;
 	[SerializeField] Transform ShockwaveSpawnPoint;
 
@@ -44,9 +45,9 @@ public class BigGuyAI : EnemyAI
 			float angle = Vector3.Angle(transform.forward, heading);
 
 			if (NearbyGuys.Count != 0 && angle < 60)
-				anim.SetTrigger("Attack1");
+				anim.Play(StickAttack.animation);
 			else
-				anim.SetTrigger("Attack2");
+				anim.Play(ShockwaveAttack.animation);
 		}
 		QueuedAttack = null;
 
