@@ -83,6 +83,7 @@ public class BigGuyAI : EnemyAI
 		// double check that the collision is due to the attack
 		if (collision.GetContact(0).thisCollider == StickCollider)
 		{
+			Debug.Log("collided with " + collision.gameObject.name);
 			collision.gameObject.GetComponent<Damageable>()?.TakeDamage(StickAttack, transform.forward);
 		}
 	}

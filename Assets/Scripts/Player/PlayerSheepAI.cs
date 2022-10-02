@@ -59,7 +59,9 @@ public class PlayerSheepAI : Damageable
     [SerializeField] string attackAnimation;
     [SerializeField] float attackCooldown = 1.5f;
     [SerializeField] float distanceToAttack;
-    public Attack attackBase;
+	[SerializeField] float attackStopDistance;
+
+	public Attack attackBase;
     public float attackDamage = 5f;
     [SerializeField] bool canAttack = true;
 
@@ -368,6 +370,7 @@ public class PlayerSheepAI : Damageable
         {
             FindAttackTargets();
             currentSheepState = SheepStates.ATTACK;
+			agent.stoppingDistance = attackStopDistance;
             agent.speed = baseSpeedCurrent;
         }
     }
@@ -382,7 +385,8 @@ public class PlayerSheepAI : Damageable
     #region Attack
     void DoAttack()
     {  
-        if(attackTargetCurrent!= null) agent.SetDestination(attackTargetCurrent.transform.position);
+        if(attackTargetCurrent!= null)
+			agent.SetDestination(attackTargetCurrent.transform.position);
 
 
         if (canAttack)
