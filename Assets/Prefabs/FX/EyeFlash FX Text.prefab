@@ -33,7 +33,7 @@ Transform:
   - {fileID: 5092321877457568077}
   - {fileID: 5092321877658121075}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!198 &5092321877322765764
 ParticleSystem:
@@ -3878,6 +3878,11 @@ ParticleSystem:
     subEmitters:
     - serializedVersion: 3
       emitter: {fileID: 5092321877457568079}
+      type: 0
+      properties: 0
+      emitProbability: 1
+    - serializedVersion: 3
+      emitter: {fileID: 5092321877658121073}
       type: 0
       properties: 0
       emitProbability: 1
