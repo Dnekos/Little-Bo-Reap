@@ -58,6 +58,7 @@ public class PlayerSheepAbilities : MonoBehaviour
     [SerializeField] float summonBlackSheepPercent = 10f;
     [SerializeField] AbilityIcon summonIcon;
     [SerializeField] string summonAnimation;
+	[SerializeField] ParticleSystem RecallVFX;
     bool canSummonSheep = true;
     bool canSummonAllSheep = true;
     PlayerSummoningResource summonResource;
@@ -287,6 +288,8 @@ public class PlayerSheepAbilities : MonoBehaviour
 
             //TEMP SOUND
             audioSource.PlayOneShot(abilitySound);
+			RecallVFX.Stop();
+			RecallVFX.Play();
 
             //recall current flock!
             for (int i = 0; i < GetCurrentSheepFlock(flockType).Count; i++)
