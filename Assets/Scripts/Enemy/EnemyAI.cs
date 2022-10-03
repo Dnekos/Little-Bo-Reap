@@ -114,7 +114,7 @@ public class EnemyAI : Damageable
 
 		if (!agent.enabled && isGrounded)
 		{
-			rb.isKinematic = true;
+			//rb.isKinematic = true;
 			agent.enabled = true;
 		}
 	}
@@ -140,7 +140,7 @@ public class EnemyAI : Damageable
 		currentEnemyState = EnemyStates.HITSTUN;
 
 		//turn on rb and turn off navmesh (turned on in GroundCheck (which cant be called when hitstunned))
-		rb.isKinematic = false;
+		//rb.isKinematic = false;
 		agent.enabled = false;
 
 		yield return new WaitForSeconds(StunTime);

@@ -8,7 +8,8 @@ public class PlayerCameraFollow : MonoBehaviour
     [Header("Transform to follow")]
     [SerializeField] Transform followPoint;
 
-    [Header("Camera Variables")]
+	[Header("Camera Variables")]
+	[SerializeField] float LerpSpeed = 4;
     [SerializeField] Camera playerCamera;
     [SerializeField] float mouseSensitivity;
     [SerializeField] float xCameraClampMax = 90f;
@@ -48,16 +49,17 @@ public class PlayerCameraFollow : MonoBehaviour
         //move the camera
         transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
 
-        //move the player orientation transform
-        playerOrientation.localRotation = Quaternion.Euler(0f, yRotation, 0f);
-
-    }
+		//move the player orientation transform
 
 
-    private void LateUpdate()
+	}
+
+	private void LateUpdate()
     {
-        playerOrientation.position = followPoint.position;
-        transform.position = followPoint.position;
+		playerOrientation.localRotation = Quaternion.Euler(0f, yRotation, 0f);
+
+        playerOrientation.position = Vector3.Lerp(playerOrientation.position, followPoint.position,Time.deltaTime * LerpSpeed);
+        transform.position = Vector3.Lerp(transform.position, followPoint.position, Time.deltaTime * LerpSpeed); 
     }
 
     public void OnMouseLook(InputAction.CallbackContext context)

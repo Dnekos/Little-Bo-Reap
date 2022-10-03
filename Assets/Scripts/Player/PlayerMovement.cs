@@ -98,11 +98,12 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         GroundCheck();
-        RotatePlayer();
         UpdateAnimation();
     }
     private void FixedUpdate()
     {
+		RotatePlayer();
+
         Move();
         SpeedCheck();
     }

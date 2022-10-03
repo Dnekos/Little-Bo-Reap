@@ -25,7 +25,7 @@ public class Damageable : MonoBehaviour
         {
 			// deal damage
 			Health -= atk.damage;
-			Debug.Log(gameObject.name + " took " + atk.damage + " damage");
+			Debug.Log(gameObject.name + " took " + atk.damage + " damage (force: "+(attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback)+")");
 
 			// add knockback
 			rb.AddForce(attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback, ForceMode.Impulse);

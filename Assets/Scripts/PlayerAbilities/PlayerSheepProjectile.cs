@@ -35,4 +35,14 @@ public class PlayerSheepProjectile : MonoBehaviour
         }
 
     }
+	private void OnCollisionEnter(Collision collision)
+	{
+		if (collision.gameObject.CompareTag("Enemy"))
+		{
+			gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
+			Vector3 forcePoint = new Vector3(collision.GetContact(0).normal.x, 0, collision.GetContact(0).normal.z);
+			collision.gameObject?.GetComponent<EnemyAI>().TakeDamage(launchAttack, -forcePoint);
+			Destroy(gameObject, lifeTimeAfterAttack);
+		}
+	}
 }
