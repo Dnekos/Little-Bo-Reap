@@ -38,7 +38,7 @@ public class Damageable : MonoBehaviour
 	}
 	virtual protected void OnDeath()
 	{
-		Instantiate(gibs, transform.position, transform.rotation);
+		Instantiate(gibs, transform.position + Vector3.up * 1.4f, new Quaternion()).GetComponent<ParticleSystem>();
 		Destroy(gameObject); // base effect is deleting object
 	}	
 }
