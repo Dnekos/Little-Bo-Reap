@@ -5,10 +5,10 @@ using UnityEngine;
 public class Damageable : MonoBehaviour
 {
 	[Header("Health")]
-	[SerializeField] float Health;
+	[SerializeField] protected float Health;
 	[SerializeField] float MaxHealth;
 	[SerializeField] GameObject gibs;
-	public bool isInvulnerable; 
+	public bool isInvulnerable;
 
 	protected Rigidbody rb;
 

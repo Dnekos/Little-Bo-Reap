@@ -8,7 +8,8 @@ public enum EnemyStates
 	WANDER = 0,
 	CHASE_PLAYER = 1,
 	HITSTUN = 2,
-	IDLE = 3
+	IDLE = 3,
+	EXECUTABLE = 4
 }
 
 public class EnemyAI : Damageable
@@ -19,6 +20,14 @@ public class EnemyAI : Damageable
 	[SerializeField] protected EnemyStates currentEnemyState;
 	[SerializeField] float StunTime = 0.3f;
 	[SerializeField] LayerMask playerLayer;
+
+	[Header("Execution Variables")]
+	public bool isExecutable;
+	public bool mustBeExecuted;
+	[SerializeField] protected int executionHealthThreshhold;
+	[SerializeField] protected EnemyExecutionTrigger executeTrigger;
+	public Transform executePlayerPos;
+	public Execution execution;
 
 	EnemyStates stunState;
 
@@ -61,11 +70,19 @@ public class EnemyAI : Damageable
 			case EnemyStates.IDLE:
 				DoIdle();
 				break;
+			case EnemyStates.EXECUTABLE:
+				DoExecutionState();
+				break;
 			default:
 				Debug.LogWarning("Enemy at unexpected state and defaulted!");
 				break;
 		}
 	}
+
+	public EnemyStates GetState()
+    {
+		return currentEnemyState;
+    }
 
 	void DoIdle()
     {
@@ -74,8 +91,23 @@ public class EnemyAI : Damageable
 			currentEnemyState = EnemyStates.CHASE_PLAYER;
     }
 
-	#region Chasing and Attacking
-	void DoChase()
+	#region Execution State
+
+	void DoExecutionState()
+    {
+
+    }
+
+	public void Execute()
+    {
+		OnDeath();
+    }
+
+
+    #endregion
+
+    #region Chasing and Attacking
+    void DoChase()
 	{
 		//if (isGrounded)
 			agent.SetDestination(player.position);
@@ -131,7 +163,9 @@ public class EnemyAI : Damageable
 	//to apply normal damage, use this overload
 	public override void TakeDamage(Attack atk, Vector3 attackForward)
 	{
-		
+		//if they must be executed, return
+		if (mustBeExecuted && Health < executionHealthThreshhold) return;
+
 		// give them hitstun
 		if (atk.DealsHitstun)
 		{
@@ -139,9 +173,18 @@ public class EnemyAI : Damageable
 			StopAllCoroutines();
 			StartCoroutine("OnHitStun");
 		}
-
 		// subtract health
 		base.TakeDamage(atk, attackForward);
+
+		if (Health <= executionHealthThreshhold && isExecutable)
+		{
+			rb.mass = 100f;
+			agent.enabled = false;
+			gameObject.layer = LayerMask.NameToLayer("EnemyExecute");
+			rb.constraints = RigidbodyConstraints.FreezeAll;
+			currentEnemyState = EnemyStates.EXECUTABLE;
+			executeTrigger.gameObject.SetActive(true);
+		}
 	}
 
 	//to apply black sheep damage, use this overload

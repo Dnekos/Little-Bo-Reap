@@ -42,7 +42,7 @@ public class PlayerSheepAI : Damageable
     [Header("Black Sheep Variables")]
     public bool isBlackSheep = false;
     [SerializeField] GameObject blackSheepParticles;
-    [SerializeField] Attack selfDamage;
+    public Attack selfDamage;
 
     [Header("Wander State Variables")]
     [SerializeField] float wanderSpeed = 10f;
@@ -221,6 +221,7 @@ public class PlayerSheepAI : Damageable
                     if (other.CompareTag("Enemy"))
                     {
                         DealDamage(other, defendAttack, isBlackSheep);
+                        TakeDamage(selfDamage, transform.forward);
                     }
                     break;
                 }
@@ -424,13 +425,17 @@ public class PlayerSheepAI : Damageable
             //first check if we have a target and are in range
             if (attackTargetCurrent != null && Vector3.Distance(transform.position, attackTargetCurrent.transform.position) <= distanceToAttack)
             {
-                agent.SetDestination(transform.position);
-                transform.LookAt(attackTargetCurrent.transform);
-                animator.Play(attackAnimation);
-                //subtract 1 from health
-                TakeDamage(selfDamage, transform.forward);
-                canAttack = false;
-                StartCoroutine(AttackCooldown());
+                //if the target is executable, remove them from the list
+                if (attackTargetCurrent.GetState() == EnemyStates.EXECUTABLE) attackTargetCurrent = null;
+
+                else
+                {
+                    agent.SetDestination(transform.position);
+                    transform.LookAt(attackTargetCurrent.transform);
+                    animator.Play(attackAnimation);
+                    canAttack = false;
+                    StartCoroutine(AttackCooldown());
+                }
             }
             //if no target, go to next in list or find one!
             else if (attackTargetCurrent == null)
@@ -475,7 +480,7 @@ public class PlayerSheepAI : Damageable
         Collider[] enemyHits = (Physics.OverlapSphere(transform.position, attackDetectionRadius, enemyLayer));
         foreach(Collider enemy in enemyHits)
         {
-            if (enemy.GetComponent<EnemyAI>() !=null ) attackTargets?.Add(enemy.GetComponent<EnemyAI>());
+            if (enemy.GetComponent<EnemyAI>() !=null && enemy.GetComponent<EnemyAI>().GetState() != EnemyStates.EXECUTABLE) attackTargets?.Add(enemy.GetComponent<EnemyAI>());
         }
     }
 

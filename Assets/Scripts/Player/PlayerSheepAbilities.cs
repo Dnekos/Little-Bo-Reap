@@ -25,6 +25,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 
     [Header("Goth Mode ")]
     [SerializeField] GameObject gothExplosion;
+    [SerializeField] PlayerGothMode gothMode;
 
     [Header("Sheep Flock Variables")]
     [SerializeField] List<PlayerSheepAI> activeSheepBuild;
@@ -55,6 +56,7 @@ public class PlayerSheepAbilities : MonoBehaviour
     [SerializeField] float summonIntervalMin = 0f;
     [SerializeField] float summonIntervalMax = 0.5f;
     [SerializeField] float summonCooldown = 5f;
+    [Range(0f, 100f)]
     [SerializeField] float summonBlackSheepPercent = 10f;
     [SerializeField] AbilityIcon summonIcon;
     [SerializeField] string summonAnimation;
@@ -103,7 +105,7 @@ public class PlayerSheepAbilities : MonoBehaviour
         summonResource = GetComponent<PlayerSummoningResource>();
         animator = GetComponent<Animator>();
         currentFlockIndex = (int)currentFlockType;
-
+        gothMode = GetComponent<PlayerGothMode>();
         audioSource = GetComponent<AudioSource>();
 
         //set defend distance of each defence point
@@ -429,7 +431,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 
             //determine if it's a black sheep
             float rand = Random.Range(0f, 100f);
-            if (rand <= summonBlackSheepPercent) sheep.GetComponent<PlayerSheepAI>().isBlackSheep = true;
+            if (rand <= summonBlackSheepPercent || gothMode.isGothMode) sheep.GetComponent<PlayerSheepAI>().isBlackSheep = true;
         }
         else
         {

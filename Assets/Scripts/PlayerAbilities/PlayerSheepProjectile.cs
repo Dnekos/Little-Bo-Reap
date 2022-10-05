@@ -10,6 +10,7 @@ public class PlayerSheepProjectile : MonoBehaviour
     [SerializeField] float lifeTime = 10f;
     [SerializeField] float lifeTimeAfterAttack = 1.5f;
     [SerializeField] SheepAttack launchAttack;
+    [SerializeField] GameObject blackSheepParticles;
     public bool isBlackSheep = false;
 
     Rigidbody rb;
@@ -18,6 +19,12 @@ public class PlayerSheepProjectile : MonoBehaviour
     {
         Destroy(gameObject, lifeTime);
         rb = GetComponent<Rigidbody>();
+    }
+
+    private void Start()
+    {
+        // check black sheep stuff
+        if (isBlackSheep) blackSheepParticles.SetActive(true);
     }
 
     public void LaunchProjectile()
