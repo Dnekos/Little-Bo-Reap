@@ -11,7 +11,7 @@ public enum SheepStates
     DEFEND_PLAYER = 3,
 	CONSTRUCT = 4,
     ATTACK = 5,
-	STUN // TODO, make this the same as the enemy's
+	STUN = 6 // TODO, make this the same as the enemy's
 }
 
 [RequireComponent(typeof(NavMeshAgent))]
@@ -63,7 +63,7 @@ public class PlayerSheepAI : Damageable
 	[SerializeField] float attackStopDistance;
 
 	public SheepAttack attackBase;
-    public float attackDamage = 5f;
+    //public float attackDamage = 5f;
     [SerializeField] bool canAttack = true;
 
     [Header("Charge State Variables")]
@@ -143,6 +143,7 @@ public class PlayerSheepAI : Damageable
 
     private void Update()
     {
+
         CheckAnimation();
         CheckLeader();
 
@@ -171,10 +172,16 @@ public class PlayerSheepAI : Damageable
                     break;
                 }
 			case SheepStates.CONSTRUCT:
-				break;
+                {
+                    break;
+                }
             case SheepStates.ATTACK:
                 {
                     DoAttack();
+                    break;
+                }
+            case SheepStates.STUN:
+                {
                     break;
                 }
             default:
@@ -321,11 +328,14 @@ public class PlayerSheepAI : Damageable
 		currentSheepState = SheepStates.STUN;
 
 		//turn on rb and turn off navmesh (turned on in GroundCheck (which cant be called when hitstunned))
-		rb.isKinematic = false;
+		//rb.isKinematic = false;
 		agent.enabled = false;
 		isGrounded = false;
 
-		yield return new WaitForSeconds(StunTime);
+        rb.constraints = RigidbodyConstraints.None;
+        rb.constraints = RigidbodyConstraints.FreezeRotation;
+
+        yield return new WaitForSeconds(StunTime);
 
 		// wait until grounded
 		while (!isGrounded)
@@ -338,7 +348,14 @@ public class PlayerSheepAI : Damageable
 	{
 		if (currentSheepState == SheepStates.STUN && collision.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
+            rb.angularVelocity = Vector3.zero;
+            rb.velocity = Vector3.zero;
 			isGrounded = true;
+            //rb.isKinematic = true;
+            agent.enabled = true;
+
+            rb.constraints = RigidbodyConstraints.FreezePosition;
+            rb.constraints = RigidbodyConstraints.FreezeRotation;
         }
 	}
 	#endregion
@@ -410,6 +427,8 @@ public class PlayerSheepAI : Damageable
                 agent.SetDestination(transform.position);
                 transform.LookAt(attackTargetCurrent.transform);
                 animator.Play(attackAnimation);
+                //subtract 1 from health
+                TakeDamage(selfDamage, transform.forward);
                 canAttack = false;
                 StartCoroutine(AttackCooldown());
             }

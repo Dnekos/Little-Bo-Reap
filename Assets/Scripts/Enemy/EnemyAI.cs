@@ -114,8 +114,14 @@ public class EnemyAI : Damageable
 
 		if (!agent.enabled && isGrounded)
 		{
+			rb.velocity = Vector3.zero;
+			rb.angularVelocity = Vector3.zero;
 			//rb.isKinematic = true;
 			agent.enabled = true;
+
+			//freeze
+			rb.constraints = RigidbodyConstraints.FreezePosition;
+			rb.constraints = RigidbodyConstraints.FreezeRotation;
 		}
 	}
 	#endregion
@@ -160,6 +166,8 @@ public class EnemyAI : Damageable
 		//turn on rb and turn off navmesh (turned on in GroundCheck (which cant be called when hitstunned))
 		//rb.isKinematic = false;
 		agent.enabled = false;
+		rb.constraints = RigidbodyConstraints.None;
+		rb.constraints = RigidbodyConstraints.FreezeRotation;
 
 		yield return new WaitForSeconds(StunTime);
 
@@ -170,6 +178,7 @@ public class EnemyAI : Damageable
 			GroundCheck();
 		} while (!isGrounded);
 
+		
 		currentEnemyState = stunState;
 	}
 	#endregion
