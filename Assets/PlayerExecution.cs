@@ -5,7 +5,10 @@ using UnityEngine.InputSystem;
 
 public class PlayerExecution : MonoBehaviour
 {
-    public bool isInExecuteRange;
+    [SerializeField] float executeRadius = 10f;
+    [SerializeField] LayerMask enemyExecuteLayer;
+    bool canExecute;
+    //public bool isInExecuteRange;
     public List<EnemyAI> executableEnemies;
     EnemyAI enemyToExecute;
     Transform targetPos;
@@ -14,22 +17,42 @@ public class PlayerExecution : MonoBehaviour
 
     public void OnExecute(InputAction.CallbackContext context)
     {
-        //loop through executeable enemey list and make sure none are null
-        for (int i = 0; i < executableEnemies.Count; i++)
-        {
-            if (executableEnemies[i] == null) executableEnemies.Remove(executableEnemies[i]);
-        }
 
-        if (context.started && isInExecuteRange)
+        if(context.started)
         {
-            //for now, just kill the one at 0
-            enemyToExecute = executableEnemies[0];
-            targetPos = enemyToExecute.executePlayerPos;
-            isInExecuteRange = false;
+            Collider[] hits = Physics.OverlapSphere(transform.position, executeRadius, enemyExecuteLayer);
+            foreach(Collider hit in hits)
+            {
+                if (hit.GetComponent<EnemyAI>().isExecutable) executableEnemies.Add(hit.GetComponent<EnemyAI>());
+                canExecute = true;
+            }
 
-            GetComponent<Animator>().Play(enemyToExecute.execution.playerAnimation);
-            enemyToExecute.GetComponent<Animator>().Play(enemyToExecute.execution.enemyAnimation);
+            if(canExecute)
+            {
+                enemyToExecute = executableEnemies[0];
+                targetPos = enemyToExecute.executePlayerPos;
+
+                GetComponent<Animator>().Play(enemyToExecute.execution.playerAnimation);
+                enemyToExecute.GetComponent<Animator>().Play(enemyToExecute.execution.enemyAnimation);
+                canExecute = false;
+            }
         }
+       // //loop through executeable enemey list and make sure none are null
+       // for (int i = 0; i < executableEnemies.Count; i++)
+       // {
+       //     if (executableEnemies[i] == null) executableEnemies.Remove(executableEnemies[i]);
+       // }
+       //
+       // if (context.started && isInExecuteRange)
+       // {
+       //     //for now, just kill the one at 0
+       //     enemyToExecute = executableEnemies[0];
+       //     targetPos = enemyToExecute.executePlayerPos;
+       //     isInExecuteRange = false;
+       //
+       //     GetComponent<Animator>().Play(enemyToExecute.execution.playerAnimation);
+       //     enemyToExecute.GetComponent<Animator>().Play(enemyToExecute.execution.enemyAnimation);
+       // }
     }
 
     private void Update()

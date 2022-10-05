@@ -179,6 +179,7 @@ public class EnemyAI : Damageable
 		if (Health <= executionHealthThreshhold && isExecutable)
 		{
 			rb.mass = 100f;
+			rb.velocity = Vector3.zero;
 			agent.enabled = false;
 			gameObject.layer = LayerMask.NameToLayer("EnemyExecute");
 			rb.constraints = RigidbodyConstraints.FreezeAll;
