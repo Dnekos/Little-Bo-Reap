@@ -6,7 +6,7 @@ public class SheepAttackHitbox : MonoBehaviour
 {
     [Header("The AI this hitbox is attatched to goes here")]
     [SerializeField] PlayerSheepAI sheepParent;
-    Attack attack;
+    SheepAttack attack;
 
     private void OnEnable()
     {
@@ -17,7 +17,13 @@ public class SheepAttackHitbox : MonoBehaviour
     {
         if(other.CompareTag("Enemy"))
         {
-            other?.GetComponent<EnemyAI>().TakeDamage(attack, sheepParent.transform.forward);
+            //if black sheep use black sheep damage overload, else attack normally
+            if(sheepParent.isBlackSheep)
+            {
+                Instantiate(attack.explosionEffect, transform.position, transform.rotation);
+                other?.GetComponent<EnemyAI>().TakeDamage(attack, sheepParent.transform.forward);
+            }
+            else other?.GetComponent<EnemyAI>().TakeDamage((Attack)attack, sheepParent.transform.forward);
         }
     }
 }

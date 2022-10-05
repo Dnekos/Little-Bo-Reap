@@ -121,8 +121,10 @@ public class EnemyAI : Damageable
 	#endregion
 
 	#region Health Override and Hitstun
+	//to apply normal damage, use this overload
 	public override void TakeDamage(Attack atk, Vector3 attackForward)
 	{
+		
 		// give them hitstun
 		if (atk.DealsHitstun)
 		{
@@ -133,7 +135,23 @@ public class EnemyAI : Damageable
 		// subtract health
 		base.TakeDamage(atk, attackForward);
 	}
-	IEnumerator OnHitStun()
+
+	//to apply black sheep damage, use this overload
+	public override void TakeDamage(SheepAttack atk, Vector3 attackForward)
+	{
+		// give them hitstun
+		if (atk.dealsHitstunBlack)
+		{
+			StopCoroutine("OnHitStun");
+			StartCoroutine("OnHitStun");
+		}
+
+		// subtract health
+		base.TakeDamage(atk, attackForward);
+	}
+
+
+		IEnumerator OnHitStun()
 	{
 		// save current state and set to Hitstun
 		stunState = (currentEnemyState == EnemyStates.HITSTUN) ? stunState : currentEnemyState;

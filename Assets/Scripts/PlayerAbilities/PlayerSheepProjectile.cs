@@ -9,7 +9,7 @@ public class PlayerSheepProjectile : MonoBehaviour
     [SerializeField] float launchForceLift = 250f;
     [SerializeField] float lifeTime = 10f;
     [SerializeField] float lifeTimeAfterAttack = 1.5f;
-    [SerializeField] Attack launchAttack;
+    [SerializeField] SheepAttack launchAttack;
     public bool isBlackSheep = false;
 
     Rigidbody rb;
@@ -39,10 +39,21 @@ public class PlayerSheepProjectile : MonoBehaviour
 	{
 		if (collision.gameObject.CompareTag("Enemy"))
 		{
-			gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
-			Vector3 forcePoint = new Vector3(collision.GetContact(0).normal.x, 0, collision.GetContact(0).normal.z);
-			collision.gameObject?.GetComponent<EnemyAI>().TakeDamage(launchAttack, -forcePoint);
-			Destroy(gameObject, lifeTimeAfterAttack);
+            if(isBlackSheep)
+            {
+                gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
+                Vector3 forcePoint = new Vector3(collision.GetContact(0).normal.x, 0, collision.GetContact(0).normal.z);
+                collision.gameObject?.GetComponent<EnemyAI>().TakeDamage(launchAttack, -forcePoint);
+                Instantiate(launchAttack.explosionEffect, transform.position, transform.rotation);
+                Destroy(gameObject);
+            }
+            else
+            {
+                gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
+                Vector3 forcePoint = new Vector3(collision.GetContact(0).normal.x, 0, collision.GetContact(0).normal.z);
+                collision.gameObject?.GetComponent<EnemyAI>().TakeDamage((Attack)launchAttack, -forcePoint);
+                Destroy(gameObject, lifeTimeAfterAttack);
+            }
 		}
 	}
 }

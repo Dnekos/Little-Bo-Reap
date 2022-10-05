@@ -42,6 +42,7 @@ public class PlayerSheepAI : Damageable
     [Header("Black Sheep Variables")]
     public bool isBlackSheep = false;
     [SerializeField] GameObject blackSheepParticles;
+    [SerializeField] Attack selfDamage;
 
     [Header("Wander State Variables")]
     [SerializeField] float wanderSpeed = 10f;
@@ -61,7 +62,7 @@ public class PlayerSheepAI : Damageable
     [SerializeField] float distanceToAttack;
 	[SerializeField] float attackStopDistance;
 
-	public Attack attackBase;
+	public SheepAttack attackBase;
     public float attackDamage = 5f;
     [SerializeField] bool canAttack = true;
 
@@ -72,7 +73,7 @@ public class PlayerSheepAI : Damageable
     [SerializeField] float chargeEndDistance = 1f;
     [SerializeField] float chargeCheckTime = 1f;
     [SerializeField] float chargeCheckSpeed = 2f;
-    [SerializeField] Attack chargeAttack;
+    [SerializeField] SheepAttack chargeAttack;
     [SerializeField] Collider chargeCollider;
     float chargeCheckCurrent = 0;
     Vector3 chargePoint;
@@ -81,7 +82,7 @@ public class PlayerSheepAI : Damageable
     [Header("Defend State Variables")]
     [SerializeField] float defendSpeed = 35f;
     [SerializeField] float defendStopDistance = 0f;
-    [SerializeField] Attack defendAttack;
+    [SerializeField] SheepAttack defendAttack;
     Transform defendPoint;
 
 	[Header("Stun State Variables")]
@@ -184,6 +185,18 @@ public class PlayerSheepAI : Damageable
         }
     }
 
+    void DealDamage(Collider target, SheepAttack theAttack, bool blackSheepDamage)
+    {
+        if(blackSheepDamage)
+        {
+            //subtract 1 from health
+            TakeDamage(selfDamage, transform.forward);
+
+            Instantiate(theAttack.explosionEffect, transform.position, transform.rotation);
+            target?.GetComponent<EnemyAI>().TakeDamage(theAttack, transform.forward);
+        }
+        else target?.GetComponent<EnemyAI>().TakeDamage((Attack)theAttack, transform.forward);
+    }
     private void OnTriggerEnter(Collider other)
     {
         switch (currentSheepState)
@@ -192,7 +205,7 @@ public class PlayerSheepAI : Damageable
                 {
                     if (other.CompareTag("Enemy"))
                     {
-                        other?.GetComponent<EnemyAI>().TakeDamage(chargeAttack, transform.forward);
+                        DealDamage(other, chargeAttack, isBlackSheep);
                     }
                     break;
                 }
@@ -200,7 +213,7 @@ public class PlayerSheepAI : Damageable
                 {
                     if (other.CompareTag("Enemy"))
                     {
-                        other?.GetComponent<EnemyAI>().TakeDamage(defendAttack, transform.forward);
+                        DealDamage(other, defendAttack, isBlackSheep);
                     }
                     break;
                 }
