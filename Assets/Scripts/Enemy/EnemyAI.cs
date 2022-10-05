@@ -114,14 +114,15 @@ public class EnemyAI : Damageable
 
 		if (!agent.enabled && isGrounded)
 		{
-			rb.velocity = Vector3.zero;
-			rb.angularVelocity = Vector3.zero;
 			//rb.isKinematic = true;
 			agent.enabled = true;
 
+
 			//freeze
-			rb.constraints = RigidbodyConstraints.FreezePosition;
-			rb.constraints = RigidbodyConstraints.FreezeRotation;
+			rb.constraints = RigidbodyConstraints.FreezeAll;
+
+			rb.velocity = Vector3.zero;
+			rb.angularVelocity = Vector3.zero;
 		}
 	}
 	#endregion
@@ -134,7 +135,8 @@ public class EnemyAI : Damageable
 		// give them hitstun
 		if (atk.DealsHitstun)
 		{
-			StopCoroutine("OnHitStun");
+			//StopCoroutine("OnHitStun");
+			StopAllCoroutines();
 			StartCoroutine("OnHitStun");
 		}
 
@@ -148,7 +150,8 @@ public class EnemyAI : Damageable
 		// give them hitstun
 		if (atk.dealsHitstunBlack)
 		{
-			StopCoroutine("OnHitStun");
+			//StopCoroutine("OnHitStun");
+			StopAllCoroutines();
 			StartCoroutine("OnHitStun");
 		}
 
@@ -180,6 +183,12 @@ public class EnemyAI : Damageable
 
 		
 		currentEnemyState = stunState;
+
+		//freeze dammit
+		rb.constraints = RigidbodyConstraints.FreezeAll;
+
+		rb.velocity = Vector3.zero;
+		rb.angularVelocity = Vector3.zero;
 	}
 	#endregion
 }

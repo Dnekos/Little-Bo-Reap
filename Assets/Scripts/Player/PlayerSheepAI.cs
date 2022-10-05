@@ -348,14 +348,14 @@ public class PlayerSheepAI : Damageable
 	{
 		if (currentSheepState == SheepStates.STUN && collision.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
-            rb.angularVelocity = Vector3.zero;
-            rb.velocity = Vector3.zero;
 			isGrounded = true;
             //rb.isKinematic = true;
             agent.enabled = true;
 
-            rb.constraints = RigidbodyConstraints.FreezePosition;
-            rb.constraints = RigidbodyConstraints.FreezeRotation;
+            rb.constraints = RigidbodyConstraints.FreezeAll;
+
+            rb.angularVelocity = Vector3.zero;
+            rb.velocity = Vector3.zero;
         }
 	}
 	#endregion
