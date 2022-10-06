@@ -9,18 +9,16 @@ public class PlayerGothMode : MonoBehaviour
     [Header("Goth Mode")]
     [SerializeField] GameObject gothParticles;
     [SerializeField] GameObject explosion;
-    [SerializeField] AudioClip gothSound;
+    [SerializeField] FMODUnity.EventReference gothSound;
     [SerializeField] Image gothMeterFill;
     [SerializeField] float gothMeterChargeTime;
     [SerializeField] float gothMeterDuration;
     public bool isGothMode = false;
 
     PlayerSheepAbilities playerSheep;
-    AudioSource audioSource;
 
     private void Start()
     {
-        audioSource = GetComponent<AudioSource>();
         playerSheep = GetComponent<PlayerSheepAbilities>();
     }
 
@@ -49,8 +47,8 @@ public class PlayerGothMode : MonoBehaviour
     {
         if (context.started && gothMeterFill.fillAmount == 1f)
         {
-            //TEMP SOUND
-            audioSource.PlayOneShot(gothSound);
+			//TEMP SOUND
+			FMODUnity.RuntimeManager.PlayOneShotAttached(gothSound,gameObject);
 
             Instantiate(explosion, transform.position, transform.rotation);
 
