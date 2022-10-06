@@ -18,10 +18,9 @@ public class PlayerSheepAbilities : MonoBehaviour
     [SerializeField] List<Color> sheepTypeColors;
 
     [Header("Temp Sounds")]
-    [SerializeField] AudioClip abilitySound;
-    [SerializeField] AudioClip launchSound;
-    [SerializeField] AudioClip summonSound;
-    AudioSource audioSource;
+    [SerializeField] FMODUnity.EventReference abilitySound;
+    [SerializeField] FMODUnity.EventReference launchSound;
+    [SerializeField] FMODUnity.EventReference summonSound;
 
     [Header("Goth Mode ")]
     [SerializeField] GameObject gothExplosion;
@@ -106,7 +105,6 @@ public class PlayerSheepAbilities : MonoBehaviour
         animator = GetComponent<Animator>();
         currentFlockIndex = (int)currentFlockType;
         gothMode = GetComponent<PlayerGothMode>();
-        audioSource = GetComponent<AudioSource>();
 
         //set defend distance of each defence point
         for(int i = 0; i < defendPoints.Count; i++)
@@ -288,8 +286,8 @@ public class PlayerSheepAbilities : MonoBehaviour
             //play animation
             animator.Play(summonAnimation);
 
-            //TEMP SOUND
-            audioSource.PlayOneShot(abilitySound);
+			//TEMP SOUND
+			FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound,gameObject);
 			RecallVFX.Stop();
 			RecallVFX.Play();
 
@@ -307,8 +305,8 @@ public class PlayerSheepAbilities : MonoBehaviour
             //play animation
             animator.Play(summonAnimation);
 
-            //TEMP SOUND
-            audioSource.PlayOneShot(abilitySound);
+			//TEMP SOUND
+			FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound,gameObject);
 
             //SUMMON THE HORDE!
             for (int i = 0; i < activeSheepBuild.Count; i++)
@@ -362,8 +360,8 @@ public class PlayerSheepAbilities : MonoBehaviour
             //start cooldown
             StartCoroutine(SummonSheepCooldown());
 
-            //TEMP SOUND
-            audioSource.PlayOneShot(summonSound);
+			//TEMP SOUND
+			FMODUnity.RuntimeManager.PlayOneShotAttached(summonSound,gameObject);
 
             summonIcon.CooldownUIEffect(summonCooldown);
         }
@@ -402,8 +400,8 @@ public class PlayerSheepAbilities : MonoBehaviour
             //start cooldown
             StartCoroutine(SummonAllSheepCooldown());
 
-            //TEMP SOUND
-            audioSource.PlayOneShot(summonSound);
+			//TEMP SOUND
+			FMODUnity.RuntimeManager.PlayOneShotAttached(summonSound,gameObject);
         }
     }
 
@@ -475,8 +473,8 @@ public class PlayerSheepAbilities : MonoBehaviour
                 //play animation
                 animator.Play(chargeAnimation);
 
-                //TEMP SOUND
-                audioSource.PlayOneShot(abilitySound);
+				//TEMP SOUND
+				FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound,gameObject);
 
                 //get rid of icon
                 Destroy(sheepChargePoint);
@@ -548,8 +546,8 @@ public class PlayerSheepAbilities : MonoBehaviour
                 {
                     animator.Play(defendAnimation);
 
-                    //TEMP SOUND
-                    audioSource.PlayOneShot(abilitySound);
+					//TEMP SOUND
+					FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound,gameObject);
 
                     int pointIndex = 0;
 
@@ -596,8 +594,8 @@ public class PlayerSheepAbilities : MonoBehaviour
                     {
                         animator.Play(launchAnimation);
 
-                        //TEMP SOUND
-                        audioSource.PlayOneShot(launchSound);
+						//TEMP SOUND
+						FMODUnity.RuntimeManager.PlayOneShotAttached(launchSound,gameObject);
 
                         //break loop and launch that mf
                         var launchSheep = Instantiate(launchProjectiles[(int)currentFlockType], launchOrigin.position, launchOrigin.rotation);

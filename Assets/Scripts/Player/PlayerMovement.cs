@@ -7,10 +7,9 @@ using UnityEngine.SceneManagement;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Temp sounds")]
-    [SerializeField] AudioClip jumpSound;
-    [SerializeField] AudioClip dashSound;
-    AudioSource audioSource;
-
+    [SerializeField] FMODUnity.EventReference jumpSound;
+    [SerializeField] FMODUnity.EventReference dashSound;
+	
     [Header("Movement Variables")]
     [SerializeField] float maxMoveSpeed;
     [SerializeField] float acceleration;
@@ -88,8 +87,6 @@ public class PlayerMovement : MonoBehaviour
     }
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
-
         rb = GetComponent<Rigidbody>();
 		health = GetComponent<PlayerHealth>();
         animator = GetComponent<Animator>();
@@ -245,8 +242,8 @@ public class PlayerMovement : MonoBehaviour
     {
         if(isGrounded && context.started)
         {
-            //TEMP SOUND
-            audioSource.PlayOneShot(jumpSound);
+			//TEMP SOUND
+			FMODUnity.RuntimeManager.PlayOneShotAttached(jumpSound, gameObject);
 
             animator.Play(jumpAnimation);
             rb.AddForce(Vector3.up * jumpForce);
@@ -260,8 +257,8 @@ public class PlayerMovement : MonoBehaviour
 
             animator.Play(dashAnimation);
 
-            //TEMP SOUND
-            audioSource.PlayOneShot(dashSound);
+			//TEMP SOUND
+			FMODUnity.RuntimeManager.PlayOneShotAttached(dashSound,gameObject);
 
             //halt player
             rb.AddForce(-rb.velocity, ForceMode.VelocityChange);

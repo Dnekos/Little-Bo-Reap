@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerGroundPound : MonoBehaviour
 {
     [Header("Ground Pound Variables")]
-    [SerializeField] AudioClip explodeSound;
+    [SerializeField] FMODUnity.EventReference explodeSound;
     [SerializeField] string heavyAirAnimation;
     [SerializeField] float coolDown = 3f;
     [SerializeField] float airUpForce;
@@ -25,11 +25,9 @@ public class PlayerGroundPound : MonoBehaviour
     PlayerMovement playerMovement;
     Animator animator;
     Rigidbody rb;
-    AudioSource audioSource;
 
     private void Start()
     {
-        audioSource = GetComponent<AudioSource>();
         playerMovement = GetComponent<PlayerMovement>();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
@@ -44,7 +42,7 @@ public class PlayerGroundPound : MonoBehaviour
             Instantiate(heavyParticle, transform.position, transform.rotation);
 
             //TEMP SOUND
-            audioSource.PlayOneShot(explodeSound);
+            FMODUnity.RuntimeManager.PlayOneShotAttached(explodeSound,gameObject);
 
             //for now, do this
             Collider[] enemies = Physics.OverlapSphere(transform.position, attackRadius, enemyLayer);
