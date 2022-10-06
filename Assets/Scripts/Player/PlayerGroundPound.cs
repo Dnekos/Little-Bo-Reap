@@ -11,6 +11,7 @@ public class PlayerGroundPound : MonoBehaviour
     [SerializeField] float coolDown = 3f;
     [SerializeField] float airUpForce;
     [SerializeField] float airDownForce;
+    [SerializeField] PlayerCameraFollow playerCam;
 
     [Header("Explosion")]
     [SerializeField] GameObject heavyParticle;
@@ -43,6 +44,9 @@ public class PlayerGroundPound : MonoBehaviour
 
             //TEMP SOUND
             FMODUnity.RuntimeManager.PlayOneShotAttached(explodeSound,gameObject);
+
+            //camera shake!
+            playerCam.ShakeCamera(true);
 
             //for now, do this
             Collider[] enemies = Physics.OverlapSphere(transform.position, attackRadius, enemyLayer);

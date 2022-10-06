@@ -22,7 +22,10 @@ public class PlayerSheepAbilities : MonoBehaviour
     [SerializeField] FMODUnity.EventReference launchSound;
     [SerializeField] FMODUnity.EventReference summonSound;
 
-    [Header("Goth Mode ")]
+    [Header("Camera Access")]
+    [SerializeField] PlayerCameraFollow playerCam;
+
+    [Header("Goth Mode")]
     [SerializeField] GameObject gothExplosion;
     [SerializeField] PlayerGothMode gothMode;
 
@@ -262,6 +265,8 @@ public class PlayerSheepAbilities : MonoBehaviour
     #region Goth Mode
     public void GoGothMode()
     {
+        playerCam.ShakeCamera(true);
+
         //turn each sheep into a black sheep
         for (int i = 0; i < 3; i++) 
         {
@@ -304,9 +309,10 @@ public class PlayerSheepAbilities : MonoBehaviour
         {
             //play animation
             animator.Play(summonAnimation);
+            
 
-			//TEMP SOUND
-			FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound,gameObject);
+            //TEMP SOUND
+            FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound,gameObject);
 
             //SUMMON THE HORDE!
             for (int i = 0; i < activeSheepBuild.Count; i++)
@@ -338,8 +344,10 @@ public class PlayerSheepAbilities : MonoBehaviour
             //play animation
             animator.Play(summonAnimation);
 
-			// remove list slots that are null (dead sheep)
-			GetCurrentSheepFlock(flockType).RemoveAll(x => x == null);
+            playerCam.ShakeCamera(gothMode.isGothMode);
+
+            // remove list slots that are null (dead sheep)
+            GetCurrentSheepFlock(flockType).RemoveAll(x => x == null);
 			
 			//delete all active sheep
 			for (int i = 0; i < GetCurrentSheepFlock(flockType).Count; i++)
@@ -374,7 +382,9 @@ public class PlayerSheepAbilities : MonoBehaviour
    
             //play animation
             animator.Play(summonAnimation);
-   
+
+            playerCam.ShakeCamera(gothMode.isGothMode);
+
             //delete all sheep
             for (int i = 0; i < 3; i++) //for each sheep type, delete list and clear it
             {
@@ -473,8 +483,10 @@ public class PlayerSheepAbilities : MonoBehaviour
                 //play animation
                 animator.Play(chargeAnimation);
 
-				//TEMP SOUND
-				FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound,gameObject);
+                playerCam.ShakeCamera(gothMode.isGothMode);
+
+                //TEMP SOUND
+                FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound,gameObject);
 
                 //get rid of icon
                 Destroy(sheepChargePoint);
@@ -546,8 +558,10 @@ public class PlayerSheepAbilities : MonoBehaviour
                 {
                     animator.Play(defendAnimation);
 
-					//TEMP SOUND
-					FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound,gameObject);
+                    playerCam.ShakeCamera(gothMode.isGothMode);
+
+                    //TEMP SOUND
+                    FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound,gameObject);
 
                     int pointIndex = 0;
 
@@ -594,8 +608,10 @@ public class PlayerSheepAbilities : MonoBehaviour
                     {
                         animator.Play(launchAnimation);
 
-						//TEMP SOUND
-						FMODUnity.RuntimeManager.PlayOneShotAttached(launchSound,gameObject);
+                        playerCam.ShakeCamera(gothMode.isGothMode);
+
+                        //TEMP SOUND
+                        FMODUnity.RuntimeManager.PlayOneShotAttached(launchSound,gameObject);
 
                         //break loop and launch that mf
                         var launchSheep = Instantiate(launchProjectiles[(int)currentFlockType], launchOrigin.position, launchOrigin.rotation);

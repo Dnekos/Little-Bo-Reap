@@ -15,6 +15,10 @@ public class PlayerCameraFollow : MonoBehaviour
     [SerializeField] float xCameraClampMax = 90f;
     [SerializeField] float xCameraClampMin = -90f;
 
+    [Header("Camera Shake")]
+    [SerializeField] string bigShakeAnimation;
+    [SerializeField] string smallShakeAnimation;
+
     [Header("Player Orientation")]
     [SerializeField] Transform playerOrientation;
     [SerializeField] Transform playerBody;
@@ -34,6 +38,12 @@ public class PlayerCameraFollow : MonoBehaviour
         //lock cursor
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+    }
+
+    public void ShakeCamera(bool bigShake)
+    {
+        if (bigShake) GetComponent<Animator>().Play(bigShakeAnimation);
+        else GetComponent<Animator>().Play(smallShakeAnimation);
     }
 
     private void Update()

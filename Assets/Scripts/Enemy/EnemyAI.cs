@@ -191,6 +191,9 @@ public class EnemyAI : Damageable
 	//to apply black sheep damage, use this overload
 	public override void TakeDamage(SheepAttack atk, Vector3 attackForward)
 	{
+		//if they must be executed, return
+		if (mustBeExecuted && Health < executionHealthThreshhold) return;
+
 		// give them hitstun
 		if (atk.dealsHitstunBlack)
 		{
@@ -201,6 +204,17 @@ public class EnemyAI : Damageable
 
 		// subtract health
 		base.TakeDamage(atk, attackForward);
+
+		if (Health <= executionHealthThreshhold && isExecutable)
+		{
+			rb.mass = 100f;
+			rb.velocity = Vector3.zero;
+			agent.enabled = false;
+			gameObject.layer = LayerMask.NameToLayer("EnemyExecute");
+			rb.constraints = RigidbodyConstraints.FreezeAll;
+			currentEnemyState = EnemyStates.EXECUTABLE;
+			executeTrigger.gameObject.SetActive(true);
+		}
 	}
 
 
@@ -225,8 +239,9 @@ public class EnemyAI : Damageable
 			GroundCheck();
 		} while (!isGrounded);
 
-		
-		currentEnemyState = stunState;
+		//reset if not in execute stage
+		//Demetri this is a quick n dirty fix might need to move around execute stuff eventually
+		if(currentEnemyState != EnemyStates.EXECUTABLE) currentEnemyState = stunState;
 
 		//freeze dammit
 		rb.constraints = RigidbodyConstraints.FreezeAll;
