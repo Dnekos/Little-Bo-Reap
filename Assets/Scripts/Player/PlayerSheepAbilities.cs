@@ -344,8 +344,6 @@ public class PlayerSheepAbilities : MonoBehaviour
             //play animation
             animator.Play(summonAnimation);
 
-            playerCam.ShakeCamera(gothMode.isGothMode);
-
             // remove list slots that are null (dead sheep)
             GetCurrentSheepFlock(flockType).RemoveAll(x => x == null);
 			
@@ -382,8 +380,6 @@ public class PlayerSheepAbilities : MonoBehaviour
    
             //play animation
             animator.Play(summonAnimation);
-
-            playerCam.ShakeCamera(gothMode.isGothMode);
 
             //delete all sheep
             for (int i = 0; i < 3; i++) //for each sheep type, delete list and clear it
@@ -483,8 +479,6 @@ public class PlayerSheepAbilities : MonoBehaviour
                 //play animation
                 animator.Play(chargeAnimation);
 
-                playerCam.ShakeCamera(gothMode.isGothMode);
-
                 //TEMP SOUND
                 FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound,gameObject);
 
@@ -558,7 +552,6 @@ public class PlayerSheepAbilities : MonoBehaviour
                 {
                     animator.Play(defendAnimation);
 
-                    playerCam.ShakeCamera(gothMode.isGothMode);
 
                     //TEMP SOUND
                     FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound,gameObject);
@@ -607,8 +600,6 @@ public class PlayerSheepAbilities : MonoBehaviour
                     if(Vector3.Distance(transform.position, GetCurrentSheepFlock(flockType)[i].transform.position) <= minDistanceToLaunch)
                     {
                         animator.Play(launchAnimation);
-
-                        playerCam.ShakeCamera(gothMode.isGothMode);
 
                         //TEMP SOUND
                         FMODUnity.RuntimeManager.PlayOneShotAttached(launchSound,gameObject);

@@ -17,7 +17,7 @@ public class PlayerGroundPound : MonoBehaviour
     [SerializeField] GameObject heavyParticle;
     [SerializeField] Transform particleOrigin;
     [SerializeField] AbilityIcon groundPoundIcon;
-    [SerializeField] Attack groundPoundAttack;
+    [SerializeField] SheepAttack groundPoundAttack;
     [SerializeField] LayerMask enemyLayer;
     [SerializeField] float attackRadius;
     bool isFalling = false;
@@ -54,7 +54,8 @@ public class PlayerGroundPound : MonoBehaviour
             {
                 if (hit.GetComponent<EnemyAI>() != null)
                 {
-                    hit.GetComponent<EnemyAI>().TakeDamage(groundPoundAttack, transform.forward);
+                    if (GetComponent<PlayerGothMode>().isGothMode) hit.GetComponent<EnemyAI>().TakeDamage(groundPoundAttack, transform.forward);
+                    else hit.GetComponent<EnemyAI>().TakeDamage((Attack)groundPoundAttack, transform.forward);
                 }
             }
         }

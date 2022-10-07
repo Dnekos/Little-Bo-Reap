@@ -16,8 +16,12 @@ public class PlayerCameraFollow : MonoBehaviour
     [SerializeField] float xCameraClampMin = -90f;
 
     [Header("Camera Shake")]
-    [SerializeField] string bigShakeAnimation;
-    [SerializeField] string smallShakeAnimation;
+    //[SerializeField] string bigShakeAnimation;
+    //[SerializeField] string smallShakeAnimation;
+    [SerializeField] float smallShakeMagnitude = 5f;
+    [SerializeField] float smallShakeDuration = 1f;
+    [SerializeField] float bigShakeMagnitude = 10f;
+    [SerializeField] float bigShakeDuration = 1f;
 
     [Header("Player Orientation")]
     [SerializeField] Transform playerOrientation;
@@ -42,8 +46,29 @@ public class PlayerCameraFollow : MonoBehaviour
 
     public void ShakeCamera(bool bigShake)
     {
-        if (bigShake) GetComponent<Animator>().Play(bigShakeAnimation);
-        else GetComponent<Animator>().Play(smallShakeAnimation);
+        if (bigShake) StartCoroutine(CameraShake(bigShakeMagnitude, bigShakeDuration));
+        else StartCoroutine(CameraShake(smallShakeMagnitude, smallShakeDuration));
+    }
+
+    IEnumerator CameraShake(float magnitude, float duration)
+    {
+        Vector3 originalPos = Camera.main.transform.localPosition;
+
+        float elapsed = 0;
+
+        while(elapsed < duration)
+        {
+            float x = Random.Range(-1f, 1f) * magnitude;
+            float y = Random.Range(-1f, 1f) * magnitude;
+
+            Camera.main.transform.localPosition = new Vector3(x, y, Camera.main.transform.localPosition.z);
+
+            elapsed += Time.deltaTime;
+
+            yield return null;
+        }
+
+        Camera.main.transform.localPosition = new Vector3(originalPos.x, originalPos.y, Camera.main.transform.localPosition.z);
     }
 
     private void Update()

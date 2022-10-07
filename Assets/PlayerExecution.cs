@@ -60,7 +60,7 @@ public class PlayerExecution : MonoBehaviour
         if(isExecuting)
         {
             transform.LookAt(enemyToExecute.transform.position);
-            transform.position = Vector3.Lerp(transform.position, targetPos.position, 1f);
+            transform.position = Vector3.Lerp(transform.position, targetPos.position, 10f * Time.deltaTime);
         }
         
     }

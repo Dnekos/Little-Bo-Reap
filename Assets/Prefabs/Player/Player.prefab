@@ -1780,7 +1780,6 @@ GameObject:
   - component: {fileID: 3870380307944562837}
   - component: {fileID: 3870380307944562838}
   - component: {fileID: 815472361351569262}
-  - component: {fileID: 882735501106631314}
   m_Layer: 0
   m_Name: Player_Camera_Pivot
   m_TagString: Untagged
@@ -1822,8 +1821,10 @@ MonoBehaviour:
   mouseSensitivity: 35
   xCameraClampMax: 25
   xCameraClampMin: -25
-  bigShakeAnimation: Camera_Shake_Big
-  smallShakeAnimation: Camera_Shake_Small
+  smallShakeMagnitude: 0.25
+  smallShakeDuration: 0.1
+  bigShakeMagnitude: 0.5
+  bigShakeDuration: 0.15
   playerOrientation: {fileID: 3870380307216974260}
   playerBody: {fileID: 3870380308813204389}
 --- !u!114 &815472361351569262
@@ -1937,26 +1938,6 @@ MonoBehaviour:
   m_DefaultActionMap: PlayerMovement
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!95 &882735501106631314
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3870380307944562839}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f3c42d71a1063594c9da4c78150b18c7, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &3870380308248943668
 GameObject:
   m_ObjectHideFlags: 0
@@ -2761,7 +2742,7 @@ MonoBehaviour:
     type: 3}
   particleOrigin: {fileID: 3870380308813204389}
   groundPoundIcon: {fileID: 21811619427426715}
-  groundPoundAttack: {fileID: 11400000, guid: ead1c32d946cd7d4cbd21dea3ddda24e, type: 2}
+  groundPoundAttack: {fileID: 11400000, guid: 052c7845a21836f4aaad1f7433614bc0, type: 2}
   enemyLayer:
     serializedVersion: 2
     m_Bits: 4096
