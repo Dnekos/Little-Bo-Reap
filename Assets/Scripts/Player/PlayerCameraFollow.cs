@@ -11,7 +11,8 @@ public class PlayerCameraFollow : MonoBehaviour
 	[Header("Camera Variables")]
 	[SerializeField] float LerpSpeed = 4;
     [SerializeField] Camera playerCamera;
-    [SerializeField] float mouseSensitivity;
+    public float mouseSensitivityMax = 35f;
+    public float mouseSensitivity;
     [SerializeField] float xCameraClampMax = 90f;
     [SerializeField] float xCameraClampMin = -90f;
 
