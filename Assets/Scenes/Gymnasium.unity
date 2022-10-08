@@ -7283,7 +7283,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh26980
+  m_Name: pb_Mesh27742
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -31702,6 +31702,27 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2022305160}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &2022917009 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3870380308813204390, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
+    type: 3}
+  m_PrefabInstance: {fileID: 3870380308797193159}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2022917023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2022917009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cea39a77da0e7034fb54b6e94a573b42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TimeBetweenMoves: 0.05
+  InterpolationCycles: 2
+  SheepSpacingMod: 1
 --- !u!1 &2036140177
 GameObject:
   m_ObjectHideFlags: 0
@@ -33421,11 +33442,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3870380307944562838, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
-        type: 3}
-      propertyPath: LerpSpeed
-      value: 20
-      objectReference: {fileID: 0}
     - target: {fileID: 3870380308813204384, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
         type: 3}
       propertyPath: m_DefaultActionMap
@@ -33446,10 +33462,20 @@ PrefabInstance:
       propertyPath: m_ActionEvents.Array.data[16].m_ActionName
       value: PlayerMovement/Execute[/Keyboard/e]
       objectReference: {fileID: 0}
+    - target: {fileID: 3870380308813204386, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3870380308813204389, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
         type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3870380308813204399, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
+        type: 3}
+      propertyPath: LiftSpeed
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 4264956016887461398, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
         type: 3}
@@ -33564,7 +33590,7 @@ PrefabInstance:
     - target: {fileID: 8268160106776874863, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
         type: 3}
       propertyPath: amountToSummonBuild
-      value: 10
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 8268160106776874863, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
         type: 3}

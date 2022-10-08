@@ -87,8 +87,7 @@ public class PlayerSheepAbilities : MonoBehaviour
     bool canDefend = true;
 
     [Header("Sheep Launch Variables")]
-    //[SerializeField] float launchForce = 2500f;
-    //[SerializeField] float launchForceLift = 250f;
+
     [SerializeField] List<GameObject> launchProjectiles;
     [SerializeField] Transform launchOrigin;
     [SerializeField] float minDistanceToLaunch = 10f;

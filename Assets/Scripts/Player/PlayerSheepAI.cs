@@ -11,7 +11,8 @@ public enum SheepStates
     DEFEND_PLAYER = 3,
 	CONSTRUCT = 4,
     ATTACK = 5,
-	STUN = 6 // TODO, make this the same as the enemy's
+	STUN = 6, // TODO, make this the same as the enemy's
+	LIFT
 }
 
 [RequireComponent(typeof(NavMeshAgent))]
@@ -575,7 +576,14 @@ public class PlayerSheepAI : Damageable
     }
 	#endregion
 
-	#region Sheep Construct
+	#region Sheep Construct / Lift
+	public void StartLift()
+	{
+		currentSheepState = SheepStates.CONSTRUCT;
+		agent.enabled = false;
+		rb.isKinematic = true;
+	}
+
 	public void DoConstruct(SheepHolder cons)
 	{
 		owningConstruct = cons;
