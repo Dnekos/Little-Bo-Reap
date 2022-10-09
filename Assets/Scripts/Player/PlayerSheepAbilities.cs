@@ -48,6 +48,7 @@ public class PlayerSheepAbilities : MonoBehaviour
     [SerializeField] float flockMenuTimescale = 0.25f;
     [SerializeField] float defaultTimescale = 1;
     bool isInFlockMenu = false;
+    float swapContextValue;
 
     [Header("Sheep Summon Variables")]
     [SerializeField] float summonBloodCost = 25f;
@@ -76,8 +77,9 @@ public class PlayerSheepAbilities : MonoBehaviour
     [SerializeField] string attackAnimation;
     [SerializeField] AbilityIcon attackIcon;
     [SerializeField] float attackCooldown = 1f;
+    [SerializeField] float attackRadius = 10f;
     bool canAttack = true;
-    GameObject sheepAttaclPoint;
+    GameObject sheepAttackPoint;
     Vector3 attackPosition;
     bool isPreparingAttack;
 
@@ -131,6 +133,7 @@ public class PlayerSheepAbilities : MonoBehaviour
     }
     private void Update()
     {
+        CheckAttack();
         CheckCharge();
         CheckDefend();
     }
@@ -138,8 +141,17 @@ public class PlayerSheepAbilities : MonoBehaviour
     #region Sheep Flock Functions
     public void OnChangeSheepFlock(InputAction.CallbackContext context)
     {
+        if (context.started)
+        {
+            swapContextValue = context.ReadValue<float>(); 
+            Debug.Log(swapContextValue);
+        }
+        //alright so if we press middle mouse down, context value is one
+        //if useing scroll wheel, its -240 and 240 respectively for some reason
+        //so use these magic numbers to determine what to do
+
         //if held down, open menu and slow time. if pressed, just go to next in list
-        if(context.performed)
+        if(context.performed && swapContextValue == 1)
         {
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
@@ -152,7 +164,7 @@ public class PlayerSheepAbilities : MonoBehaviour
             Time.fixedDeltaTime = 0.02F * Time.timeScale; //evil physics timescale hack to make it smooth
             flockSelectMenu.gameObject.SetActive(true);
         }
-        if (context.canceled)
+        if (context.canceled && swapContextValue == 1)
         {
             if(isInFlockMenu)
             {
@@ -171,18 +183,29 @@ public class PlayerSheepAbilities : MonoBehaviour
                 Time.timeScale = defaultTimescale;
                 Time.fixedDeltaTime = 0.02F; //evil physics timescale hack
                 flockSelectMenu.gameObject.SetActive(false);
-            }
-            else
-            {
-                //go to next sheep type
-                currentFlockIndex++;
-                if (currentFlockIndex >= 3) currentFlockIndex = 0; //dont try to set to an enum that doesnt exist 
-                currentFlockType = (SheepTypes)currentFlockIndex;
+            }      
+        }
+        if(context.performed && swapContextValue > 1)
+        {
+            //go to next sheep type
+            currentFlockIndex++;
+            if (currentFlockIndex >= 3) currentFlockIndex = 0; //dont try to set to an enum that doesnt exist 
+            currentFlockType = (SheepTypes)currentFlockIndex;
 
-                Debug.Log("Current Flock is: " + currentFlockType);
-                sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
-                sheepTypeText.color = sheepTypeColors[(int)currentFlockType];
-            }
+            Debug.Log("Current Flock is: " + currentFlockType);
+            sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
+            sheepTypeText.color = sheepTypeColors[(int)currentFlockType];
+        }
+        else if(context.performed && swapContextValue < -1)
+        {
+            //go to previous sheep type
+            currentFlockIndex--;
+            if (currentFlockIndex < 0) currentFlockIndex = 2; //dont try to set to an enum that doesnt exist 
+            currentFlockType = (SheepTypes)currentFlockIndex;
+
+            Debug.Log("Current Flock is: " + currentFlockType);
+            sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
+            sheepTypeText.color = sheepTypeColors[(int)currentFlockType];
         }
     }
     public List<PlayerSheepAI> GetCurrentSheepFlock(SheepTypes theFlockType)
@@ -482,7 +505,81 @@ public class PlayerSheepAbilities : MonoBehaviour
     #endregion
 
     #region Sheep Attack
+    public void OnSheepAttack(InputAction.CallbackContext context)
+    {
+        if (canCharge)
+        {
+            SheepTypes flockType = currentFlockType;
 
+            if (context.started)
+            {
+                //spawn icon
+                var attackPoint = Instantiate(sheepAttackPointPrefab, transform.position, Quaternion.identity) as GameObject;
+                sheepAttackPoint = attackPoint;
+
+                //prepare to charge
+                isPreparingAttack = true;
+            }
+
+            if (context.canceled)
+            {
+                //stop charging
+                isPreparingAttack = false;
+
+                //play animation
+                animator.Play(attackAnimation);
+
+                //TEMP SOUND
+                FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound, gameObject);
+
+                //get rid of icon
+                Destroy(sheepAttackPoint);
+
+                //send sheep to point if valid!
+                RaycastHit hit;
+                if (Physics.Raycast(Camera.main.transform.position + attackPointOffset, Camera.main.transform.forward, out hit, Mathf.Infinity, attackTargetLayers))
+                {
+                    for (int i = 0; i < GetCurrentSheepFlock(flockType).Count; i++)
+                    {
+                        if (GetCurrentSheepFlock(flockType)[i].IsCommandable()) GetCurrentSheepFlock(flockType)[i]?.CreateListOfAttackTargets(hit.point, attackRadius);
+                    }
+                }
+               
+
+                //start cooldown
+                canAttack = false;
+                attackIcon.CooldownUIEffect(attackCooldown);
+                StartCoroutine(AttackCooldown());
+
+            }
+        }
+
+    }
+    void CheckAttack()
+    {
+        if (isPreparingAttack)
+        {
+            //draw ray from camera forward to point
+            RaycastHit hit;
+            if (Physics.Raycast(Camera.main.transform.position + attackPointOffset, Camera.main.transform.forward, out hit, Mathf.Infinity, attackTargetLayers))
+            {
+                //draw charge point
+                sheepAttackPoint.transform.position = hit.point;
+            }
+            else
+            {
+                //draw it way the fuck down so it isnt seen
+                sheepAttackPoint.transform.position = new Vector3(0f, -1000f, 0f);
+            }
+
+        }
+    }
+
+    IEnumerator AttackCooldown()
+    {
+        yield return new WaitForSeconds(attackCooldown);
+        canAttack = true;
+    }
     #endregion
 
     #region Sheep Charge
@@ -524,27 +621,24 @@ public class PlayerSheepAbilities : MonoBehaviour
                 //get rid of icon
                 Destroy(sheepChargePoint);
 
-                if (CheckIfCloseToLeader(flockType))
+                
+                //send sheep to point if valid!
+                RaycastHit hit;
+                if (Physics.Raycast(Camera.main.transform.position + chargePointOffset, Camera.main.transform.forward, out hit, Mathf.Infinity, chargeTargetLayers))
                 {
-                    //send sheep to point if valid!
-                    RaycastHit hit;
-                    if (Physics.Raycast(Camera.main.transform.position + chargePointOffset, Camera.main.transform.forward, out hit, Mathf.Infinity, chargeTargetLayers))
+                    for (int i = 0; i < GetCurrentSheepFlock(flockType).Count; i++)
                     {
-                        for (int i = 0; i < GetCurrentSheepFlock(flockType).Count; i++)
-                        {
-                            if (GetCurrentSheepFlock(flockType)[i].IsCommandable()) GetCurrentSheepFlock(flockType)[i]?.BeginCharge(hit.point);
-                        }
+                        if (GetCurrentSheepFlock(flockType)[i].IsCommandable()) GetCurrentSheepFlock(flockType)[i]?.BeginCharge(hit.point);
                     }
                 }
+                
 
                 //start cooldown
                 canCharge = false;
                 chargeIcon.CooldownUIEffect(chargeCooldown);
                 StartCoroutine(ChargeCooldown());
-
             }
-        }
-        
+        }      
     }
     void CheckCharge()
     {
@@ -588,27 +682,23 @@ public class PlayerSheepAbilities : MonoBehaviour
                 //switching to be only useable by fluffy sheep, keep same architecture in case we change our minds (we probably won't)
                 SheepTypes flockType = SheepTypes.FLUFFY;
 
-                //if close to flock leader, defense mode activate
-                if (CheckIfCloseToLeader(flockType))
+                
+                animator.Play(defendAnimation);
+
+
+                //TEMP SOUND
+                FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound,gameObject);
+
+                int pointIndex = 0;
+
+                for (int i = 0; i < GetCurrentSheepFlock(flockType).Count; i++)
                 {
-                    animator.Play(defendAnimation);
+                    if (GetCurrentSheepFlock(flockType)[i].IsCommandable()) GetCurrentSheepFlock(flockType)[i]?.BeginDefendPlayer(defendPoints[pointIndex]);
 
-
-                    //TEMP SOUND
-                    FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound,gameObject);
-
-                    int pointIndex = 0;
-
-                    for (int i = 0; i < GetCurrentSheepFlock(flockType).Count; i++)
-                    {
-                        if (GetCurrentSheepFlock(flockType)[i].IsCommandable()) GetCurrentSheepFlock(flockType)[i]?.BeginDefendPlayer(defendPoints[pointIndex]);
-
-                        pointIndex++;
-                        if (pointIndex >= defendPoints.Count) pointIndex = 0;
-                    }
+                    pointIndex++;
+                    if (pointIndex >= defendPoints.Count) pointIndex = 0;
                 }
-                //else do a boo womp sound D:
-
+              
                 //start cooldown
                 canDefend = false;
                 defendIcon.CooldownUIEffect(defendCooldown);

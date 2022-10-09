@@ -426,7 +426,11 @@ public class PlayerSheepAI : Damageable
             if (attackTargetCurrent != null && Vector3.Distance(transform.position, attackTargetCurrent.transform.position) <= distanceToAttack)
             {
                 //if the target is executable, remove them from the list
-                if (attackTargetCurrent.GetState() == EnemyStates.EXECUTABLE) attackTargetCurrent = null;
+                if (attackTargetCurrent.GetState() == EnemyStates.EXECUTABLE)
+                {
+                    attackTargets.Remove(attackTargetCurrent);
+                    attackTargetCurrent = null;
+                }
 
                 else
                 {
@@ -437,9 +441,10 @@ public class PlayerSheepAI : Damageable
                     StartCoroutine(AttackCooldown());
                 }
             }
-            //if no target, go to next in list or find one!
+            //if no target, go to next in list!
             else if (attackTargetCurrent == null)
             {
+                attackTargets.Remove(attackTargetCurrent);
                 attackTargetCurrent = GetAttackTarget();
 
                 //still no target? then go back to wander state
@@ -460,7 +465,7 @@ public class PlayerSheepAI : Damageable
     EnemyAI GetAttackTarget()
     {
         //find targets to attack
-        FindAttackTargets();
+        //FindAttackTargets();
 
         if(attackTargets.Count > 0)
         {
@@ -471,6 +476,23 @@ public class PlayerSheepAI : Damageable
         else return null;
     }
 
+    public void CreateListOfAttackTargets(Vector3 targetPos, float targetRadius)
+    {
+        //check if there are enemies nearby specified area
+        //Demetri I am using Physics.OverlapSphere against your wishes
+        Collider[] enemyHits = (Physics.OverlapSphere(targetPos, targetRadius, enemyLayer));
+        foreach (Collider enemy in enemyHits)
+        {
+            if (enemy.GetComponent<EnemyAI>() != null && enemy.GetComponent<EnemyAI>().GetState() != EnemyStates.EXECUTABLE) attackTargets?.Add(enemy.GetComponent<EnemyAI>());
+        }
+
+        //start attacking!
+        currentSheepState = SheepStates.ATTACK;
+        agent.stoppingDistance = attackStopDistance;
+        agent.speed = baseSpeedCurrent;
+    }
+
+    //depreciated function, here as a reference now
     void FindAttackTargets()
     {
         attackTargets.Clear();
