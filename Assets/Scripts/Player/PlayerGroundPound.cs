@@ -54,8 +54,9 @@ public class PlayerGroundPound : MonoBehaviour
             {
                 if (hit.GetComponent<EnemyAI>() != null)
                 {
-                    if (GetComponent<PlayerGothMode>().isGothMode) hit.GetComponent<EnemyAI>().TakeDamage(groundPoundAttack, transform.forward);
-                    else hit.GetComponent<EnemyAI>().TakeDamage((Attack)groundPoundAttack, transform.forward);
+                    var dir = -(transform.position - hit.transform.position).normalized;
+                    if (GetComponent<PlayerGothMode>().isGothMode) hit.GetComponent<EnemyAI>().TakeDamage(groundPoundAttack, dir);
+                    else hit.GetComponent<EnemyAI>().TakeDamage((Attack)groundPoundAttack, dir);
                 }
             }
         }
