@@ -47,16 +47,7 @@
                     "id": "a6eca5f5-b4ce-4f87-b4b0-67cbf3be8da7",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "SummonAllSheep",
-                    "type": "Button",
-                    "id": "0620d62b-b81b-498b-ae56-a5e4b21b6fe9",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "MultiTap",
+                    "interactions": "Hold",
                     "initialStateCheck": false
                 },
                 {
@@ -65,16 +56,16 @@
                     "id": "90d9266a-db84-4e15-a7a5-eb0ac7b38f73",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Hold",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "RecallAllSheep",
+                    "name": "SheepAttack",
                     "type": "Button",
-                    "id": "0a932ea2-3d48-46a8-b7a2-2bfe8e6afa9f",
+                    "id": "b5e0f688-f74e-4c19-be91-ee2e61a3c217",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "MultiTap",
+                    "interactions": "",
                     "initialStateCheck": false
                 },
                 {
@@ -260,7 +251,7 @@
                 {
                     "name": "",
                     "id": "c45b227e-d322-4434-a497-a375e237375a",
-                    "path": "<Keyboard>/1",
+                    "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -314,34 +305,12 @@
                 },
                 {
                     "name": "",
-                    "id": "3dd76438-c6d1-44cc-a7a4-40739ab56a3f",
-                    "path": "<Mouse>/rightButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "RecallAllSheep",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "b7a433ab-ce3b-40a1-8ef0-59fd2a9ffe9a",
                     "path": "<Keyboard>/p",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "DEBUG_Restart_Scene",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "8bb9dd1a-0a54-4b76-a34b-dc5fa5516164",
-                    "path": "<Keyboard>/1",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "SummonAllSheep",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -408,6 +377,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "PauseMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2629bde6-01a6-47b4-b2fd-aa0d55daa594",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SheepAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

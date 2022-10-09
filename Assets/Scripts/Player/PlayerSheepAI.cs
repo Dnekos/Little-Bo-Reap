@@ -397,13 +397,13 @@ public class PlayerSheepAI : Damageable
 
         //then, check if there are enemies nearby
         //Demetri I am using Physics.CheckSphere against your wishes
-        if(Physics.CheckSphere(transform.position, attackDetectionRadius, enemyLayer))
-        {
-            FindAttackTargets();
-            currentSheepState = SheepStates.ATTACK;
-			agent.stoppingDistance = attackStopDistance;
-            agent.speed = baseSpeedCurrent;
-        }
+        //if(Physics.CheckSphere(transform.position, attackDetectionRadius, enemyLayer))
+        //{
+        //    FindAttackTargets();
+        //    currentSheepState = SheepStates.ATTACK;
+		//	agent.stoppingDistance = attackStopDistance;
+        //    agent.speed = baseSpeedCurrent;
+        //}
     }
     IEnumerator WanderCooldown()
     {
