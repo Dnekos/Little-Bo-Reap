@@ -6,17 +6,18 @@ using UnityEngine.InputSystem;
 public class PlayerGroundPound : MonoBehaviour
 {
     [Header("Ground Pound Variables")]
-    [SerializeField] AudioClip explodeSound;
+    [SerializeField] FMODUnity.EventReference explodeSound;
     [SerializeField] string heavyAirAnimation;
     [SerializeField] float coolDown = 3f;
     [SerializeField] float airUpForce;
     [SerializeField] float airDownForce;
+    [SerializeField] PlayerCameraFollow playerCam;
 
     [Header("Explosion")]
     [SerializeField] GameObject heavyParticle;
     [SerializeField] Transform particleOrigin;
     [SerializeField] AbilityIcon groundPoundIcon;
-    [SerializeField] Attack groundPoundAttack;
+    [SerializeField] SheepAttack groundPoundAttack;
     [SerializeField] LayerMask enemyLayer;
     [SerializeField] float attackRadius;
     bool isFalling = false;
@@ -25,11 +26,9 @@ public class PlayerGroundPound : MonoBehaviour
     PlayerMovement playerMovement;
     Animator animator;
     Rigidbody rb;
-    AudioSource audioSource;
 
     private void Start()
     {
-        audioSource = GetComponent<AudioSource>();
         playerMovement = GetComponent<PlayerMovement>();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
@@ -44,7 +43,10 @@ public class PlayerGroundPound : MonoBehaviour
             Instantiate(heavyParticle, transform.position, transform.rotation);
 
             //TEMP SOUND
-            audioSource.PlayOneShot(explodeSound);
+            FMODUnity.RuntimeManager.PlayOneShotAttached(explodeSound,gameObject);
+
+            //camera shake!
+            playerCam.ShakeCamera(true);
 
             //for now, do this
             Collider[] enemies = Physics.OverlapSphere(transform.position, attackRadius, enemyLayer);
@@ -52,7 +54,9 @@ public class PlayerGroundPound : MonoBehaviour
             {
                 if (hit.GetComponent<EnemyAI>() != null)
                 {
-                    hit.GetComponent<EnemyAI>().TakeDamage(groundPoundAttack, transform.forward);
+                    var dir = -(transform.position - hit.transform.position).normalized;
+                    if (GetComponent<PlayerGothMode>().isGothMode) hit.GetComponent<EnemyAI>().TakeDamage(groundPoundAttack, dir);
+                    else hit.GetComponent<EnemyAI>().TakeDamage((Attack)groundPoundAttack, dir);
                 }
             }
         }

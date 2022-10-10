@@ -7,10 +7,9 @@ using UnityEngine.SceneManagement;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Temp sounds")]
-    [SerializeField] AudioClip jumpSound;
-    [SerializeField] AudioClip dashSound;
-    AudioSource audioSource;
-
+    [SerializeField] FMODUnity.EventReference jumpSound;
+    [SerializeField] FMODUnity.EventReference dashSound;
+	
     [Header("Movement Variables")]
     [SerializeField] float maxMoveSpeed;
     [SerializeField] float acceleration;
@@ -34,6 +33,15 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float dashAirborneLiftForce;
     [SerializeField] float dashCooldown = 1f;
     bool canDash = true;
+
+    [Header("Dash Slow Time Variables")]
+    [SerializeField] float dashSlowTimescale = 0.5f;
+    [SerializeField] float dashSlowLength = 0.25f;
+    [SerializeField] GameObject slowTimeVolume;
+    [SerializeField] GameObject slowTimeUI;
+    [SerializeField] float dashTriggerRadius = 5f;
+    [SerializeField] LayerMask enemyAttackLayer;
+    float defaultTimescale = 1.0f;
 
     [Header("Ground Check")]
     [SerializeField] LayerMask groundLayer;
@@ -79,8 +87,6 @@ public class PlayerMovement : MonoBehaviour
     }
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
-
         rb = GetComponent<Rigidbody>();
 		health = GetComponent<PlayerHealth>();
         animator = GetComponent<Animator>();
@@ -89,11 +95,12 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         GroundCheck();
-        RotatePlayer();
         UpdateAnimation();
     }
     private void FixedUpdate()
     {
+		RotatePlayer();
+
         Move();
         SpeedCheck();
     }
@@ -235,8 +242,8 @@ public class PlayerMovement : MonoBehaviour
     {
         if(isGrounded && context.started)
         {
-            //TEMP SOUND
-            audioSource.PlayOneShot(jumpSound);
+			//TEMP SOUND
+			FMODUnity.RuntimeManager.PlayOneShotAttached(jumpSound, gameObject);
 
             animator.Play(jumpAnimation);
             rb.AddForce(Vector3.up * jumpForce);
@@ -250,14 +257,17 @@ public class PlayerMovement : MonoBehaviour
 
             animator.Play(dashAnimation);
 
-            //TEMP SOUND
-            audioSource.PlayOneShot(dashSound);
+			//TEMP SOUND
+			FMODUnity.RuntimeManager.PlayOneShotAttached(dashSound,gameObject);
 
             //halt player
             rb.AddForce(-rb.velocity, ForceMode.VelocityChange);
 
             //apply lift if in air
             if (!isGrounded) rb.AddForce(transform.up * dashAirborneLiftForce);
+
+            //apply invuln if avoiding attack
+            DidDashAvoidAttack();
 
             //apply the dash
             if (moveDirection.magnitude == 0)
@@ -275,10 +285,40 @@ public class PlayerMovement : MonoBehaviour
     }
     #endregion
 
+    #region Dash
+
     IEnumerator DashCooldown()
     {
         canDash = false;
         yield return new WaitForSeconds(dashCooldown);
         canDash = true;
     }
+    public void DidDashAvoidAttack()
+    {
+        if (Physics.CheckSphere(transform.position, dashTriggerRadius, enemyAttackLayer))
+        {
+            StartCoroutine(DashSlowTime());
+        }
+    }
+    IEnumerator DashSlowTime()
+    {
+        gameObject.layer = LayerMask.NameToLayer("PlayerInvulnerable");
+        Time.timeScale = dashSlowTimescale;
+        Time.fixedDeltaTime = 0.02F * Time.timeScale;
+        slowTimeVolume.SetActive(true);
+        slowTimeUI.SetActive(true); 
+        health.isInvulnerable = true;
+
+        yield return new WaitForSeconds(dashSlowLength);
+
+        gameObject.layer = LayerMask.NameToLayer("Player");
+        Time.timeScale = defaultTimescale;
+        Time.fixedDeltaTime = 0.02F;
+        slowTimeVolume.SetActive(false);
+        slowTimeUI.SetActive(false);
+        health.isInvulnerable = false;
+        
+    }
+
+    #endregion
 }

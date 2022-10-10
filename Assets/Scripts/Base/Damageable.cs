@@ -5,9 +5,10 @@ using UnityEngine;
 public class Damageable : MonoBehaviour
 {
 	[Header("Health")]
-	[SerializeField] float Health;
+	[SerializeField] protected float Health;
 	[SerializeField] float MaxHealth;
 	[SerializeField] GameObject gibs;
+	public bool isInvulnerable;
 
 	protected Rigidbody rb;
 
@@ -20,22 +21,43 @@ public class Damageable : MonoBehaviour
 
 	virtual public void TakeDamage(Attack atk, Vector3 attackForward)
 	{
-		// deal damage
-		Health -= atk.damage;
-		Debug.Log(gameObject.name + " took " + atk.damage + " damage");
+		if(!isInvulnerable)
+        {
+			// deal damage
+			Health -= atk.damage;
+			Debug.Log(gameObject.name + " took " + atk.damage + " damage (force: "+(attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback)+")");
 
-		// add knockback
-		rb.AddForce(attackForward.x,
-					Mathf.Abs(attackForward.y) * atk.upwardKnockback,
-					attackForward.z * atk.forwardKnockback, ForceMode.Impulse);
+			// add knockback
+			rb.AddForce(attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback, ForceMode.Impulse);
+
+			// invoke death
+			if (Health <= 0)
+				OnDeath();
+		}
 		
-		// invoke death
-		if (Health <= 0) 
-			OnDeath();
 	}
+
+	virtual public void TakeDamage(SheepAttack atk, Vector3 attackForward)
+    {
+		if (!isInvulnerable)
+		{
+			// deal damage
+			Health -= atk.damageBlack;
+			Debug.Log(gameObject.name + " took " + atk.damageBlack + " damage (force: " + (attackForward * atk.forwardKnockbackBlack + Vector3.up * atk.upwardKnockbackBlack) + ")");
+
+			// add knockback
+			rb.AddForce(attackForward * atk.forwardKnockbackBlack + Vector3.up * atk.upwardKnockbackBlack, ForceMode.Impulse);
+
+			// invoke death
+			if (Health <= 0)
+				OnDeath();
+		}
+	}
+	
+
 	virtual protected void OnDeath()
 	{
-		Instantiate(gibs, transform.position, transform.rotation);
+		Instantiate(gibs, transform.position + Vector3.up * 1.4f, new Quaternion()).GetComponent<ParticleSystem>();
 		Destroy(gameObject); // base effect is deleting object
 	}	
 }

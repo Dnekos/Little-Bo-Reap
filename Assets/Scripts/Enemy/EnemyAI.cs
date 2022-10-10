@@ -8,7 +8,8 @@ public enum EnemyStates
 	WANDER = 0,
 	CHASE_PLAYER = 1,
 	HITSTUN = 2,
-	IDLE = 3
+	IDLE = 3,
+	EXECUTABLE = 4
 }
 
 public class EnemyAI : Damageable
@@ -20,6 +21,14 @@ public class EnemyAI : Damageable
 	[SerializeField] float StunTime = 0.3f;
 	[SerializeField] LayerMask playerLayer;
 
+	[Header("Execution Variables")]
+	public bool isExecutable;
+	public bool mustBeExecuted;
+	[SerializeField] protected int executionHealthThreshhold;
+	[SerializeField] protected EnemyExecutionTrigger executeTrigger;
+	public Transform executePlayerPos;
+	public Execution execution;
+
 	EnemyStates stunState;
 
 	[Header("Ground Check")]
@@ -28,6 +37,7 @@ public class EnemyAI : Damageable
 	[SerializeField] Transform groundCheckOriginBack;
 	[SerializeField] float groundCheckDistance;
 	public bool isGrounded = false;
+	[SerializeField] float fallRate = 50;
 
 	Transform player;
 	NavMeshAgent agent;
@@ -52,15 +62,27 @@ public class EnemyAI : Damageable
 				DoChase();
 				break;
 			case EnemyStates.HITSTUN:
+				//apply gravity if falling
+				if (!isGrounded)
+					rb.AddForce(Vector3.down * fallRate);
+
 				break;
 			case EnemyStates.IDLE:
 				DoIdle();
+				break;
+			case EnemyStates.EXECUTABLE:
+				DoExecutionState();
 				break;
 			default:
 				Debug.LogWarning("Enemy at unexpected state and defaulted!");
 				break;
 		}
 	}
+
+	public EnemyStates GetState()
+    {
+		return currentEnemyState;
+    }
 
 	void DoIdle()
     {
@@ -69,11 +91,25 @@ public class EnemyAI : Damageable
 			currentEnemyState = EnemyStates.CHASE_PLAYER;
     }
 
-	#region Chasing and Attacking
-	void DoChase()
+	#region Execution State
+
+	void DoExecutionState()
+    {
+
+    }
+
+	public void Execute()
+    {
+		OnDeath();
+    }
+
+
+    #endregion
+
+    #region Chasing and Attacking
+    void DoChase()
 	{
-		GroundCheck();
-		if (isGrounded)
+		//if (isGrounded)
 			agent.SetDestination(player.position);
 
 		// if Coroutine is not running, run it
@@ -110,38 +146,108 @@ public class EnemyAI : Damageable
 
 		if (!agent.enabled && isGrounded)
 		{
-			rb.isKinematic = true;
+			//rb.isKinematic = true;
 			agent.enabled = true;
+
+
+			//freeze
+			rb.constraints = RigidbodyConstraints.FreezeAll;
+
+			rb.velocity = Vector3.zero;
+			rb.angularVelocity = Vector3.zero;
 		}
 	}
 	#endregion
 
 	#region Health Override and Hitstun
+	//to apply normal damage, use this overload
 	public override void TakeDamage(Attack atk, Vector3 attackForward)
 	{
+		//if they must be executed, return
+		if (mustBeExecuted && Health < executionHealthThreshhold) return;
+
 		// give them hitstun
 		if (atk.DealsHitstun)
 		{
-			StopCoroutine("OnHitStun");
+			//StopCoroutine("OnHitStun");
+			StopAllCoroutines();
+			StartCoroutine("OnHitStun");
+		}
+		// subtract health
+		base.TakeDamage(atk, attackForward);
+
+		if (Health <= executionHealthThreshhold && isExecutable)
+		{
+			rb.mass = 100f;
+			rb.velocity = Vector3.zero;
+			agent.enabled = false;
+			gameObject.layer = LayerMask.NameToLayer("EnemyExecute");
+			rb.constraints = RigidbodyConstraints.FreezeAll;
+			currentEnemyState = EnemyStates.EXECUTABLE;
+			executeTrigger.gameObject.SetActive(true);
+		}
+	}
+
+	//to apply black sheep damage, use this overload
+	public override void TakeDamage(SheepAttack atk, Vector3 attackForward)
+	{
+		//if they must be executed, return
+		if (mustBeExecuted && Health < executionHealthThreshhold) return;
+
+		// give them hitstun
+		if (atk.dealsHitstunBlack)
+		{
+			//StopCoroutine("OnHitStun");
+			StopAllCoroutines();
 			StartCoroutine("OnHitStun");
 		}
 
 		// subtract health
 		base.TakeDamage(atk, attackForward);
+
+		if (Health <= executionHealthThreshhold && isExecutable)
+		{
+			rb.mass = 100f;
+			rb.velocity = Vector3.zero;
+			agent.enabled = false;
+			gameObject.layer = LayerMask.NameToLayer("EnemyExecute");
+			rb.constraints = RigidbodyConstraints.FreezeAll;
+			currentEnemyState = EnemyStates.EXECUTABLE;
+			executeTrigger.gameObject.SetActive(true);
+		}
 	}
-	IEnumerator OnHitStun()
+
+
+		IEnumerator OnHitStun()
 	{
 		// save current state and set to Hitstun
 		stunState = (currentEnemyState == EnemyStates.HITSTUN) ? stunState : currentEnemyState;
 		currentEnemyState = EnemyStates.HITSTUN;
 
 		//turn on rb and turn off navmesh (turned on in GroundCheck (which cant be called when hitstunned))
-		rb.isKinematic = false;
+		//rb.isKinematic = false;
 		agent.enabled = false;
+		rb.constraints = RigidbodyConstraints.None;
+		rb.constraints = RigidbodyConstraints.FreezeRotation;
 
 		yield return new WaitForSeconds(StunTime);
 
-		currentEnemyState = stunState;
+		// stay in stun until touching the ground
+		do
+		{
+			yield return new WaitForSeconds(0.01f);
+			GroundCheck();
+		} while (!isGrounded);
+
+		//reset if not in execute stage
+		//Demetri this is a quick n dirty fix might need to move around execute stuff eventually
+		if(currentEnemyState != EnemyStates.EXECUTABLE) currentEnemyState = stunState;
+
+		//freeze dammit
+		rb.constraints = RigidbodyConstraints.FreezeAll;
+
+		rb.velocity = Vector3.zero;
+		rb.angularVelocity = Vector3.zero;
 	}
 	#endregion
 }

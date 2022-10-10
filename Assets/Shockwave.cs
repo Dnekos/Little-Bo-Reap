@@ -57,7 +57,7 @@ public class Shockwave : MonoBehaviour
 		{
 			hitTargets.Add(targetHealth);
 			Debug.Log(other.gameObject.name + " hit by shockwave");
-			targetHealth.TakeDamage(ShockWaveAttack, (flattenedOtherPos - transform.position).normalized);
+			targetHealth.TakeDamage(ShockWaveAttack, (flattenedOtherPos - origPos).normalized);
 
 		}
 	}

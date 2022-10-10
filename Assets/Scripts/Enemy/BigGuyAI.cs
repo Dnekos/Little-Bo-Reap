@@ -13,6 +13,7 @@ public class BigGuyAI : EnemyAI
 	Animator anim;
 
 	[Header("Shockwave")]
+	[SerializeField] Attack ShockwaveAttack;
 	[SerializeField] GameObject ShockwavePrefab;
 	[SerializeField] Transform ShockwaveSpawnPoint;
 
@@ -44,9 +45,9 @@ public class BigGuyAI : EnemyAI
 			float angle = Vector3.Angle(transform.forward, heading);
 
 			if (NearbyGuys.Count != 0 && angle < 60)
-				anim.SetTrigger("Attack1");
+				anim.Play(StickAttack.animation);
 			else
-				anim.SetTrigger("Attack2");
+				anim.Play(ShockwaveAttack.animation);
 		}
 		QueuedAttack = null;
 
@@ -82,6 +83,7 @@ public class BigGuyAI : EnemyAI
 		// double check that the collision is due to the attack
 		if (collision.GetContact(0).thisCollider == StickCollider)
 		{
+			Debug.Log("collided with " + collision.gameObject.name);
 			collision.gameObject.GetComponent<Damageable>()?.TakeDamage(StickAttack, transform.forward);
 		}
 	}

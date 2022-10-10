@@ -11,7 +11,7 @@ public enum SheepStates
     DEFEND_PLAYER = 3,
 	CONSTRUCT = 4,
     ATTACK = 5,
-	STUN // TODO, make this the same as the enemy's
+	STUN = 6 // TODO, make this the same as the enemy's
 }
 
 [RequireComponent(typeof(NavMeshAgent))]
@@ -42,6 +42,7 @@ public class PlayerSheepAI : Damageable
     [Header("Black Sheep Variables")]
     public bool isBlackSheep = false;
     [SerializeField] GameObject blackSheepParticles;
+    public Attack selfDamage;
 
     [Header("Wander State Variables")]
     [SerializeField] float wanderSpeed = 10f;
@@ -59,8 +60,10 @@ public class PlayerSheepAI : Damageable
     [SerializeField] string attackAnimation;
     [SerializeField] float attackCooldown = 1.5f;
     [SerializeField] float distanceToAttack;
-    public Attack attackBase;
-    public float attackDamage = 5f;
+	[SerializeField] float attackStopDistance;
+
+	public SheepAttack attackBase;
+    //public float attackDamage = 5f;
     [SerializeField] bool canAttack = true;
 
     [Header("Charge State Variables")]
@@ -70,7 +73,7 @@ public class PlayerSheepAI : Damageable
     [SerializeField] float chargeEndDistance = 1f;
     [SerializeField] float chargeCheckTime = 1f;
     [SerializeField] float chargeCheckSpeed = 2f;
-    [SerializeField] Attack chargeAttack;
+    [SerializeField] SheepAttack chargeAttack;
     [SerializeField] Collider chargeCollider;
     float chargeCheckCurrent = 0;
     Vector3 chargePoint;
@@ -79,11 +82,12 @@ public class PlayerSheepAI : Damageable
     [Header("Defend State Variables")]
     [SerializeField] float defendSpeed = 35f;
     [SerializeField] float defendStopDistance = 0f;
-    [SerializeField] Attack defendAttack;
+    [SerializeField] SheepAttack defendAttack;
     Transform defendPoint;
 
 	[Header("Stun State Variables")]
 	[SerializeField] float StunTime = 1;
+	[SerializeField] float fallRate = 50;
 	bool isGrounded;
 	SheepHolder owningConstruct;
 
@@ -139,6 +143,7 @@ public class PlayerSheepAI : Damageable
 
     private void Update()
     {
+
         CheckAnimation();
         CheckLeader();
 
@@ -167,10 +172,16 @@ public class PlayerSheepAI : Damageable
                     break;
                 }
 			case SheepStates.CONSTRUCT:
-				break;
+                {
+                    break;
+                }
             case SheepStates.ATTACK:
                 {
                     DoAttack();
+                    break;
+                }
+            case SheepStates.STUN:
+                {
                     break;
                 }
             default:
@@ -181,6 +192,18 @@ public class PlayerSheepAI : Damageable
         }
     }
 
+    void DealDamage(Collider target, SheepAttack theAttack, bool blackSheepDamage)
+    {
+        if(blackSheepDamage)
+        {
+            //subtract 1 from health
+            TakeDamage(selfDamage, transform.forward);
+
+            Instantiate(theAttack.explosionEffect, transform.position, transform.rotation);
+            target?.GetComponent<EnemyAI>().TakeDamage(theAttack, transform.forward);
+        }
+        else target?.GetComponent<EnemyAI>().TakeDamage((Attack)theAttack, transform.forward);
+    }
     private void OnTriggerEnter(Collider other)
     {
         switch (currentSheepState)
@@ -189,7 +212,7 @@ public class PlayerSheepAI : Damageable
                 {
                     if (other.CompareTag("Enemy"))
                     {
-                        other?.GetComponent<EnemyAI>().TakeDamage(chargeAttack, transform.forward);
+                        DealDamage(other, chargeAttack, isBlackSheep);
                     }
                     break;
                 }
@@ -197,11 +220,16 @@ public class PlayerSheepAI : Damageable
                 {
                     if (other.CompareTag("Enemy"))
                     {
-                        other?.GetComponent<EnemyAI>().TakeDamage(defendAttack, transform.forward);
+                        DealDamage(other, defendAttack, isBlackSheep);
+                        TakeDamage(selfDamage, transform.forward);
                     }
                     break;
                 }
-            default:
+			case SheepStates.STUN:
+				if (!isGrounded)
+					rb.AddForce(Vector3.down * fallRate);
+				break;	
+			default:
                 {
                     break;
                 }
@@ -301,11 +329,14 @@ public class PlayerSheepAI : Damageable
 		currentSheepState = SheepStates.STUN;
 
 		//turn on rb and turn off navmesh (turned on in GroundCheck (which cant be called when hitstunned))
-		rb.isKinematic = false;
+		//rb.isKinematic = false;
 		agent.enabled = false;
 		isGrounded = false;
 
-		yield return new WaitForSeconds(StunTime);
+        rb.constraints = RigidbodyConstraints.None;
+        rb.constraints = RigidbodyConstraints.FreezeRotation;
+
+        yield return new WaitForSeconds(StunTime);
 
 		// wait until grounded
 		while (!isGrounded)
@@ -319,6 +350,13 @@ public class PlayerSheepAI : Damageable
 		if (currentSheepState == SheepStates.STUN && collision.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
 			isGrounded = true;
+            //rb.isKinematic = true;
+            agent.enabled = true;
+
+            rb.constraints = RigidbodyConstraints.FreezeAll;
+
+            rb.angularVelocity = Vector3.zero;
+            rb.velocity = Vector3.zero;
         }
 	}
 	#endregion
@@ -359,12 +397,13 @@ public class PlayerSheepAI : Damageable
 
         //then, check if there are enemies nearby
         //Demetri I am using Physics.CheckSphere against your wishes
-        if(Physics.CheckSphere(transform.position, attackDetectionRadius, enemyLayer))
-        {
-            FindAttackTargets();
-            currentSheepState = SheepStates.ATTACK;
-            agent.speed = baseSpeedCurrent;
-        }
+        //if(Physics.CheckSphere(transform.position, attackDetectionRadius, enemyLayer))
+        //{
+        //    FindAttackTargets();
+        //    currentSheepState = SheepStates.ATTACK;
+		//	agent.stoppingDistance = attackStopDistance;
+        //    agent.speed = baseSpeedCurrent;
+        //}
     }
     IEnumerator WanderCooldown()
     {
@@ -377,7 +416,8 @@ public class PlayerSheepAI : Damageable
     #region Attack
     void DoAttack()
     {  
-        if(attackTargetCurrent!= null) agent.SetDestination(attackTargetCurrent.transform.position);
+        if(attackTargetCurrent!= null)
+			agent.SetDestination(attackTargetCurrent.transform.position);
 
 
         if (canAttack)
@@ -385,15 +425,26 @@ public class PlayerSheepAI : Damageable
             //first check if we have a target and are in range
             if (attackTargetCurrent != null && Vector3.Distance(transform.position, attackTargetCurrent.transform.position) <= distanceToAttack)
             {
-                agent.SetDestination(transform.position);
-                transform.LookAt(attackTargetCurrent.transform);
-                animator.Play(attackAnimation);
-                canAttack = false;
-                StartCoroutine(AttackCooldown());
+                //if the target is executable, remove them from the list
+                if (attackTargetCurrent.GetState() == EnemyStates.EXECUTABLE)
+                {
+                    attackTargets.Remove(attackTargetCurrent);
+                    attackTargetCurrent = null;
+                }
+
+                else
+                {
+                    agent.SetDestination(transform.position);
+                    transform.LookAt(attackTargetCurrent.transform);
+                    animator.Play(attackAnimation);
+                    canAttack = false;
+                    StartCoroutine(AttackCooldown());
+                }
             }
-            //if no target, go to next in list or find one!
+            //if no target, go to next in list!
             else if (attackTargetCurrent == null)
             {
+                attackTargets.Remove(attackTargetCurrent);
                 attackTargetCurrent = GetAttackTarget();
 
                 //still no target? then go back to wander state
@@ -414,7 +465,7 @@ public class PlayerSheepAI : Damageable
     EnemyAI GetAttackTarget()
     {
         //find targets to attack
-        FindAttackTargets();
+        //FindAttackTargets();
 
         if(attackTargets.Count > 0)
         {
@@ -425,6 +476,23 @@ public class PlayerSheepAI : Damageable
         else return null;
     }
 
+    public void CreateListOfAttackTargets(Vector3 targetPos, float targetRadius)
+    {
+        //check if there are enemies nearby specified area
+        //Demetri I am using Physics.OverlapSphere against your wishes
+        Collider[] enemyHits = (Physics.OverlapSphere(targetPos, targetRadius, enemyLayer));
+        foreach (Collider enemy in enemyHits)
+        {
+            if (enemy.GetComponent<EnemyAI>() != null && enemy.GetComponent<EnemyAI>().GetState() != EnemyStates.EXECUTABLE) attackTargets?.Add(enemy.GetComponent<EnemyAI>());
+        }
+
+        //start attacking!
+        currentSheepState = SheepStates.ATTACK;
+        agent.stoppingDistance = attackStopDistance;
+        agent.speed = baseSpeedCurrent;
+    }
+
+    //depreciated function, here as a reference now
     void FindAttackTargets()
     {
         attackTargets.Clear();
@@ -434,7 +502,7 @@ public class PlayerSheepAI : Damageable
         Collider[] enemyHits = (Physics.OverlapSphere(transform.position, attackDetectionRadius, enemyLayer));
         foreach(Collider enemy in enemyHits)
         {
-            if (enemy.GetComponent<EnemyAI>() !=null ) attackTargets?.Add(enemy.GetComponent<EnemyAI>());
+            if (enemy.GetComponent<EnemyAI>() !=null && enemy.GetComponent<EnemyAI>().GetState() != EnemyStates.EXECUTABLE) attackTargets?.Add(enemy.GetComponent<EnemyAI>());
         }
     }
 
