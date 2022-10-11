@@ -50,7 +50,8 @@ public class PlayerSheepLift : MonoBehaviour
 
 		while (player.Lifting)
 		{
-			yield return new WaitForSeconds(TimeBetweenMoves);
+			//yield return new WaitForSeconds(TimeBetweenMoves);
+			yield return new WaitForEndOfFrame();
 			//Debug.Log("enumerating yo + "+ (usedSheep)+ " >= "+ flocks.GetCurrentSheepFlock(SheepTypes.BUILD).Count);
 
 			if (usedSheep >= flocks.GetCurrentSheepFlock(SheepTypes.BUILD).Count)
@@ -66,7 +67,7 @@ public class PlayerSheepLift : MonoBehaviour
 			if (Vector3.Distance( RecordedPositions[RecordedPositions.Count-1],lastSheepSpawn) * SheepSpacingMod >= sheepHeight )
 			{
 				//yield return new WaitForEndOfFrame();
-				StartCoroutine(SheepFollow(flocks.GetCurrentSheepFlock(SheepTypes.BUILD)[usedSheep++], 0));
+				StartCoroutine(SheepFollow(flocks.GetCurrentSheepFlock(SheepTypes.BUILD)[usedSheep++], 0, usedSheep == 1));
 				lastSheepSpawn = RecordedPositions[RecordedPositions.Count - 1];
 
 			}
@@ -74,22 +75,30 @@ public class PlayerSheepLift : MonoBehaviour
 
 	}
 
-	IEnumerator SheepFollow(PlayerSheepAI playerSheep,int startingIndex)
+	IEnumerator SheepFollow(PlayerSheepAI playerSheep,int startingIndex, bool debug = false)
 	{
 		playerSheep.StartLift(); 
 		int index = startingIndex;
-		while(player.Lifting)
+		float startTime = Time.time;
+		while (player.Lifting)
 		{
-			for (int i = 0; i < InterpolationCycles; i++)
-			{
-				yield return new WaitForSeconds(TimeBetweenMoves / InterpolationCycles);
-				float x = TimeBetweenMoves / InterpolationCycles;
-				//Debug.Log(x * InterpolationCycles + " " +x + " " + TimeBetweenMoves);
-				playerSheep.transform.position = Vector3.Lerp( RecordedPositions[index], RecordedPositions[index+1], i / InterpolationCycles);
 
-			}
-			index++;
+			//yield return new WaitForFixedUpdate(TimeBetweenMoves * InterpolationCycles);
+			yield return new WaitForEndOfFrame();
+
+			//float delta = Time.time - startTime;
+			//float t = delta / TimeBetweenMoves ;
+			//if (debug)
+			//	Debug.Log("index:"+index + " d:" + delta + " t:" + t);
+			//Debug.Log(x * InterpolationCycles + " " +x + " " + TimeBetweenMoves);
+			playerSheep.transform.position = Vector3.LerpUnclamped(RecordedPositions[index], RecordedPositions[index + 1], 1);
+			//if (t >= 1)
+			//{
+				//startTime = Time.time - (1-delta);
+				index++;
+
+			//}
 		}
-		playerSheep.KillSheep();
+		//playerSheep.KillSheep();
 	}
 }

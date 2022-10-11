@@ -582,6 +582,7 @@ public class PlayerSheepAI : Damageable
 		currentSheepState = SheepStates.CONSTRUCT;
 		agent.enabled = false;
 		rb.isKinematic = true;
+		gameObject.layer = LayerMask.NameToLayer("Ground");
 	}
 
 	public void DoConstruct(SheepHolder cons)
