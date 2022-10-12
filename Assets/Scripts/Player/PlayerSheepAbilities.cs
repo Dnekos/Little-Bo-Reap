@@ -158,7 +158,7 @@ public class PlayerSheepAbilities : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
 
             isInFlockMenu = true;
-            Debug.Log("in flock menu");
+            //Debug.Log("in flock menu");
 
             //enable flock select menu
             Time.timeScale = flockMenuTimescale;
@@ -172,8 +172,8 @@ public class PlayerSheepAbilities : MonoBehaviour
                 currentFlockType = flockSelectMenu.flockToChangeTo;
                 currentFlockIndex = (int)currentFlockType;
 
-                Debug.Log("Current Flock is: " + currentFlockType);
-                sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
+                //Debug.Log("Current Flock is: " + currentFlockType);
+                //sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
                 sheepTypeText.color = sheepTypeColors[(int)currentFlockType];
 
                 Cursor.visible = false;
@@ -193,8 +193,8 @@ public class PlayerSheepAbilities : MonoBehaviour
             if (currentFlockIndex >= 3) currentFlockIndex = 0; //dont try to set to an enum that doesnt exist 
             currentFlockType = (SheepTypes)currentFlockIndex;
 
-            Debug.Log("Current Flock is: " + currentFlockType);
-            sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
+            //Debug.Log("Current Flock is: " + currentFlockType);
+            //sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
             sheepTypeText.color = sheepTypeColors[(int)currentFlockType];
         }
         else if(context.performed && swapContextValue < -1)
@@ -204,8 +204,8 @@ public class PlayerSheepAbilities : MonoBehaviour
             if (currentFlockIndex < 0) currentFlockIndex = 2; //dont try to set to an enum that doesnt exist 
             currentFlockType = (SheepTypes)currentFlockIndex;
 
-            Debug.Log("Current Flock is: " + currentFlockType);
-            sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
+            //Debug.Log("Current Flock is: " + currentFlockType);
+            //sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
             sheepTypeText.color = sheepTypeColors[(int)currentFlockType];
         }
     }
@@ -323,7 +323,7 @@ public class PlayerSheepAbilities : MonoBehaviour
     {
         if(context.started)
         {
-            Debug.Log("performed recall");
+            //Debug.Log("performed recall");
             recallPerformed = false;
         }
 
