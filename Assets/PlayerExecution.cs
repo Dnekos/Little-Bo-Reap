@@ -5,11 +5,12 @@ using UnityEngine.InputSystem;
 
 public class PlayerExecution : MonoBehaviour
 {
+    [Header("Execution Command Variables")]
     [SerializeField] float executeRadius = 10f;
     [SerializeField] LayerMask enemyExecuteLayer;
-    bool canExecute;
-    //public bool isInExecuteRange;
     public List<EnemyAI> executableEnemies;
+
+    bool canExecute;
     EnemyAI enemyToExecute;
     Transform targetPos;
     public PlayerInput inputs;
@@ -17,9 +18,10 @@ public class PlayerExecution : MonoBehaviour
 
     public void OnExecute(InputAction.CallbackContext context)
     {
-
+        //when you press the execute key
         if(context.started)
         {
+            //get all enemies in radius, if we get an executable enemy then we can execute
             Collider[] hits = Physics.OverlapSphere(transform.position, executeRadius, enemyExecuteLayer);
             foreach(Collider hit in hits)
             {
@@ -27,6 +29,7 @@ public class PlayerExecution : MonoBehaviour
                 canExecute = true;
             }
 
+            //execute first enemy in list, play animations from execute scriptable object and start execute coroutine
             if(canExecute)
             {
                 enemyToExecute = executableEnemies[0];
@@ -34,37 +37,35 @@ public class PlayerExecution : MonoBehaviour
 
                 GetComponent<PlayerAnimationController>().playerAnimator.Play(enemyToExecute.execution.playerAnimation);
                 enemyToExecute.GetComponent<Animator>().Play(enemyToExecute.execution.enemyAnimation);
+
+                Debug.Log(enemyToExecute.execution.executionLength);
+                StartCoroutine(ExecuteEnemy(enemyToExecute.execution.executionLength));
+
                 canExecute = false;
             }
         }
-       // //loop through executeable enemey list and make sure none are null
-       // for (int i = 0; i < executableEnemies.Count; i++)
-       // {
-       //     if (executableEnemies[i] == null) executableEnemies.Remove(executableEnemies[i]);
-       // }
-       //
-       // if (context.started && isInExecuteRange)
-       // {
-       //     //for now, just kill the one at 0
-       //     enemyToExecute = executableEnemies[0];
-       //     targetPos = enemyToExecute.executePlayerPos;
-       //     isInExecuteRange = false;
-       //
-       //     GetComponent<Animator>().Play(enemyToExecute.execution.playerAnimation);
-       //     enemyToExecute.GetComponent<Animator>().Play(enemyToExecute.execution.enemyAnimation);
-       // }
+     
     }
 
+    //if executing, figure out positions. TODO
     private void Update()
     {
         if(isExecuting)
         {
             transform.LookAt(enemyToExecute.transform.position);
-            transform.position = Vector3.Lerp(transform.position, targetPos.position, 10f * Time.deltaTime);
+            enemyToExecute.transform.LookAt(transform.position);
         }
         
     }
 
+    IEnumerator ExecuteEnemy(float length)
+    {
+        StartExecution();
+        yield return new WaitForSeconds(length);
+        EndExecution();
+    }
+
+    //make player invulnerable during executions!!
     public void StartExecution()
     {
         isExecuting = true;

@@ -8,4 +8,5 @@ public class Execution : ScriptableObject
 	[Header("BaseVariables")]
 	public string playerAnimation;
 	public string enemyAnimation;
+	public float executionLength;
 }

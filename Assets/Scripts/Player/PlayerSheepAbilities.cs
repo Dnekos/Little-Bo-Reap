@@ -90,6 +90,7 @@ public class PlayerSheepAbilities : MonoBehaviour
     [SerializeField] string chargeAnimation;
     [SerializeField] AbilityIcon chargeIcon;
     [SerializeField] float chargeCooldown = 1f;
+    [SerializeField] float chargeDistanceToUse;
     bool canCharge = true;
     GameObject sheepChargePoint;
     Vector3 chargePosition;
@@ -628,7 +629,7 @@ public class PlayerSheepAbilities : MonoBehaviour
                 {
                     for (int i = 0; i < GetCurrentSheepFlock(flockType).Count; i++)
                     {
-                        if (GetCurrentSheepFlock(flockType)[i].IsCommandable()) GetCurrentSheepFlock(flockType)[i]?.BeginCharge(hit.point);
+                        if (GetCurrentSheepFlock(flockType)[i].IsCommandable() && Vector3.Distance(transform.position, GetCurrentSheepFlock(flockType)[i].transform.position) <= chargeDistanceToUse ) GetCurrentSheepFlock(flockType)[i]?.BeginCharge(hit.point);
                     }
                 }
                 
