@@ -121,7 +121,7 @@ public class PlayerSheepAbilities : MonoBehaviour
     private void Start()
     {
         summonResource = GetComponent<PlayerSummoningResource>();
-        animator = GetComponent<Animator>();
+        animator = GetComponent<PlayerAnimationController>().playerAnimator;
         currentFlockIndex = (int)currentFlockType;
         gothMode = GetComponent<PlayerGothMode>();
 

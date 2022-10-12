@@ -322,7 +322,7 @@ public class PlayerSheepAI : Damageable
     }
     #endregion
 
-    #region Sheep Stun Demetri Name your regions idiot +2 baby points
+    #region Sheep Stun 
     IEnumerator OnHitStun(SheepStates stateAfterStun)
 	{
 		// save current state and set to Hitstun

@@ -89,7 +89,7 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
 		health = GetComponent<PlayerHealth>();
-        animator = GetComponent<Animator>();
+        animator = GetComponent<PlayerAnimationController>().playerAnimator;
     }
 
     private void Update()

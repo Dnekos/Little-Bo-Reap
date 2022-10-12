@@ -9,6 +9,7 @@ public class PlayerGroundPound : MonoBehaviour
     [SerializeField] FMODUnity.EventReference explodeSound;
     [SerializeField] string heavyAirAnimation;
     [SerializeField] float coolDown = 3f;
+    [SerializeField] float timeTillSlamDown = 0.25f;
     [SerializeField] float airUpForce;
     [SerializeField] float airDownForce;
     [SerializeField] PlayerCameraFollow playerCam;
@@ -30,7 +31,7 @@ public class PlayerGroundPound : MonoBehaviour
     private void Start()
     {
         playerMovement = GetComponent<PlayerMovement>();
-        animator = GetComponent<Animator>();
+        animator = GetComponent<PlayerAnimationController>().playerAnimator;
         rb = GetComponent<Rigidbody>();
     }
 
@@ -39,7 +40,7 @@ public class PlayerGroundPound : MonoBehaviour
         if (isFalling)
         {
             isFalling = false;
-            animator.SetBool("isFalling", isFalling);
+            animator.SetBool("isFalling", false);
             Instantiate(heavyParticle, transform.position, transform.rotation);
 
             //TEMP SOUND
@@ -88,10 +89,18 @@ public class PlayerGroundPound : MonoBehaviour
 
             animator.Play(heavyAirAnimation);
 
+            StartCoroutine(SlamDown());
+
 
             rb.AddForce(-rb.velocity * 0.5f, ForceMode.VelocityChange);
             rb.AddForce(Vector3.up * airUpForce);
         }
+    }
+
+    IEnumerator SlamDown()
+    {
+        yield return new WaitForSeconds(timeTillSlamDown);
+        HeavySlamDown();
     }
 
     IEnumerator GroundPoundCooldown()

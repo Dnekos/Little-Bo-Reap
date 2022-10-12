@@ -32,7 +32,7 @@ public class PlayerExecution : MonoBehaviour
                 enemyToExecute = executableEnemies[0];
                 targetPos = enemyToExecute.executePlayerPos;
 
-                GetComponent<Animator>().Play(enemyToExecute.execution.playerAnimation);
+                GetComponent<PlayerAnimationController>().playerAnimator.Play(enemyToExecute.execution.playerAnimation);
                 enemyToExecute.GetComponent<Animator>().Play(enemyToExecute.execution.enemyAnimation);
                 canExecute = false;
             }
