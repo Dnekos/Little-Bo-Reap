@@ -2923,6 +2923,7 @@ GameObject:
   - component: {fileID: 8582151330752332035}
   - component: {fileID: 7611933122142456365}
   - component: {fileID: 3274229950097917984}
+  - component: {fileID: 5528081572093814127}
   m_Layer: 7
   m_Name: Player_Body
   m_TagString: Player
@@ -3355,6 +3356,10 @@ MonoBehaviour:
   jumpForce: 1250
   fallRate: 50
   jumpParticles: {fileID: 4261654204498698349}
+  LiftMaxSpeedModifier: 0.2
+  LiftSpeed: 25
+  Lifting: 0
+  CanLift: 1
   dashForce: 1500
   dashAirborneLiftForce: 375
   dashCooldown: 0.35
@@ -3614,6 +3619,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerAnimator: {fileID: 5483565552970077146}
+--- !u!114 &5528081572093814127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3870380308813204390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cea39a77da0e7034fb54b6e94a573b42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AllowedSurvivingSheep: 5
+  SheepSpacingMod: 1
+  mainCollider: {fileID: 3870380308813204387}
+  PlatformSize: {x: 2, y: 1, z: 2}
 --- !u!1 &3939397258707507384
 GameObject:
   m_ObjectHideFlags: 0
