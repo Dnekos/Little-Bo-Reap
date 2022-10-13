@@ -22,6 +22,10 @@ public class PlayerSheepAI : Damageable
     [SerializeField] SheepStates currentSheepState;
     [SerializeField] float baseSpeedMin = 15f;
     [SerializeField] float baseSpeedMax = 20f;
+    [SerializeField] string jumpAnimation;
+    [SerializeField] float jumpSpeed = 8f;
+    bool isJumping = false;
+    float storedSpeed;
     float baseSpeedCurrent;
     float agentStoppingDistance;
     Transform player;
@@ -133,6 +137,20 @@ public class PlayerSheepAI : Damageable
     {
         if (agent.velocity.magnitude > 1) animator.SetBool("isMoving", true);
         else animator.SetBool("isMoving", false);
+
+        //jump
+        if (agent.isOnOffMeshLink && !isJumping)
+        {
+            storedSpeed = agent.speed;
+            agent.speed = jumpSpeed;
+            isJumping = true;
+            animator.Play(jumpAnimation);
+        }
+        if(isJumping && !agent.isOnOffMeshLink)
+        {
+            agent.speed = storedSpeed;
+            isJumping = false;
+        }
     }
 
     public void GothMode()
@@ -311,7 +329,7 @@ public class PlayerSheepAI : Damageable
 
             return;
         }
-        else
+        else if(!isJumping)
         {
             //set speed and follow distance
             agent.speed = baseSpeedCurrent;

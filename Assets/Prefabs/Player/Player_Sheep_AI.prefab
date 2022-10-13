@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7736017012913245128}
   - component: {fileID: 5053696666485600318}
   - component: {fileID: 382406257177859036}
-  m_Layer: 10
+  m_Layer: 15
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 8773899699277438939}
   - component: {fileID: 3278913021527698109}
   - component: {fileID: 4463022599168404592}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Black_Sheep_Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5048,7 +5048,7 @@ GameObject:
   - component: {fileID: 4937644679553081173}
   - component: {fileID: 3640011822163141084}
   - component: {fileID: 215625023524592556}
-  m_Layer: 10
+  m_Layer: 15
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5242,7 +5242,7 @@ GameObject:
   - component: {fileID: 3903509060347745927}
   - component: {fileID: 7887501772290830787}
   - component: {fileID: 2320622292214891714}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Black_Sheep_Particles (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10208,6 +10208,8 @@ MonoBehaviour:
   currentSheepState: 0
   baseSpeedMin: 25
   baseSpeedMax: 35
+  jumpAnimation: Test_Sheep_Jump
+  jumpSpeed: 8
   avoidPlayerDistance: 2.5
   avoidPlayerSpeed: 45
   followStoppingDistanceMin: 5
