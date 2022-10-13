@@ -32,7 +32,7 @@ public class PlayerMovement : MonoBehaviour
 	[SerializeField] float LiftMaxSpeedModifier = 0.5f;
 	public float LiftSpeed = 5;
 	public bool Lifting = false;
-	bool CanLift = true;
+	[HideInInspector] public bool CanLift = true;
 
     [Header("Dash Variables")]
     [SerializeField] float dashForce;

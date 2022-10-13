@@ -4,22 +4,28 @@ using UnityEngine;
 
 public class PlayerSheepLift : MonoBehaviour
 {
-	[SerializeField] float TimeBetweenMoves = 0.1f;
-	[SerializeField] float InterpolationCycles = 10;
+	[SerializeField] int AllowedSurvivingSheep = 5;
 	[SerializeField] float SheepSpacingMod = 0.5f;
-	[SerializeField] float Step;
-	[SerializeField] CapsuleCollider mainCollider;
+	[Tooltip("this should be the primary collider on the player"), SerializeField] CapsuleCollider mainCollider;
 	float sheepHeight;
 
-	List<Vector3> RecordedPositions;
-	Vector3 lastSheepSpawn;
+	// Platform Stuff
+	[Header("Top Platform"), SerializeField] Vector3 PlatformSize;
+	GameObject platform;
 
+	// list of points for the sheep to follow
+	List<Vector3> RecordedPositions;
+
+	// components
 	PlayerSheepAbilities flocks;
 	Rigidbody rb;
 	PlayerMovement player;
 
+
+	// internal variables
 	float distTowardsNextSheep = 0;
 	int usedSheep = 0;
+	bool collapseTower = false;
 
 	private void Start()
 	{
@@ -28,6 +34,8 @@ public class PlayerSheepLift : MonoBehaviour
 		flocks = GetComponent<PlayerSheepAbilities>();
 		sheepHeight = flocks.GetCurrentSheepPrefab(SheepTypes.BUILD).GetComponentInChildren<CapsuleCollider>().height;
 		RecordedPositions = new List<Vector3>();
+
+		platform = null;
 	}
 
 	// Update is called once per frame
@@ -40,15 +48,26 @@ public class PlayerSheepLift : MonoBehaviour
 			Debug.DrawLine(RecordedPositions[i], RecordedPositions[i] + Vector3.forward,Color.blue);
 		}
 
+		if (platform != null && player.transform.position.y < platform.transform.position.y)
+		{
+			Destroy(platform);
+			platform = null;
+			collapseTower = true;
+		}
+
 	}
 	public bool StartLifting()
 	{
 		RaycastHit info;
 		Physics.Raycast(transform.position, Vector3.down, out info, 100, LayerMask.GetMask("Ground"));
-		Debug.Log("p:" + info.point + " d:" + info.distance);
 
+		// not enough sheep to make the ladder
+		if (info.distance > sheepHeight * SheepSpacingMod * flocks.GetCurrentSheepFlock(SheepTypes.BUILD).Count)
+			return false;
+
+
+		collapseTower = false;
 		RecordedPositions = new List<Vector3>();
-		lastSheepSpawn = info.point;
 		usedSheep = 0;
 		player.Lifting = true;
 
@@ -57,7 +76,9 @@ public class PlayerSheepLift : MonoBehaviour
 		{
 			if (!PlacePoint(new Vector3(info.point.x, i, info.point.z), true))
 			{
+				collapseTower = true;
 				player.Lifting = false;
+
 				return false;
 			}
 		}
@@ -83,9 +104,8 @@ public class PlayerSheepLift : MonoBehaviour
 		// check if theres room to add a sheep to the stack
 		if (distTowardsNextSheep * SheepSpacingMod >= sheepHeight)
 		{
-			StartCoroutine(SheepFollow(flocks.GetCurrentSheepFlock(SheepTypes.BUILD)[usedSheep++], PlaceAtTop ? RecordedPositions.Count - 1 : 0, usedSheep == 1));
-			lastSheepSpawn = RecordedPositions[RecordedPositions.Count - 1];
-
+			StartCoroutine(SheepFollow(flocks.GetCurrentSheepFlock(SheepTypes.BUILD)[usedSheep], PlaceAtTop ? RecordedPositions.Count - 1 : 0, usedSheep));
+			usedSheep++;
 			distTowardsNextSheep = 0;
 		}
 		return true;
@@ -100,9 +120,14 @@ public class PlayerSheepLift : MonoBehaviour
 			if (!PlacePoint(transform.position - Vector3.up * (mainCollider.height * 0.5f), false))
 				break;
 		}
+
+		platform = new GameObject("Lift Platform");
+		platform.transform.position = RecordedPositions[RecordedPositions.Count - 1];
+		platform.layer = LayerMask.NameToLayer("Ground");
+		platform.AddComponent<BoxCollider>().size = PlatformSize;
 	}
 
-	IEnumerator SheepFollow(PlayerSheepAI playerSheep,int startingIndex, bool debug = false)
+	IEnumerator SheepFollow(PlayerSheepAI playerSheep,int startingIndex, int sheepIndex)
 	{
 		playerSheep.StartLift(); 
 		int index = startingIndex;
@@ -114,5 +139,17 @@ public class PlayerSheepLift : MonoBehaviour
 			playerSheep.transform.position = RecordedPositions[index];// Vector3.LerpUnclamped(RecordedPositions[index], RecordedPositions[index + 1], 1);
 				index++;
 		}
+
+		yield return new WaitUntil(() => collapseTower || playerSheep.GetSheepState() != SheepStates.LIFT);
+
+		Debug.Log(playerSheep.GetSheepState() + " " + collapseTower);
+		if (playerSheep.GetSheepState() == SheepStates.LIFT)
+			playerSheep.EndLift(sheepIndex <= AllowedSurvivingSheep);
+	}
+
+	private void OnCollisionExit(Collision collision)
+	{
+		if (collision.gameObject == platform)
+			player.CanLift = false;
 	}
 }

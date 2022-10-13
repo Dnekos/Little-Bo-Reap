@@ -183,9 +183,15 @@ public class PlayerSheepAI : Damageable
                 }
             case SheepStates.STUN:
                 {
-                    break;
+					if (!isGrounded)
+						rb.AddForce(Vector3.down * fallRate);
+					break;
                 }
-            default:
+			case SheepStates.LIFT:
+				{
+					break;
+				}
+			default:
                 {
                     Debug.LogWarning("PlayerSheepAI should never default!");
                     break;
@@ -227,8 +233,6 @@ public class PlayerSheepAI : Damageable
                     break;
                 }
 			case SheepStates.STUN:
-				if (!isGrounded)
-					rb.AddForce(Vector3.down * fallRate);
 				break;	
 			default:
                 {
@@ -317,8 +321,8 @@ public class PlayerSheepAI : Damageable
             //set speed and follow distance
             agent.speed = baseSpeedCurrent;
             agent.stoppingDistance = agentStoppingDistance;
-            agent.SetDestination(player.position);
-        }
+			agent.SetDestination(player.position);
+		}
 
     }
     #endregion
@@ -328,20 +332,21 @@ public class PlayerSheepAI : Damageable
 	{
 		// save current state and set to Hitstun
 		currentSheepState = SheepStates.STUN;
-
+		gameObject.layer = LayerMask.NameToLayer("PlayerSheep");
 		//turn on rb and turn off navmesh (turned on in GroundCheck (which cant be called when hitstunned))
 		//rb.isKinematic = false;
 		agent.enabled = false;
 		isGrounded = false;
 
+		rb.isKinematic = false;
         rb.constraints = RigidbodyConstraints.None;
         rb.constraints = RigidbodyConstraints.FreezeRotation;
 
         yield return new WaitForSeconds(StunTime);
 
 		// wait until grounded
-		while (!isGrounded)
-			yield return new WaitForSeconds(0.1f);
+		yield return new WaitUntil(() => isGrounded);
+			//yield return new WaitForSeconds(0.1f);
 
 		currentSheepState = stateAfterStun;
 	}
@@ -579,10 +584,27 @@ public class PlayerSheepAI : Damageable
 	#region Sheep Construct / Lift
 	public void StartLift()
 	{
-		currentSheepState = SheepStates.CONSTRUCT;
+		currentSheepState = SheepStates.LIFT;
 		agent.enabled = false;
 		rb.isKinematic = true;
 		gameObject.layer = LayerMask.NameToLayer("Ground");
+	}
+	public void CancelLift()
+	{
+		currentSheepState = SheepStates.FOLLOW_PLAYER;
+		agent.enabled = true;
+
+		rb.constraints = RigidbodyConstraints.FreezeAll;
+
+		rb.angularVelocity = Vector3.zero;
+		rb.velocity = Vector3.zero;
+	}
+	public void EndLift(bool kill)
+	{
+		if (kill)
+			KillSheep();
+		else
+			StartCoroutine(OnHitStun(SheepStates.FOLLOW_PLAYER));
 	}
 
 	public void DoConstruct(SheepHolder cons)

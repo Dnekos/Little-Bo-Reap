@@ -31720,11 +31720,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cea39a77da0e7034fb54b6e94a573b42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AllowedSurvivingSheep: 5
   TimeBetweenMoves: 0.05
   InterpolationCycles: 0.2
   SheepSpacingMod: 1
   Step: 0.3
   mainCollider: {fileID: 2022917036}
+  PlatformSize: {x: 2, y: 1, z: 2}
 --- !u!136 &2022917036 stripped
 CapsuleCollider:
   m_CorrespondingSourceObject: {fileID: 3870380308813204387, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
@@ -33603,7 +33605,7 @@ PrefabInstance:
     - target: {fileID: 8268160106776874863, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
         type: 3}
       propertyPath: amountToSummonBuild
-      value: 50
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8268160106776874863, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
         type: 3}
