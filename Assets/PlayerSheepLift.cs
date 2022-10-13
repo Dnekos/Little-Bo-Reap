@@ -7,18 +7,23 @@ public class PlayerSheepLift : MonoBehaviour
 	[SerializeField] float TimeBetweenMoves = 0.1f;
 	[SerializeField] float InterpolationCycles = 10;
 	[SerializeField] float SheepSpacingMod = 0.5f;
+	[SerializeField] float Step;
+	[SerializeField] CapsuleCollider mainCollider;
 	float sheepHeight;
 
 	List<Vector3> RecordedPositions;
 	Vector3 lastSheepSpawn;
 
 	PlayerSheepAbilities flocks;
+	Rigidbody rb;
 	PlayerMovement player;
 
+	float distTowardsNextSheep = 0;
 	int usedSheep = 0;
 
 	private void Start()
 	{
+		rb = GetComponent<Rigidbody>();
 		player = GetComponent<PlayerMovement>();
 		flocks = GetComponent<PlayerSheepAbilities>();
 		sheepHeight = flocks.GetCurrentSheepPrefab(SheepTypes.BUILD).GetComponentInChildren<CapsuleCollider>().height;
@@ -28,51 +33,73 @@ public class PlayerSheepLift : MonoBehaviour
 	// Update is called once per frame
 	void Update()
     {
-		//flocks.GetCurrentSheepFlock(SheepTypes.BUILD)
 
 		for (int i = 0; i < RecordedPositions.Count - 1; i++)
 		{
 			Debug.DrawLine(RecordedPositions[i], RecordedPositions[i + 1], i % 2  == 0 ? Color.red : Color.green);
 			Debug.DrawLine(RecordedPositions[i], RecordedPositions[i] + Vector3.forward,Color.blue);
-
 		}
+
 	}
-	public void StartLifting()
+	public bool StartLifting()
 	{
-		
-		//lastSheepSpawn = transform.position - Vector3.up * GetComponent<CapsuleCollider>().height * 0.5f;
-	}
-	public IEnumerator PlayerPath()
-	{
+		RaycastHit info;
+		Physics.Raycast(transform.position, Vector3.down, out info, 100, LayerMask.GetMask("Ground"));
+		Debug.Log("p:" + info.point + " d:" + info.distance);
+
 		RecordedPositions = new List<Vector3>();
-		lastSheepSpawn = transform.position;// - Vector3.up * GetComponent<CapsuleCollider>().height * 0.5f;
+		lastSheepSpawn = info.point;
 		usedSheep = 0;
+		player.Lifting = true;
 
-		while (player.Lifting)
+		float interval = player.LiftSpeed * Time.deltaTime;
+		for (float i = info.point.y; i < transform.position.y - (mainCollider.height * 0.5f); i += interval)
 		{
-			//yield return new WaitForSeconds(TimeBetweenMoves);
-			yield return new WaitForEndOfFrame();
-			//Debug.Log("enumerating yo + "+ (usedSheep)+ " >= "+ flocks.GetCurrentSheepFlock(SheepTypes.BUILD).Count);
-
-			if (usedSheep >= flocks.GetCurrentSheepFlock(SheepTypes.BUILD).Count)
+			if (!PlacePoint(new Vector3(info.point.x, i, info.point.z), true))
 			{
 				player.Lifting = false;
-				break;
-			}
-
-			// add new point on line
-			RecordedPositions.Add(transform.position);//GetComponent<Rigidbody>().position);
-
-			// check if theres room to add a sheep to the stack
-			if (Vector3.Distance( RecordedPositions[RecordedPositions.Count-1],lastSheepSpawn) * SheepSpacingMod >= sheepHeight )
-			{
-				//yield return new WaitForEndOfFrame();
-				StartCoroutine(SheepFollow(flocks.GetCurrentSheepFlock(SheepTypes.BUILD)[usedSheep++], 0, usedSheep == 1));
-				lastSheepSpawn = RecordedPositions[RecordedPositions.Count - 1];
-
+				return false;
 			}
 		}
 
+		return true;
+	}
+
+	// returns false if you cannot place a sheep
+	bool PlacePoint(Vector3 newPos, bool PlaceAtTop)
+	{
+		if (usedSheep >= flocks.GetCurrentSheepFlock(SheepTypes.BUILD).Count)
+		{
+			player.Lifting = false;
+			return false;
+		}
+
+		// add new point on line
+		RecordedPositions.Add(newPos);
+
+		if (RecordedPositions.Count > 2)
+			distTowardsNextSheep += Vector3.Distance(RecordedPositions[RecordedPositions.Count - 1], RecordedPositions[RecordedPositions.Count - 2]);
+
+		// check if theres room to add a sheep to the stack
+		if (distTowardsNextSheep * SheepSpacingMod >= sheepHeight)
+		{
+			StartCoroutine(SheepFollow(flocks.GetCurrentSheepFlock(SheepTypes.BUILD)[usedSheep++], PlaceAtTop ? RecordedPositions.Count - 1 : 0, usedSheep == 1));
+			lastSheepSpawn = RecordedPositions[RecordedPositions.Count - 1];
+
+			distTowardsNextSheep = 0;
+		}
+		return true;
+	}
+
+	public IEnumerator PlayerPath()
+	{
+		while (player.Lifting)
+		{
+			yield return new WaitForEndOfFrame();
+
+			if (!PlacePoint(transform.position - Vector3.up * (mainCollider.height * 0.5f), false))
+				break;
+		}
 	}
 
 	IEnumerator SheepFollow(PlayerSheepAI playerSheep,int startingIndex, bool debug = false)
@@ -82,23 +109,10 @@ public class PlayerSheepLift : MonoBehaviour
 		float startTime = Time.time;
 		while (player.Lifting)
 		{
-
-			//yield return new WaitForFixedUpdate(TimeBetweenMoves * InterpolationCycles);
 			yield return new WaitForEndOfFrame();
 
-			//float delta = Time.time - startTime;
-			//float t = delta / TimeBetweenMoves ;
-			//if (debug)
-			//	Debug.Log("index:"+index + " d:" + delta + " t:" + t);
-			//Debug.Log(x * InterpolationCycles + " " +x + " " + TimeBetweenMoves);
-			playerSheep.transform.position = Vector3.LerpUnclamped(RecordedPositions[index], RecordedPositions[index + 1], 1);
-			//if (t >= 1)
-			//{
-				//startTime = Time.time - (1-delta);
+			playerSheep.transform.position = RecordedPositions[index];// Vector3.LerpUnclamped(RecordedPositions[index], RecordedPositions[index + 1], 1);
 				index++;
-
-			//}
 		}
-		//playerSheep.KillSheep();
 	}
 }

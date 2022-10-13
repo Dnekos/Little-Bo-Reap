@@ -30,7 +30,7 @@ public class PlayerMovement : MonoBehaviour
 
 	[Header("Sheep Lift")]
 	[SerializeField] float LiftMaxSpeedModifier = 0.5f;
-	[SerializeField] float LiftSpeed = 5;
+	public float LiftSpeed = 5;
 	public bool Lifting = false;
 	bool CanLift = true;
 
@@ -68,6 +68,7 @@ public class PlayerMovement : MonoBehaviour
     Animator animator;
 
 	PlayerHealth health;
+	PlayerSheepLift liftcontroller;
 	
     #region Debug Stuff
     public void OnDebugRestart(InputAction.CallbackContext context)
@@ -95,7 +96,9 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 		health = GetComponent<PlayerHealth>();
         animator = GetComponent<Animator>();
-    }
+		liftcontroller = GetComponent<PlayerSheepLift>();
+
+	}
 
     private void Update()
     {
@@ -218,12 +221,16 @@ public class PlayerMovement : MonoBehaviour
         }
 		else if (context.started && CanLift)
 		{
-			rb.AddForce(Vector3.down * rb.velocity.y, ForceMode.VelocityChange);
+			if (liftcontroller.StartLifting())
+			{
 
-			CanLift = false;
-			Lifting = true;
+				rb.AddForce(Vector3.down * rb.velocity.y, ForceMode.VelocityChange);
 
-			StartCoroutine(GetComponent<PlayerSheepLift>().PlayerPath());
+				CanLift = false;
+				// lifting = true is now in PlayerSheepLift
+
+				StartCoroutine(GetComponent<PlayerSheepLift>().PlayerPath());
+			}
 		}
 		else if (context.canceled && Lifting)
 		{
@@ -245,7 +252,8 @@ public class PlayerMovement : MonoBehaviour
             rb.AddForce(-rb.velocity, ForceMode.VelocityChange);
 
             //apply lift if in air
-            if (!isGrounded) rb.AddForce(transform.up * dashAirborneLiftForce);
+            if (!isGrounded) 
+				rb.AddForce(transform.up * dashAirborneLiftForce);
 
             //apply invuln if avoiding attack
             DidDashAvoidAttack();
