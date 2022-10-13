@@ -36,7 +36,7 @@ public class PlayerSheepAbilities : MonoBehaviour
     [SerializeField] GameObject sheepPrefabBuild;
     [SerializeField] GameObject sheepPrefabRam;
     [SerializeField] GameObject sheepPrefabFluffy;
-    [SerializeField] SheepTypes currentFlockType;
+    public SheepTypes currentFlockType;
     [SerializeField] float maxDistanceToUseAbilities = 30f;
     int currentFlockIndex;
 

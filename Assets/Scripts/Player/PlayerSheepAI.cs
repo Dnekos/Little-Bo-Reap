@@ -49,6 +49,10 @@ public class PlayerSheepAI : Damageable
     [SerializeField] GameObject blackSheepParticles;
     public Attack selfDamage;
 
+    [Header("Pet Sheep Stuff")]
+    [SerializeField] ParticleSystem petSheepParticles;
+    [SerializeField] string petAnimation;
+
     [Header("Wander State Variables")]
     [SerializeField] float wanderSpeed = 10f;
     [SerializeField] float wanderRadius;
@@ -272,6 +276,13 @@ public class PlayerSheepAI : Damageable
         player.GetComponent<PlayerSheepAbilities>().RemoveSheepFromList(sheepType, this);
         DestroySheep();
     }
+
+    public void PetSheep()
+    {
+        petSheepParticles.Play();
+        animator.Play(petAnimation);
+    }
+
     public void RecallSheep()
     {
 		// sheep cant be recalled when stunned

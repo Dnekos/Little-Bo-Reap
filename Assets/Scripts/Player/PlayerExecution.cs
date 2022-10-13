@@ -10,6 +10,13 @@ public class PlayerExecution : MonoBehaviour
     [SerializeField] LayerMask enemyExecuteLayer;
     public List<EnemyAI> executableEnemies;
 
+    [Header("Pet Sheep Variables")]
+    [SerializeField] string petAnimation;
+    [SerializeField] float petMaxDistance = 7.5f;
+    float currentPetDistance;
+    PlayerSheepAI sheepToPet;
+    bool isPetting;
+
     bool canExecute;
     EnemyAI enemyToExecute;
     Transform targetPos;
@@ -42,6 +49,31 @@ public class PlayerExecution : MonoBehaviour
                 StartCoroutine(ExecuteEnemy(enemyToExecute.execution.executionLength));
 
                 canExecute = false;
+            }
+            //else check to pet nearest sheep of current flock! :D
+            else
+            {
+                sheepToPet = null;
+                currentPetDistance = 999;
+
+                //this is all for sean don't think too hard about it
+                for(int i = 0; i < GetComponent<PlayerSheepAbilities>().GetCurrentSheepFlock(GetComponent<PlayerSheepAbilities>().currentFlockType).Count; i++)
+                {
+                    if (Vector3.Distance(transform.position, GetComponent<PlayerSheepAbilities>().GetCurrentSheepFlock(GetComponent<PlayerSheepAbilities>().currentFlockType)[i].transform.position) < petMaxDistance
+                        && currentPetDistance > Vector3.Distance(transform.position, GetComponent<PlayerSheepAbilities>().GetCurrentSheepFlock(GetComponent<PlayerSheepAbilities>().currentFlockType)[i].transform.position))
+                    {
+                        currentPetDistance = Vector3.Distance(transform.position, GetComponent<PlayerSheepAbilities>().GetCurrentSheepFlock(GetComponent<PlayerSheepAbilities>().currentFlockType)[i].transform.position);
+                        sheepToPet = GetComponent<PlayerSheepAbilities>().GetCurrentSheepFlock(GetComponent<PlayerSheepAbilities>().currentFlockType)[i];
+                    }
+                }
+
+                if(sheepToPet != null)
+                {
+                    transform.LookAt(sheepToPet.transform.position);
+                    transform.eulerAngles = new Vector3(0, transform.rotation.eulerAngles.y, 0);
+                    GetComponent<PlayerAnimationController>().playerAnimator.Play(petAnimation);
+                    sheepToPet.PetSheep();
+                }
             }
         }
      
