@@ -53,7 +53,9 @@ public class PlayerExecution : MonoBehaviour
         if(isExecuting)
         {
             transform.LookAt(enemyToExecute.transform.position);
+            transform.eulerAngles = new Vector3(0, transform.rotation.eulerAngles.y, 0);
             enemyToExecute.transform.LookAt(transform.position);
+            enemyToExecute.transform.eulerAngles = new Vector3(0, enemyToExecute.transform.rotation.eulerAngles.y, 0);
         }
         
     }
