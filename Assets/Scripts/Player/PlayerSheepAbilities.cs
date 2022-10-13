@@ -144,7 +144,7 @@ public class PlayerSheepAbilities : MonoBehaviour
         if (context.started)
         {
             swapContextValue = context.ReadValue<float>(); 
-            Debug.Log(swapContextValue);
+            //Debug.Log(swapContextValue);
         }
         //alright so if we press middle mouse down, context value is one
         //if useing scroll wheel, its -240 and 240 respectively for some reason
@@ -172,7 +172,7 @@ public class PlayerSheepAbilities : MonoBehaviour
                 currentFlockIndex = (int)currentFlockType;
 
                 //Debug.Log("Current Flock is: " + currentFlockType);
-                //sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
+                sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
                 sheepTypeText.color = sheepTypeColors[(int)currentFlockType];
 
                 Cursor.visible = false;
@@ -193,7 +193,7 @@ public class PlayerSheepAbilities : MonoBehaviour
             currentFlockType = (SheepTypes)currentFlockIndex;
 
             //Debug.Log("Current Flock is: " + currentFlockType);
-            //sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
+            sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
             sheepTypeText.color = sheepTypeColors[(int)currentFlockType];
         }
         else if(context.performed && swapContextValue < -1)
@@ -204,7 +204,7 @@ public class PlayerSheepAbilities : MonoBehaviour
             currentFlockType = (SheepTypes)currentFlockIndex;
 
             //Debug.Log("Current Flock is: " + currentFlockType);
-            //sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
+            sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
             sheepTypeText.color = sheepTypeColors[(int)currentFlockType];
         }
     }
