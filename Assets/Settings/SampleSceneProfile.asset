@@ -18,7 +18,7 @@ MonoBehaviour:
     m_Value: 1
   intensity:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 1
   scatter:
     m_OverrideState: 0
     m_Value: 0.7
@@ -41,7 +41,7 @@ MonoBehaviour:
   dirtIntensity:
     m_OverrideState: 0
     m_Value: 0
---- !u!114 &-7011558710299706105
+--- !u!114 &-7624292593126002707
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -55,17 +55,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   active: 1
   color:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: {r: 0, g: 0, b: 0, a: 1}
   center:
     m_OverrideState: 0
     m_Value: {x: 0.5, y: 0.5}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.337
+    m_Value: 0.2
   smoothness:
-    m_OverrideState: 1
-    m_Value: 0.4
+    m_OverrideState: 0
+    m_Value: 0.2
   rounded:
     m_OverrideState: 0
     m_Value: 0
@@ -84,7 +84,8 @@ MonoBehaviour:
   components:
   - {fileID: 849379129802519247}
   - {fileID: -7893295128165547882}
-  - {fileID: -7011558710299706105}
+  - {fileID: 7024533710102646892}
+  - {fileID: -7624292593126002707}
 --- !u!114 &849379129802519247
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -101,3 +102,28 @@ MonoBehaviour:
   mode:
     m_OverrideState: 1
     m_Value: 2
+--- !u!114 &7024533710102646892
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccf1aba9553839d41ae37dd52e9ebcce, type: 3}
+  m_Name: MotionBlur
+  m_EditorClassIdentifier: 
+  active: 1
+  mode:
+    m_OverrideState: 0
+    m_Value: 0
+  quality:
+    m_OverrideState: 1
+    m_Value: 1
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0.25
+  clamp:
+    m_OverrideState: 0
+    m_Value: 0.05

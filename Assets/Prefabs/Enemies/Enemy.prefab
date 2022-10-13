@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 426741378263486879}
   - component: {fileID: 426741378263486876}
   - component: {fileID: 426741378263486877}
-  m_Layer: 12
+  m_Layer: 15
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,7 +151,7 @@ Transform:
   m_Children:
   - {fileID: 426741378263486879}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!195 &426741378606355001
 NavMeshAgent:
@@ -196,6 +196,12 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 128
+  isExecutable: 0
+  mustBeExecuted: 0
+  executionHealthThreshhold: 0
+  executeTrigger: {fileID: 0}
+  executePlayerPos: {fileID: 0}
+  execution: {fileID: 0}
   groundLayer:
     serializedVersion: 2
     m_Bits: 64

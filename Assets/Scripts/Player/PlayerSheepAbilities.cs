@@ -337,6 +337,9 @@ public class PlayerSheepAbilities : MonoBehaviour
             //TEMP SOUND
             FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound, gameObject);
 
+            RecallVFX.Stop();
+            RecallVFX.Play();
+
             //SUMMON THE HORDE!
             for (int i = 0; i < activeSheepBuild.Count; i++)
             {
