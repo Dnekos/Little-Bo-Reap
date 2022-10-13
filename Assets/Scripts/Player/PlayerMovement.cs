@@ -14,6 +14,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float maxMoveSpeed;
     [SerializeField] float acceleration;
     [SerializeField] float haltRate;
+    [SerializeField] ParticleSystem runParticles;
+    [SerializeField] float timeBetweenRunParticles = 0.1f;
+    [SerializeField] float currentRunTime = 0f;
     bool isMoving;
     Vector3 moveDirection;
     Vector2 moveValue; // input value
@@ -27,11 +30,13 @@ public class PlayerMovement : MonoBehaviour
     [Header("Jump Variables")]
     [SerializeField] float jumpForce;
     [SerializeField] float fallRate;
+    [SerializeField] ParticleSystem jumpParticles;
 
     [Header("Dash Variables")]
     [SerializeField] float dashForce;
     [SerializeField] float dashAirborneLiftForce;
     [SerializeField] float dashCooldown = 1f;
+    [SerializeField] ParticleSystem dashTrail;
     bool canDash = true;
 
     [Header("Dash Slow Time Variables")]
@@ -188,6 +193,16 @@ public class PlayerMovement : MonoBehaviour
 		if (health.HitStunned)
 			return;
 
+        currentRunTime += Time.deltaTime;
+
+        //do clouds if running and grounded
+        if (isGrounded && isMoving && currentRunTime > timeBetweenRunParticles)
+        {
+            currentRunTime = 0f;
+            runParticles.Play();
+        }
+
+
         //moveDirection = playerOrientation.forward * moveValue.x + playerOrientation.right * -moveValue.y;
         //rb.AddForce(moveDirection * acceleration);
 
@@ -245,6 +260,9 @@ public class PlayerMovement : MonoBehaviour
 			//TEMP SOUND
 			FMODUnity.RuntimeManager.PlayOneShotAttached(jumpSound, gameObject);
 
+            //play particles
+            jumpParticles.Play();
+
             animator.Play(jumpAnimation);
             rb.AddForce(Vector3.up * jumpForce);
         }
@@ -265,6 +283,9 @@ public class PlayerMovement : MonoBehaviour
 
             //apply lift if in air
             if (!isGrounded) rb.AddForce(transform.up * dashAirborneLiftForce);
+
+            //dash particles
+            //dashParticles.Play();
 
             //apply invuln if avoiding attack
             DidDashAvoidAttack();
@@ -289,8 +310,10 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator DashCooldown()
     {
+        dashTrail.Play();
         canDash = false;
         yield return new WaitForSeconds(dashCooldown);
+        dashTrail.Stop();
         canDash = true;
     }
     public void DidDashAvoidAttack()

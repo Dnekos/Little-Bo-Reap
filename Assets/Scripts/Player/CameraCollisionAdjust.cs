@@ -6,6 +6,7 @@ public class CameraCollisionAdjust : MonoBehaviour
 {
     [Header("Camera Z Slide Variables")]
     [SerializeField] float zSlideRate;
+    [SerializeField] float slerpRate;
     [SerializeField] float zSlideMin;
     [SerializeField] float zSlideMax;
     [SerializeField] float zValue;

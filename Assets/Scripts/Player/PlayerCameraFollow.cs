@@ -9,7 +9,7 @@ public class PlayerCameraFollow : MonoBehaviour
     [SerializeField] Transform followPoint;
 
 	[Header("Camera Variables")]
-	[SerializeField] float LerpSpeed = 4;
+	[SerializeField] float LerpSpeed = 20;
     [SerializeField] Camera playerCamera;
     public float mouseSensitivityMax = 35f;
     public float mouseSensitivity;
