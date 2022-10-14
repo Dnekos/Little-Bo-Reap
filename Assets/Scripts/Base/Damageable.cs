@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Damageable : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class Damageable : MonoBehaviour
 	[SerializeField] protected float Health;
 	[SerializeField] float MaxHealth;
 	[SerializeField] GameObject gibs;
+	[SerializeField] GameObject damageNumber;
 	public bool isInvulnerable;
 
 	protected Rigidbody rb;
@@ -27,6 +29,10 @@ public class Damageable : MonoBehaviour
 			Health -= atk.damage;
 			Debug.Log(gameObject.name + " took " + atk.damage + " damage (force: "+(attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback)+")");
 
+			//create damage number
+			var number = Instantiate(damageNumber, transform.position, transform.rotation) as GameObject;
+			number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)atk.damage).ToString();
+
 			// add knockback
 			rb.AddForce(attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback, ForceMode.Impulse);
 
@@ -44,6 +50,10 @@ public class Damageable : MonoBehaviour
 			// deal damage
 			Health -= atk.damageBlack;
 			Debug.Log(gameObject.name + " took " + atk.damageBlack + " damage (force: " + (attackForward * atk.forwardKnockbackBlack + Vector3.up * atk.upwardKnockbackBlack) + ")");
+
+			//create damage number
+			var number = Instantiate(damageNumber, transform.position, transform.rotation) as GameObject;
+			number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)atk.damageBlack).ToString();
 
 			// add knockback
 			rb.AddForce(attackForward * atk.forwardKnockbackBlack + Vector3.up * atk.upwardKnockbackBlack, ForceMode.Impulse);
