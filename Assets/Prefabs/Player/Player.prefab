@@ -20025,8 +20025,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6725758357768740197}
   - component: {fileID: 3154491168786675141}
-  - component: {fileID: 5949291460119727757}
   - component: {fileID: 7129012063288855542}
+  - component: {fileID: -7040939748176284051}
   m_Layer: 0
   m_Name: Overlay_Camera
   m_TagString: Untagged
@@ -20092,14 +20092,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &5949291460119727757
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7721417104479051177}
-  m_Enabled: 1
 --- !u!114 &7129012063288855542
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20133,6 +20125,19 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
+--- !u!114 &-7040939748176284051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7721417104479051177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attenuationObject: {fileID: 0}
 --- !u!1 &7866981735648296623
 GameObject:
   m_ObjectHideFlags: 0
