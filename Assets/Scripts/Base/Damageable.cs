@@ -8,8 +8,9 @@ public class Damageable : MonoBehaviour
 	[Header("Health")]
 	[SerializeField] protected float Health;
 	[SerializeField] float MaxHealth;
-	[SerializeField] GameObject gibs;
+	public GameObject gibs;
 	[SerializeField] GameObject damageNumber;
+	[SerializeField] GameObject damageNumberGoth;
 	public bool isInvulnerable;
 
 	protected Rigidbody rb;
@@ -52,7 +53,7 @@ public class Damageable : MonoBehaviour
 			Debug.Log(gameObject.name + " took " + atk.damageBlack + " damage (force: " + (attackForward * atk.forwardKnockbackBlack + Vector3.up * atk.upwardKnockbackBlack) + ")");
 
 			//create damage number
-			var number = Instantiate(damageNumber, transform.position, transform.rotation) as GameObject;
+			var number = Instantiate(damageNumberGoth, transform.position, transform.rotation) as GameObject;
 			number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)atk.damageBlack).ToString();
 
 			// add knockback

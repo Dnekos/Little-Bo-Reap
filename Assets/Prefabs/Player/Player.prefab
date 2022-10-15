@@ -3322,6 +3322,7 @@ MonoBehaviour:
   gibs: {fileID: 0}
   damageNumber: {fileID: 758784450076825086, guid: 917e1ac09e21f3f499d8aa30f802b69e,
     type: 3}
+  damageNumberGoth: {fileID: 0}
   isInvulnerable: 0
   HitStunned: 0
   hitstunTimer: 0.2
@@ -3483,10 +3484,10 @@ MonoBehaviour:
   flockMenuTimescale: 0.1
   defaultTimescale: 1
   summonBloodCost: 25
-  amountToSummonBuild: 20
-  amountToSummonRam: 15
-  amountToSummonFluffy: 10
-  summonRadius: 15
+  amountToSummonBuild: 25
+  amountToSummonRam: 25
+  amountToSummonFluffy: 25
+  summonRadius: 20
   summonIntervalMin: 0
   summonIntervalMax: 0.75
   summonCooldown: 1
@@ -3535,7 +3536,7 @@ MonoBehaviour:
   minDistanceToLaunch: 20
   launchAnimation: Test_Bo_Spell
   launchIcon: {fileID: 7344943566344680018}
-  launchCooldown: 0.5
+  launchCooldown: 0.35
 --- !u!114 &4791982548798101685
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3565,6 +3566,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gothParticles: {fileID: 4229607707037024275}
+  gothVolume: {fileID: 11400000, guid: c864ac90f036b5b40a1ef1f22d3167ab, type: 2}
   explosion: {fileID: 7302312219567745433, guid: 68ec54514ff9e0446a68796f986a0d06,
     type: 3}
   gothSound:
@@ -3576,8 +3578,10 @@ MonoBehaviour:
     Path: event:/Temp/Deadringer
   gothMeterFill: {fileID: 5002306184454334700}
   gothMeterChargeTime: 1
-  gothMeterDuration: 10
+  gothMeterDuration: 7
   isGothMode: 0
+  defaultSaturation: -100
+  saturationIncreaseOverTime: 14.29
 --- !u!114 &8582151330752332035
 MonoBehaviour:
   m_ObjectHideFlags: 0

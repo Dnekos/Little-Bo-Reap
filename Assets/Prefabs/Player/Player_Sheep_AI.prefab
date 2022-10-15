@@ -4931,7 +4931,7 @@ Transform:
   m_GameObject: {fileID: 3842638952038565105}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3903509060347745927}
@@ -9995,7 +9995,7 @@ Transform:
   m_GameObject: {fileID: 6617520872775550991}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8773899699277438939}
@@ -14943,6 +14943,7 @@ MonoBehaviour:
   gibs: {fileID: 9082597936765375905, guid: 954fa77ba0781eb49a21da27f26832ec, type: 3}
   damageNumber: {fileID: 758784450076825086, guid: 917e1ac09e21f3f499d8aa30f802b69e,
     type: 3}
+  damageNumberGoth: {fileID: 0}
   isInvulnerable: 0
   sheepType: 0
   currentSheepState: 0
@@ -14953,7 +14954,7 @@ MonoBehaviour:
   avoidPlayerDistance: 2.5
   avoidPlayerSpeed: 45
   followStoppingDistanceMin: 5
-  followStoppingDistanceMax: 15
+  followStoppingDistanceMax: 20
   leaderIndicator: {fileID: 8466910101420892704}
   leaderSheep: {fileID: 0}
   isLeader: 0

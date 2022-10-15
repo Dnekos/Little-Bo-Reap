@@ -242,6 +242,7 @@ public class PlayerSheepAI : Damageable
                     if (other.CompareTag("Enemy"))
                     {
                         DealDamage(other, chargeAttack, isBlackSheep);
+                        TakeDamage(selfDamage, transform.forward);
                     }
                     break;
                 }
@@ -273,6 +274,7 @@ public class PlayerSheepAI : Damageable
     //this is called to kill an indvidual sheep and remove it from list
     public void KillSheep()
     {
+        
         player.GetComponent<PlayerSheepAbilities>().RemoveSheepFromList(sheepType, this);
         DestroySheep();
     }
@@ -311,7 +313,8 @@ public class PlayerSheepAI : Damageable
 	#region Health
 	protected override void OnDeath()
 	{
-		KillSheep();
+        Instantiate(gibs, transform.position, transform.rotation);
+        KillSheep();
 	}
 	public override void TakeDamage(Attack atk, Vector3 attackForward)
 	{

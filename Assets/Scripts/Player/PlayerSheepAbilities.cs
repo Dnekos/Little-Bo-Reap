@@ -115,6 +115,7 @@ public class PlayerSheepAbilities : MonoBehaviour
     [SerializeField] AbilityIcon launchIcon;
     [SerializeField] float launchCooldown = 1f;
     bool canLaunch = true;
+    bool isLaunching = false;
 
     Animator animator;
 
@@ -136,6 +137,7 @@ public class PlayerSheepAbilities : MonoBehaviour
         CheckAttack();
         CheckCharge();
         CheckDefend();
+        CheckLaunch();
     }
 
     #region Sheep Flock Functions
@@ -721,22 +723,73 @@ public class PlayerSheepAbilities : MonoBehaviour
     #region Sheep Launch
     public void OnSheepLaunch(InputAction.CallbackContext context)
     {
-        if(context.started && canLaunch)
+        if(context.started)
+        {
+            isLaunching = true;
+        }
+        if(context.canceled)
+        {
+            isLaunching = false;
+        }
+
+
+        //old implementation
+       //if(context.started && canLaunch)
+       //{
+       //    SheepTypes flockType = currentFlockType;
+       //
+       //    //do we have any sheep? 
+       //    if(GetCurrentSheepFlock(flockType).Count > 0)
+       //    {
+       //        //are sheep nearby?
+       //        for(int i = 0; i < GetCurrentSheepFlock(flockType).Count; i++)
+       //        {
+       //            if(Vector3.Distance(transform.position, GetCurrentSheepFlock(flockType)[i].transform.position) <= minDistanceToLaunch)
+       //            {
+       //                animator.Play(launchAnimation);
+       //
+       //                //TEMP SOUND
+       //                FMODUnity.RuntimeManager.PlayOneShotAttached(launchSound,gameObject);
+       //
+       //                //break loop and launch that mf
+       //                var launchSheep = Instantiate(launchProjectiles[(int)currentFlockType], launchOrigin.position, launchOrigin.rotation);
+       //                if (GetCurrentSheepFlock(flockType)[i].isBlackSheep) launchSheep.GetComponent<PlayerSheepProjectile>().isBlackSheep = true;
+       //                launchSheep.GetComponent<PlayerSheepProjectile>().LaunchProjectile();
+       //                //launchSheep.GetComponent<Rigidbody>()?.AddForce(launchOrigin.transform.forward * launchForce + launchOrigin.transform.up * launchForceLift);
+       //                //launchSheep.GetComponent<Rigidbody>()?.AddTorque(100f, 100f, 100f);
+       //
+       //                GetCurrentSheepFlock(flockType)[i].KillSheep();
+       //                //GetCurrentSheepFlock(flockType).Remove(GetCurrentSheepFlock(flockType)[i]);
+       //
+       //                break;
+       //            }
+       //        }
+       //    }
+       //
+       //    //start cooldown
+       //    canLaunch = false;
+       //    launchIcon.CooldownUIEffect(launchCooldown);
+       //    StartCoroutine(SheepLaunchCooldown());
+       //}
+    }
+    void CheckLaunch()
+    {
+        if (isLaunching && canLaunch)
         {
             SheepTypes flockType = currentFlockType;
 
             //do we have any sheep? 
-            if(GetCurrentSheepFlock(flockType).Count > 0)
+            if (GetCurrentSheepFlock(flockType).Count > 0)
             {
                 //are sheep nearby?
-                for(int i = 0; i < GetCurrentSheepFlock(flockType).Count; i++)
+                for (int i = 0; i < GetCurrentSheepFlock(flockType).Count; i++)
                 {
-                    if(Vector3.Distance(transform.position, GetCurrentSheepFlock(flockType)[i].transform.position) <= minDistanceToLaunch)
+                    if (Vector3.Distance(transform.position, GetCurrentSheepFlock(flockType)[i].transform.position) <= minDistanceToLaunch)
                     {
                         animator.Play(launchAnimation);
 
                         //TEMP SOUND
-                        FMODUnity.RuntimeManager.PlayOneShotAttached(launchSound,gameObject);
+                        FMODUnity.RuntimeManager.PlayOneShotAttached(launchSound, gameObject);
 
                         //break loop and launch that mf
                         var launchSheep = Instantiate(launchProjectiles[(int)currentFlockType], launchOrigin.position, launchOrigin.rotation);
@@ -759,6 +812,7 @@ public class PlayerSheepAbilities : MonoBehaviour
             StartCoroutine(SheepLaunchCooldown());
         }
     }
+
     IEnumerator SheepLaunchCooldown()
     {
         yield return new WaitForSeconds(launchCooldown);
