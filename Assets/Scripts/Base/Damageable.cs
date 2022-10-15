@@ -12,6 +12,17 @@ public class Damageable : MonoBehaviour
 	[SerializeField] GameObject damageNumber;
 	public bool isInvulnerable;
 
+	[Header("Drop Variables")]
+	[Tooltip("Number of souls dropped on death.")]
+	[SerializeField] protected int soulValue;
+	[Tooltip("Affects speed at which souls fly out on death.")]
+	[SerializeField] protected float soulSpeed;
+	[Tooltip("Affects the height at which souls spawn from. should be higher for larger enemies.")]
+	[SerializeField] protected float soulSpawnHeight;
+
+	[Tooltip("The collectable that is worth one soul.")]
+	[SerializeField] protected GameObject soulCollectableOne;
+
 	protected Rigidbody rb;
 
     // Start is called before the first frame update
@@ -67,7 +78,20 @@ public class Damageable : MonoBehaviour
 
 	virtual protected void OnDeath()
 	{
+		SoulDropCalculation(soulValue);
 		Instantiate(gibs, transform.position + Vector3.up * 1.4f, new Quaternion()).GetComponent<ParticleSystem>();
 		Destroy(gameObject); // base effect is deleting object
-	}	
+	}
+	//put it here because it wasn't overriding onDeath for non-executable enemies, likely because death was called in this function specifically
+	private void SoulDropCalculation(int soulsToDrop)
+	{
+		while (soulsToDrop > 0)
+		{
+			var soulSpawnOffset = new Vector3(Random.Range(-1,1),soulSpawnHeight, Random.Range(-1,1));
+			var soulCollectable = Instantiate(soulCollectableOne, transform.position + soulSpawnOffset, transform.rotation) as GameObject;
+			soulCollectable.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-1,1), 1f, Random.Range(-1,1)) * soulSpeed;
+			Debug.Log("SoulDropped");
+			soulsToDrop--;
+		}
+	}
 }

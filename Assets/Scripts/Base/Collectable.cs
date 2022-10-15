@@ -15,20 +15,14 @@ public class Collectable : MonoBehaviour
     // Update is called once per frame
     virtual protected void OnTriggerEnter(Collider col)
     {
-        if (isCollected == false)
+        if (col.tag == "Player" && isCollected == false)
         {
-            Debug.Log("Colliding");
-
-            if (col.tag == "Player")
-            {
-
-                Debug.Log("Colliding with player");
-                CollectableEffect();
-                Destroy(gameObject); //deletes self after being collected by default
-            }
+            isCollected = true;
+            Debug.Log("Colliding with player");
+            CollectableEffect();
+            Destroy(gameObject); //deletes self after being collected by default
         }
-
-        isCollected = true; //prevents double collecting from wall/feet coliders (in theory)
+        
     }
 
     virtual protected void CollectableEffect()
