@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 
 public class PlayerGothMode : MonoBehaviour
 {
     [Header("Goth Mode")]
     [SerializeField] GameObject gothParticles;
+    [SerializeField] VolumeProfile gothVolume;
     [SerializeField] GameObject explosion;
     [SerializeField] FMODUnity.EventReference gothSound;
     [SerializeField] Image gothMeterFill;
@@ -15,10 +17,19 @@ public class PlayerGothMode : MonoBehaviour
     [SerializeField] float gothMeterDuration;
     public bool isGothMode = false;
 
+    [Header("Postprocess")]
+    [SerializeField] float defaultSaturation = -100f;
+    [SerializeField] float saturationIncreaseOverTime = 10f;
+    UnityEngine.Rendering.Universal.ColorAdjustments gothSaturation;
+
     PlayerSheepAbilities playerSheep;
 
     private void Start()
     {
+        //get post process stuff
+        if (!gothVolume.TryGet(out gothSaturation)) throw new System.NullReferenceException(nameof(gothSaturation));
+        gothSaturation.saturation.value = defaultSaturation;
+
         playerSheep = GetComponent<PlayerSheepAbilities>();
     }
 
@@ -36,6 +47,12 @@ public class PlayerGothMode : MonoBehaviour
         {
             //deplete meter
             gothMeterFill.fillAmount -= 1.0f / gothMeterDuration * Time.unscaledDeltaTime;
+
+            //deplete saturation over time
+            if(gothSaturation.saturation.value < 0)
+            {
+                gothSaturation.saturation.value += saturationIncreaseOverTime * Time.deltaTime;
+            }
         }
         else
         {
@@ -51,6 +68,8 @@ public class PlayerGothMode : MonoBehaviour
 			FMODUnity.RuntimeManager.PlayOneShotAttached(gothSound,gameObject);
 
             Instantiate(explosion, transform.position, transform.rotation);
+
+            gothSaturation.saturation.value = defaultSaturation;
 
             isGothMode = true;
             gothParticles.SetActive(true);

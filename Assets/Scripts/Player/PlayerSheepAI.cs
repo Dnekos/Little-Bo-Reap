@@ -49,6 +49,10 @@ public class PlayerSheepAI : Damageable
     [SerializeField] GameObject blackSheepParticles;
     public Attack selfDamage;
 
+    [Header("Pet Sheep Stuff")]
+    [SerializeField] ParticleSystem petSheepParticles;
+    [SerializeField] string petAnimation;
+
     [Header("Wander State Variables")]
     [SerializeField] float wanderSpeed = 10f;
     [SerializeField] float wanderRadius;
@@ -238,6 +242,7 @@ public class PlayerSheepAI : Damageable
                     if (other.CompareTag("Enemy"))
                     {
                         DealDamage(other, chargeAttack, isBlackSheep);
+                        TakeDamage(selfDamage, transform.forward);
                     }
                     break;
                 }
@@ -269,9 +274,17 @@ public class PlayerSheepAI : Damageable
     //this is called to kill an indvidual sheep and remove it from list
     public void KillSheep()
     {
+        
         player.GetComponent<PlayerSheepAbilities>().RemoveSheepFromList(sheepType, this);
         DestroySheep();
     }
+
+    public void PetSheep()
+    {
+        petSheepParticles.Play();
+        animator.Play(petAnimation);
+    }
+
     public void RecallSheep()
     {
 		// sheep cant be recalled when stunned
@@ -300,7 +313,8 @@ public class PlayerSheepAI : Damageable
 	#region Health
 	protected override void OnDeath()
 	{
-		KillSheep();
+        Instantiate(gibs, transform.position, transform.rotation);
+        KillSheep();
 	}
 	public override void TakeDamage(Attack atk, Vector3 attackForward)
 	{
@@ -502,6 +516,10 @@ public class PlayerSheepAI : Damageable
 
     public void CreateListOfAttackTargets(Vector3 targetPos, float targetRadius)
     {
+        //clear old list
+        attackTargets.Clear();
+        attackTargetCurrent = null;
+
         //check if there are enemies nearby specified area
         //Demetri I am using Physics.OverlapSphere against your wishes
         Collider[] enemyHits = (Physics.OverlapSphere(targetPos, targetRadius, enemyLayer));
@@ -562,6 +580,7 @@ public class PlayerSheepAI : Damageable
             isCharging = false;
             agent.speed = wanderSpeed;
             agent.stoppingDistance = wanderStopDistance;
+            agent.obstacleAvoidanceType = ObstacleAvoidanceType.MedQualityObstacleAvoidance;
             currentSheepState = SheepStates.WANDER;
         }
     }
@@ -597,6 +616,7 @@ public class PlayerSheepAI : Damageable
         //set speed
         agent.speed = chargeSpeed;
         agent.stoppingDistance = chargeStopDistance;
+        agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
 
         //set sheep state
         currentSheepState = SheepStates.CHARGE;
