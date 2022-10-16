@@ -1362,6 +1362,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 37238373}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &47065608 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3870380308813204389, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
+    type: 3}
+  m_PrefabInstance: {fileID: 3870380308797193159}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &63834218
 Mesh:
   m_ObjectHideFlags: 0
@@ -9384,7 +9390,7 @@ Transform:
   - {fileID: 186458940}
   - {fileID: 1487513555}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &186458934
 GameObject:
@@ -29441,6 +29447,10 @@ MonoBehaviour:
   damageNumber: {fileID: 758784450076825086, guid: 917e1ac09e21f3f499d8aa30f802b69e,
     type: 3}
   isInvulnerable: 0
+  soulValue: 0
+  soulSpeed: 0
+  soulSpawnHeight: 0
+  soulCollectableOne: {fileID: 0}
   currentEnemyState: 3
   StunTime: 0.3
   playerLayer:
@@ -30139,7 +30149,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &684873609
 MonoBehaviour:
@@ -38536,6 +38546,10 @@ MonoBehaviour:
   damageNumber: {fileID: 758784450076825086, guid: 917e1ac09e21f3f499d8aa30f802b69e,
     type: 3}
   isInvulnerable: 0
+  soulValue: 0
+  soulSpeed: 0
+  soulSpawnHeight: 0
+  soulCollectableOne: {fileID: 0}
   currentEnemyState: 3
   StunTime: 0.3
   playerLayer:
@@ -46741,7 +46755,7 @@ Transform:
   - {fileID: 1264776014}
   - {fileID: 2041783195}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &832575517
 GameObject:
@@ -46790,7 +46804,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &833531116
 PrefabInstance:
@@ -52302,7 +52316,7 @@ Transform:
   - {fileID: 2058274113}
   - {fileID: 94977794}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1116965584
 PrefabInstance:
@@ -63893,6 +63907,82 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1459186552}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &1462326270
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 2
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6060198684946403097, guid: 4b17e9d88b42899429f3f7846d72d21d,
+        type: 3}
+      propertyPath: attractSpeed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6060198684946403098, guid: 4b17e9d88b42899429f3f7846d72d21d,
+        type: 3}
+      propertyPath: m_Name
+      value: TestCollectable
+      objectReference: {fileID: 0}
+    - target: {fileID: 6060198684946403173, guid: 4b17e9d88b42899429f3f7846d72d21d,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6060198684946403173, guid: 4b17e9d88b42899429f3f7846d72d21d,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.1637301
+      objectReference: {fileID: 0}
+    - target: {fileID: 6060198684946403173, guid: 4b17e9d88b42899429f3f7846d72d21d,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6060198684946403173, guid: 4b17e9d88b42899429f3f7846d72d21d,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -15.621349
+      objectReference: {fileID: 0}
+    - target: {fileID: 6060198684946403173, guid: 4b17e9d88b42899429f3f7846d72d21d,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6060198684946403173, guid: 4b17e9d88b42899429f3f7846d72d21d,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6060198684946403173, guid: 4b17e9d88b42899429f3f7846d72d21d,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6060198684946403173, guid: 4b17e9d88b42899429f3f7846d72d21d,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6060198684946403173, guid: 4b17e9d88b42899429f3f7846d72d21d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6060198684946403173, guid: 4b17e9d88b42899429f3f7846d72d21d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6060198684946403173, guid: 4b17e9d88b42899429f3f7846d72d21d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_AddedGameObjects: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4b17e9d88b42899429f3f7846d72d21d, type: 3}
 --- !u!1 &1479167614
 GameObject:
   m_ObjectHideFlags: 0
@@ -97660,6 +97750,51 @@ Transform:
   m_Father: {fileID: 1099347671}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!1 &2134306983
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2134306984}
+  - component: {fileID: 2134306985}
+  m_Layer: 0
+  m_Name: GrabRadius
+  m_TagString: GrabRadius
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2134306984
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2134306983}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 47065608}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &2134306985
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2134306983}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 6
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2139804599
 GameObject:
   m_ObjectHideFlags: 0
@@ -97729,6 +97864,10 @@ MonoBehaviour:
   damageNumber: {fileID: 758784450076825086, guid: 917e1ac09e21f3f499d8aa30f802b69e,
     type: 3}
   isInvulnerable: 0
+  soulValue: 0
+  soulSpeed: 0
+  soulSpawnHeight: 0
+  soulCollectableOne: {fileID: 0}
   currentEnemyState: 3
   StunTime: 0.3
   playerLayer:
@@ -98210,7 +98349,7 @@ PrefabInstance:
     - target: {fileID: 6219005127216546937, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6219005127216546937, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
         type: 3}
@@ -98314,7 +98453,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 0}
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 3870380308813204389, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2134306984}
   m_SourcePrefab: {fileID: 100100000, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9, type: 3}
 --- !u!1001 &6565678278513350620
 PrefabInstance:
@@ -98327,7 +98470,7 @@ PrefabInstance:
     - target: {fileID: 6565678279413654833, guid: d8f6dfa59c82bd74da8310c040c35063,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6565678279413654833, guid: d8f6dfa59c82bd74da8310c040c35063,
         type: 3}
@@ -98461,6 +98604,10 @@ MonoBehaviour:
   damageNumber: {fileID: 758784450076825086, guid: 917e1ac09e21f3f499d8aa30f802b69e,
     type: 3}
   isInvulnerable: 0
+  soulValue: 0
+  soulSpeed: 0
+  soulSpawnHeight: 0
+  soulCollectableOne: {fileID: 0}
   currentEnemyState: 3
   StunTime: 0.3
   playerLayer:
