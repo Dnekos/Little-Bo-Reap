@@ -13,6 +13,12 @@ public class Collectable : MonoBehaviour
     void Start()
     {
         playerBody = GameObject.FindGameObjectWithTag("Player");
+
+        //Ignore collisions with Enemy and Sheep Layers
+        Physics.IgnoreLayerCollision(17, 10, true); //collectable and sheep layer
+        Physics.IgnoreLayerCollision(17, 12, true); //collectable and enemy layer
+        Physics.IgnoreLayerCollision(17, 13, true); //collectable and enemyAttack layer
+        Physics.IgnoreLayerCollision(17, 14, true); //collectable and enemyExecute layer
     }
 
     // Update is called once per frame
