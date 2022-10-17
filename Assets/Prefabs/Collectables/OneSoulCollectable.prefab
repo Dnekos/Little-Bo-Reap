@@ -18,11 +18,6 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 17
       objectReference: {fileID: 0}
-    - target: {fileID: 6048175850917063722, guid: d48341c11c99a5243b26d1d0891c7d55,
-        type: 3}
-      propertyPath: attractSpeed
-      value: 20
-      objectReference: {fileID: 0}
     - target: {fileID: 6048175850917063766, guid: d48341c11c99a5243b26d1d0891c7d55,
         type: 3}
       propertyPath: m_RootOrder
@@ -86,3 +81,23 @@ PrefabInstance:
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: d48341c11c99a5243b26d1d0891c7d55, type: 3}
+--- !u!1 &6060198684946403098 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6048175850917063721, guid: d48341c11c99a5243b26d1d0891c7d55,
+    type: 3}
+  m_PrefabInstance: {fileID: 573445325315171123}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4646416847153464230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6060198684946403098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2251e07c6ce89ae458cf0c401bd9c41a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attractSpeed: 20
+  soulValue: 1

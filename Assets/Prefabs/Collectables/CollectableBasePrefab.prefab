@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 6048175850917063764}
   - component: {fileID: 6915857925316740038}
   - component: {fileID: 6048175850917063723}
-  - component: {fileID: 6048175850917063722}
   - component: {fileID: 6551879923446670450}
+  - component: {fileID: -7559429031216494707}
   m_Layer: 17
   m_Name: CollectableBasePrefab
   m_TagString: Untagged
@@ -115,19 +115,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!114 &6048175850917063722
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6048175850917063721}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d0b58d51ebb9804d87187a3f1457f50, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attractSpeed: 0
 --- !u!54 &6551879923446670450
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -144,3 +131,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &-7559429031216494707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6048175850917063721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d0b58d51ebb9804d87187a3f1457f50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attractSpeed: 20
