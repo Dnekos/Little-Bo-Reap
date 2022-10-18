@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.AI;
 using TMPro;
+using UnityEditor.ShaderGraph.Internal;
 
 public enum SheepTypes
 {
@@ -105,6 +106,7 @@ public class PlayerSheepAbilities : MonoBehaviour
     [SerializeField] AbilityIcon defendIcon;
     [SerializeField] float defendCooldown = 1f;
     bool canDefend = true;
+    bool isDefending = false;
 
     [Header("Sheep Launch Variables")]
 
@@ -683,31 +685,73 @@ public class PlayerSheepAbilities : MonoBehaviour
         {
             if (context.started)
             {
-                //SheepTypes flockType = currentFlockType;
-                //switching to be only useable by fluffy sheep, keep same architecture in case we change our minds (we probably won't)
-                SheepTypes flockType = SheepTypes.FLUFFY;
-
-                
-                animator.Play(defendAnimation);
-
-
-                //TEMP SOUND
-                FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound,gameObject);
-
-                int pointIndex = 0;
-
-                for (int i = 0; i < GetCurrentSheepFlock(flockType).Count; i++)
+                if (!isDefending && GetCurrentSheepFlock(SheepTypes.FLUFFY).Count > 0)
                 {
-                    if (GetCurrentSheepFlock(flockType)[i].IsCommandable()) GetCurrentSheepFlock(flockType)[i]?.BeginDefendPlayer(defendPoints[pointIndex]);
+                    Debug.Log("defen start");
 
-                    pointIndex++;
-                    if (pointIndex >= defendPoints.Count) pointIndex = 0;
+                    isDefending = true;
+
+                    //SheepTypes flockType = currentFlockType;
+                    //switching to be only useable by fluffy sheep, keep same architecture in case we change our minds (we probably won't)
+                    SheepTypes flockType = SheepTypes.FLUFFY;
+
+
+                    animator.Play(defendAnimation);
+
+
+                    //TEMP SOUND
+                    FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound, gameObject);
+
+                    int pointIndex = 0;
+
+                    for (int i = 0; i < GetCurrentSheepFlock(flockType).Count; i++)
+                    {
+                        if (GetCurrentSheepFlock(flockType)[i].IsCommandable()) GetCurrentSheepFlock(flockType)[i]?.BeginDefendPlayer(defendPointPivot);
+
+                        pointIndex++;
+                        if (pointIndex >= defendPoints.Count) pointIndex = 0;
+                    }
+
+                    //start cooldown
+                    canDefend = false;
+                    defendIcon.CooldownUIEffect(defendCooldown);
+                    StartCoroutine(DefendCooldown());
+
                 }
-              
-                //start cooldown
-                canDefend = false;
-                defendIcon.CooldownUIEffect(defendCooldown);
-                StartCoroutine(DefendCooldown());
+                else if (isDefending)
+                {
+                    Debug.Log("defen emd");
+
+                    isDefending = false;
+
+                    //SheepTypes flockType = currentFlockType;
+                    //switching to be only useable by fluffy sheep, keep same architecture in case we change our minds (we probably won't)
+                    SheepTypes flockType = SheepTypes.FLUFFY;
+
+
+                    animator.Play(defendAnimation);
+
+
+                    //TEMP SOUND
+                    FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound, gameObject);
+
+
+                    for (int i = 0; i < GetCurrentSheepFlock(flockType).Count; i++)
+                    {
+                        if (GetCurrentSheepFlock(flockType)[i].GetSheepState() == SheepStates.DEFEND_PLAYER) GetCurrentSheepFlock(flockType)[i]?.EndDefendPlayer(launchProjectiles[(int)SheepTypes.FLUFFY]);
+                    }
+                    //delete all active sheep
+                    for (int i = 0; i < GetCurrentSheepFlock(flockType).Count; i++)
+                    {
+                        GetCurrentSheepFlock(flockType)[i].DestroySheep();
+                    }
+                    GetCurrentSheepFlock(flockType).Clear();
+
+                    //start cooldown
+                    canDefend = false;
+                    defendIcon.CooldownUIEffect(defendCooldown);
+                    StartCoroutine(DefendCooldown());
+                }
 
             }
         } 
