@@ -678,6 +678,9 @@ public class PlayerSheepAbilities : MonoBehaviour
     void CheckDefend()
     {
         defendPointPivot.Rotate(0f, defendPivotRotateSpeed * Time.deltaTime, 0f);
+
+        //
+        if (isDefending && GetCurrentSheepFlock(SheepTypes.FLUFFY).Count <= 0) isDefending = false;
     }
     public void OnSheepDefend(InputAction.CallbackContext context)
     {
