@@ -512,6 +512,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3870380308813204389}
+  - {fileID: 7224856639458476861}
   - {fileID: 3870380307216974260}
   - {fileID: 3870380307944562837}
   - {fileID: 5462111521222099548}
@@ -910,6 +911,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7224856639458476861}
+  - component: {fileID: 2139650281171768100}
   m_Layer: 7
   m_Name: Sheep_Defend_Points
   m_TagString: Untagged
@@ -924,7 +926,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1760125602327802897}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -935,9 +937,22 @@ Transform:
   - {fileID: 7489052625738141}
   - {fileID: 3066455461855584963}
   - {fileID: 745201583296635927}
-  m_Father: {fileID: 3870380308813204389}
+  m_Father: {fileID: 6219005127216546937}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2139650281171768100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1760125602327802897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c81e303e6f6a69d4788a742117654d4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 3870380308813204389}
 --- !u!1 &1762026718684662273
 GameObject:
   m_ObjectHideFlags: 0
@@ -2949,7 +2964,6 @@ Transform:
   - {fileID: 3870380308655863547}
   - {fileID: 1943766158069221792}
   - {fileID: 3870380307688567448}
-  - {fileID: 7224856639458476861}
   - {fileID: 6200068285816236628}
   - {fileID: 5674759231710209037}
   - {fileID: 2870547173014470155}
@@ -3411,6 +3425,9 @@ MonoBehaviour:
   heavyAirAnimation: Test_Bo_Slam_Windup
   coolDown: 3
   timeTillSlamDown: 0.35
+  damageMultiplierPerSecInAir: 3
+  baseGroundDamage: 25
+  baseGroundDamageBlack: 50
   airUpForce: 2500
   airDownForce: 5000
   playerCam: {fileID: 3870380307944562838}
