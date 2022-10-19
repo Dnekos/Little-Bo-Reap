@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.AI;
 using TMPro;
-using UnityEditor.ShaderGraph.Internal;
 
 public enum SheepTypes
 {
@@ -66,7 +65,7 @@ public class PlayerSheepAbilities : MonoBehaviour
     [SerializeField] string summonAnimation;
 	[SerializeField] ParticleSystem RecallVFX;
     bool canSummonSheep = true;
-    bool canSummonAllSheep = true;
+    //bool canSummonAllSheep = true;
     PlayerSummoningResource summonResource;
     bool summonPerformed = false;
     bool recallPerformed = false;
@@ -504,11 +503,11 @@ public class PlayerSheepAbilities : MonoBehaviour
         yield return new WaitForSeconds(summonCooldown);
         canSummonSheep = true;
     }
-    IEnumerator SummonAllSheepCooldown()
-    {
-        yield return new WaitForSeconds(summonCooldown);
-        canSummonAllSheep = true;
-    }
+   // IEnumerator SummonAllSheepCooldown()
+   // {
+   //     yield return new WaitForSeconds(summonCooldown);
+   //     canSummonAllSheep = true;
+   // }
     #endregion
 
     #region Sheep Attack

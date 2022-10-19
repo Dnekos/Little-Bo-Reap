@@ -1,10 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.AI;
-using static UnityEditor.PlayerSettings;
-using static UnityEngine.GraphicsBuffer;
 
 public enum SheepStates
 {
@@ -98,11 +95,11 @@ public class PlayerSheepAI : Damageable
     [SerializeField] float defendStopDistance = 0f;
     [SerializeField] SheepAttack defendAttack;
     [SerializeField] float defendRotateDistance = 5f;
-    [SerializeField] float defendRotateAnglePerSec = 360f;
+    //[SerializeField] float defendRotateAnglePerSec = 360f;
     [SerializeField] float defendMinHeight = 0f;
     [SerializeField] float defendMaxHeight = 2f;
-    [SerializeField] float defendFrequency = 3f;
-    [SerializeField] float defendAmplitude = 1f;
+   //[SerializeField] float defendFrequency = 3f;
+   //[SerializeField] float defendAmplitude = 1f;
     Transform defendPoint;
 
 	[Header("Stun State Variables")]
