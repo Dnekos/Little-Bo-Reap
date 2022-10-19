@@ -87,6 +87,8 @@ public class PlayerSheepAI : Damageable
     [SerializeField] float chargeCheckSpeed = 2f;
     [SerializeField] SheepAttack chargeAttack;
     [SerializeField] Collider chargeCollider;
+    [SerializeField] GameObject chargeParticles;
+    [SerializeField] GameObject chargeExplosion;
     float chargeCheckCurrent = 0;
     Vector3 chargePoint;
     bool isCharging;
@@ -250,6 +252,7 @@ public class PlayerSheepAI : Damageable
                 {
                     if (other.CompareTag("Enemy"))
                     {
+                        Instantiate(chargeExplosion, transform.position, transform.rotation);
                         DealDamage(other, chargeAttack, isBlackSheep);
                         TakeDamage(selfDamage, transform.forward);
                     }
@@ -575,6 +578,8 @@ public class PlayerSheepAI : Damageable
             agent.speed = wanderSpeed;
             agent.stoppingDistance = wanderStopDistance;
             currentSheepState = SheepStates.WANDER;
+
+            chargeParticles.SetActive(false);
         }
     }
 
@@ -591,6 +596,8 @@ public class PlayerSheepAI : Damageable
             agent.stoppingDistance = wanderStopDistance;
             agent.obstacleAvoidanceType = ObstacleAvoidanceType.MedQualityObstacleAvoidance;
             currentSheepState = SheepStates.WANDER;
+
+            chargeParticles.SetActive(false);
         }
     }
 
@@ -598,6 +605,8 @@ public class PlayerSheepAI : Damageable
     {
         //CHARGE!
         isCharging = true;
+
+        chargeParticles.SetActive(true);
 
         //set timer to 0
         chargeCheckCurrent = 0;
