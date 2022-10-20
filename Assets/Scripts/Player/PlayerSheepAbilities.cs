@@ -27,7 +27,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 
     [Header("Goth Mode")]
     [SerializeField] GameObject gothExplosion;
-    [SerializeField] PlayerGothMode gothMode;
+    public PlayerGothMode gothMode;
 
     [Header("Sheep Flock Variables")]
     [SerializeField] List<PlayerSheepAI> activeSheepBuild;
@@ -60,10 +60,12 @@ public class PlayerSheepAbilities : MonoBehaviour
     [SerializeField] float summonIntervalMax = 0.5f;
     [SerializeField] float summonCooldown = 5f;
     [Range(0f, 100f)]
-    [SerializeField] float summonBlackSheepPercent = 10f;
+    public float summonBlackSheepPercent = 10f;
     [SerializeField] AbilityIcon summonIcon;
     [SerializeField] string summonAnimation;
 	[SerializeField] ParticleSystem RecallVFX;
+    [SerializeField] GameObject summonParticle;
+    [SerializeField] float summonParticleLerpSpeed = 5f;
     bool canSummonSheep = true;
     //bool canSummonAllSheep = true;
     PlayerSummoningResource summonResource;
@@ -472,7 +474,8 @@ public class PlayerSheepAbilities : MonoBehaviour
         //get random interval
         float summonDelay = Random.Range(summonIntervalMin, summonIntervalMax);
 
-        yield return new WaitForSeconds(summonDelay);
+        //yield return new WaitForSeconds(summonDelay);
+        yield return null;
 
         //get random point inside summoning radius
         Vector3 summonPosition = Vector3.zero;
@@ -482,16 +485,21 @@ public class PlayerSheepAbilities : MonoBehaviour
         //if inside navmesh, spawn sheep!
         if (NavMesh.SamplePosition(randomPosition, out NavMeshHit hit, summonRadius, 1))
         {
-            //get spawn position
             summonPosition = hit.position;
 
-            //spawn sheep
-            var sheep = Instantiate(GetCurrentSheepPrefab(theSheepType), summonPosition, Quaternion.identity) as GameObject;
-            GetCurrentSheepFlock(theSheepType).Add(sheep.GetComponent<PlayerSheepAI>());
+            var soulParticle = Instantiate(summonParticle, transform.position, Quaternion.identity) as GameObject;
+            soulParticle.GetComponent<Sheep_Summon_Particle>()?.InitSheepParticle(GetCurrentSheepPrefab(theSheepType), summonParticleLerpSpeed, summonPosition, this, theSheepType);
 
-            //determine if it's a black sheep
-            float rand = Random.Range(0f, 100f);
-            if (rand <= summonBlackSheepPercent || gothMode.isGothMode) sheep.GetComponent<PlayerSheepAI>().isBlackSheep = true;
+           // //get spawn position
+           // summonPosition = hit.position;
+           //
+           // //spawn sheep
+           // var sheep = Instantiate(GetCurrentSheepPrefab(theSheepType), summonPosition, Quaternion.identity) as GameObject;
+           // GetCurrentSheepFlock(theSheepType).Add(sheep.GetComponent<PlayerSheepAI>());
+           //
+           // //determine if it's a black sheep
+           // float rand = Random.Range(0f, 100f);
+           // if (rand <= summonBlackSheepPercent || gothMode.isGothMode) sheep.GetComponent<PlayerSheepAI>().isBlackSheep = true;
         }
         else
         {

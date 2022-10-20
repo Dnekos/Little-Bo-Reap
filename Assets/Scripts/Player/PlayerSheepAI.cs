@@ -98,9 +98,11 @@ public class PlayerSheepAI : Damageable
     //[SerializeField] float defendRotateAnglePerSec = 360f;
     [SerializeField] float defendMinHeight = 0f;
     [SerializeField] float defendMaxHeight = 2f;
-   //[SerializeField] float defendFrequency = 3f;
-   //[SerializeField] float defendAmplitude = 1f;
+    [SerializeField] float defendSlerpTime = 5f;
+    //[SerializeField] float defendFrequency = 3f;
+    //[SerializeField] float defendAmplitude = 1f;
     Transform defendPoint;
+    bool isMovingToDefend;
 
 	[Header("Stun State Variables")]
 	[SerializeField] float StunTime = 1;
@@ -641,8 +643,24 @@ public class PlayerSheepAI : Damageable
     #region Defend Player
     void DoDefendPlayer()
     {
-        //agent.SetDestination(defendPoint.position);
-        //move up and down, like a vortex
+        if(isMovingToDefend)
+        {
+            Debug.Log("following player");
+            transform.position = Vector3.Lerp(transform.position, player.transform.position, defendSlerpTime * Time.deltaTime);
+
+            if (Vector3.Distance(player.transform.position, transform.position) < defendRotateDistance - 2f)
+            {
+                isMovingToDefend = false;
+
+                transform.parent = defendPoint;
+                transform.localPosition = Random.insideUnitCircle.normalized * defendRotateDistance;
+
+                float randPosY = Random.Range(defendMinHeight, defendMaxHeight);
+
+                transform.localPosition = new Vector3(transform.localPosition.x, randPosY, transform.localPosition.y);
+            }
+        }
+        
     }
     public void BeginDefendPlayer(Transform theDefendPoint)
     {
@@ -651,13 +669,14 @@ public class PlayerSheepAI : Damageable
 
         //set defened mode
         defendPoint = theDefendPoint;
+        isMovingToDefend = true;
 
-        transform.parent = theDefendPoint;
-        transform.localPosition = Random.insideUnitCircle.normalized * defendRotateDistance;
-
-        float randPosY = Random.Range(defendMinHeight, defendMaxHeight);
-
-        transform.localPosition = new Vector3(transform.localPosition.x, randPosY, transform.localPosition.y);
+       //transform.parent = theDefendPoint;
+       //transform.localPosition = Random.insideUnitCircle.normalized * defendRotateDistance;
+       //
+       //float randPosY = Random.Range(defendMinHeight, defendMaxHeight);
+       //
+       //transform.localPosition = new Vector3(transform.localPosition.x, randPosY, transform.localPosition.y);
 
         float randAnimSpeed = Random.Range(1f, 3f);
         animator.speed = randAnimSpeed;
