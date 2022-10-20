@@ -10,6 +10,10 @@ public class PlayerGroundPound : MonoBehaviour
     [SerializeField] string heavyAirAnimation;
     [SerializeField] float coolDown = 3f;
     [SerializeField] float timeTillSlamDown = 0.25f;
+    [SerializeField] float damageMultiplierPerSecInAir = 3f;
+    [SerializeField] float baseGroundDamage = 25f;
+    [SerializeField] float baseGroundDamageBlack = 50f;
+    float currentAirTime = 0;
     [SerializeField] float airUpForce;
     [SerializeField] float airDownForce;
     [SerializeField] PlayerCameraFollow playerCam;
@@ -35,6 +39,11 @@ public class PlayerGroundPound : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
+    private void Update()
+    {
+        if (isFalling) currentAirTime += Time.deltaTime;
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (isFalling)
@@ -56,8 +65,18 @@ public class PlayerGroundPound : MonoBehaviour
                 if (hit.GetComponent<EnemyAI>() != null)
                 {
                     var dir = -(transform.position - hit.transform.position).normalized;
-                    if (GetComponent<PlayerGothMode>().isGothMode) hit.GetComponent<EnemyAI>().TakeDamage(groundPoundAttack, dir);
-                    else hit.GetComponent<EnemyAI>().TakeDamage((Attack)groundPoundAttack, dir);
+                    if (GetComponent<PlayerGothMode>().isGothMode)
+                    {
+                        groundPoundAttack.damageBlack = baseGroundDamageBlack;
+                        groundPoundAttack.damageBlack *= (currentAirTime * 3f);
+                        hit.GetComponent<EnemyAI>().TakeDamage(groundPoundAttack, dir);
+                    }
+                    else
+                    {
+                        groundPoundAttack.damage = baseGroundDamage;
+                        groundPoundAttack.damage *= (currentAirTime * 3f);
+                        hit.GetComponent<EnemyAI>().TakeDamage((Attack)groundPoundAttack, dir);
+                    }
                 }
             }
         }
@@ -70,6 +89,7 @@ public class PlayerGroundPound : MonoBehaviour
     }
     public void HeavySlamDown()
     {
+        
         isFalling = true;
         animator.SetBool("isFalling", isFalling);
 
@@ -82,6 +102,8 @@ public class PlayerGroundPound : MonoBehaviour
         //if airborne, do a little lift then slam down into the ground!
         if (context.started && canAttack)
         {
+            currentAirTime = 0;
+
             canAttack = false;
             StartCoroutine(GroundPoundCooldown());
 

@@ -59,6 +59,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Transform groundCheckOriginFront;
     [SerializeField] Transform groundCheckOriginBack;
     [SerializeField] float groundCheckDistance;
+    bool wasGroundedLastFrame = true;
     public bool isGrounded = false;
 
     [Header("Model Orientation")]
@@ -70,6 +71,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Animations")]
     [SerializeField] string jumpAnimation;
     [SerializeField] string dashAnimation;
+    [SerializeField] string landingAnimation;
     Animator animator;
 
 	PlayerHealth health;
@@ -144,6 +146,15 @@ public class PlayerMovement : MonoBehaviour
     void UpdateAnimation()
     {
         animator.SetBool("isMoving", isMoving && !Lifting);
+        animator.SetBool("isGrounded", isGrounded);
+
+        //check if was not grounded last frame and is grounded this frame
+
+        if(isGrounded && !wasGroundedLastFrame)
+        {
+            animator.Play(landingAnimation);
+        }
+        wasGroundedLastFrame = isGrounded;
     }
 
     bool OnSlope()

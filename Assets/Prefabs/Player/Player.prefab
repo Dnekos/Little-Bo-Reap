@@ -512,6 +512,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3870380308813204389}
+  - {fileID: 7224856639458476861}
   - {fileID: 3870380307216974260}
   - {fileID: 3870380307944562837}
   - {fileID: 5462111521222099548}
@@ -910,6 +911,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7224856639458476861}
+  - component: {fileID: 2139650281171768100}
   m_Layer: 7
   m_Name: Sheep_Defend_Points
   m_TagString: Untagged
@@ -924,7 +926,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1760125602327802897}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -935,9 +937,22 @@ Transform:
   - {fileID: 7489052625738141}
   - {fileID: 3066455461855584963}
   - {fileID: 745201583296635927}
-  m_Father: {fileID: 3870380308813204389}
+  m_Father: {fileID: 6219005127216546937}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2139650281171768100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1760125602327802897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c81e303e6f6a69d4788a742117654d4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 3870380308813204389}
 --- !u!1 &1762026718684662273
 GameObject:
   m_ObjectHideFlags: 0
@@ -2949,7 +2964,6 @@ Transform:
   - {fileID: 3870380308655863547}
   - {fileID: 1943766158069221792}
   - {fileID: 3870380307688567448}
-  - {fileID: 7224856639458476861}
   - {fileID: 6200068285816236628}
   - {fileID: 5674759231710209037}
   - {fileID: 2870547173014470155}
@@ -3322,6 +3336,7 @@ MonoBehaviour:
   gibs: {fileID: 0}
   damageNumber: {fileID: 758784450076825086, guid: 917e1ac09e21f3f499d8aa30f802b69e,
     type: 3}
+  damageNumberGoth: {fileID: 0}
   isInvulnerable: 0
   HitStunned: 0
   hitstunTimer: 0.2
@@ -3388,6 +3403,7 @@ MonoBehaviour:
   playerOrientation: {fileID: 3870380307216974260}
   jumpAnimation: Test_Bo_Jump
   dashAnimation: Test_Bo_Dash
+  landingAnimation: Bo_Peep_Idle
 --- !u!114 &2643546360396193640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3410,10 +3426,13 @@ MonoBehaviour:
   heavyAirAnimation: Test_Bo_Slam_Windup
   coolDown: 3
   timeTillSlamDown: 0.35
+  damageMultiplierPerSecInAir: 3
+  baseGroundDamage: 25
+  baseGroundDamageBlack: 50
   airUpForce: 2500
   airDownForce: 5000
   playerCam: {fileID: 3870380307944562838}
-  heavyParticle: {fileID: 7302312219567745433, guid: e5deab723eadcc243a6518fed70b7315,
+  heavyParticle: {fileID: 7302312219567745433, guid: 2b49233b069a4044db67ada0f788b65b,
     type: 3}
   particleOrigin: {fileID: 3870380308813204389}
   groundPoundIcon: {fileID: 21811619427426715}
@@ -3483,10 +3502,10 @@ MonoBehaviour:
   flockMenuTimescale: 0.1
   defaultTimescale: 1
   summonBloodCost: 25
-  amountToSummonBuild: 20
-  amountToSummonRam: 15
-  amountToSummonFluffy: 10
-  summonRadius: 15
+  amountToSummonBuild: 25
+  amountToSummonRam: 25
+  amountToSummonFluffy: 25
+  summonRadius: 20
   summonIntervalMin: 0
   summonIntervalMax: 0.75
   summonCooldown: 1
@@ -3494,6 +3513,9 @@ MonoBehaviour:
   summonIcon: {fileID: 6510203794764998765}
   summonAnimation: Test_Bo_Spell
   RecallVFX: {fileID: 3284916392466108367}
+  summonParticle: {fileID: 3596518442742938129, guid: 8405f9e5746642d4f94a7fb2e1c1a1f8,
+    type: 3}
+  summonParticleLerpSpeed: 1
   attackPointOffset: {x: 0, y: 5, z: 0}
   sheepAttackPointPrefab: {fileID: 1751060722446382379, guid: 9034eb190968b01468884f5079c22703,
     type: 3}
@@ -3535,7 +3557,7 @@ MonoBehaviour:
   minDistanceToLaunch: 20
   launchAnimation: Test_Bo_Spell
   launchIcon: {fileID: 7344943566344680018}
-  launchCooldown: 0.5
+  launchCooldown: 0.35
 --- !u!114 &4791982548798101685
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3565,6 +3587,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gothParticles: {fileID: 4229607707037024275}
+  gothVolume: {fileID: 11400000, guid: c864ac90f036b5b40a1ef1f22d3167ab, type: 2}
   explosion: {fileID: 7302312219567745433, guid: 68ec54514ff9e0446a68796f986a0d06,
     type: 3}
   gothSound:
@@ -3576,8 +3599,10 @@ MonoBehaviour:
     Path: event:/Temp/Deadringer
   gothMeterFill: {fileID: 5002306184454334700}
   gothMeterChargeTime: 1
-  gothMeterDuration: 10
+  gothMeterDuration: 7
   isGothMode: 0
+  defaultSaturation: -100
+  saturationIncreaseOverTime: 14.29
 --- !u!114 &8582151330752332035
 MonoBehaviour:
   m_ObjectHideFlags: 0

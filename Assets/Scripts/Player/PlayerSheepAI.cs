@@ -84,6 +84,8 @@ public class PlayerSheepAI : Damageable
     [SerializeField] float chargeCheckSpeed = 2f;
     [SerializeField] SheepAttack chargeAttack;
     [SerializeField] Collider chargeCollider;
+    [SerializeField] GameObject chargeParticles;
+    [SerializeField] GameObject chargeExplosion;
     float chargeCheckCurrent = 0;
     Vector3 chargePoint;
     bool isCharging;
@@ -92,7 +94,15 @@ public class PlayerSheepAI : Damageable
     [SerializeField] float defendSpeed = 35f;
     [SerializeField] float defendStopDistance = 0f;
     [SerializeField] SheepAttack defendAttack;
+    [SerializeField] float defendRotateDistance = 5f;
+    //[SerializeField] float defendRotateAnglePerSec = 360f;
+    [SerializeField] float defendMinHeight = 0f;
+    [SerializeField] float defendMaxHeight = 2f;
+    [SerializeField] float defendSlerpTime = 5f;
+    //[SerializeField] float defendFrequency = 3f;
+    //[SerializeField] float defendAmplitude = 1f;
     Transform defendPoint;
+    bool isMovingToDefend;
 
 	[Header("Stun State Variables")]
 	[SerializeField] float StunTime = 1;
@@ -241,7 +251,9 @@ public class PlayerSheepAI : Damageable
                 {
                     if (other.CompareTag("Enemy"))
                     {
+                        Instantiate(chargeExplosion, transform.position, transform.rotation);
                         DealDamage(other, chargeAttack, isBlackSheep);
+                        TakeDamage(selfDamage, transform.forward);
                     }
                     break;
                 }
@@ -273,6 +285,7 @@ public class PlayerSheepAI : Damageable
     //this is called to kill an indvidual sheep and remove it from list
     public void KillSheep()
     {
+        
         player.GetComponent<PlayerSheepAbilities>().RemoveSheepFromList(sheepType, this);
         DestroySheep();
     }
@@ -299,7 +312,7 @@ public class PlayerSheepAI : Damageable
     }
 	public bool IsCommandable()
 	{
-		return currentSheepState == SheepStates.CHARGE || currentSheepState == SheepStates.DEFEND_PLAYER || currentSheepState == SheepStates.FOLLOW_PLAYER;
+		return currentSheepState == SheepStates.CHARGE /*|| currentSheepState == SheepStates.DEFEND_PLAYER */|| currentSheepState == SheepStates.FOLLOW_PLAYER;
 	}
     float GetRandomSheepBaseSpeed()
     {
@@ -311,7 +324,8 @@ public class PlayerSheepAI : Damageable
 	#region Health
 	protected override void OnDeath()
 	{
-		KillSheep();
+        Instantiate(gibs, transform.position, transform.rotation);
+        KillSheep();
 	}
 	public override void TakeDamage(Attack atk, Vector3 attackForward)
 	{
@@ -563,6 +577,8 @@ public class PlayerSheepAI : Damageable
             agent.speed = wanderSpeed;
             agent.stoppingDistance = wanderStopDistance;
             currentSheepState = SheepStates.WANDER;
+
+            chargeParticles.SetActive(false);
         }
     }
 
@@ -579,6 +595,8 @@ public class PlayerSheepAI : Damageable
             agent.stoppingDistance = wanderStopDistance;
             agent.obstacleAvoidanceType = ObstacleAvoidanceType.MedQualityObstacleAvoidance;
             currentSheepState = SheepStates.WANDER;
+
+            chargeParticles.SetActive(false);
         }
     }
 
@@ -586,6 +604,8 @@ public class PlayerSheepAI : Damageable
     {
         //CHARGE!
         isCharging = true;
+
+        chargeParticles.SetActive(true);
 
         //set timer to 0
         chargeCheckCurrent = 0;
@@ -623,22 +643,62 @@ public class PlayerSheepAI : Damageable
     #region Defend Player
     void DoDefendPlayer()
     {
-        agent.SetDestination(defendPoint.position);
+        if(isMovingToDefend)
+        {
+            Debug.Log("following player");
+            transform.position = Vector3.Lerp(transform.position, player.transform.position, defendSlerpTime * Time.deltaTime);
+
+            if (Vector3.Distance(player.transform.position, transform.position) < defendRotateDistance - 2f)
+            {
+                isMovingToDefend = false;
+
+                transform.parent = defendPoint;
+                transform.localPosition = Random.insideUnitCircle.normalized * defendRotateDistance;
+
+                float randPosY = Random.Range(defendMinHeight, defendMaxHeight);
+
+                transform.localPosition = new Vector3(transform.localPosition.x, randPosY, transform.localPosition.y);
+            }
+        }
+        
     }
     public void BeginDefendPlayer(Transform theDefendPoint)
     {
+        //
+        agent.enabled = false;
+
         //set defened mode
         defendPoint = theDefendPoint;
+        isMovingToDefend = true;
+
+       //transform.parent = theDefendPoint;
+       //transform.localPosition = Random.insideUnitCircle.normalized * defendRotateDistance;
+       //
+       //float randPosY = Random.Range(defendMinHeight, defendMaxHeight);
+       //
+       //transform.localPosition = new Vector3(transform.localPosition.x, randPosY, transform.localPosition.y);
+
+        float randAnimSpeed = Random.Range(1f, 3f);
+        animator.speed = randAnimSpeed;
+
+        animator.SetBool("isDefending", true);
 
         //set speed
         agent.speed = defendSpeed;
         agent.stoppingDistance = defendStopDistance;
-
         currentSheepState = SheepStates.DEFEND_PLAYER;
     }
-	#endregion
 
-	#region Sheep Construct / Lift
+    public void EndDefendPlayer(GameObject fluffyProjectile)
+    {
+        var launchSheep = Instantiate(fluffyProjectile, transform.position, transform.rotation);
+        if (isBlackSheep) launchSheep.GetComponent<PlayerSheepProjectile>().isBlackSheep = true;
+        launchSheep.GetComponent<PlayerSheepProjectile>().LaunchProjectile(transform.position - player.transform.position);
+    }
+
+    #endregion
+
+    #region Sheep Construct / Lift
 	public void StartLift()
 	{
 		currentSheepState = SheepStates.LIFT;

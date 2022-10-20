@@ -33,6 +33,12 @@ public class PlayerSheepProjectile : MonoBehaviour
         rb.AddTorque(100f, 100f, 100f);
     }
 
+    public void LaunchProjectile(Vector3 dir)
+    {
+        rb.AddForce(dir.normalized * launchForce + transform.up * launchForceLift);
+        rb.AddTorque(100f, 100f, 100f);
+    }
+
   // private void OnTriggerEnter(Collider other)
   // {
   //     if (other.CompareTag("Enemy"))
