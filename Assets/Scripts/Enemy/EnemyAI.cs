@@ -39,7 +39,7 @@ public class EnemyAI : Damageable
 	public bool isGrounded = false;
 	[SerializeField] float fallRate = 50;
 
-	Transform player;
+	protected Transform player;
 	NavMeshAgent agent;
 
     // Start is called before the first frame update
@@ -51,7 +51,7 @@ public class EnemyAI : Damageable
 	}
 
 	// Update is called once per frame
-	void Update()
+	protected virtual void Update()
     {
 		// basic state machine
 		switch (currentEnemyState)
@@ -164,7 +164,8 @@ public class EnemyAI : Damageable
 	public override void TakeDamage(Attack atk, Vector3 attackForward)
 	{
 		//if they must be executed, return
-		if (mustBeExecuted && Health < executionHealthThreshhold) return;
+		if (mustBeExecuted && Health < executionHealthThreshhold)
+			return;
 
 		// give them hitstun
 		if (atk.DealsHitstun)
@@ -173,10 +174,11 @@ public class EnemyAI : Damageable
 			StopAllCoroutines();
 			StartCoroutine("OnHitStun");
 		}
+
 		// subtract health
 		base.TakeDamage(atk, attackForward);
 
-		if (Health <= executionHealthThreshhold && isExecutable)
+		if (isExecutable && Health <= executionHealthThreshhold)
 		{
 			rb.mass = 100f;
 			rb.velocity = Vector3.zero;
@@ -187,12 +189,28 @@ public class EnemyAI : Damageable
 			executeTrigger.gameObject.SetActive(true);
 		}
 	}
+	protected override void OnDeath()
+	{
+		if (isExecutable)
+		{
+			rb.mass = 100f;
+			rb.velocity = Vector3.zero;
+			agent.enabled = false;
+			gameObject.layer = LayerMask.NameToLayer("EnemyExecute");
+			rb.constraints = RigidbodyConstraints.FreezeAll;
+			currentEnemyState = EnemyStates.EXECUTABLE;
+			executeTrigger.gameObject.SetActive(true);
+		}
+		else
+			base.OnDeath();
 
+	}
 	//to apply black sheep damage, use this overload
 	public override void TakeDamage(SheepAttack atk, Vector3 attackForward)
 	{
 		//if they must be executed, return
-		if (mustBeExecuted && Health < executionHealthThreshhold) return;
+		if (mustBeExecuted && Health < executionHealthThreshhold)
+			return;
 
 		// give them hitstun
 		if (atk.dealsHitstunBlack)
