@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 6048175850917063765}
   - component: {fileID: 6048175850917063764}
   - component: {fileID: 6915857925316740038}
-  - component: {fileID: 6048175850917063723}
   - component: {fileID: 6551879923446670450}
   - component: {fileID: -7559429031216494707}
+  - component: {fileID: 33123834980676924}
   m_Layer: 0
   m_Name: CollectableBasePrefab
   m_TagString: Untagged
@@ -101,20 +101,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!136 &6048175850917063723
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6048175850917063721}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!54 &6551879923446670450
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -144,6 +130,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attractSpeed: 1
-  layersWhileAttracting:
-    serializedVersion: 2
-    m_Bits: 0
+  playerBody: {fileID: 0}
+--- !u!135 &33123834980676924
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6048175850917063721}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 15
+  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}

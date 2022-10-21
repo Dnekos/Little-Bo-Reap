@@ -7,6 +7,7 @@ public class Collectable : MonoBehaviour
     bool isCollected;
     bool isPulled;
     [SerializeField] float attractSpeed;
+    [SerializeField] float collectDistance = 1.5f;
     public GameObject playerBody;
 
     // Start is called before the first frame update
@@ -27,11 +28,10 @@ public class Collectable : MonoBehaviour
         }
         if (col.tag == "Player" && isCollected == false)
         {
-            isPulled = false;
-            isCollected = true;
-            Debug.Log("Colliding with player");
-            CollectableEffect();
-            Destroy(gameObject); //deletes self after being collected by default
+            if (playerBody == null) playerBody = GameManager.Instance.GetPlayer().gameObject;
+            isPulled = true;
+            gameObject.layer = LayerMask.NameToLayer("Collectables");
+            Debug.Log("GrabRadiusTriggered");
         }
         
     }
@@ -42,6 +42,15 @@ public class Collectable : MonoBehaviour
         {
             var step = attractSpeed * Time.deltaTime; // calculate distance to move
             transform.position = Vector3.Lerp(transform.position, playerBody.transform.position, step);
+
+            if(isCollected == false && Vector3.Distance(playerBody.transform.position, transform.position) <= collectDistance)
+            {
+                isPulled = false;
+                isCollected = true;
+                Debug.Log("Colliding with player");
+                CollectableEffect();
+                Destroy(gameObject); //deletes self after being collected by default
+            }
         }
     }
 
