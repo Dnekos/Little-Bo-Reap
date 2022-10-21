@@ -25,7 +25,7 @@ public class EnemyAI : Damageable
 	public bool isExecutable;
 	public bool mustBeExecuted;
 	[SerializeField] protected int executionHealthThreshhold;
-	[SerializeField] protected EnemyExecutionTrigger executeTrigger;
+	[SerializeField] protected GameObject executeTrigger;
 	public Transform executePlayerPos;
 	public Execution execution;
 
@@ -202,7 +202,7 @@ public class EnemyAI : Damageable
 			gameObject.layer = LayerMask.NameToLayer("EnemyExecute");
 			rb.constraints = RigidbodyConstraints.FreezeAll;
 			currentEnemyState = EnemyStates.EXECUTABLE;
-			executeTrigger.gameObject.SetActive(true);
+			executeTrigger.SetActive(true);
 		}
 	}
 	protected override void OnDeath()
@@ -215,7 +215,7 @@ public class EnemyAI : Damageable
 			gameObject.layer = LayerMask.NameToLayer("EnemyExecute");
 			rb.constraints = RigidbodyConstraints.FreezeAll;
 			currentEnemyState = EnemyStates.EXECUTABLE;
-			executeTrigger.gameObject.SetActive(true);
+			executeTrigger.SetActive(true);
 		}
 		else
 			base.OnDeath();

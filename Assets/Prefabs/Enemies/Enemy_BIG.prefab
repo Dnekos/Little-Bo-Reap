@@ -323,7 +323,6 @@ GameObject:
   - component: {fileID: 2123526702587360727}
   - component: {fileID: 7809574636510166344}
   - component: {fileID: 8795653297455858532}
-  - component: {fileID: 6243461372908964700}
   m_Layer: 0
   m_Name: Execution_Trigger_Zone
   m_TagString: Untagged
@@ -409,18 +408,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6243461372908964700
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3228215076877808575}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11b6215e891feed4d9633f6f8761706f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3606768585502082503
 GameObject:
   m_ObjectHideFlags: 0
@@ -1343,7 +1330,7 @@ Transform:
   - {fileID: 4830366707643864570}
   - {fileID: 3502689471294146218}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!195 &8888413981868254820
 NavMeshAgent:
@@ -1400,7 +1387,7 @@ MonoBehaviour:
   isExecutable: 1
   mustBeExecuted: 1
   executionHealthThreshhold: 60
-  executeTrigger: {fileID: 6243461372908964700}
+  executeTrigger: {fileID: 3228215076877808575}
   executePlayerPos: {fileID: 8044282660379387468}
   execution: {fileID: 11400000, guid: 1924e70f3b7481048a0d281954a4dacc, type: 2}
   groundLayer:
