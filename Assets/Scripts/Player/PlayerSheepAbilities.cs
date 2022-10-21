@@ -19,13 +19,14 @@ public struct Flock
 	public List<PlayerSheepAI> activeSheep;
 	public int MaxSize;
 	public GameObject SheepPrefab;
+	public GameObject SheepProjectilePrefab;
+	public Color UIColor;
 }
 
 public class PlayerSheepAbilities : MonoBehaviour
 {
     [Header("UI Test")]
     [SerializeField] TextMeshProUGUI sheepTypeText;
-    [SerializeField] List<Color> sheepTypeColors;
 
     [Header("Temp Sounds")]
     [SerializeField] FMODUnity.EventReference abilitySound;
@@ -39,13 +40,8 @@ public class PlayerSheepAbilities : MonoBehaviour
     [SerializeField] GameObject gothExplosion;
     [SerializeField] PlayerGothMode gothMode;
 
-    [Header("Sheep Flock Variables")]
-    [SerializeField] List<PlayerSheepAI> activeSheepBuild;
-    [SerializeField] List<PlayerSheepAI> activeSheepRam;
-    [SerializeField] List<PlayerSheepAI> activeSheepFluffy;
-    [SerializeField] GameObject sheepPrefabBuild;
-    [SerializeField] GameObject sheepPrefabRam;
-    [SerializeField] GameObject sheepPrefabFluffy;
+	[Header("Sheep Flock Variables")]
+	[SerializeField] Flock[] sheepFlocks;
     public SheepTypes currentFlockType;
     [SerializeField] float maxDistanceToUseAbilities = 30f;
     int currentFlockIndex;
@@ -62,9 +58,6 @@ public class PlayerSheepAbilities : MonoBehaviour
 
     [Header("Sheep Summon Variables")]
     [SerializeField] float summonBloodCost = 25f;
-    [SerializeField] int amountToSummonBuild;
-    [SerializeField] int amountToSummonRam;
-    [SerializeField] int amountToSummonFluffy;
     [SerializeField] float summonRadius = 20f;
     [SerializeField] float summonIntervalMin = 0f;
     [SerializeField] float summonIntervalMax = 0.5f;
@@ -119,7 +112,6 @@ public class PlayerSheepAbilities : MonoBehaviour
 
     [Header("Sheep Launch Variables")]
 
-    [SerializeField] List<GameObject> launchProjectiles;
     [SerializeField] Transform launchOrigin;
     [SerializeField] float minDistanceToLaunch = 10f;
     [SerializeField] string launchAnimation;
@@ -154,13 +146,15 @@ public class PlayerSheepAbilities : MonoBehaviour
 	#region Sheep Flock Functions
 	public float GetAverageActiveFlockSize()
 	{
-		return (activeSheepBuild.Count +
-				activeSheepRam.Count +
-				activeSheepFluffy.Count) * 0.33f;
+		return (sheepFlocks[0].activeSheep.Count + 
+				sheepFlocks[1].activeSheep.Count + 
+				sheepFlocks[2].activeSheep.Count) * 0.33f;
 	}
 	public float GetAverageMaxFlockSize()
 	{
-		return (amountToSummonBuild + amountToSummonRam + amountToSummonFluffy) * 0.33f;
+		return (sheepFlocks[0].MaxSize +
+				sheepFlocks[1].MaxSize +
+				sheepFlocks[2].MaxSize) * 0.33f;
 	}
 
 
@@ -189,6 +183,18 @@ public class PlayerSheepAbilities : MonoBehaviour
             Time.fixedDeltaTime = 0.02F * Time.timeScale; //evil physics timescale hack to make it smooth
             flockSelectMenu.gameObject.SetActive(true);
         }
+		else if (context.performed)
+		{
+			//go to next sheep type. Mod keep it in the rand of 0-2
+			currentFlockIndex = Mod(currentFlockIndex + (int)Mathf.Sign(swapContextValue), sheepFlocks.Length);
+
+			currentFlockType = (SheepTypes)currentFlockIndex;
+
+			//Debug.Log("Current Flock is: " + currentFlockType);
+			sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
+			sheepTypeText.color = sheepFlocks[currentFlockIndex].UIColor;
+		}
+
         if (context.canceled && swapContextValue == 1)
         {
             if(isInFlockMenu)
@@ -198,7 +204,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 
                 //Debug.Log("Current Flock is: " + currentFlockType);
                 sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
-                sheepTypeText.color = sheepTypeColors[(int)currentFlockType];
+                sheepTypeText.color = sheepFlocks[currentFlockIndex].UIColor;
 
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;
@@ -210,97 +216,18 @@ public class PlayerSheepAbilities : MonoBehaviour
                 flockSelectMenu.gameObject.SetActive(false);
             }      
         }
-        if(context.performed && swapContextValue > 1)
-        {
-            //go to next sheep type
-            currentFlockIndex++;
-            if (currentFlockIndex >= 3) currentFlockIndex = 0; //dont try to set to an enum that doesnt exist 
-            currentFlockType = (SheepTypes)currentFlockIndex;
-
-            //Debug.Log("Current Flock is: " + currentFlockType);
-            sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
-            sheepTypeText.color = sheepTypeColors[(int)currentFlockType];
-        }
-        else if(context.performed && swapContextValue < -1)
-        {
-            //go to previous sheep type
-            currentFlockIndex--;
-            if (currentFlockIndex < 0) currentFlockIndex = 2; //dont try to set to an enum that doesnt exist 
-            currentFlockType = (SheepTypes)currentFlockIndex;
-
-            //Debug.Log("Current Flock is: " + currentFlockType);
-            sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
-            sheepTypeText.color = sheepTypeColors[(int)currentFlockType];
-        }
     }
     public List<PlayerSheepAI> GetSheepFlock(SheepTypes theFlockType)
     {
-        switch(theFlockType)
-        {
-            case SheepTypes.BUILD:
-                {
-                    return activeSheepBuild;
-                }
-            case SheepTypes.RAM:
-                {
-                    return activeSheepRam;
-                }
-            case SheepTypes.FLUFFY:
-                {
-                    return activeSheepFluffy;
-                }
-            default:
-                {
-                    Debug.LogWarning("GetCurrentSheepFlock defaulted! This should never happen!!");
-                    return activeSheepBuild;
-                }
-        }
+		return sheepFlocks[(int)theFlockType].activeSheep;
     }
     public GameObject GetCurrentSheepPrefab(SheepTypes theFlockType)
     {
-        switch (theFlockType)
-        {
-            case SheepTypes.BUILD:
-                {
-                    return sheepPrefabBuild;
-                }
-            case SheepTypes.RAM:
-                {
-                    return sheepPrefabRam;
-                }
-            case SheepTypes.FLUFFY:
-                {
-                    return sheepPrefabFluffy;
-                }
-            default:
-                {
-                    Debug.LogWarning("GetCurrentSheepPrefab defaulted! This should never happen!!");
-                    return sheepPrefabBuild;
-                }
-        }
+		return sheepFlocks[(int)theFlockType].SheepPrefab;
     }
     public int GetSheepAmountToSummon(SheepTypes theFlockType)
     {
-        switch (theFlockType)
-        {
-            case SheepTypes.BUILD:
-                {
-                    return amountToSummonBuild;
-                }
-            case SheepTypes.RAM:
-                {
-                    return amountToSummonRam;
-                }
-            case SheepTypes.FLUFFY:
-                {
-                    return amountToSummonFluffy;
-                }
-            default:
-                {
-                    Debug.LogWarning("GetSheepAmountToSummon defaulted! This should never happen!!");
-                    return amountToSummonBuild;
-                }
-        }
+		return sheepFlocks[(int)theFlockType].MaxSize;
     }
 
     public void RemoveSheepFromList(SheepTypes theType, PlayerSheepAI theSheep)
@@ -365,18 +292,9 @@ public class PlayerSheepAbilities : MonoBehaviour
             RecallVFX.Play();
 
             //SUMMON THE HORDE!
-            for (int i = 0; i < activeSheepBuild.Count; i++)
-            {
-                activeSheepBuild[i]?.RecallSheep();
-            }
-            for (int i = 0; i < activeSheepRam.Count; i++)
-            {
-                activeSheepRam[i]?.RecallSheep();
-            }
-            for (int i = 0; i < activeSheepFluffy.Count; i++)
-            {
-                activeSheepFluffy[i]?.RecallSheep();
-            }
+			for (int i = 0; i < sheepFlocks.Length; i++)
+				for (int j = 0; j < sheepFlocks[i].activeSheep.Count; j++)
+					sheepFlocks[i].activeSheep[j]?.RecallSheep();
         }
 
         if (context.canceled && !recallPerformed)
@@ -762,7 +680,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 
                     for (int i = 0; i < GetSheepFlock(flockType).Count; i++)
                     {
-                        if (GetSheepFlock(flockType)[i].GetSheepState() == SheepStates.DEFEND_PLAYER) GetSheepFlock(flockType)[i]?.EndDefendPlayer(launchProjectiles[(int)SheepTypes.FLUFFY]);
+                        if (GetSheepFlock(flockType)[i].GetSheepState() == SheepStates.DEFEND_PLAYER) GetSheepFlock(flockType)[i]?.EndDefendPlayer(sheepFlocks[(int)SheepTypes.FLUFFY].SheepProjectilePrefab);
                     }
                     //delete all active sheep
                     for (int i = 0; i < GetSheepFlock(flockType).Count; i++)
@@ -860,7 +778,7 @@ public class PlayerSheepAbilities : MonoBehaviour
                         FMODUnity.RuntimeManager.PlayOneShotAttached(launchSound, gameObject);
 
                         //break loop and launch that mf
-                        var launchSheep = Instantiate(launchProjectiles[(int)currentFlockType], launchOrigin.position, launchOrigin.rotation);
+                        var launchSheep = Instantiate(sheepFlocks[currentFlockIndex].SheepProjectilePrefab, launchOrigin.position, launchOrigin.rotation);
                         if (GetSheepFlock(flockType)[i].isBlackSheep) launchSheep.GetComponent<PlayerSheepProjectile>().isBlackSheep = true;
                         launchSheep.GetComponent<PlayerSheepProjectile>().LaunchProjectile();
                         //launchSheep.GetComponent<Rigidbody>()?.AddForce(launchOrigin.transform.forward * launchForce + launchOrigin.transform.up * launchForceLift);
@@ -886,6 +804,8 @@ public class PlayerSheepAbilities : MonoBehaviour
         yield return new WaitForSeconds(launchCooldown);
         canLaunch = true;
     }
-    #endregion
+	#endregion
 
+	// quick mod utility function
+	int Mod(int a, int n) => (a % n + n) % n;
 }

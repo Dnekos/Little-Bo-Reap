@@ -3454,10 +3454,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sheepTypeText: {fileID: 6716116745102799633}
-  sheepTypeColors:
-  - {r: 0, g: 0.5550184, b: 1, a: 1}
-  - {r: 1, g: 0.74655265, b: 0, a: 1}
-  - {r: 0.7562709, g: 0, b: 1, a: 1}
   abilitySound:
     Guid:
       Data1: 1668816679
@@ -3483,15 +3479,31 @@ MonoBehaviour:
   gothExplosion: {fileID: 7302312219567745433, guid: 68ec54514ff9e0446a68796f986a0d06,
     type: 3}
   gothMode: {fileID: 0}
-  activeSheepBuild: []
-  activeSheepRam: []
-  activeSheepFluffy: []
-  sheepPrefabBuild: {fileID: 7642856465436953991, guid: ca3915b86adfee943ae15cfd94cbd72f,
-    type: 3}
-  sheepPrefabRam: {fileID: 5053043160987223685, guid: 9e71b1a880e5f494495d5d247e69482c,
-    type: 3}
-  sheepPrefabFluffy: {fileID: 2475062628944767209, guid: 6335529050bb0f44c86a6184fabeca9d,
-    type: 3}
+  sheepFlocks:
+  - name: Builder
+    activeSheep: []
+    MaxSize: 25
+    SheepPrefab: {fileID: 7642856465436953991, guid: ca3915b86adfee943ae15cfd94cbd72f,
+      type: 3}
+    SheepProjectilePrefab: {fileID: 1802569736148475655, guid: 8e3d8eb4f51c618419d4eb16a2779cb9,
+      type: 3}
+    UIColor: {r: 0, g: 0.5568628, b: 1, a: 1}
+  - name: Rams
+    activeSheep: []
+    MaxSize: 25
+    SheepPrefab: {fileID: 5053043160987223685, guid: 9e71b1a880e5f494495d5d247e69482c,
+      type: 3}
+    SheepProjectilePrefab: {fileID: 5609754029084736080, guid: 869d2c9d10ff4604bbdff72cdfe55fe7,
+      type: 3}
+    UIColor: {r: 1, g: 0.74509805, b: 0, a: 1}
+  - name: Fluffy
+    activeSheep: []
+    MaxSize: 25
+    SheepPrefab: {fileID: 2475062628944767209, guid: 6335529050bb0f44c86a6184fabeca9d,
+      type: 3}
+    SheepProjectilePrefab: {fileID: 1117073835941176083, guid: 27dea73d36a031c4e8253b5c1303f2da,
+      type: 3}
+    UIColor: {r: 0.75686276, g: 0, b: 1, a: 1}
   currentFlockType: 0
   maxDistanceToUseAbilities: 30
   leaderSheep:
@@ -3502,9 +3514,6 @@ MonoBehaviour:
   flockMenuTimescale: 0.1
   defaultTimescale: 1
   summonBloodCost: 25
-  amountToSummonBuild: 25
-  amountToSummonRam: 25
-  amountToSummonFluffy: 25
   summonRadius: 20
   summonIntervalMin: 0
   summonIntervalMax: 0.75
@@ -3546,10 +3555,6 @@ MonoBehaviour:
   defendAnimation: Test_Bo_Spell
   defendIcon: {fileID: 5727745938368034847}
   defendCooldown: 1
-  launchProjectiles:
-  - {fileID: 1802569736148475655, guid: 8e3d8eb4f51c618419d4eb16a2779cb9, type: 3}
-  - {fileID: 5609754029084736080, guid: 869d2c9d10ff4604bbdff72cdfe55fe7, type: 3}
-  - {fileID: 1117073835941176083, guid: 27dea73d36a031c4e8253b5c1303f2da, type: 3}
   launchOrigin: {fileID: 8630855891053651535}
   minDistanceToLaunch: 20
   launchAnimation: Test_Bo_Spell
