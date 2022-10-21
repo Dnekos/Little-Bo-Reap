@@ -704,7 +704,6 @@ public class PlayerSheepAI : Damageable
 		currentSheepState = SheepStates.LIFT;
 		agent.enabled = false;
 		rb.isKinematic = true;
-		gameObject.layer = LayerMask.NameToLayer("Ground");
 	}
 	public void CancelLift()
 	{

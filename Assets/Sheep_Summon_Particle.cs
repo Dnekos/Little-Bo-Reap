@@ -12,7 +12,6 @@ public class Sheep_Summon_Particle : MonoBehaviour
     PlayerSheepAbilities player;
     bool canSpawn = true;
 
-
     public void InitSheepParticle(GameObject theSheepToSpawn, float theLerpSpeed, Vector3 theSpawnPoint, PlayerSheepAbilities thePlayer, SheepTypes theSheepType)
     {
         sheepToSpawn = theSheepToSpawn;
@@ -33,7 +32,7 @@ public class Sheep_Summon_Particle : MonoBehaviour
             //spawn sheep
             Instantiate(crackAndPoof, spawnPoint, Quaternion.identity);
             var sheep = Instantiate(sheepToSpawn, spawnPoint, Quaternion.identity) as GameObject;
-            player.GetCurrentSheepFlock(sheepType).Add(sheep.GetComponent<PlayerSheepAI>());
+            player.GetSheepFlock(sheepType).Add(sheep.GetComponent<PlayerSheepAI>());
            
             //determine if it's a black sheep
             float rand = Random.Range(0f, 100f);

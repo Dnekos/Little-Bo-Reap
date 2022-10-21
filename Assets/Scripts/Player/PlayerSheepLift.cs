@@ -9,6 +9,8 @@ public class PlayerSheepLift : MonoBehaviour
 	[Tooltip("this should be the primary collider on the player"), SerializeField] CapsuleCollider mainCollider;
 	float sheepHeight;
 
+	[SerializeField] float SheepLerpSpeed = 0.5f;
+
 	// Platform Stuff
 	[Header("Top Platform"), SerializeField] Vector3 PlatformSize;
 	GameObject platform;
@@ -105,6 +107,8 @@ public class PlayerSheepLift : MonoBehaviour
 		if (distTowardsNextSheep * SheepSpacingMod >= sheepHeight)
 		{
 			StartCoroutine(SheepFollow(flocks.GetSheepFlock(SheepTypes.BUILD)[usedSheep], PlaceAtTop ? RecordedPositions.Count - 1 : 0, usedSheep));
+
+			// give them a new rotation
 			flocks.GetSheepFlock(SheepTypes.BUILD)[usedSheep].transform.eulerAngles = new Vector3(0, Random.Range(0, 360));
 			usedSheep++;
 			distTowardsNextSheep = 0;
@@ -133,17 +137,22 @@ public class PlayerSheepLift : MonoBehaviour
 		playerSheep.StartLift(); 
 		int index = startingIndex;
 		float startTime = Time.time;
+
 		while (player.Lifting && playerSheep != null)
 		{
 			yield return new WaitForEndOfFrame();
 
 			if (index < RecordedPositions.Count)
 			{
-				playerSheep.transform.position = RecordedPositions[index];// Vector3.LerpUnclamped(RecordedPositions[index], RecordedPositions[index + 1], 1);
+				playerSheep.transform.position = Vector3.Lerp(playerSheep.transform.position, RecordedPositions[index], SheepLerpSpeed);
 				index++;
 			}
 		}
 
+		// snap them in position at the end to catch stragglers
+		playerSheep.transform.position = RecordedPositions[Mathf.Clamp(index, 0, RecordedPositions.Count - 1)];
+
+		// keep them in the tower till something knocks them over or they die
 		yield return new WaitUntil(() => collapseTower || playerSheep == null || playerSheep.GetSheepState() != SheepStates.LIFT);
 
 		if (playerSheep?.GetSheepState() == SheepStates.LIFT)

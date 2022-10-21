@@ -184,7 +184,6 @@ public class PlayerMovement : MonoBehaviour
             runParticles.Play();
         }
 
-        moveDirection = playerOrientation.forward * moveValue.y + playerOrientation.right * moveValue.x;
 
         if (OnSlope())
         {
@@ -192,7 +191,8 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            rb.AddForce(moveDirection * acceleration);
+			moveDirection = playerOrientation.forward * moveValue.y + playerOrientation.right * moveValue.x;
+			rb.AddForce(moveDirection * acceleration);
         }
 
     }
