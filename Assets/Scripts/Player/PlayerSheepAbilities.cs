@@ -722,6 +722,12 @@ public class PlayerSheepAbilities : MonoBehaviour
                         if (pointIndex >= defendPoints.Count) pointIndex = 0;
                     }
 
+                    //vfx
+                    for(int i = 0; i < defendPoints.Count; i++)
+                    {
+                        defendPoints[i].gameObject.SetActive(true);
+                    }
+
                     //start cooldown
                     canDefend = false;
                     defendIcon.CooldownUIEffect(defendCooldown);
@@ -756,6 +762,13 @@ public class PlayerSheepAbilities : MonoBehaviour
                         GetCurrentSheepFlock(flockType)[i].DestroySheep();
                     }
                     GetCurrentSheepFlock(flockType).Clear();
+
+
+                    //vfx
+                    for (int i = 0; i < defendPoints.Count; i++)
+                    {
+                        defendPoints[i].gameObject.SetActive(false);
+                    }
 
                     //start cooldown
                     canDefend = false;
