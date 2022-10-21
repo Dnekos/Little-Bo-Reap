@@ -7,18 +7,12 @@ public class Collectable : MonoBehaviour
     bool isCollected;
     bool isPulled;
     [SerializeField] float attractSpeed;
-    GameObject playerBody;
+    public GameObject playerBody;
 
     // Start is called before the first frame update
     void Start()
     {
-        playerBody = GameObject.FindGameObjectWithTag("Player");
-
-        //Ignore collisions with Enemy and Sheep Layers
-        Physics.IgnoreLayerCollision(17, 10, true); //collectable and sheep layer
-        Physics.IgnoreLayerCollision(17, 12, true); //collectable and enemy layer
-        Physics.IgnoreLayerCollision(17, 13, true); //collectable and enemyAttack layer
-        Physics.IgnoreLayerCollision(17, 14, true); //collectable and enemyExecute layer
+        playerBody = GameManager.Instance.GetPlayer().gameObject;
     }
 
     // Update is called once per frame
@@ -26,7 +20,9 @@ public class Collectable : MonoBehaviour
     {
         if (col.tag == "GrabRadius" && isCollected == false)
         {
+            if (playerBody == null) playerBody = GameManager.Instance.GetPlayer().gameObject;
             isPulled = true;
+            gameObject.layer = LayerMask.NameToLayer("Collectables");
             Debug.Log("GrabRadiusTriggered");
         }
         if (col.tag == "Player" && isCollected == false)
@@ -45,7 +41,7 @@ public class Collectable : MonoBehaviour
         if (isPulled == true)
         {
             var step = attractSpeed * Time.deltaTime; // calculate distance to move
-            transform.position = Vector3.MoveTowards(transform.position, playerBody.transform.position, step);
+            transform.position = Vector3.Lerp(transform.position, playerBody.transform.position, step);
         }
     }
 

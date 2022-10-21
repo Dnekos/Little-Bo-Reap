@@ -9,13 +9,13 @@ public class SoulCollectableScript : Collectable
     // Start is called before the first frame update
     void Start()
     {
-       soulCounter = GameObject.FindGameObjectWithTag("SoulCounter");
+       //soulCounter = GameObject.FindGameObjectWithTag("SoulCounter");
     }
     //effect: adds souls equal to value and updates the UI
     protected override void CollectableEffect()
     {
-        soulCounter.GetComponent<PlayerSoulCounter>().incrementSouls(soulValue);
-        Debug.Log("OverrideSuccessful");
+        //soulCounter.GetComponent<PlayerSoulCounter>().incrementSouls(soulValue);
+        //Debug.Log("OverrideSuccessful");
         base.CollectableEffect();
     }
 }

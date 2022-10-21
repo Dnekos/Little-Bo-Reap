@@ -8,6 +8,11 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -7559429031216494707, guid: d48341c11c99a5243b26d1d0891c7d55,
+        type: 3}
+      propertyPath: attractSpeed
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6048175850917063721, guid: d48341c11c99a5243b26d1d0891c7d55,
         type: 3}
       propertyPath: m_Name
@@ -16,7 +21,7 @@ PrefabInstance:
     - target: {fileID: 6048175850917063721, guid: d48341c11c99a5243b26d1d0891c7d55,
         type: 3}
       propertyPath: m_Layer
-      value: 17
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6048175850917063766, guid: d48341c11c99a5243b26d1d0891c7d55,
         type: 3}
@@ -78,7 +83,8 @@ PrefabInstance:
       propertyPath: m_Constraints
       value: 112
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -7559429031216494707, guid: d48341c11c99a5243b26d1d0891c7d55, type: 3}
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: d48341c11c99a5243b26d1d0891c7d55, type: 3}
 --- !u!1 &6060198684946403098 stripped
@@ -99,5 +105,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2251e07c6ce89ae458cf0c401bd9c41a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attractSpeed: 20
+  attractSpeed: 3
+  layersWhileAttracting:
+    serializedVersion: 2
+    m_Bits: 0
   soulValue: 1
