@@ -117,7 +117,7 @@ public class BigGuyAI : EnemyAI
 			HealthBarCanvas.SetActive(true);
 			float healthbarScale = 1 - (Health / MaxHealth);
 			HPBars[0].localScale = new Vector3(healthbarScale, 1, 1);
-			HPBars[1].localScale = new Vector3(healthbarScale * 1, 1, 1);
+			HPBars[1].localScale = new Vector3(healthbarScale * -1, 1, 1);
 		}
 		else
 			HealthBarCanvas.SetActive(false);

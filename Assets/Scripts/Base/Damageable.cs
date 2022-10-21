@@ -80,7 +80,7 @@ public class Damageable : MonoBehaviour
 	virtual protected void OnDeath()
 	{
 		SoulDropCalculation(soulValue);
-		Instantiate(gibs, transform.position + Vector3.up * 1.4f, new Quaternion()).GetComponent<ParticleSystem>();
+		Instantiate(gibs, transform.position + Vector3.up * 1.4f, new Quaternion());
 		Destroy(gameObject); // base effect is deleting object
 	}
 	//put it here because it wasn't overriding onDeath for non-executable enemies, likely because death was called in this function specifically

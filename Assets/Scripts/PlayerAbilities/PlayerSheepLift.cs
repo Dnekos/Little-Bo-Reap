@@ -137,6 +137,8 @@ public class PlayerSheepLift : MonoBehaviour
 		playerSheep.StartLift(); 
 		int index = startingIndex;
 		float startTime = Time.time;
+		float lerpSpeed = SheepLerpSpeed;
+
 
 		while (player.Lifting && playerSheep != null)
 		{
@@ -144,8 +146,9 @@ public class PlayerSheepLift : MonoBehaviour
 
 			if (index < RecordedPositions.Count)
 			{
-				playerSheep.transform.position = Vector3.Lerp(playerSheep.transform.position, RecordedPositions[index], SheepLerpSpeed);
+				playerSheep.transform.position = Vector3.Lerp(playerSheep.transform.position, RecordedPositions[index], lerpSpeed);
 				index++;
+				lerpSpeed += Time.deltaTime * 2;
 			}
 		}
 

@@ -100,25 +100,8 @@ public class EnemyAI : Damageable
 
 	public void Execute()
     {
-		OnDeath();
-    }
-
-	/*protected override void OnDeath()
-    {
-		Debug.Log("OverrideSuccessful");
-
-		SoulDropCalculation(soulValue);
 		base.OnDeath();
-    }
-
-	private void SoulDropCalculation(int soulsToDrop)
-    {
-		while (soulsToDrop > 0)
-        {
-			Debug.Log("SoulDropped");
-			soulsToDrop--;
-        }
-    }*/
+	}
 
     #endregion
 
