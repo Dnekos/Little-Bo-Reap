@@ -62,7 +62,7 @@ public class PlayerSheepLift : MonoBehaviour
 		Physics.Raycast(transform.position, Vector3.down, out info, 100, LayerMask.GetMask("Ground"));
 
 		// not enough sheep to make the ladder
-		if (info.distance > sheepHeight * SheepSpacingMod * flocks.GetCurrentSheepFlock(SheepTypes.BUILD).Count)
+		if (info.distance > sheepHeight * SheepSpacingMod * flocks.GetSheepFlock(SheepTypes.BUILD).Count)
 			return false;
 
 
@@ -89,7 +89,7 @@ public class PlayerSheepLift : MonoBehaviour
 	// returns false if you cannot place a sheep
 	bool PlacePoint(Vector3 newPos, bool PlaceAtTop)
 	{
-		if (usedSheep >= flocks.GetCurrentSheepFlock(SheepTypes.BUILD).Count)
+		if (usedSheep >= flocks.GetSheepFlock(SheepTypes.BUILD).Count)
 		{
 			player.Lifting = false;
 			return false;
@@ -104,8 +104,8 @@ public class PlayerSheepLift : MonoBehaviour
 		// check if theres room to add a sheep to the stack
 		if (distTowardsNextSheep * SheepSpacingMod >= sheepHeight)
 		{
-			StartCoroutine(SheepFollow(flocks.GetCurrentSheepFlock(SheepTypes.BUILD)[usedSheep], PlaceAtTop ? RecordedPositions.Count - 1 : 0, usedSheep));
-			flocks.GetCurrentSheepFlock(SheepTypes.BUILD)[usedSheep].transform.eulerAngles = new Vector3(0, Random.Range(0, 360));
+			StartCoroutine(SheepFollow(flocks.GetSheepFlock(SheepTypes.BUILD)[usedSheep], PlaceAtTop ? RecordedPositions.Count - 1 : 0, usedSheep));
+			flocks.GetSheepFlock(SheepTypes.BUILD)[usedSheep].transform.eulerAngles = new Vector3(0, Random.Range(0, 360));
 			usedSheep++;
 			distTowardsNextSheep = 0;
 		}

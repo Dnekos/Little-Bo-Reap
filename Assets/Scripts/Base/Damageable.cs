@@ -7,7 +7,7 @@ public class Damageable : MonoBehaviour
 {
 	[Header("Health")]
 	[SerializeField] protected float Health;
-	[SerializeField] float MaxHealth;
+	[SerializeField] protected float MaxHealth;
 	public GameObject gibs;
 	[SerializeField] GameObject damageNumber;
 	[SerializeField] GameObject damageNumberGoth;

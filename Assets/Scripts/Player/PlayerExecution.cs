@@ -57,13 +57,13 @@ public class PlayerExecution : MonoBehaviour
                 currentPetDistance = 999;
 
                 //this is all for sean don't think too hard about it
-                for(int i = 0; i < GetComponent<PlayerSheepAbilities>().GetCurrentSheepFlock(GetComponent<PlayerSheepAbilities>().currentFlockType).Count; i++)
+                for(int i = 0; i < GetComponent<PlayerSheepAbilities>().GetSheepFlock(GetComponent<PlayerSheepAbilities>().currentFlockType).Count; i++)
                 {
-                    if (Vector3.Distance(transform.position, GetComponent<PlayerSheepAbilities>().GetCurrentSheepFlock(GetComponent<PlayerSheepAbilities>().currentFlockType)[i].transform.position) < petMaxDistance
-                        && currentPetDistance > Vector3.Distance(transform.position, GetComponent<PlayerSheepAbilities>().GetCurrentSheepFlock(GetComponent<PlayerSheepAbilities>().currentFlockType)[i].transform.position))
+                    if (Vector3.Distance(transform.position, GetComponent<PlayerSheepAbilities>().GetSheepFlock(GetComponent<PlayerSheepAbilities>().currentFlockType)[i].transform.position) < petMaxDistance
+                        && currentPetDistance > Vector3.Distance(transform.position, GetComponent<PlayerSheepAbilities>().GetSheepFlock(GetComponent<PlayerSheepAbilities>().currentFlockType)[i].transform.position))
                     {
-                        currentPetDistance = Vector3.Distance(transform.position, GetComponent<PlayerSheepAbilities>().GetCurrentSheepFlock(GetComponent<PlayerSheepAbilities>().currentFlockType)[i].transform.position);
-                        sheepToPet = GetComponent<PlayerSheepAbilities>().GetCurrentSheepFlock(GetComponent<PlayerSheepAbilities>().currentFlockType)[i];
+                        currentPetDistance = Vector3.Distance(transform.position, GetComponent<PlayerSheepAbilities>().GetSheepFlock(GetComponent<PlayerSheepAbilities>().currentFlockType)[i].transform.position);
+                        sheepToPet = GetComponent<PlayerSheepAbilities>().GetSheepFlock(GetComponent<PlayerSheepAbilities>().currentFlockType)[i];
                     }
                 }
 

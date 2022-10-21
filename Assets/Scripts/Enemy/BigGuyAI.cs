@@ -6,6 +6,10 @@ using UnityEngine.AI;
 
 public class BigGuyAI : EnemyAI
 {
+	[Header("HealthBar")]
+	[SerializeField] GameObject HealthBarCanvas;
+	[SerializeField] Transform[] HPBars;
+
 	[Header("Attacking")]
 	[SerializeField] Attack StickAttack;
 	[SerializeField] List<Transform> NearbyGuys;
@@ -23,6 +27,7 @@ public class BigGuyAI : EnemyAI
 		base.Start();
 		NearbyGuys = new List<Transform>();
 		anim = GetComponent<Animator>();
+		HealthBarCanvas.SetActive(false);
 	}
 
 	#region Chasing and Attacking
@@ -44,10 +49,12 @@ public class BigGuyAI : EnemyAI
 			Vector3 heading = (average_pos / NearbyGuys.Count) - transform.position;
 			float angle = Vector3.Angle(transform.forward, heading);
 
-			if (NearbyGuys.Count != 0 && angle < 60)
-				anim.Play(StickAttack.animation);
-			else
+			// if at least half of active sheep are around it
+			if (NearbyGuys.Count > player.GetComponent<PlayerSheepAbilities>().GetAverageActiveFlockSize() * 0.5f)
 				anim.Play(ShockwaveAttack.animation);
+			// if there are sheep in front
+			else if (NearbyGuys.Count != 0 && angle < 60)
+				anim.Play(StickAttack.animation);
 		}
 		QueuedAttack = null;
 
@@ -86,6 +93,35 @@ public class BigGuyAI : EnemyAI
 			Debug.Log("collided with " + collision.gameObject.name);
 			collision.gameObject.GetComponent<Damageable>()?.TakeDamage(StickAttack, transform.forward);
 		}
+	}
+	#endregion
+
+
+	#region Healthbar
+	protected override void Update()
+	{
+		base.Update();
+
+		// if healthbar is active, billboard it
+		if (Health != MaxHealth)
+			HealthBarCanvas.transform.LookAt(Camera.main.transform);
+	}
+
+	public override void TakeDamage(Attack atk, Vector3 attackForward)
+	{
+		base.TakeDamage(atk, attackForward);
+
+		// when taking damage, open healthbar
+		if (Health != MaxHealth)
+		{
+			HealthBarCanvas.SetActive(true);
+			float healthbarScale = 1 - (Health / MaxHealth);
+			HPBars[0].localScale = new Vector3(healthbarScale, 1, 1);
+			HPBars[1].localScale = new Vector3(healthbarScale * 1, 1, 1);
+		}
+		else
+			HealthBarCanvas.SetActive(false);
+
 	}
 	#endregion
 }
