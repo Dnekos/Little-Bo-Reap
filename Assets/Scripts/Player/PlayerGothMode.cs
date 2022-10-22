@@ -12,7 +12,8 @@ public class PlayerGothMode : MonoBehaviour
     [SerializeField] VolumeProfile gothVolume;
     [SerializeField] GameObject explosion;
     [SerializeField] FMODUnity.EventReference gothSound;
-    [SerializeField] Image gothMeterFill;
+	[SerializeField] FillBar gothMeter;
+	[SerializeField] float GothMeterCount = 0;
     [SerializeField] float gothMeterChargeTime;
     [SerializeField] float gothMeterDuration;
     public bool isGothMode = false;
@@ -31,12 +32,14 @@ public class PlayerGothMode : MonoBehaviour
         gothSaturation.saturation.value = defaultSaturation;
 
         playerSheep = GetComponent<PlayerSheepAbilities>();
-    }
+		gothMeter.ChangeFill(GothMeterCount);
 
-    //update bar image
-    void Update()
+	}
+
+	//update bar image
+	void Update()
     {
-        if (gothMeterFill.fillAmount <= 0)
+        if (GothMeterCount <= 0)
         {
             isGothMode = false;
             gothParticles.SetActive(false);
@@ -45,24 +48,26 @@ public class PlayerGothMode : MonoBehaviour
 
         if (isGothMode)
         {
-            //deplete meter
-            gothMeterFill.fillAmount -= 1.0f / gothMeterDuration * Time.unscaledDeltaTime;
+			//deplete meter
+			GothMeterCount = Mathf.Clamp01(GothMeterCount - (1.0f / gothMeterDuration * Time.unscaledDeltaTime));
+			gothMeter.ChangeFill(GothMeterCount);
 
-            //deplete saturation over time
-            if(gothSaturation.saturation.value < 0)
+			//deplete saturation over time
+			if (gothSaturation.saturation.value < 0)
             {
                 gothSaturation.saturation.value += saturationIncreaseOverTime * Time.deltaTime;
             }
         }
         else
         {
-            gothMeterFill.fillAmount += 1.0f / gothMeterChargeTime * Time.unscaledDeltaTime;
-        }
+			GothMeterCount = Mathf.Clamp01(GothMeterCount + (1.0f / gothMeterChargeTime * Time.unscaledDeltaTime));
+			gothMeter.ChangeFill(GothMeterCount);
+		}
     }
 
     public void OnGothMode(InputAction.CallbackContext context)
     {
-        if (context.started && gothMeterFill.fillAmount == 1f)
+        if (context.started && GothMeterCount == 1f)
         {
 			//TEMP SOUND
 			FMODUnity.RuntimeManager.PlayOneShotAttached(gothSound,gameObject);
