@@ -8,6 +8,7 @@ public class Collectable : MonoBehaviour
     bool isPulled;
     [SerializeField] float attractSpeed;
     [SerializeField] float collectDistance = 1.5f;
+    [SerializeField] float attractSpeedIncreaseOverTime = 1f;
     public GameObject playerBody;
 
     // Start is called before the first frame update
@@ -42,6 +43,8 @@ public class Collectable : MonoBehaviour
         {
             var step = attractSpeed * Time.deltaTime; // calculate distance to move
             transform.position = Vector3.Lerp(transform.position, playerBody.transform.position, step);
+
+            attractSpeed +=  attractSpeedIncreaseOverTime * Time.deltaTime;
 
             if(isCollected == false && Vector3.Distance(playerBody.transform.position, transform.position) <= collectDistance)
             {
