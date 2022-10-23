@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerHealth : Damageable
 {
+	[SerializeField] FillBar healthBar;
 
 	[Header("Hitstun"), Tooltip("Prevents movement Inputs and speed checking while active")]
 	public bool HitStunned = false;
@@ -17,7 +18,7 @@ public class PlayerHealth : Damageable
 	{
 		base.Start();
 		playermove = GetComponent<PlayerMovement>();
-
+		healthBar.ChangeFill(Health / MaxHealth);
 	}
 
 	public override void TakeDamage(Attack atk, Vector3 attackForward)
@@ -26,6 +27,8 @@ public class PlayerHealth : Damageable
 		rb.AddForce(-rb.velocity, ForceMode.VelocityChange);
 
 		base.TakeDamage(atk, attackForward);
+		healthBar.ChangeFill(Health / MaxHealth);
+
 		if (atk.DealsHitstun)
 		{
 			StopCoroutine("HitstunTracker");

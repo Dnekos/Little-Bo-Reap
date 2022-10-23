@@ -10,6 +10,7 @@ public class PlayerSummoningResource : MonoBehaviour
     [SerializeField] float currentBlood;
     [SerializeField] Image bloodMeter;
     [SerializeField] float bloodMeterRechargePerSec = 10f;
+	[SerializeField] FillBar bar;
 
     public float GetCurrentBlood()
     {
@@ -22,7 +23,9 @@ public class PlayerSummoningResource : MonoBehaviour
         currentBlood += Time.deltaTime * bloodMeterRechargePerSec;
         if (currentBlood >= maxBlood) currentBlood = maxBlood;
         UpdateMeter();
-    }
+		bar.ChangeFill(currentBlood / maxBlood);
+
+	}
     
     public void UpdateMeter()
     {

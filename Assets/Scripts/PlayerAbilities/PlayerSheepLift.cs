@@ -52,6 +52,7 @@ public class PlayerSheepLift : MonoBehaviour
 
 		if (platform != null && player.transform.position.y < platform.transform.position.y)
 		{
+			platform.GetComponent<BoxCollider>().enabled = false;
 			Destroy(platform);
 			platform = null;
 			collapseTower = true;
