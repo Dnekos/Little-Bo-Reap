@@ -88,10 +88,13 @@ public class PlayerSheepLift : MonoBehaviour
 
 	public void CollapseTower()
 	{
-		platform.GetComponent<BoxCollider>().enabled = false;
-		platform.layer = 0; // idk, fuckin... make it not ground??
-		Destroy(platform);
-		platform = null;
+		if (platform != null)
+		{
+			platform.GetComponent<BoxCollider>().enabled = false;
+			platform.layer = 0; // idk, fuckin... make it not ground??
+			Destroy(platform);
+			platform = null;
+		}
 		shouldCollapseTower = true;
 	}
 

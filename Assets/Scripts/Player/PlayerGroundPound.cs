@@ -13,19 +13,20 @@ public class PlayerGroundPound : MonoBehaviour
     [SerializeField] float damageMultiplierPerSecInAir = 3f;
     [SerializeField] float baseGroundDamage = 25f;
     [SerializeField] float baseGroundDamageBlack = 50f;
-    float currentAirTime = 0;
+    Vector3 startFallPos;
     [SerializeField] float airUpForce;
     [SerializeField] float airDownForce;
     [SerializeField] PlayerCameraFollow playerCam;
 
-    [Header("Explosion")]
+	[Header("Explosion")]
+	[SerializeField] float DamageMultiplier = 1;
     [SerializeField] GameObject heavyParticle;
     [SerializeField] Transform particleOrigin;
     [SerializeField] AbilityIcon groundPoundIcon;
     [SerializeField] SheepAttack groundPoundAttack;
     [SerializeField] LayerMask enemyLayer;
     [SerializeField] float attackRadius;
-    bool isFalling = false;
+    [HideInInspector] public bool isFalling = false;
     bool canAttack = true;
 
     PlayerMovement playerMovement;
@@ -37,11 +38,6 @@ public class PlayerGroundPound : MonoBehaviour
         playerMovement = GetComponent<PlayerMovement>();
         animator = GetComponent<PlayerAnimationController>().playerAnimator;
         rb = GetComponent<Rigidbody>();
-    }
-
-    private void Update()
-    {
-        if (isFalling) currentAirTime += Time.deltaTime;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -62,20 +58,24 @@ public class PlayerGroundPound : MonoBehaviour
             Collider[] enemies = Physics.OverlapSphere(transform.position, attackRadius, enemyLayer);
             foreach (Collider hit in enemies)
             {
-                if (hit.GetComponent<EnemyAI>() != null)
+				EnemyAI enemy = hit.GetComponent<EnemyAI>();
+
+				if (enemy != null)
                 {
-                    var dir = -(transform.position - hit.transform.position).normalized;
+					float damage = Mathf.Max(0, startFallPos.y - transform.position.y) * DamageMultiplier;
+					var dir = -(transform.position - hit.transform.position).normalized;
+
                     if (GetComponent<PlayerGothMode>().isGothMode)
                     {
                         groundPoundAttack.damageBlack = baseGroundDamageBlack;
-                        groundPoundAttack.damageBlack *= (currentAirTime * 3f);
-                        hit.GetComponent<EnemyAI>().TakeDamage(groundPoundAttack, dir);
+                        groundPoundAttack.damageBlack *= damage;
+						enemy.TakeDamage(groundPoundAttack, dir);
                     }
                     else
                     {
                         groundPoundAttack.damage = baseGroundDamage;
-                        groundPoundAttack.damage *= (currentAirTime * 3f);
-                        hit.GetComponent<EnemyAI>().TakeDamage((Attack)groundPoundAttack, dir);
+                        groundPoundAttack.damage *= damage;
+						enemy.TakeDamage((Attack)groundPoundAttack, dir);
                     }
                 }
             }
@@ -89,9 +89,9 @@ public class PlayerGroundPound : MonoBehaviour
     }
     public void HeavySlamDown()
     {
-        
-        isFalling = true;
-        animator.SetBool("isFalling", isFalling);
+		startFallPos = transform.position;
+
+		animator.SetBool("isFalling", isFalling);
 
         //called from animator, slam down!!
         rb.AddForce(-rb.velocity, ForceMode.VelocityChange);
@@ -100,9 +100,9 @@ public class PlayerGroundPound : MonoBehaviour
     public void OnHeavyAttack(InputAction.CallbackContext context)
     {
         //if airborne, do a little lift then slam down into the ground!
-        if (context.started && canAttack)
+        if (context.started && canAttack && !playerMovement.isLifting)
         {
-            currentAirTime = 0;
+			isFalling = true;
 
             canAttack = false;
             StartCoroutine(GroundPoundCooldown());

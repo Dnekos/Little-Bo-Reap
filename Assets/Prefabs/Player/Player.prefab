@@ -13555,7 +13555,7 @@ MonoBehaviour:
   jumpParticles: {fileID: 4261654204498698349}
   LiftMaxSpeedModifier: 0.2
   LiftSpeed: 25
-  Lifting: 0
+  isLifting: 0
   CanLift: 1
   dashForce: 1500
   dashAirborneLiftForce: 375
@@ -13610,6 +13610,7 @@ MonoBehaviour:
   airUpForce: 2500
   airDownForce: 5000
   playerCam: {fileID: 3870380307944562838}
+  DamageMultiplier: 0.025
   heavyParticle: {fileID: 7302312219567745433, guid: 2b49233b069a4044db67ada0f788b65b,
     type: 3}
   particleOrigin: {fileID: 3870380308813204389}
@@ -13619,6 +13620,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4096
   attackRadius: 15
+  isFalling: 0
 --- !u!114 &8268160106776874863
 MonoBehaviour:
   m_ObjectHideFlags: 0

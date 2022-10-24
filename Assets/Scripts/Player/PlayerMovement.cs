@@ -76,6 +76,7 @@ public class PlayerMovement : MonoBehaviour
 
 	PlayerHealth health;
 	PlayerSheepLift liftcontroller;
+	PlayerGroundPound groundPound;
 	
     #region Debug Stuff
     public void OnDebugRestart(InputAction.CallbackContext context)
@@ -104,6 +105,7 @@ public class PlayerMovement : MonoBehaviour
 		health = GetComponent<PlayerHealth>();
         animator = GetComponent<PlayerAnimationController>().playerAnimator;
 		liftcontroller = GetComponent<PlayerSheepLift>();
+		groundPound = GetComponent<PlayerGroundPound>();
 
 	}
 
@@ -236,18 +238,18 @@ public class PlayerMovement : MonoBehaviour
     }
     public void OnJump(InputAction.CallbackContext context)
     {
-        if(isGrounded && context.started)
-        {
+		if (isGrounded && context.started)
+		{
 			//TEMP SOUND
 			FMODUnity.RuntimeManager.PlayOneShotAttached(jumpSound, gameObject);
 
-            //play particles
-            jumpParticles.Play();
+			//play particles
+			jumpParticles.Play();
 
-            animator.Play(jumpAnimation);
-            rb.AddForce(Vector3.up * jumpForce);
-        }
-		else if (context.started && CanLift)
+			animator.Play(jumpAnimation);
+			rb.AddForce(Vector3.up * jumpForce);
+		}
+		else if (context.started && CanLift && !groundPound.isFalling)
 		{
 			if (liftcontroller.StartLifting())
 			{

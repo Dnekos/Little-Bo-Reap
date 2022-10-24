@@ -29,7 +29,10 @@ public class PlayerExecution : MonoBehaviour
     public PlayerInput inputs;
     bool isExecuting;
 
-    public void OnExecute(InputAction.CallbackContext context)
+	PlayerAnimationController anim;
+	PlayerSheepAbilities flocks;
+
+	public void OnExecute(InputAction.CallbackContext context)
     {
         //when you press the execute key
         if(context.started)
@@ -39,10 +42,12 @@ public class PlayerExecution : MonoBehaviour
             Collider[] interactables = Physics.OverlapSphere(transform.position, interactRadius, interactLayer);
             foreach(Collider interactable in interactables)
             {
-                if(interactable.GetComponent<Interactable>().canInteract)
+				Interactable interactComp = interactable.GetComponent<Interactable>();
+
+				if (interactComp != null && interactComp.canInteract)
                 {
                     interactableInRange = true;
-                    interactableObject = interactable.GetComponent<Interactable>();
+                    interactableObject = interactComp;
                 }
             }
 
@@ -51,9 +56,10 @@ public class PlayerExecution : MonoBehaviour
             Collider[] hits = Physics.OverlapSphere(transform.position, executeRadius, enemyExecuteLayer);
             foreach(Collider hit in hits)
             {
-                if (hit.GetComponent<EnemyAI>().isExecutable)
+				EnemyAI enemy = hit.GetComponent<EnemyAI>();
+				if (enemy != null && enemy.isExecutable)
                 {
-                    executableEnemies.Add(hit.GetComponent<EnemyAI>());
+                    executableEnemies.Add(enemy);
                     interactableInRange = false;
                     canExecute = true;
                 }
@@ -86,13 +92,13 @@ public class PlayerExecution : MonoBehaviour
                 currentPetDistance = 999;
 
                 //this is all for sean don't think too hard about it
-                for(int i = 0; i < GetComponent<PlayerSheepAbilities>().GetSheepFlock(GetComponent<PlayerSheepAbilities>().currentFlockType).Count; i++)
+                for(int i = 0; i < flocks.GetSheepFlock(flocks.currentFlockType).Count; i++)
                 {
-                    if (Vector3.Distance(transform.position, GetComponent<PlayerSheepAbilities>().GetSheepFlock(GetComponent<PlayerSheepAbilities>().currentFlockType)[i].transform.position) < petMaxDistance
-                        && currentPetDistance > Vector3.Distance(transform.position, GetComponent<PlayerSheepAbilities>().GetSheepFlock(GetComponent<PlayerSheepAbilities>().currentFlockType)[i].transform.position))
+                    if (Vector3.Distance(transform.position, flocks.GetSheepFlock(flocks.currentFlockType)[i].transform.position) < petMaxDistance
+                        && currentPetDistance > Vector3.Distance(transform.position, flocks.GetSheepFlock(flocks.currentFlockType)[i].transform.position))
                     {
-                        currentPetDistance = Vector3.Distance(transform.position, GetComponent<PlayerSheepAbilities>().GetSheepFlock(GetComponent<PlayerSheepAbilities>().currentFlockType)[i].transform.position);
-                        sheepToPet = GetComponent<PlayerSheepAbilities>().GetSheepFlock(GetComponent<PlayerSheepAbilities>().currentFlockType)[i];
+                        currentPetDistance = Vector3.Distance(transform.position, flocks.GetSheepFlock(flocks.currentFlockType)[i].transform.position);
+                        sheepToPet = flocks.GetSheepFlock(flocks.currentFlockType)[i];
                     }
                 }
 
@@ -100,7 +106,7 @@ public class PlayerExecution : MonoBehaviour
                 {
                     transform.LookAt(sheepToPet.transform.position);
                     transform.eulerAngles = new Vector3(0, transform.rotation.eulerAngles.y, 0);
-                    GetComponent<PlayerAnimationController>().playerAnimator.Play(petAnimation);
+                    anim.playerAnimator.Play(petAnimation);
                     sheepToPet.PetSheep();
                 }
             }
@@ -108,8 +114,14 @@ public class PlayerExecution : MonoBehaviour
      
     }
 
-    //if executing, figure out positions. TODO
-    private void Update()
+	private void Start()
+	{
+		anim = GetComponent<PlayerAnimationController>();
+		flocks = GetComponent<PlayerSheepAbilities>();
+	}
+
+	//if executing, figure out positions. TODO
+	private void Update()
     {
         if(isExecuting)
         {
