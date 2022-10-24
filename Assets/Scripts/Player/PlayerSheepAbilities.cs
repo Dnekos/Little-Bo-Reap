@@ -41,7 +41,7 @@ public class PlayerSheepAbilities : MonoBehaviour
     public PlayerGothMode gothMode;
 
 	[Header("Sheep Flock Variables")]
-	[SerializeField] Flock[] sheepFlocks;
+	public Flock[] sheepFlocks;
     public SheepTypes currentFlockType;
     [SerializeField] float maxDistanceToUseAbilities = 30f;
     int currentFlockIndex;

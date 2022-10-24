@@ -5,6 +5,12 @@ using UnityEngine.InputSystem;
 
 public class PlayerExecution : MonoBehaviour
 {
+    [Header("Interaction Variables")]
+    [SerializeField] float interactRadius = 5f;
+    [SerializeField] LayerMask interactLayer;
+    Interactable interactableObject;
+    bool interactableInRange;
+
     [Header("Execution Command Variables")]
     [SerializeField] float executeRadius = 10f;
     [SerializeField] LayerMask enemyExecuteLayer;
@@ -28,13 +34,31 @@ public class PlayerExecution : MonoBehaviour
         //when you press the execute key
         if(context.started)
         {
+
+            //look for an interactable object first
+            Collider[] interactables = Physics.OverlapSphere(transform.position, interactRadius, interactLayer);
+            foreach(Collider interactable in interactables)
+            {
+                if(interactable.GetComponent<Interactable>().canInteract)
+                {
+                    interactableInRange = true;
+                    interactableObject = interactable.GetComponent<Interactable>();
+                }
+            }
+
             //get all enemies in radius, if we get an executable enemy then we can execute
+            //execution ovverrides interactable
             Collider[] hits = Physics.OverlapSphere(transform.position, executeRadius, enemyExecuteLayer);
             foreach(Collider hit in hits)
             {
-                if (hit.GetComponent<EnemyAI>().isExecutable) executableEnemies.Add(hit.GetComponent<EnemyAI>());
-                canExecute = true;
+                if (hit.GetComponent<EnemyAI>().isExecutable)
+                {
+                    executableEnemies.Add(hit.GetComponent<EnemyAI>());
+                    interactableInRange = false;
+                    canExecute = true;
+                }
             }
+          
 
             //execute first enemy in list, play animations from execute scriptable object and start execute coroutine
             if(canExecute)
@@ -49,6 +73,11 @@ public class PlayerExecution : MonoBehaviour
                 StartCoroutine(ExecuteEnemy(enemyToExecute.execution.executionLength));
 
                 canExecute = false;
+            }
+            else if(interactableInRange)
+            {
+                interactableObject.Interact();
+                interactableInRange = false;
             }
             //else check to pet nearest sheep of current flock! :D
             else
