@@ -27,7 +27,7 @@ public class PlayerSheepLift : MonoBehaviour
 	// internal variables
 	float distTowardsNextSheep = 0;
 	int usedSheep = 0;
-	bool collapseTower = false;
+	bool shouldCollapseTower = false;
 
 	private void Start()
 	{
@@ -52,10 +52,7 @@ public class PlayerSheepLift : MonoBehaviour
 
 		if (platform != null && player.transform.position.y < platform.transform.position.y)
 		{
-			platform.GetComponent<BoxCollider>().enabled = false;
-			Destroy(platform);
-			platform = null;
-			collapseTower = true;
+			CollapseTower();
 		}
 
 	}
@@ -69,18 +66,18 @@ public class PlayerSheepLift : MonoBehaviour
 			return false;
 
 
-		collapseTower = false;
+		shouldCollapseTower = false;
 		RecordedPositions = new List<Vector3>();
 		usedSheep = 0;
-		player.Lifting = true;
+		player.isLifting = true;
 
 		float interval = player.LiftSpeed * Time.deltaTime;
 		for (float i = info.point.y; i < transform.position.y - (mainCollider.height * 0.5f); i += interval)
 		{
 			if (!PlacePoint(new Vector3(info.point.x, i, info.point.z), true))
 			{
-				collapseTower = true;
-				player.Lifting = false;
+				shouldCollapseTower = true;
+				player.isLifting = false;
 
 				return false;
 			}
@@ -89,12 +86,22 @@ public class PlayerSheepLift : MonoBehaviour
 		return true;
 	}
 
+	public void CollapseTower()
+	{
+		platform.GetComponent<BoxCollider>().enabled = false;
+		platform.layer = 0; // idk, fuckin... make it not ground??
+		Destroy(platform);
+		platform = null;
+		shouldCollapseTower = true;
+	}
+
+	#region running lift stuff
 	// returns false if you cannot place a sheep
 	bool PlacePoint(Vector3 newPos, bool PlaceAtTop)
 	{
 		if (usedSheep >= flocks.GetSheepFlock(SheepTypes.BUILD).Count)
 		{
-			player.Lifting = false;
+			player.isLifting = false;
 			return false;
 		}
 
@@ -119,7 +126,7 @@ public class PlayerSheepLift : MonoBehaviour
 
 	public IEnumerator PlayerPath()
 	{
-		while (player.Lifting)
+		while (player.isLifting)
 		{
 			yield return new WaitForEndOfFrame();
 
@@ -141,7 +148,7 @@ public class PlayerSheepLift : MonoBehaviour
 		float lerpSpeed = SheepLerpSpeed;
 
 
-		while (player.Lifting && playerSheep != null)
+		while (player.isLifting && playerSheep != null)
 		{
 			yield return new WaitForEndOfFrame();
 
@@ -157,15 +164,20 @@ public class PlayerSheepLift : MonoBehaviour
 		playerSheep.transform.position = RecordedPositions[Mathf.Clamp(index, 0, RecordedPositions.Count - 1)];
 
 		// keep them in the tower till something knocks them over or they die
-		yield return new WaitUntil(() => collapseTower || playerSheep == null || playerSheep.GetSheepState() != SheepStates.LIFT);
+		yield return new WaitUntil(() => shouldCollapseTower || playerSheep == null || playerSheep.GetSheepState() != SheepStates.LIFT);
+
+		CollapseTower();
 
 		if (playerSheep?.GetSheepState() == SheepStates.LIFT)
 			playerSheep.EndLift(sheepIndex > AllowedSurvivingSheep);
 	}
+	#endregion
 
 	private void OnCollisionExit(Collision collision)
 	{
 		if (collision.gameObject == platform)
 			player.CanLift = false;
+		else if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+			CollapseTower();
 	}
 }

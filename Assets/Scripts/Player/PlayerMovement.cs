@@ -35,7 +35,7 @@ public class PlayerMovement : MonoBehaviour
 	[Header("Sheep Lift")]
 	[SerializeField] float LiftMaxSpeedModifier = 0.5f;
 	public float LiftSpeed = 5;
-	public bool Lifting = false;
+	public bool isLifting = false;
 	[HideInInspector] public bool CanLift = true;
 
     [Header("Dash Variables")]
@@ -145,7 +145,7 @@ public class PlayerMovement : MonoBehaviour
     }
     void UpdateAnimation()
     {
-        animator.SetBool("isMoving", isMoving && !Lifting);
+        animator.SetBool("isMoving", isMoving && !isLifting);
         animator.SetBool("isGrounded", isGrounded);
 
         //check if was not grounded last frame and is grounded this frame
@@ -206,10 +206,10 @@ public class PlayerMovement : MonoBehaviour
         Vector3 velocityCheck = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
         //limit velocity if over speed
-        if (velocityCheck.magnitude > maxMoveSpeed * (Lifting ? LiftMaxSpeedModifier : 1)
+        if (velocityCheck.magnitude > maxMoveSpeed * (isLifting ? LiftMaxSpeedModifier : 1)
 			&& canDash && !health.HitStunned)
         {
-            Vector3 velocityLimit = velocityCheck.normalized * maxMoveSpeed * (Lifting ? LiftMaxSpeedModifier : 1);
+            Vector3 velocityLimit = velocityCheck.normalized * maxMoveSpeed * (isLifting ? LiftMaxSpeedModifier : 1);
             rb.velocity = new Vector3(velocityLimit.x, rb.velocity.y, velocityLimit.z);
         }
 
@@ -220,7 +220,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
 		//apply gravity if falling
-		if (Lifting)
+		if (isLifting)
 		{
 			rb.velocity = new Vector3(rb.velocity.x, LiftSpeed, rb.velocity.z).normalized * LiftSpeed;
 		}
@@ -260,14 +260,14 @@ public class PlayerMovement : MonoBehaviour
 				StartCoroutine(GetComponent<PlayerSheepLift>().PlayerPath());
 			}
 		}
-		else if (context.canceled && Lifting)
+		else if (context.canceled && isLifting)
 		{
-			Lifting = false;
+			isLifting = false;
 		}
     }
     public void OnDash(InputAction.CallbackContext context)
     {
-        if(canDash && context.started && !health.HitStunned)
+        if(canDash && !isLifting && context.started && !health.HitStunned)
         {
             canDash = false;
 

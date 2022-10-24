@@ -281,6 +281,8 @@ public class PlayerSheepAbilities : MonoBehaviour
 
         if (context.performed)
         {
+			GetComponent<PlayerSheepLift>().CollapseTower();
+
             recallPerformed = true;
             //play animation
             animator.Play(summonAnimation);
@@ -300,8 +302,10 @@ public class PlayerSheepAbilities : MonoBehaviour
 
         if (context.canceled && !recallPerformed)
         {
-            //get flock type
-            SheepTypes flockType = currentFlockType;
+			GetComponent<PlayerSheepLift>().CollapseTower();
+
+			//get flock type
+			SheepTypes flockType = currentFlockType;
 
             //play animation
             animator.Play(summonAnimation);

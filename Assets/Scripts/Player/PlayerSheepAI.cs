@@ -302,7 +302,14 @@ public class PlayerSheepAI : Damageable
 		if (currentSheepState == SheepStates.STUN)
 			return;
 
-        currentSheepState = SheepStates.FOLLOW_PLAYER;
+		// if the sheep is too high up, stun it first so that it gets closer to the ground
+		if (!Physics.Raycast(transform.position, Vector3.down, 10, LayerMask.GetMask("Ground")))
+		{
+			StartCoroutine(OnHitStun(SheepStates.FOLLOW_PLAYER));
+			return;
+		}
+
+		currentSheepState = SheepStates.FOLLOW_PLAYER;
 
 		EndConstruct();
 	}
