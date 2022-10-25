@@ -298,8 +298,8 @@ public class PlayerSheepAI : Damageable
 
     public void RecallSheep()
     {
-		// sheep cant be recalled when stunned
-		if (currentSheepState == SheepStates.STUN)
+        // sheep cant be recalled when stunned OR DEFENDING
+        if (currentSheepState == SheepStates.STUN || currentSheepState == SheepStates.DEFEND_PLAYER)
 			return;
 
 		// if the sheep is too high up, stun it first so that it gets closer to the ground

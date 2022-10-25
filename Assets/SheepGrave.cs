@@ -9,6 +9,7 @@ public class SheepGrave : Interactable
     [SerializeField] int flockSizeIncrease;
     [SerializeField] ParticleSystem graveParticles;
     [SerializeField] GameObject graveLight;
+    [SerializeField] ParticleSystem gravePoof;
 
 
     public override void Interact()
@@ -17,6 +18,7 @@ public class SheepGrave : Interactable
         GameManager.Instance.GetPlayer().GetComponent<PlayerSheepAbilities>().sheepFlocks[(int)sheepType].MaxSize += flockSizeIncrease;
         graveParticles.Stop(true);
         graveLight.SetActive(false);
+        gravePoof.Play(true);
         base.Interact();
     }
 }
