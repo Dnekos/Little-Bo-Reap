@@ -100,6 +100,7 @@ public class PlayerSheepAbilities : MonoBehaviour
     GameObject sheepChargePoint;
     Vector3 chargePosition;
     bool isPreparingCharge;
+    bool hasCharged;
 
     [Header("Sheep Defend Variables")]
     [SerializeField] List<Transform> defendPoints;
@@ -474,7 +475,50 @@ public class PlayerSheepAbilities : MonoBehaviour
     #region Sheep Attack
     public void OnSheepAttack(InputAction.CallbackContext context)
     {
-        if (canCharge)
+        if(context.started)
+        {
+            hasCharged = false;
+        }
+
+        //CHARGE
+        if(context.started && isPreparingCharge)
+        {
+            SheepTypes flockType = SheepTypes.RAM;
+
+            //stop charging
+            isPreparingCharge = false;
+
+            //has charged
+            hasCharged = true;
+
+            //play animation
+            animator.Play(chargeAnimation);
+
+            //TEMP SOUND
+            FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound, gameObject);
+
+            //get rid of icon
+            Destroy(sheepChargePoint);
+
+
+            //send sheep to point if valid!
+            RaycastHit hit;
+            if (Physics.Raycast(Camera.main.transform.position + chargePointOffset, Camera.main.transform.forward, out hit, Mathf.Infinity, chargeTargetLayers))
+            {
+                for (int i = 0; i < GetSheepFlock(flockType).Count; i++)
+                {
+                    if (GetSheepFlock(flockType)[i].IsCommandable() && Vector3.Distance(transform.position, GetSheepFlock(flockType)[i].transform.position) <= chargeDistanceToUse) GetSheepFlock(flockType)[i]?.BeginCharge(hit.point);
+                }
+            }
+
+
+            //start cooldown
+            canCharge = false;
+            chargeIcon.CooldownUIEffect(chargeCooldown);
+            StartCoroutine(ChargeCooldown());
+        }
+
+        if (canAttack  && !isPreparingCharge && !hasCharged)
         {
             SheepTypes flockType = currentFlockType;
 
@@ -484,13 +528,13 @@ public class PlayerSheepAbilities : MonoBehaviour
                 var attackPoint = Instantiate(sheepAttackPointPrefab, transform.position, Quaternion.identity) as GameObject;
                 sheepAttackPoint = attackPoint;
 
-                //prepare to charge
+                //prepare to attac
                 isPreparingAttack = true;
             }
 
             if (context.canceled)
             {
-                //stop charging
+                //stop ATTACK
                 isPreparingAttack = false;
 
                 //play animation
@@ -511,13 +555,10 @@ public class PlayerSheepAbilities : MonoBehaviour
                         if (GetSheepFlock(flockType)[i].IsCommandable()) GetSheepFlock(flockType)[i]?.CreateListOfAttackTargets(hit.point, attackRadius);
                     }
                 }
-               
-
                 //start cooldown
                 canAttack = false;
                 attackIcon.CooldownUIEffect(attackCooldown);
                 StartCoroutine(AttackCooldown());
-
             }
         }
 
@@ -552,7 +593,7 @@ public class PlayerSheepAbilities : MonoBehaviour
     #region Sheep Charge
     public void OnSheepCharge(InputAction.CallbackContext context)
     {
-        if(canCharge)
+        if(canCharge && !isPreparingAttack)
         {
             //SheepTypes flockType = currentFlockType;
             SheepTypes flockType = SheepTypes.RAM;
@@ -574,37 +615,41 @@ public class PlayerSheepAbilities : MonoBehaviour
                 }
             }
 
-            if (context.canceled)
-            {
-                //stop charging
-                isPreparingCharge = false;
+            //reticule mode
 
-                //play animation
-                animator.Play(chargeAnimation);
-
-                //TEMP SOUND
-                FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound,gameObject);
-
-                //get rid of icon
-                Destroy(sheepChargePoint);
-
-                
-                //send sheep to point if valid!
-                RaycastHit hit;
-                if (Physics.Raycast(Camera.main.transform.position + chargePointOffset, Camera.main.transform.forward, out hit, Mathf.Infinity, chargeTargetLayers))
-                {
-                    for (int i = 0; i < GetSheepFlock(flockType).Count; i++)
-                    {
-                        if (GetSheepFlock(flockType)[i].IsCommandable() && Vector3.Distance(transform.position, GetSheepFlock(flockType)[i].transform.position) <= chargeDistanceToUse ) GetSheepFlock(flockType)[i]?.BeginCharge(hit.point);
-                    }
-                }
-                
-
-                //start cooldown
-                canCharge = false;
-                chargeIcon.CooldownUIEffect(chargeCooldown);
-                StartCoroutine(ChargeCooldown());
-            }
+            //if (context.canceled)
+           //{
+           //    //stop charging
+           //    isPreparingCharge = false;
+           //
+           //   
+           //
+           //    //play animation
+           //    animator.Play(chargeAnimation);
+           //
+           //    //TEMP SOUND
+           //    FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound,gameObject);
+           //
+           //    //get rid of icon
+           //    Destroy(sheepChargePoint);
+           //
+           //    
+           //    //send sheep to point if valid!
+           //    RaycastHit hit;
+           //    if (Physics.Raycast(Camera.main.transform.position + chargePointOffset, Camera.main.transform.forward, out hit, Mathf.Infinity, chargeTargetLayers))
+           //    {
+           //        for (int i = 0; i < GetSheepFlock(flockType).Count; i++)
+           //        {
+           //            if (GetSheepFlock(flockType)[i].IsCommandable() && Vector3.Distance(transform.position, GetSheepFlock(flockType)[i].transform.position) <= chargeDistanceToUse ) GetSheepFlock(flockType)[i]?.BeginCharge(hit.point);
+           //        }
+           //    }
+           //    
+           //
+           //    //start cooldown
+           //    canCharge = false;
+           //    chargeIcon.CooldownUIEffect(chargeCooldown);
+           //    StartCoroutine(ChargeCooldown());
+           //}
         }      
     }
     void CheckCharge()
