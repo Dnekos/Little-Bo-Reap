@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2418591674654314318}
-  - component: {fileID: 2014189936412019242}
   - component: {fileID: 2418591674654314312}
   - component: {fileID: 2418591674654314313}
   - component: {fileID: 2418591674654314314}
@@ -35,30 +34,6 @@ Transform:
   m_Father: {fileID: 3952563775712835195}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2014189936412019242
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2418591674654314315}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51072198284367742a01b184f5d14138, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  waves:
-  - Enemies:
-    - EnemyPrefab: {fileID: 426741378606354996, guid: 78ef9cb2aa8fe6e4d99f147a2228991f,
-        type: 3}
-      SpawnPoint: {fileID: 0}
-      AlternateSpawn: {x: 5, y: 2, z: 5}
-  - Enemies:
-    - EnemyPrefab: {fileID: 8888413981868254825, guid: 957813092bdb7ef40a2ad13caae2a189,
-        type: 3}
-      SpawnPoint: {fileID: 0}
-      AlternateSpawn: {x: 3, y: 2, z: 0}
-  RespawnPlayer: {fileID: 11400000, guid: 19937298da8f18b41b1d2572d7bb5bcb, type: 2}
 --- !u!65 &2418591674654314312
 BoxCollider:
   m_ObjectHideFlags: 0
