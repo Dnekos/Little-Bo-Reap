@@ -59,9 +59,9 @@ public class WorldState : MonoBehaviour
 		Cursor.lockState = CursorLockMode.Locked;
 		Dead = false;
 
-		player.transform.position = SpawnPoints[activeSpawnPoint].RespawnPoint.position;
+		player.GetComponent<Rigidbody>().position = SpawnPoints[activeSpawnPoint].RespawnPoint.position;
 		player.transform.rotation = SpawnPoints[activeSpawnPoint].RespawnPoint.rotation;
-		player.GetComponent<Rigidbody>().AddForce(-player.GetComponent<Rigidbody>().velocity, ForceMode.VelocityChange);
+		player.GetComponent<Rigidbody>().velocity = Vector3.zero;
 
 		Debug.Log(SpawnPoints[activeSpawnPoint] + " " + player +" "+ player.transform.position);
 

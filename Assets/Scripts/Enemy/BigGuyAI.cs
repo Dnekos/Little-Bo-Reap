@@ -49,12 +49,14 @@ public class BigGuyAI : EnemyAI
 			Vector3 heading = (average_pos / NearbyGuys.Count) - transform.position;
 			float angle = Vector3.Angle(transform.forward, heading);
 
-			// if at least half of active sheep are around it
-			if (NearbyGuys.Count > player.GetComponent<PlayerSheepAbilities>().GetAverageActiveFlockSize() * 0.5f)
-				anim.Play(ShockwaveAttack.animation);
 			// if there are sheep in front
-			else if (NearbyGuys.Count != 0 && angle < 60)
+			if (NearbyGuys.Count != 0 && angle < 90)
 				anim.Play(StickAttack.animation);
+
+			// if at least half of active sheep are around it
+			else if (NearbyGuys.Count > player.GetComponent<PlayerSheepAbilities>().GetAverageActiveFlockSize() * 0.5f)
+				anim.Play(ShockwaveAttack.animation);
+
 		}
 		QueuedAttack = null;
 
