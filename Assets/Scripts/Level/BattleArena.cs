@@ -28,19 +28,19 @@ public class BattleArena : MonoBehaviour
 	[Header("Resetting"), SerializeField]
 	GameEvent RespawnPlayer;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-		SpawnedEnemiesFolder = transform.GetChild(0);
-		DoorsFolder = transform.GetChild(1).gameObject;
+	// Start is called before the first frame update
+	void Start()
+	{
+		SpawnedEnemiesFolder = transform.GetChild(1);
+		DoorsFolder = transform.GetChild(2).gameObject;
 		DoorsFolder.SetActive(false); // keep doors open
 
 		RespawnPlayer?.listener.AddListener(delegate { ResetArena(); });
 	}
 
-    // Update is called once per frame
-    void Update()
-    {
+	// Update is called once per frame
+	void Update()
+	{
 		if (SpawnedEnemiesFolder.childCount == 0 && CurrentWave >= 0 && CurrentWave < waves.Length) // if killed all enemies AND waves started
 			AdvanceWave(); // advance wave
 	}
@@ -70,15 +70,25 @@ public class BattleArena : MonoBehaviour
 			// spawn each enemy
 			foreach (EnemySpawn enemy in waves[CurrentWave].Enemies)
 			{
-				Instantiate(enemy.EnemyPrefab, (enemy.SpawnPoint == null) ? enemy.AlternateSpawn : enemy.SpawnPoint.position, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder);
+				StartCoroutine(SpawnEnemy(enemy.EnemyPrefab, enemy.EnemyPrefab.GetComponent<EnemyAI>().SpawnParticlePrefab, (enemy.SpawnPoint == null) ? enemy.AlternateSpawn : enemy.SpawnPoint.position));
 			}
 		}
 
 	}
 
+	IEnumerator SpawnEnemy(GameObject enemy, GameObject particle, Vector3 pos)
+	{
+
+		Instantiate(particle, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder);
+		yield return new WaitForSeconds(enemy.GetComponent<EnemyAI>().SpawnWaitTime);
+		Instantiate(enemy, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder);
+
+	}
+
 	private void OnTriggerEnter(Collider other)
 	{
-		if (CurrentWave == -1 && other.gameObject.tag == "Player") // untriggered
+		Debug.Log("HEY");
+		if (CurrentWave == -1 && other.gameObject.CompareTag("Player")) // untriggered
 		{
 			DoorsFolder.SetActive(true);
 			AdvanceWave();
