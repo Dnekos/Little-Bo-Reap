@@ -14,6 +14,10 @@ public enum EnemyStates
 
 public class EnemyAI : Damageable
 {
+	[Header("Spawning")]
+	public GameObject SpawnParticlePrefab;
+	public float SpawnWaitTime = 2;
+
 	protected Coroutine QueuedAttack = null;
 
 	[Header("Enemy State")]
