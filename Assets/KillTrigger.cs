@@ -12,5 +12,9 @@ public class KillTrigger : MonoBehaviour
         {
             other.GetComponent<EnemyAI>()?.ForceKill();
         }
+        if(other.CompareTag("PlayerSheep"))
+        {
+            other.GetComponent<PlayerSheepAI>()?.ForceKill();
+        }
     }
 }
