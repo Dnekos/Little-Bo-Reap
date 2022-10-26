@@ -8,11 +8,26 @@ public class PlayerSummoningResource : MonoBehaviour
     [Header("Summoning Mana")]
     [SerializeField] float maxBlood;
     [SerializeField] float currentBlood;
-    [SerializeField] Image bloodMeter;
     [SerializeField] float bloodMeterRechargePerSec = 10f;
 	[SerializeField] FillBar bar;
 
-    public float GetCurrentBlood()
+	[Header("Respawning")]
+	[SerializeField]
+	GameEvent RespawnEvent;
+
+	private void Start()
+	{
+		RespawnEvent.listener.AddListener(delegate { ResetBlood(); });
+		bar.ChangeFill(currentBlood / maxBlood);
+	}
+
+	void ResetBlood()
+	{
+		currentBlood = maxBlood;
+		bar.ChangeFill(1);
+	}
+
+	public float GetCurrentBlood()
     {
         return currentBlood;
     }
@@ -20,19 +35,21 @@ public class PlayerSummoningResource : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        currentBlood += Time.deltaTime * bloodMeterRechargePerSec;
-        if (currentBlood >= maxBlood) currentBlood = maxBlood;
-        UpdateMeter();
-		bar.ChangeFill(currentBlood / maxBlood);
-
+        if (currentBlood >= maxBlood) 
+			currentBlood = maxBlood;
+		else
+		{
+			currentBlood += Time.deltaTime * bloodMeterRechargePerSec;
+			bar.ChangeFill(currentBlood / maxBlood);
+		}
 	}
-    
-    public void UpdateMeter()
-    {
-        bloodMeter.fillAmount = currentBlood / maxBlood;
-    }
 
-    public void ChangeBloodAmount(float theAmount)
+	public void UpdateMeter()
+    {
+		bar.ChangeFill(currentBlood / maxBlood);
+	}
+
+	public void ChangeBloodAmount(float theAmount)
     {
         currentBlood += theAmount;
     }

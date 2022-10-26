@@ -53,6 +53,12 @@ public class EnemyAI : Damageable
 	// Update is called once per frame
 	protected virtual void Update()
     {
+		if (WorldState.instance.Dead)
+		{
+			DoIdle();
+		}
+
+
 		// basic state machine
 		switch (currentEnemyState)
 		{
@@ -235,7 +241,7 @@ public class EnemyAI : Damageable
 	}
 
 
-		IEnumerator OnHitStun()
+	IEnumerator OnHitStun()
 	{
 		// save current state and set to Hitstun
 		stunState = (currentEnemyState == EnemyStates.HITSTUN) ? stunState : currentEnemyState;
@@ -258,7 +264,7 @@ public class EnemyAI : Damageable
 
 		//reset if not in execute stage
 		//Demetri this is a quick n dirty fix might need to move around execute stuff eventually
-		if(currentEnemyState != EnemyStates.EXECUTABLE) currentEnemyState = stunState;
+		if (currentEnemyState != EnemyStates.EXECUTABLE) currentEnemyState = stunState;
 
 		//freeze dammit
 		rb.constraints = RigidbodyConstraints.FreezeAll;
