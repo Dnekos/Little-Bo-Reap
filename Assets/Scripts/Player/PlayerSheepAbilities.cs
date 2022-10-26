@@ -153,6 +153,18 @@ public class PlayerSheepAbilities : MonoBehaviour
     }
 
 	#region Sheep Flock Functions
+	public void DeleteSheep()
+	{
+		for (int i = 0; i < 3; i++) //for each sheep type, delete list and clear it
+		{
+			//delete all active sheep
+			for (int j = 0; j < GetSheepFlock((SheepTypes)i).Count; j++)
+			{
+				GetSheepFlock((SheepTypes)i)[j].DestroySheep();
+			}
+			GetSheepFlock((SheepTypes)i).Clear();
+		}
+	}
 	public float GetAverageActiveFlockSize()
 	{
 		return (sheepFlocks[0].activeSheep.Count + 
@@ -346,16 +358,8 @@ public class PlayerSheepAbilities : MonoBehaviour
             //play animation
             animator.Play(summonAnimation);
 
-            //delete all sheep
-            for (int i = 0; i < 3; i++) //for each sheep type, delete list and clear it
-            {
-                //delete all active sheep
-                for (int j = 0; j < GetSheepFlock((SheepTypes)i).Count; j++)
-                {
-                    GetSheepFlock((SheepTypes)i)[j].DestroySheep();
-                }
-                GetSheepFlock((SheepTypes)i).Clear();
-            }
+			//delete all sheep
+			DeleteSheep();
 
             //SUMMON THE HORDE
             for (int i = 0; i < 3; i++) //for each sheep type, delete list and clear it
