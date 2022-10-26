@@ -6,15 +6,6 @@
             "id": "ffc8dad5-75f7-41b3-b616-590362fdfca6",
             "actions": [
                 {
-                    "name": "CameraMovement",
-                    "type": "Value",
-                    "id": "1a77c91b-08d7-45ef-b161-629a9a3eec0d",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
                     "name": "WASDMovement",
                     "type": "PassThrough",
                     "id": "9aa03caf-92f3-44bc-9759-0f80adc7f3bd",
@@ -42,39 +33,30 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "LightAttack",
-                    "type": "Button",
-                    "id": "5b97bcb0-f8c8-4baa-9c04-ae42d73e6300",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "HeavyAttack",
-                    "type": "Button",
-                    "id": "36f1a8f6-bb56-459c-aca6-04483d3e795e",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "SummonSheep",
                     "type": "Button",
                     "id": "a6eca5f5-b4ce-4f87-b4b0-67cbf3be8da7",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Hold",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "SummonAllSheep",
+                    "name": "RecallSheep",
                     "type": "Button",
-                    "id": "0620d62b-b81b-498b-ae56-a5e4b21b6fe9",
+                    "id": "90d9266a-db84-4e15-a7a5-eb0ac7b38f73",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "MultiTap",
+                    "interactions": "Hold",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SheepAttack",
+                    "type": "Button",
+                    "id": "b5e0f688-f74e-4c19-be91-ee2e61a3c217",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
                     "initialStateCheck": false
                 },
                 {
@@ -84,24 +66,6 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "RecallSheep",
-                    "type": "Button",
-                    "id": "90d9266a-db84-4e15-a7a5-eb0ac7b38f73",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "RecallAllSheep",
-                    "type": "Button",
-                    "id": "0a932ea2-3d48-46a8-b7a2-2bfe8e6afa9f",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "MultiTap",
                     "initialStateCheck": false
                 },
                 {
@@ -123,6 +87,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "GroundPound",
+                    "type": "Button",
+                    "id": "735a6ce6-7551-405d-a3a9-54ce15ed6fd0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "ChangeFlock",
                     "type": "Button",
                     "id": "4a6a57a9-3ec2-4a16-9344-e2f236e81c20",
@@ -132,18 +105,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "DEBUG_Restart_Scene",
+                    "name": "GothMode",
                     "type": "Button",
-                    "id": "305affdf-7276-4777-b611-b40fff74eae2",
+                    "id": "80238228-5c71-489b-9d37-0b4210825d8b",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "DEBUG_Quit_Game",
+                    "name": "Execute",
                     "type": "Button",
-                    "id": "d84d85ee-ef0f-4898-bc87-1b11c8d4d83d",
+                    "id": "dba34b27-d5db-4088-9dfd-b9e8bbb33e1d",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -151,17 +124,6 @@
                 }
             ],
             "bindings": [
-                {
-                    "name": "",
-                    "id": "3d631ff3-040a-45bc-a988-59b08bdf9a12",
-                    "path": "<Mouse>/delta",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "CameraMovement",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
                 {
                     "name": "WASD",
                     "id": "0d364147-8eff-4259-9150-6799a6c3d8c8",
@@ -241,30 +203,8 @@
                 },
                 {
                     "name": "",
-                    "id": "849af9dc-ac19-40e9-a600-909aecb913c3",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "LightAttack",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "7bffc43b-a4fc-4365-8b21-3cd43d6bece6",
-                    "path": "<Mouse>/rightButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "HeavyAttack",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "c45b227e-d322-4434-a497-a375e237375a",
-                    "path": "<Keyboard>/e",
+                    "path": "<Keyboard>/r",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -274,19 +214,8 @@
                 },
                 {
                     "name": "",
-                    "id": "9b983c23-e0c5-4a51-9fa3-5c2fd041a9bc",
-                    "path": "<Keyboard>/1",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "SheepCharge",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "c081bc19-ff49-461a-b5e4-6a7ece9db61c",
-                    "path": "<Keyboard>/q",
+                    "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -308,7 +237,7 @@
                 {
                     "name": "",
                     "id": "abff19dc-a930-4e4e-87fc-e4c38714bfe9",
-                    "path": "<Keyboard>/3",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -319,6 +248,50 @@
                 {
                     "name": "",
                     "id": "cc899c30-2471-4529-a499-b204a99a463f",
+                    "path": "<Mouse>/middleButton",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChangeFlock",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "1D Axis",
+                    "id": "2217fd2e-1f42-4655-b34a-278da30671cb",
+                    "path": "1DAxis(minValue=-2,maxValue=2)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChangeFlock",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "5e9c2f43-8e5a-4e64-9e32-b6dff9816b7c",
+                    "path": "<Mouse>/scroll/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChangeFlock",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "1f856b8a-1d52-4790-bc4a-c55e653c815b",
+                    "path": "<Mouse>/scroll/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChangeFlock",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "1462a8d2-9f33-4af2-89a9-2866e0090cba",
                     "path": "<Keyboard>/tab",
                     "interactions": "",
                     "processors": "",
@@ -329,18 +302,139 @@
                 },
                 {
                     "name": "",
-                    "id": "3dd76438-c6d1-44cc-a7a4-40739ab56a3f",
-                    "path": "<Keyboard>/q",
+                    "id": "9b983c23-e0c5-4a51-9fa3-5c2fd041a9bc",
+                    "path": "<Keyboard>/1",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "RecallAllSheep",
+                    "action": "SheepCharge",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "b7a433ab-ce3b-40a1-8ef0-59fd2a9ffe9a",
+                    "id": "2bd16227-5d85-4932-8d57-b05b2e06e682",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "GroundPound",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "27838560-b714-4c72-a8bc-37d38c068677",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "GroundPound",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "aeee59a0-5b64-4cc6-9751-d26380646928",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "GothMode",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e00d63ea-93d1-4597-9408-8aa75d339ca9",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Execute",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2629bde6-01a6-47b4-b2fd-aa0d55daa594",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SheepAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "PlayerMenu",
+            "id": "f42f6a86-4223-4a9c-89ad-1979079c41ff",
+            "actions": [
+                {
+                    "name": "PauseMenu",
+                    "type": "Button",
+                    "id": "4dfd2a40-9301-4cfb-93b9-9991e2e4a4ab",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "DEBUG_Quit_Game",
+                    "type": "Button",
+                    "id": "69cc146f-1176-465e-8891-58ba71261dc3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "DEBUG_Restart_Scene",
+                    "type": "Button",
+                    "id": "4b3eee06-5db7-4006-a3b4-dc1b721ea95c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "CameraMovement",
+                    "type": "Value",
+                    "id": "c695fcfb-8769-4fb5-b8b8-9cbdc0cab715",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "c9e1fa2b-9d99-4c69-bc94-aa40d91338d4",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PauseMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e0731ee0-cfa8-4a0b-9096-73b1c8f043ed",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CameraMovement",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dc63e5b1-57f9-43d1-b6b5-dcd7e415e195",
                     "path": "<Keyboard>/p",
                     "interactions": "",
                     "processors": "",
@@ -351,19 +445,8 @@
                 },
                 {
                     "name": "",
-                    "id": "8bb9dd1a-0a54-4b76-a34b-dc5fa5516164",
-                    "path": "<Keyboard>/e",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "SummonAllSheep",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "bb2a3782-ea33-4e0d-baed-17c8fb1622b9",
-                    "path": "<Keyboard>/escape",
+                    "id": "b9f1fe2e-0a98-4d5a-abd1-e5d964931502",
+                    "path": "<Keyboard>/equals",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

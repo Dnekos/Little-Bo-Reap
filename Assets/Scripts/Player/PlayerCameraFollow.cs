@@ -8,11 +8,21 @@ public class PlayerCameraFollow : MonoBehaviour
     [Header("Transform to follow")]
     [SerializeField] Transform followPoint;
 
-    [Header("Camera Variables")]
+	[Header("Camera Variables")]
+	[SerializeField] float LerpSpeed = 20;
     [SerializeField] Camera playerCamera;
-    [SerializeField] float mouseSensitivity;
+    public float mouseSensitivityMax = 35f;
+    public float mouseSensitivity;
     [SerializeField] float xCameraClampMax = 90f;
     [SerializeField] float xCameraClampMin = -90f;
+
+    [Header("Camera Shake")]
+    //[SerializeField] string bigShakeAnimation;
+    //[SerializeField] string smallShakeAnimation;
+    [SerializeField] float smallShakeMagnitude = 5f;
+    [SerializeField] float smallShakeDuration = 1f;
+    [SerializeField] float bigShakeMagnitude = 10f;
+    [SerializeField] float bigShakeDuration = 1f;
 
     [Header("Player Orientation")]
     [SerializeField] Transform playerOrientation;
@@ -35,6 +45,33 @@ public class PlayerCameraFollow : MonoBehaviour
         Cursor.visible = false;
     }
 
+    public void ShakeCamera(bool bigShake)
+    {
+        if (bigShake) StartCoroutine(CameraShake(bigShakeMagnitude, bigShakeDuration));
+        else StartCoroutine(CameraShake(smallShakeMagnitude, smallShakeDuration));
+    }
+
+    IEnumerator CameraShake(float magnitude, float duration)
+    {
+        Vector3 originalPos = Camera.main.transform.localPosition;
+
+        float elapsed = 0;
+
+        while(elapsed < duration)
+        {
+            float x = Random.Range(-1f, 1f) * magnitude;
+            float y = Random.Range(-1f, 1f) * magnitude;
+
+            Camera.main.transform.localPosition = new Vector3(x, y, Camera.main.transform.localPosition.z);
+
+            elapsed += Time.deltaTime;
+
+            yield return null;
+        }
+
+        Camera.main.transform.localPosition = new Vector3(originalPos.x, originalPos.y, Camera.main.transform.localPosition.z);
+    }
+
     private void Update()
     {
         mouseX = mouseValue.x * mouseSensitivity * Time.deltaTime;
@@ -48,16 +85,17 @@ public class PlayerCameraFollow : MonoBehaviour
         //move the camera
         transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
 
-        //move the player orientation transform
-        playerOrientation.localRotation = Quaternion.Euler(0f, yRotation, 0f);
-
-    }
+		//move the player orientation transform
 
 
-    private void LateUpdate()
+	}
+
+	private void LateUpdate()
     {
-        playerOrientation.position = followPoint.position;
-        transform.position = followPoint.position;
+		playerOrientation.localRotation = Quaternion.Euler(0f, yRotation, 0f);
+
+        playerOrientation.position = Vector3.Lerp(playerOrientation.position, followPoint.position,Time.deltaTime * LerpSpeed);
+        transform.position = Vector3.Lerp(transform.position, followPoint.position, Time.deltaTime * LerpSpeed); 
     }
 
     public void OnMouseLook(InputAction.CallbackContext context)
