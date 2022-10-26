@@ -23,17 +23,33 @@ public class PlayerGothMode : MonoBehaviour
     [SerializeField] float saturationIncreaseOverTime = 10f;
     UnityEngine.Rendering.Universal.ColorAdjustments gothSaturation;
 
-    PlayerSheepAbilities playerSheep;
+	[Header("Respawning")]
+	[SerializeField]
+	GameEvent RespawnEvent;
+
+	PlayerSheepAbilities playerSheep;
 
     private void Start()
     {
         //get post process stuff
-        if (!gothVolume.TryGet(out gothSaturation)) throw new System.NullReferenceException(nameof(gothSaturation));
+        if (!gothVolume.TryGet(out gothSaturation)) 
+			throw new System.NullReferenceException(nameof(gothSaturation));
         gothSaturation.saturation.value = defaultSaturation;
 
         playerSheep = GetComponent<PlayerSheepAbilities>();
 		gothMeter.ChangeFill(GothMeterCount);
 
+		RespawnEvent.listener.AddListener(delegate { ResetGoth(); });
+
+	}
+
+	void ResetGoth()
+	{
+		isGothMode = false;
+		gothParticles.SetActive(false);
+
+		GothMeterCount = 0;
+		gothMeter.ChangeFill(GothMeterCount);
 	}
 
 	//update bar image

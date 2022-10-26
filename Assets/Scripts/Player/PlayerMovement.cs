@@ -93,7 +93,6 @@ public class PlayerMovement : MonoBehaviour
 	#endregion
 
 
-
 	private void Awake()
 	{
 		//set this as player in game manager
@@ -201,8 +200,7 @@ public class PlayerMovement : MonoBehaviour
     void SpeedCheck()
     {
         //check if moving
-        if (moveValue.magnitude != 0) isMoving = true;
-        else isMoving = false;
+		isMoving = moveValue.magnitude != 0;
 
         //check current velocity
         Vector3 velocityCheck = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
