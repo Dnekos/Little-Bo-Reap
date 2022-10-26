@@ -589,7 +589,7 @@ public class PlayerSheepAbilities : MonoBehaviour
     #region Sheep Charge
     public void OnSheepCharge(InputAction.CallbackContext context)
     {
-        if(canCharge && !isPreparingAttack)
+        if(canCharge && !isPreparingAttack && !isPreparingCharge)
         {
             //SheepTypes flockType = currentFlockType;
             SheepTypes flockType = SheepTypes.RAM;
