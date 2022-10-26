@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
 {
-	public Transform RespawnPoint;
+	[SerializeField]
+	Animation anim;
 
+	public Transform RespawnPoint;
 
 	bool hasEntered = false; // prevents the same checkpoint from being triggered twice
 
@@ -20,6 +22,7 @@ public class Checkpoint : MonoBehaviour
 			Debug.Log(other.gameObject + " hit checkpoint at " + transform.position);
 			WorldState.instance.SetSpawnPoint(this);
 			hasEntered = true;
+			anim.Play();
 		}
 	}
 }
