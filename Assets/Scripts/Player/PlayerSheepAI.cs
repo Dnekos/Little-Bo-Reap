@@ -269,6 +269,10 @@ public class PlayerSheepAI : Damageable
                         DealDamage(other, chargeAttack, isBlackSheep);
                         TakeDamage(selfDamage, transform.forward);
                     }
+                    if (other.CompareTag("Breakable"))
+                    {
+                        other.GetComponent<BreakableWall>()?.DamageWall();
+                    }
                     break;
                 }
             case SheepStates.DEFEND_PLAYER:

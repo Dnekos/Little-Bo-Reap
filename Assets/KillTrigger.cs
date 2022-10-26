@@ -8,13 +8,9 @@ public class KillTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Enemy"))
+        if(other.GetComponent<EnemyAI>()!= null || other.GetComponent<PlayerSheepAI>()!= null)
         {
-            other.GetComponent<EnemyAI>()?.ForceKill();
-        }
-        if(other.CompareTag("PlayerSheep"))
-        {
-            other.GetComponent<PlayerSheepAI>()?.ForceKill();
+            other.GetComponent<Damageable>()?.ForceKill();
         }
     }
 }
