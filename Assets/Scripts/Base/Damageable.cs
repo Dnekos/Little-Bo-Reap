@@ -76,6 +76,10 @@ public class Damageable : MonoBehaviour
 		}
 	}
 	
+	public void ForceKill()
+    {
+		OnDeath();
+    }
 
 	virtual protected void OnDeath()
 	{
