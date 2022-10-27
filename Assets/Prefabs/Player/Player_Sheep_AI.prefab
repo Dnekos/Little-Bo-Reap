@@ -9831,6 +9831,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sheepParent: {fileID: 7642856465436953997}
+  biteSound:
+    Guid:
+      Data1: -656291849
+      Data2: 1196352454
+      Data3: -1400579932
+      Data4: -1366538524
+    Path: event:/Finished/SheepBite
 --- !u!1 &6617520872775550991
 GameObject:
   m_ObjectHideFlags: 0
@@ -14843,6 +14850,20 @@ MonoBehaviour:
   selfDamage: {fileID: 11400000, guid: e8f63bf63a2566c40a756ac58fd87c2f, type: 2}
   petSheepParticles: {fileID: 5780683294780921003}
   petAnimation: Test_Sheep_Pet
+  biteSound:
+    Guid:
+      Data1: -656291849
+      Data2: 1196352454
+      Data3: -1400579932
+      Data4: -1366538524
+    Path: event:/Finished/SheepBite
+  petSound:
+    Guid:
+      Data1: 949191789
+      Data2: 1270817466
+      Data3: 1528027779
+      Data4: 427792418
+    Path: event:/Finished/SheepBaa
   wanderSpeed: 5
   wanderRadius: 20
   wanderStopDistance: 0

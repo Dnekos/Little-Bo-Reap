@@ -28,7 +28,7 @@ public class PlayerSheepAbilities : MonoBehaviour
     [Header("UI Test")]
     [SerializeField] TextMeshProUGUI sheepTypeText;
 
-    [Header("Temp Sounds")]
+    [Header("Sounds")]
     [SerializeField] FMODUnity.EventReference abilitySound;
     [SerializeField] FMODUnity.EventReference summonSound;
 

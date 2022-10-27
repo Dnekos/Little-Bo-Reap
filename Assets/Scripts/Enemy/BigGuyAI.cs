@@ -21,8 +21,12 @@ public class BigGuyAI : EnemyAI
 	[SerializeField] GameObject ShockwavePrefab;
 	[SerializeField] Transform ShockwaveSpawnPoint;
 
-    // Start is called before the first frame update
-    override protected void Start()
+	[Header("Sounds")]
+	[SerializeField] FMODUnity.EventReference swingSound;
+	[SerializeField] FMODUnity.EventReference clubHitSound;
+
+	// Start is called before the first frame update
+	override protected void Start()
     {
 		base.Start();
 		NearbyGuys = new List<Transform>();
@@ -51,12 +55,16 @@ public class BigGuyAI : EnemyAI
 
 			// if there are sheep in front
 			if (NearbyGuys.Count != 0 && angle < 90)
+			{
+				FMODUnity.RuntimeManager.PlayOneShotAttached(swingSound, gameObject);
 				anim.Play(StickAttack.animation);
-
+			}
 			// if at least half of active sheep are around it
 			else if (NearbyGuys.Count > player.GetComponent<PlayerSheepAbilities>().GetAverageActiveFlockSize() * 0.5f)
+			{
+				FMODUnity.RuntimeManager.PlayOneShotAttached(swingSound, gameObject);
 				anim.Play(ShockwaveAttack.animation);
-
+			}
 		}
 		QueuedAttack = null;
 
@@ -93,7 +101,13 @@ public class BigGuyAI : EnemyAI
 		if (collision.GetContact(0).thisCollider == StickCollider)
 		{
 			Debug.Log("collided with " + collision.gameObject.name);
-			collision.gameObject.GetComponent<Damageable>()?.TakeDamage(StickAttack, transform.forward);
+			Damageable hitTarget = collision.gameObject.GetComponent<Damageable>();
+			if (hitTarget != null)
+			{
+				collision.gameObject.GetComponent<Damageable>()?.TakeDamage(StickAttack, transform.forward);
+				FMODUnity.RuntimeManager.PlayOneShotAttached(clubHitSound, gameObject);
+			}
+
 		}
 	}
 	#endregion

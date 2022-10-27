@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerSheepProjectile : MonoBehaviour
 {
+	[Header("Sounds")]
+	[SerializeField] FMODUnity.EventReference biteSound;
 	[SerializeField] FMODUnity.EventReference launchSound;
 
 	[Header("Launch Projectile Variables")]
@@ -62,7 +64,9 @@ public class PlayerSheepProjectile : MonoBehaviour
 	{
 		if (collision.gameObject.CompareTag("Enemy"))
 		{
-            if(isBlackSheep)
+			FMODUnity.RuntimeManager.PlayOneShot(biteSound, transform.position);
+
+			if (isBlackSheep)
             {
                 gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
                 Vector3 forcePoint = new Vector3(collision.GetContact(0).normal.x, 0, collision.GetContact(0).normal.z);

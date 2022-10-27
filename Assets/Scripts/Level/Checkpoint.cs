@@ -9,11 +9,9 @@ public class Checkpoint : MonoBehaviour
 
 	public Transform RespawnPoint;
 
-	bool hasEntered = false; // prevents the same checkpoint from being triggered twice
+	[SerializeField] FMODUnity.EventReference Sound;
 
-	private void Start()
-	{
-	}
+	bool hasEntered = false; // prevents the same checkpoint from being triggered twice
 
 	private void OnTriggerEnter(Collider other)
 	{
@@ -21,6 +19,9 @@ public class Checkpoint : MonoBehaviour
 		{
 			Debug.Log(other.gameObject + " hit checkpoint at " + transform.position);
 			WorldState.instance.SetSpawnPoint(this);
+
+			FMODUnity.RuntimeManager.PlayOneShotAttached(Sound, gameObject);
+
 			hasEntered = true;
 			anim.Play();
 		}
