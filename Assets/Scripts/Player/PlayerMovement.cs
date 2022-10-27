@@ -249,10 +249,10 @@ public class PlayerMovement : MonoBehaviour
     {
 		if (isGrounded && context.started)
 		{
-			//TEMP SOUND
+			// SOUND
 			FMODUnity.RuntimeManager.PlayOneShotAttached(jumpSound, gameObject);
 
-			//play particles
+			// play particles
 			jumpParticles.Play();
 
 			animator.Play(jumpAnimation);

@@ -349,7 +349,9 @@ public class PlayerSheepAI : Damageable
     #region Health
     protected override void OnDeath()
     {
-        Instantiate(gibs, transform.position, transform.rotation);
+		FMODUnity.RuntimeManager.PlayOneShot(deathSound, transform.position);
+
+		Instantiate(gibs, transform.position, transform.rotation);
         KillSheep();
     }
     public override void TakeDamage(Attack atk, Vector3 attackForward)

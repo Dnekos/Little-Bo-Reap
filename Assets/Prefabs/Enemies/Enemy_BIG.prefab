@@ -1374,6 +1374,20 @@ MonoBehaviour:
   damageNumberGoth: {fileID: 758784450076825086, guid: 0a7b484cc73c2c047b45b91fd1f75b6d,
     type: 3}
   isInvulnerable: 0
+  hurtSound:
+    Guid:
+      Data1: -123824200
+      Data2: 1247655003
+      Data3: -905046865
+      Data4: -1913289647
+    Path: event:/Big Guy/Hurt
+  deathSound:
+    Guid:
+      Data1: -594042468
+      Data2: 1251321388
+      Data3: -1140806494
+      Data4: -1177034790
+    Path: event:/Big Guy/Death
   soulValue: 20
   soulSpeed: 0
   soulSpawnHeight: 0
@@ -1381,6 +1395,7 @@ MonoBehaviour:
     type: 3}
   SpawnParticlePrefab: {fileID: 6246327466764470281, guid: 817debac214ef9f4ba98b6f41baf3376,
     type: 3}
+  SpawnWaitTime: 2
   currentEnemyState: 3
   StunTime: 0.3
   playerLayer:

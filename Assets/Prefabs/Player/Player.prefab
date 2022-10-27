@@ -13623,6 +13623,20 @@ MonoBehaviour:
     type: 3}
   damageNumberGoth: {fileID: 0}
   isInvulnerable: 0
+  hurtSound:
+    Guid:
+      Data1: -1985581136
+      Data2: 1235148755
+      Data3: -442038099
+      Data4: -977487437
+    Path: event:/Bo Peep/Hurt
+  deathSound:
+    Guid:
+      Data1: 665561976
+      Data2: 1340639920
+      Data3: -1350383957
+      Data4: -2001262843
+    Path: event:/Bo Peep/Death
   soulValue: 0
   soulSpeed: 0
   soulSpawnHeight: 0
@@ -13654,14 +13668,14 @@ MonoBehaviour:
       Data2: 1163207070
       Data3: 1249111997
       Data4: -200619757
-    Path: event:/Finished/Jump
+    Path: event:/Bo Peep/Jump
   dashSound:
     Guid:
       Data1: -1844760821
       Data2: 1287384404
       Data3: 1215539603
       Data4: -1981390760
-    Path: event:/Finished/Dash
+    Path: event:/Bo Peep/Dash
   walker: {fileID: 5732512889961981089}
   maxMoveSpeed: 20
   acceleration: 200
@@ -13989,7 +14003,7 @@ MonoBehaviour:
       Data2: 1288591920
       Data3: -251999068
       Data4: 356061529
-    Path: event:/Finished/Footsteps
+    Path: event:/Bo Peep/Footsteps
   Event: 
   PlayEvent: 0
   StopEvent: 0

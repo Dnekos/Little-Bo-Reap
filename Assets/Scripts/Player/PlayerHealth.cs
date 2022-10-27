@@ -53,6 +53,9 @@ public class PlayerHealth : Damageable
 		Health = MaxHealth;
 		healthBar.ChangeFill(1);
 
+		// resume collisions
+		rb.isKinematic = false;
+
 		HUD.SetActive(true);
 		DeathUI.SetActive(false);
 		foreach (PlayerInput input in inputs)
@@ -66,6 +69,11 @@ public class PlayerHealth : Damageable
 	protected override void OnDeath()
 	{
 		WorldState.instance.Dead = true;
+
+		FMODUnity.RuntimeManager.PlayOneShot(deathSound, transform.position);
+
+		// stop collisions
+		rb.isKinematic = true;
 
 		HUD.SetActive(false);
 		DeathUI.SetActive(true);
