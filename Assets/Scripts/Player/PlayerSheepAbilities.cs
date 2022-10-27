@@ -30,7 +30,6 @@ public class PlayerSheepAbilities : MonoBehaviour
 
     [Header("Temp Sounds")]
     [SerializeField] FMODUnity.EventReference abilitySound;
-    [SerializeField] FMODUnity.EventReference launchSound;
     [SerializeField] FMODUnity.EventReference summonSound;
 
     [Header("Camera Access")]
@@ -839,15 +838,13 @@ public class PlayerSheepAbilities : MonoBehaviour
                     {
                         animator.Play(launchAnimation);
 
-                        //TEMP SOUND
-                        FMODUnity.RuntimeManager.PlayOneShotAttached(launchSound, gameObject);
-
                         //break loop and launch that mf
                         var launchSheep = Instantiate(sheepFlocks[currentFlockIndex].SheepProjectilePrefab, launchOrigin.position, launchOrigin.rotation);
-                        if (GetSheepFlock(flockType)[i].isBlackSheep) launchSheep.GetComponent<PlayerSheepProjectile>().isBlackSheep = true;
+                        if (GetSheepFlock(flockType)[i].isBlackSheep)
+							launchSheep.GetComponent<PlayerSheepProjectile>().isBlackSheep = true;
                         launchSheep.GetComponent<PlayerSheepProjectile>().LaunchProjectile();
 
-                        GetSheepFlock(flockType)[i].KillSheep();
+						GetSheepFlock(flockType)[i].KillSheep();
 
                         break;
                     }

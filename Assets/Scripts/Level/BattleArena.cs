@@ -87,7 +87,6 @@ public class BattleArena : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		Debug.Log("HEY");
 		if (CurrentWave == -1 && other.gameObject.CompareTag("Player")) // untriggered
 		{
 			DoorsFolder.SetActive(true);

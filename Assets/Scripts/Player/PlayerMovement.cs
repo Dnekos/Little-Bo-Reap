@@ -6,11 +6,12 @@ using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [Header("Temp sounds")]
+    [Header("Sounds")]
     [SerializeField] FMODUnity.EventReference jumpSound;
     [SerializeField] FMODUnity.EventReference dashSound;
-	
-    [Header("Movement Variables")]
+	[SerializeField] FMODUnity.StudioEventEmitter walker;
+
+	[Header("Movement Variables")]
     [SerializeField] float maxMoveSpeed;
     [SerializeField] float acceleration;
     [SerializeField] float haltRate;
@@ -178,12 +179,22 @@ public class PlayerMovement : MonoBehaviour
 
         currentRunTime += Time.deltaTime;
 
-        //do clouds if running and grounded
-        if (isGrounded && isMoving && currentRunTime > timeBetweenRunParticles)
-        {
-            currentRunTime = 0f;
-            runParticles.Play();
-        }
+		//do clouds if running and grounded
+		if (isGrounded && isMoving && currentRunTime > timeBetweenRunParticles)
+		{
+			currentRunTime = 0f;
+			runParticles.Play();
+
+			if (!walker.IsPlaying())
+				walker.Play();
+		}
+
+		// stop playing footsteps when not walking
+		if (walker.IsPlaying() && (!isGrounded || !isMoving || !canDash))
+		{
+			walker.Stop();
+		}
+
 
 		moveDirection = playerOrientation.forward * moveValue.y + playerOrientation.right * moveValue.x;
 
@@ -238,10 +249,10 @@ public class PlayerMovement : MonoBehaviour
     {
 		if (isGrounded && context.started)
 		{
-			//TEMP SOUND
+			// SOUND
 			FMODUnity.RuntimeManager.PlayOneShotAttached(jumpSound, gameObject);
 
-			//play particles
+			// play particles
 			jumpParticles.Play();
 
 			animator.Play(jumpAnimation);
