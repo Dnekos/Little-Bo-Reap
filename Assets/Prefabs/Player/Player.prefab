@@ -595,7 +595,7 @@ Transform:
   - {fileID: 5462111521222099548}
   - {fileID: 6144083390785991266}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &455429352502565040
 GameObject:
@@ -13278,6 +13278,7 @@ GameObject:
   - component: {fileID: 7611933122142456365}
   - component: {fileID: 3274229950097917984}
   - component: {fileID: 5528081572093814127}
+  - component: {fileID: 5732512889961981089}
   m_Layer: 7
   m_Name: Player_Body
   m_TagString: Player
@@ -13660,7 +13661,8 @@ MonoBehaviour:
       Data2: 1287384404
       Data3: 1215539603
       Data4: -1981390760
-    Path: event:/Temp/Dash
+    Path: event:/Finished/Dash
+  walker: {fileID: 5732512889961981089}
   maxMoveSpeed: 20
   acceleration: 200
   haltRate: 10
@@ -13760,11 +13762,11 @@ MonoBehaviour:
     Path: event:/Temp/Spell
   launchSound:
     Guid:
-      Data1: 784329610
-      Data2: 1311387556
-      Data3: 1387585191
-      Data4: 223397037
-    Path: event:/Temp/Reflect
+      Data1: 1221484123
+      Data2: 1307466765
+      Data3: 1894388373
+      Data4: -1599441640
+    Path: event:/Finished/Launch
   summonSound:
     Guid:
       Data1: 1668816679
@@ -13975,6 +13977,36 @@ MonoBehaviour:
   mainCollider: {fileID: 3870380308813204387}
   SheepLerpSpeed: 0.17
   PlatformSize: {x: 2, y: 1, z: 2}
+--- !u!114 &5732512889961981089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3870380308813204390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -1360342316
+      Data2: 1288591920
+      Data3: -251999068
+      Data4: 356061529
+    Path: event:/Finished/Footsteps
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 0
+  TriggerOnce: 0
+  Preload: 1
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &3939397258707507384
 GameObject:
   m_ObjectHideFlags: 0
