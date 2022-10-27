@@ -53,7 +53,12 @@ public class PlayerSheepAI : Damageable
     [SerializeField] ParticleSystem petSheepParticles;
     [SerializeField] string petAnimation;
 
-    [Header("Wander State Variables")]
+	[Header("Sounds")]
+	[SerializeField] FMODUnity.EventReference biteSound;
+	[SerializeField] FMODUnity.EventReference petSound;
+
+
+	[Header("Wander State Variables")]
     [SerializeField] float wanderSpeed = 10f;
     [SerializeField] float wanderRadius;
     [SerializeField] float wanderStopDistance;
@@ -63,7 +68,7 @@ public class PlayerSheepAI : Damageable
     bool canWander = true;
 
     [Header("Attack State Variables")]
-    [SerializeField] LayerMask enemyLayer;
+	[SerializeField] LayerMask enemyLayer;
     [SerializeField] float attackDetectionRadius;
     [SerializeField] EnemyAI attackTargetCurrent;
     [SerializeField] List<EnemyAI> attackTargets;
@@ -245,18 +250,21 @@ public class PlayerSheepAI : Damageable
         }
     }
 
-    void DealDamage(Collider target, SheepAttack theAttack, bool blackSheepDamage)
-    {
-        if (blackSheepDamage)
-        {
-            //subtract 1 from health
-            TakeDamage(selfDamage, transform.forward);
+	void DealDamage(Collider target, SheepAttack theAttack, bool blackSheepDamage)
+	{
+		FMODUnity.RuntimeManager.PlayOneShotAttached(biteSound, gameObject);
 
-            Instantiate(theAttack.explosionEffect, transform.position, transform.rotation);
-            target?.GetComponent<EnemyAI>().TakeDamage(theAttack, transform.forward);
-        }
-        else target?.GetComponent<EnemyAI>().TakeDamage((Attack)theAttack, transform.forward);
-    }
+		if (blackSheepDamage)
+		{
+			//subtract 1 from health
+			TakeDamage(selfDamage, transform.forward);
+
+			Instantiate(theAttack.explosionEffect, transform.position, transform.rotation);
+			target?.GetComponent<EnemyAI>().TakeDamage(theAttack, transform.forward);
+		}
+		else
+			target?.GetComponent<EnemyAI>().TakeDamage((Attack)theAttack, transform.forward);
+	}
     private void OnTriggerEnter(Collider other)
     {
         switch (currentSheepState)
@@ -311,7 +319,9 @@ public class PlayerSheepAI : Damageable
     public void PetSheep()
     {
         petSheepParticles.Play();
-        animator.Play(petAnimation);
+		FMODUnity.RuntimeManager.PlayOneShotAttached(petSound, gameObject);
+
+		animator.Play(petAnimation);
     }
 
     public void RecallSheep()
