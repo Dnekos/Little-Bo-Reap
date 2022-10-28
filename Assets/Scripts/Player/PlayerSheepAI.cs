@@ -115,6 +115,8 @@ public class PlayerSheepAI : Damageable
     [SerializeField] float fallRate = 50;
     bool isGrounded;
     SheepHolder owningConstruct;
+	[HideInInspector] // hold new position so that constructs can query it even if sheep is still lerping to it
+	public Vector3 constructPos;
 
     override protected void Start()
     {
@@ -303,17 +305,17 @@ public class PlayerSheepAI : Damageable
     }
 
     #region Utility Functions
-    //ok so due to some bullshit you CANNOT remove sheep from list in a for loop? so use this and clear list after for resummoning sheep
-    public void DestroySheep()
-    {
-        Destroy(gameObject);
-    }
     //this is called to kill an indvidual sheep and remove it from list
     public void KillSheep()
     {
+		if (owningConstruct != null)
+		{
+			owningConstruct.RemoveSheep(transform);
+			owningConstruct = null;
+		}
 
-        player.GetComponent<PlayerSheepAbilities>().RemoveSheepFromList(sheepType, this);
-        DestroySheep();
+		player.GetComponent<PlayerSheepAbilities>().RemoveSheepFromList(sheepType, this);
+        Destroy(gameObject);
     }
 
     public void PetSheep()
@@ -770,8 +772,9 @@ public class PlayerSheepAI : Damageable
 			StartCoroutine(OnHitStun(SheepStates.FOLLOW_PLAYER));
 	}
 
-	public void DoConstruct(SheepHolder cons)
+	public void DoConstruct(SheepHolder cons, Vector3 newPos)
 	{
+		constructPos = newPos;
 		owningConstruct = cons;
 		currentSheepState = SheepStates.CONSTRUCT;
 		agent.enabled = false;

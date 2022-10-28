@@ -152,14 +152,14 @@ public class PlayerSheepAbilities : MonoBehaviour
     }
 
 	#region Sheep Flock Functions
-	public void DeleteSheep()
+	public void DeleteAllSheep()
 	{
 		for (int i = 0; i < 3; i++) //for each sheep type, delete list and clear it
 		{
 			//delete all active sheep
-			for (int j = 0; j < GetSheepFlock((SheepTypes)i).Count; j++)
+			for (int j = GetSheepFlock((SheepTypes)i).Count - 1; j >= 0; j--)
 			{
-				GetSheepFlock((SheepTypes)i)[j].DestroySheep();
+				GetSheepFlock((SheepTypes)i)[j].KillSheep();
 			}
 			GetSheepFlock((SheepTypes)i).Clear();
 		}
@@ -358,7 +358,7 @@ public class PlayerSheepAbilities : MonoBehaviour
             animator.Play(summonAnimation);
 
 			//delete all sheep
-			DeleteSheep();
+			DeleteAllSheep();
 
             //SUMMON THE HORDE
             for (int i = 0; i < 3; i++) //for each sheep type, delete list and clear it
@@ -397,10 +397,10 @@ public class PlayerSheepAbilities : MonoBehaviour
             // remove list slots that are null (dead sheep)
             GetSheepFlock(flockType).RemoveAll(x => x == null);
 
-            //delete all active sheep
-            for (int i = 0; i < GetSheepFlock(flockType).Count; i++)
+			//delete all active sheep
+			for (int i = GetSheepFlock(flockType).Count - 1; i >= 0; i--)
             {
-                GetSheepFlock(flockType)[i].DestroySheep();
+                GetSheepFlock(flockType)[i].KillSheep();
             }
             GetSheepFlock(flockType).Clear();
 

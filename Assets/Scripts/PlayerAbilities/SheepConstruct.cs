@@ -45,7 +45,7 @@ public class SheepConstruct : SheepHolder
 
 		// set height if this is the first sheep
 		if (containedSheep.Count == 0)
-			Height = 0 + SheepRadius;
+			CurveT = 0 + SheepRadius;
 
 		// add the little guy
 		AddSheep(other.transform);
@@ -55,27 +55,27 @@ public class SheepConstruct : SheepHolder
 	{
 		float RandomCount = 0;
 		// don't add sheep if the box is filled
-		while (Height + (0.5f * SheepRadius) < box.bounds.max.y)
+		while (CurveT + (0.5f * SheepRadius) < box.bounds.max.y)
 		{
 			// make a guess at a good spot to place sheep, within collider bounds
 			sheepPlacement = new Vector3(transform.position.x + Random.Range(-box.bounds.extents.x, box.bounds.extents.x),
-												 Height,
+												 CurveT,
 												 transform.position.z + Random.Range(-box.bounds.extents.z, box.bounds.extents.z));
 			// check if the spot is filled
 			bool Filled = false;
 			foreach (Transform sheep in containedSheep)
 			{
 				// we dont need to check sheep who are significantly lower than the current height
-				if (sheep.position.y < Height - 1.1f * SheepRadius)
+				if (sheep.position.y < CurveT - 1.1f * SheepRadius)
 					continue;
 
 				// check the position, left/right/front/back and below the position.
-				Filled = Filled || ContainsSheep(sheep, sheepPlacement, Height)
-					|| ContainsSheep(sheep, sheepPlacement + Vector3.right * SheepRadius, Height)
-					|| ContainsSheep(sheep, sheepPlacement + Vector3.forward * SheepRadius, Height)
-					|| ContainsSheep(sheep, sheepPlacement + Vector3.left * SheepRadius, Height)
-					|| ContainsSheep(sheep, sheepPlacement + Vector3.down * SheepRadius, Height - SheepRadius)
-					|| ContainsSheep(sheep, sheepPlacement + Vector3.back * SheepRadius, Height);
+				Filled = Filled || ContainsSheep(sheep, sheepPlacement, CurveT)
+					|| ContainsSheep(sheep, sheepPlacement + Vector3.right * SheepRadius, CurveT)
+					|| ContainsSheep(sheep, sheepPlacement + Vector3.forward * SheepRadius, CurveT)
+					|| ContainsSheep(sheep, sheepPlacement + Vector3.left * SheepRadius, CurveT)
+					|| ContainsSheep(sheep, sheepPlacement + Vector3.down * SheepRadius, CurveT - SheepRadius)
+					|| ContainsSheep(sheep, sheepPlacement + Vector3.back * SheepRadius, CurveT);
 
 				// stop checking if we found a filled spot
 				if (Filled)
@@ -90,7 +90,7 @@ public class SheepConstruct : SheepHolder
 				containedSheep.Add(newSheep);
 
 				// set state of AI
-				newSheep.GetComponent<PlayerSheepAI>()?.DoConstruct(this);
+				newSheep.GetComponent<PlayerSheepAI>()?.DoConstruct(this, sheepPlacement);
 
 				return;
 			}
@@ -101,7 +101,7 @@ public class SheepConstruct : SheepHolder
 			{
 				// if done as many checks as allowed, increase height
 				RandomCount = 0;
-				Height += HeightStep * SheepRadius;
+				CurveT += HeightStep * SheepRadius;
 				layerCount++;
 			}
 		}
