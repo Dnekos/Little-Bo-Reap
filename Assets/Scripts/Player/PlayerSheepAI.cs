@@ -1,10 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.AI;
-using static UnityEditor.PlayerSettings;
-using static UnityEngine.GraphicsBuffer;
 
 public enum SheepStates
 {
@@ -36,14 +33,14 @@ public class PlayerSheepAI : Damageable
     NavMeshAgent agent;
     Animator animator;
 
-	[Header("Follow State Variables")]
+    [Header("Follow State Variables")]
     [SerializeField] float avoidPlayerDistance;
     [SerializeField] float avoidPlayerSpeed = 40f;
     [SerializeField] float followStoppingDistanceMin = 5f;
     [SerializeField] float followStoppingDistanceMax = 10f;
 
     [Header("Leader Variables")]
-    [SerializeField] GameObject leaderIndicator;
+    //[SerializeField] GameObject leaderIndicator;
     public PlayerSheepAI leaderSheep;
     public bool isLeader;
 
@@ -56,25 +53,31 @@ public class PlayerSheepAI : Damageable
     [SerializeField] ParticleSystem petSheepParticles;
     [SerializeField] string petAnimation;
 
-    [Header("Wander State Variables")]
+	[Header("Sounds")]
+	[SerializeField] FMODUnity.EventReference biteSound;
+	[SerializeField] FMODUnity.EventReference petSound;
+
+
+	[Header("Wander State Variables")]
     [SerializeField] float wanderSpeed = 10f;
     [SerializeField] float wanderRadius;
     [SerializeField] float wanderStopDistance;
     [SerializeField] float wanderDelayMin = 1f;
     [SerializeField] float wanderDelayMax = 3f;
+    float currentTimeWanderStopped = 0f;
     bool canWander = true;
 
     [Header("Attack State Variables")]
-    [SerializeField] LayerMask enemyLayer;
+	[SerializeField] LayerMask enemyLayer;
     [SerializeField] float attackDetectionRadius;
     [SerializeField] EnemyAI attackTargetCurrent;
     [SerializeField] List<EnemyAI> attackTargets;
     [SerializeField] string attackAnimation;
     [SerializeField] float attackCooldown = 1.5f;
     [SerializeField] float distanceToAttack;
-	[SerializeField] float attackStopDistance;
+    [SerializeField] float attackStopDistance;
 
-	public SheepAttack attackBase;
+    public SheepAttack attackBase;
     //public float attackDamage = 5f;
     [SerializeField] bool canAttack = true;
 
@@ -87,6 +90,8 @@ public class PlayerSheepAI : Damageable
     [SerializeField] float chargeCheckSpeed = 2f;
     [SerializeField] SheepAttack chargeAttack;
     [SerializeField] Collider chargeCollider;
+    [SerializeField] GameObject chargeParticles;
+    [SerializeField] GameObject chargeExplosion;
     float chargeCheckCurrent = 0;
     Vector3 chargePoint;
     bool isCharging;
@@ -96,26 +101,29 @@ public class PlayerSheepAI : Damageable
     [SerializeField] float defendStopDistance = 0f;
     [SerializeField] SheepAttack defendAttack;
     [SerializeField] float defendRotateDistance = 5f;
-    [SerializeField] float defendRotateAnglePerSec = 360f;
+    //[SerializeField] float defendRotateAnglePerSec = 360f;
     [SerializeField] float defendMinHeight = 0f;
     [SerializeField] float defendMaxHeight = 2f;
-    [SerializeField] float defendFrequency = 3f;
-    [SerializeField] float defendAmplitude = 1f;
+    [SerializeField] float defendSlerpTime = 5f;
+    //[SerializeField] float defendFrequency = 3f;
+    //[SerializeField] float defendAmplitude = 1f;
     Transform defendPoint;
+    bool isMovingToDefend;
 
-	[Header("Stun State Variables")]
-	[SerializeField] float StunTime = 1;
-	[SerializeField] float fallRate = 50;
-	bool isGrounded;
-	SheepHolder owningConstruct;
+    [Header("Stun State Variables")]
+    [SerializeField] float StunTime = 1;
+    [SerializeField] float fallRate = 50;
+    bool isGrounded;
+    SheepHolder owningConstruct;
 
     override protected void Start()
     {
-		base.Start();
+        base.Start();
 
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
-		baseSpeedCurrent = GetRandomSheepBaseSpeed();
+        baseSpeedCurrent = GetRandomSheepBaseSpeed();
+
         player = GameManager.Instance.GetPlayer();
 
         //get random follow stopping distance
@@ -125,8 +133,20 @@ public class PlayerSheepAI : Damageable
 
         FindLeader();
 
+
         //check black sheep stuff
         if (isBlackSheep) blackSheepParticles.SetActive(true);
+
+        //if default state is wander, go wandering
+        if (currentSheepState == SheepStates.WANDER)
+        {
+            agent.SetDestination(transform.position);
+            agent.speed = wanderSpeed;
+            agent.stoppingDistance = wanderStopDistance;
+            currentSheepState = SheepStates.WANDER;
+
+            GoWandering();
+        }
     }
     void FindLeader()
     {
@@ -140,7 +160,7 @@ public class PlayerSheepAI : Damageable
         {
             isLeader = true;
             player.GetComponent<PlayerSheepAbilities>().leaderSheep[((int)sheepType)] = this;
-            leaderIndicator.SetActive(true);
+            //leaderIndicator.SetActive(true);
         }
     }
     void CheckLeader()
@@ -160,7 +180,7 @@ public class PlayerSheepAI : Damageable
             isJumping = true;
             animator.Play(jumpAnimation);
         }
-        if(isJumping && !agent.isOnOffMeshLink)
+        if (isJumping && !agent.isOnOffMeshLink)
         {
             agent.speed = storedSpeed;
             isJumping = false;
@@ -180,7 +200,7 @@ public class PlayerSheepAI : Damageable
         CheckLeader();
 
         //state machine
-        switch(currentSheepState)
+        switch (currentSheepState)
         {
             case SheepStates.FOLLOW_PLAYER:
                 {
@@ -203,7 +223,7 @@ public class PlayerSheepAI : Damageable
                     DoDefendPlayer();
                     break;
                 }
-			case SheepStates.CONSTRUCT:
+            case SheepStates.CONSTRUCT:
                 {
                     break;
                 }
@@ -214,15 +234,15 @@ public class PlayerSheepAI : Damageable
                 }
             case SheepStates.STUN:
                 {
-					if (!isGrounded)
-						rb.AddForce(Vector3.down * fallRate);
-					break;
+                    if (!isGrounded)
+                        rb.AddForce(Vector3.down * fallRate);
+                    break;
                 }
-			case SheepStates.LIFT:
-				{
-					break;
-				}
-			default:
+            case SheepStates.LIFT:
+                {
+                    break;
+                }
+            default:
                 {
                     Debug.LogWarning("PlayerSheepAI should never default!");
                     break;
@@ -230,18 +250,21 @@ public class PlayerSheepAI : Damageable
         }
     }
 
-    void DealDamage(Collider target, SheepAttack theAttack, bool blackSheepDamage)
-    {
-        if(blackSheepDamage)
-        {
-            //subtract 1 from health
-            TakeDamage(selfDamage, transform.forward);
+	void DealDamage(Collider target, SheepAttack theAttack, bool blackSheepDamage)
+	{
+		FMODUnity.RuntimeManager.PlayOneShotAttached(biteSound, gameObject);
 
-            Instantiate(theAttack.explosionEffect, transform.position, transform.rotation);
-            target?.GetComponent<EnemyAI>().TakeDamage(theAttack, transform.forward);
-        }
-        else target?.GetComponent<EnemyAI>().TakeDamage((Attack)theAttack, transform.forward);
-    }
+		if (blackSheepDamage)
+		{
+			//subtract 1 from health
+			TakeDamage(selfDamage, transform.forward);
+
+			Instantiate(theAttack.explosionEffect, transform.position, transform.rotation);
+			target?.GetComponent<EnemyAI>().TakeDamage(theAttack, transform.forward);
+		}
+		else
+			target?.GetComponent<EnemyAI>().TakeDamage((Attack)theAttack, transform.forward);
+	}
     private void OnTriggerEnter(Collider other)
     {
         switch (currentSheepState)
@@ -250,8 +273,13 @@ public class PlayerSheepAI : Damageable
                 {
                     if (other.CompareTag("Enemy"))
                     {
+                        Instantiate(chargeExplosion, transform.position, transform.rotation);
                         DealDamage(other, chargeAttack, isBlackSheep);
                         TakeDamage(selfDamage, transform.forward);
+                    }
+                    if (other.CompareTag("Breakable"))
+                    {
+                        other.GetComponent<BreakableWall>()?.DamageWall();
                     }
                     break;
                 }
@@ -264,9 +292,9 @@ public class PlayerSheepAI : Damageable
                     }
                     break;
                 }
-			case SheepStates.STUN:
-				break;	
-			default:
+            case SheepStates.STUN:
+                break;
+            default:
                 {
                     break;
                 }
@@ -283,7 +311,7 @@ public class PlayerSheepAI : Damageable
     //this is called to kill an indvidual sheep and remove it from list
     public void KillSheep()
     {
-        
+
         player.GetComponent<PlayerSheepAbilities>().RemoveSheepFromList(sheepType, this);
         DestroySheep();
     }
@@ -291,53 +319,64 @@ public class PlayerSheepAI : Damageable
     public void PetSheep()
     {
         petSheepParticles.Play();
-        animator.Play(petAnimation);
+		FMODUnity.RuntimeManager.PlayOneShotAttached(petSound, gameObject);
+
+		animator.Play(petAnimation);
     }
 
     public void RecallSheep()
     {
-		// sheep cant be recalled when stunned
-		if (currentSheepState == SheepStates.STUN)
-			return;
+        // sheep cant be recalled when stunned OR DEFENDING
+        if (currentSheepState == SheepStates.STUN || currentSheepState == SheepStates.DEFEND_PLAYER)
+            return;
+
+        // if the sheep is too high up, stun it first so that it gets closer to the ground
+        if (!Physics.Raycast(transform.position, Vector3.down, 10, LayerMask.GetMask("Ground")))
+        {
+            StartCoroutine(OnHitStun(SheepStates.FOLLOW_PLAYER));
+            return;
+        }
 
         currentSheepState = SheepStates.FOLLOW_PLAYER;
 
-		EndConstruct();
-	}
-	public SheepStates GetSheepState()
+        EndConstruct();
+    }
+    public SheepStates GetSheepState()
     {
         return currentSheepState;
     }
-	public bool IsCommandable()
-	{
-		return currentSheepState == SheepStates.CHARGE /*|| currentSheepState == SheepStates.DEFEND_PLAYER */|| currentSheepState == SheepStates.FOLLOW_PLAYER;
-	}
+    public bool IsCommandable()
+    {
+        return currentSheepState == SheepStates.CHARGE /*|| currentSheepState == SheepStates.DEFEND_PLAYER */|| currentSheepState == SheepStates.FOLLOW_PLAYER;
+    }
     float GetRandomSheepBaseSpeed()
     {
         float speed = Random.Range(baseSpeedMin, baseSpeedMax);
         return speed;
     }
-	#endregion
+    #endregion
 
-	#region Health
-	protected override void OnDeath()
-	{
-        Instantiate(gibs, transform.position, transform.rotation);
+    #region Health
+    protected override void OnDeath()
+    {
+		FMODUnity.RuntimeManager.PlayOneShot(deathSound, transform.position);
+
+		Instantiate(gibs, transform.position, transform.rotation);
         KillSheep();
-	}
-	public override void TakeDamage(Attack atk, Vector3 attackForward)
-	{
-		if (atk.DealsHitstun)
-		{
-			StartCoroutine(OnHitStun(SheepStates.WANDER));
-		}
+    }
+    public override void TakeDamage(Attack atk, Vector3 attackForward)
+    {
+        if (atk.DealsHitstun)
+        {
+            StartCoroutine(OnHitStun(SheepStates.WANDER));
+        }
 
-		base.TakeDamage(atk, attackForward);
-	}
-	#endregion
+        base.TakeDamage(atk, attackForward);
+    }
+    #endregion
 
-	#region Follow Player
-	void DoFollowPlayer()
+    #region Follow Player
+    void DoFollowPlayer()
     {
         //if player is too close, part the red sea!
         float checkDistance = Vector3.Distance(transform.position, player.position);
@@ -357,46 +396,46 @@ public class PlayerSheepAI : Damageable
 
             return;
         }
-        else if(!isJumping)
+        else if (!isJumping)
         {
             //set speed and follow distance
             agent.speed = baseSpeedCurrent;
             agent.stoppingDistance = agentStoppingDistance;
-			agent.SetDestination(player.position);
-		}
+            agent.SetDestination(player.position);
+        }
 
     }
     #endregion
 
     #region Sheep Stun 
     IEnumerator OnHitStun(SheepStates stateAfterStun)
-	{
-		// save current state and set to Hitstun
-		currentSheepState = SheepStates.STUN;
-		gameObject.layer = LayerMask.NameToLayer("PlayerSheep");
-		//turn on rb and turn off navmesh (turned on in GroundCheck (which cant be called when hitstunned))
-		//rb.isKinematic = false;
-		agent.enabled = false;
-		isGrounded = false;
+    {
+        // save current state and set to Hitstun
+        currentSheepState = SheepStates.STUN;
+        gameObject.layer = LayerMask.NameToLayer("PlayerSheep");
+        //turn on rb and turn off navmesh (turned on in GroundCheck (which cant be called when hitstunned))
+        //rb.isKinematic = false;
+        agent.enabled = false;
+        isGrounded = false;
 
-		rb.isKinematic = false;
+        rb.isKinematic = false;
         rb.constraints = RigidbodyConstraints.None;
         rb.constraints = RigidbodyConstraints.FreezeRotation;
 
         yield return new WaitForSeconds(StunTime);
 
-		// wait until grounded
-		yield return new WaitUntil(() => isGrounded);
-			//yield return new WaitForSeconds(0.1f);
+        // wait until grounded
+        yield return new WaitUntil(() => isGrounded);
+        //yield return new WaitForSeconds(0.1f);
 
-		currentSheepState = stateAfterStun;
-	}
+        currentSheepState = stateAfterStun;
+    }
 
-	private void OnCollisionEnter(Collision collision)
-	{
-		if (currentSheepState == SheepStates.STUN && collision.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (currentSheepState == SheepStates.STUN && collision.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
-			isGrounded = true;
+            isGrounded = true;
             //rb.isKinematic = true;
             agent.enabled = true;
 
@@ -405,10 +444,10 @@ public class PlayerSheepAI : Damageable
             rb.angularVelocity = Vector3.zero;
             rb.velocity = Vector3.zero;
         }
-	}
-	#endregion
+    }
+    #endregion
 
-	#region Wander
+    #region Wander
     void GoWandering()
     {
         //stop wander call
@@ -428,18 +467,28 @@ public class PlayerSheepAI : Damageable
             //set agent destination
             agent.destination = destination;
         }
+        else agent.destination = transform.position;
 
         //wander cooldown
         StartCoroutine(WanderCooldown());
     }
 
-	void DoWander()
+    void DoWander()
     {
         //if stopped, pick new point to wander!
         if (Vector3.Distance(transform.position, agent.destination) <= 1f && canWander)
         {
             GoWandering();
         }
+
+        //go wandering in case you get stuck
+        if(agent.velocity.magnitude <= 0.25f && canWander)
+        {
+            currentTimeWanderStopped += Time.deltaTime;
+            if (currentTimeWanderStopped >= wanderDelayMax + 0.1f) GoWandering();
+        }
+            
+        
 
 
         //then, check if there are enemies nearby
@@ -575,6 +624,8 @@ public class PlayerSheepAI : Damageable
             agent.speed = wanderSpeed;
             agent.stoppingDistance = wanderStopDistance;
             currentSheepState = SheepStates.WANDER;
+
+            chargeParticles.SetActive(false);
         }
     }
 
@@ -591,6 +642,8 @@ public class PlayerSheepAI : Damageable
             agent.stoppingDistance = wanderStopDistance;
             agent.obstacleAvoidanceType = ObstacleAvoidanceType.MedQualityObstacleAvoidance;
             currentSheepState = SheepStates.WANDER;
+
+            chargeParticles.SetActive(false);
         }
     }
 
@@ -598,6 +651,8 @@ public class PlayerSheepAI : Damageable
     {
         //CHARGE!
         isCharging = true;
+
+        chargeParticles.SetActive(true);
 
         //set timer to 0
         chargeCheckCurrent = 0;
@@ -635,8 +690,24 @@ public class PlayerSheepAI : Damageable
     #region Defend Player
     void DoDefendPlayer()
     {
-        //agent.SetDestination(defendPoint.position);
-        //move up and down, like a vortex
+        if(isMovingToDefend)
+        {
+            Debug.Log("following player");
+            transform.position = Vector3.Lerp(transform.position, player.transform.position, defendSlerpTime * Time.deltaTime);
+
+            if (Vector3.Distance(player.transform.position, transform.position) < defendRotateDistance - 2f)
+            {
+                isMovingToDefend = false;
+
+                transform.parent = defendPoint;
+                transform.localPosition = Random.insideUnitCircle.normalized * defendRotateDistance;
+
+                float randPosY = Random.Range(defendMinHeight, defendMaxHeight);
+
+                transform.localPosition = new Vector3(transform.localPosition.x, randPosY, transform.localPosition.y);
+            }
+        }
+        
     }
     public void BeginDefendPlayer(Transform theDefendPoint)
     {
@@ -645,13 +716,14 @@ public class PlayerSheepAI : Damageable
 
         //set defened mode
         defendPoint = theDefendPoint;
+        isMovingToDefend = true;
 
-        transform.parent = theDefendPoint;
-        transform.localPosition = Random.insideUnitCircle.normalized * defendRotateDistance;
-
-        float randPosY = Random.Range(defendMinHeight, defendMaxHeight);
-
-        transform.localPosition = new Vector3(transform.localPosition.x, randPosY, transform.localPosition.y);
+       //transform.parent = theDefendPoint;
+       //transform.localPosition = Random.insideUnitCircle.normalized * defendRotateDistance;
+       //
+       //float randPosY = Random.Range(defendMinHeight, defendMaxHeight);
+       //
+       //transform.localPosition = new Vector3(transform.localPosition.x, randPosY, transform.localPosition.y);
 
         float randAnimSpeed = Random.Range(1f, 3f);
         animator.speed = randAnimSpeed;
@@ -679,7 +751,6 @@ public class PlayerSheepAI : Damageable
 		currentSheepState = SheepStates.LIFT;
 		agent.enabled = false;
 		rb.isKinematic = true;
-		gameObject.layer = LayerMask.NameToLayer("Ground");
 	}
 	public void CancelLift()
 	{

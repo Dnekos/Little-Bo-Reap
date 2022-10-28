@@ -14,6 +14,10 @@ public enum EnemyStates
 
 public class EnemyAI : Damageable
 {
+	[Header("Spawning")]
+	public GameObject SpawnParticlePrefab;
+	public float SpawnWaitTime = 2;
+
 	protected Coroutine QueuedAttack = null;
 
 	[Header("Enemy State")]
@@ -25,7 +29,7 @@ public class EnemyAI : Damageable
 	public bool isExecutable;
 	public bool mustBeExecuted;
 	[SerializeField] protected int executionHealthThreshhold;
-	[SerializeField] protected EnemyExecutionTrigger executeTrigger;
+	[SerializeField] protected GameObject executeTrigger;
 	public Transform executePlayerPos;
 	public Execution execution;
 
@@ -39,7 +43,7 @@ public class EnemyAI : Damageable
 	public bool isGrounded = false;
 	[SerializeField] float fallRate = 50;
 
-	Transform player;
+	protected Transform player;
 	NavMeshAgent agent;
 
     // Start is called before the first frame update
@@ -51,8 +55,14 @@ public class EnemyAI : Damageable
 	}
 
 	// Update is called once per frame
-	void Update()
+	protected virtual void Update()
     {
+		if (WorldState.instance.Dead)
+		{
+			DoIdle();
+		}
+
+
 		// basic state machine
 		switch (currentEnemyState)
 		{
@@ -100,9 +110,8 @@ public class EnemyAI : Damageable
 
 	public void Execute()
     {
-		OnDeath();
-    }
-
+		base.OnDeath();
+	}
 
     #endregion
 
@@ -164,7 +173,8 @@ public class EnemyAI : Damageable
 	public override void TakeDamage(Attack atk, Vector3 attackForward)
 	{
 		//if they must be executed, return
-		if (mustBeExecuted && Health < executionHealthThreshhold) return;
+		if (mustBeExecuted && Health < executionHealthThreshhold)
+			return;
 
 		// give them hitstun
 		if (atk.DealsHitstun)
@@ -173,10 +183,11 @@ public class EnemyAI : Damageable
 			StopAllCoroutines();
 			StartCoroutine("OnHitStun");
 		}
+
 		// subtract health
 		base.TakeDamage(atk, attackForward);
 
-		if (Health <= executionHealthThreshhold && isExecutable)
+		if (isExecutable && Health <= executionHealthThreshhold)
 		{
 			rb.mass = 100f;
 			rb.velocity = Vector3.zero;
@@ -184,15 +195,31 @@ public class EnemyAI : Damageable
 			gameObject.layer = LayerMask.NameToLayer("EnemyExecute");
 			rb.constraints = RigidbodyConstraints.FreezeAll;
 			currentEnemyState = EnemyStates.EXECUTABLE;
-			executeTrigger.gameObject.SetActive(true);
+			executeTrigger.SetActive(true);
 		}
 	}
+	protected override void OnDeath()
+	{
+		if (isExecutable)
+		{
+			rb.mass = 100f;
+			rb.velocity = Vector3.zero;
+			agent.enabled = false;
+			gameObject.layer = LayerMask.NameToLayer("EnemyExecute");
+			rb.constraints = RigidbodyConstraints.FreezeAll;
+			currentEnemyState = EnemyStates.EXECUTABLE;
+			executeTrigger.SetActive(true);
+		}
+		else
+			base.OnDeath();
 
+	}
 	//to apply black sheep damage, use this overload
 	public override void TakeDamage(SheepAttack atk, Vector3 attackForward)
 	{
 		//if they must be executed, return
-		if (mustBeExecuted && Health < executionHealthThreshhold) return;
+		if (mustBeExecuted && Health < executionHealthThreshhold)
+			return;
 
 		// give them hitstun
 		if (atk.dealsHitstunBlack)
@@ -218,7 +245,7 @@ public class EnemyAI : Damageable
 	}
 
 
-		IEnumerator OnHitStun()
+	IEnumerator OnHitStun()
 	{
 		// save current state and set to Hitstun
 		stunState = (currentEnemyState == EnemyStates.HITSTUN) ? stunState : currentEnemyState;
@@ -241,7 +268,7 @@ public class EnemyAI : Damageable
 
 		//reset if not in execute stage
 		//Demetri this is a quick n dirty fix might need to move around execute stuff eventually
-		if(currentEnemyState != EnemyStates.EXECUTABLE) currentEnemyState = stunState;
+		if (currentEnemyState != EnemyStates.EXECUTABLE) currentEnemyState = stunState;
 
 		//freeze dammit
 		rb.constraints = RigidbodyConstraints.FreezeAll;

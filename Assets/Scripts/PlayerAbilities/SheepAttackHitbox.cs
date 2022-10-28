@@ -8,7 +8,11 @@ public class SheepAttackHitbox : MonoBehaviour
     [SerializeField] PlayerSheepAI sheepParent;
     SheepAttack attack;
 
-    private void OnEnable()
+	[Header("Sounds")]
+	[SerializeField] FMODUnity.EventReference biteSound;
+
+
+	private void OnEnable()
     {
         attack = sheepParent.attackBase;
     }
@@ -17,15 +21,18 @@ public class SheepAttackHitbox : MonoBehaviour
     {
         if(other.CompareTag("Enemy"))
         {
-            //if black sheep use black sheep damage overload, else attack normally
-            if(sheepParent.isBlackSheep)
+			FMODUnity.RuntimeManager.PlayOneShotAttached(biteSound, gameObject);
+
+			//if black sheep use black sheep damage overload, else attack normally
+			if (sheepParent.isBlackSheep)
             {
                 Instantiate(attack.explosionEffect, transform.position, transform.rotation);
                 other?.GetComponent<EnemyAI>().TakeDamage(attack, sheepParent.transform.forward);
 
                 sheepParent.TakeDamage(sheepParent.selfDamage, transform.forward);
             }
-            else other?.GetComponent<EnemyAI>().TakeDamage((Attack)attack, sheepParent.transform.forward);
+            else
+				other?.GetComponent<EnemyAI>().TakeDamage((Attack)attack, sheepParent.transform.forward);
         }
     }
 }

@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class PlayerSheepProjectile : MonoBehaviour
 {
-    [Header("Launch Projectile Variables")]
+	[Header("Sounds")]
+	[SerializeField] FMODUnity.EventReference biteSound;
+	[SerializeField] FMODUnity.EventReference launchSound;
+
+	[Header("Launch Projectile Variables")]
     [SerializeField] float launchForce = 2500f;
     [SerializeField] float launchForceLift = 250f;
     [SerializeField] float lifeTime = 10f;
@@ -23,11 +27,19 @@ public class PlayerSheepProjectile : MonoBehaviour
 
     private void Start()
     {
-        // check black sheep stuff
-        if (isBlackSheep) blackSheepParticles.SetActive(true);
-    }
+		// check black sheep stuff
+		if (isBlackSheep)
+			blackSheepParticles.SetActive(true);
 
-    public void LaunchProjectile()
+		FMOD.Studio.EventInstance eventInst = FMODUnity.RuntimeManager.CreateInstance(launchSound);
+		FMODUnity.RuntimeManager.AttachInstanceToGameObject(eventInst, this.transform, rb);
+		eventInst.start();
+
+		//FMODUnity.RuntimeManager.PlayOneShotAttached(launchSound, gameObject);
+
+	}
+
+	public void LaunchProjectile()
     {
         rb.AddForce(Camera.main.transform.forward * launchForce + transform.up * launchForceLift);
         rb.AddTorque(100f, 100f, 100f);
@@ -52,7 +64,9 @@ public class PlayerSheepProjectile : MonoBehaviour
 	{
 		if (collision.gameObject.CompareTag("Enemy"))
 		{
-            if(isBlackSheep)
+			FMODUnity.RuntimeManager.PlayOneShot(biteSound, transform.position);
+
+			if (isBlackSheep)
             {
                 gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
                 Vector3 forcePoint = new Vector3(collision.GetContact(0).normal.x, 0, collision.GetContact(0).normal.z);

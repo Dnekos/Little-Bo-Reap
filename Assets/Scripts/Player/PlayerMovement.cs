@@ -6,11 +6,12 @@ using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [Header("Temp sounds")]
+    [Header("Sounds")]
     [SerializeField] FMODUnity.EventReference jumpSound;
     [SerializeField] FMODUnity.EventReference dashSound;
-	
-    [Header("Movement Variables")]
+	[SerializeField] FMODUnity.StudioEventEmitter walker;
+
+	[Header("Movement Variables")]
     [SerializeField] float maxMoveSpeed;
     [SerializeField] float acceleration;
     [SerializeField] float haltRate;
@@ -35,7 +36,7 @@ public class PlayerMovement : MonoBehaviour
 	[Header("Sheep Lift")]
 	[SerializeField] float LiftMaxSpeedModifier = 0.5f;
 	public float LiftSpeed = 5;
-	public bool Lifting = false;
+	public bool isLifting = false;
 	[HideInInspector] public bool CanLift = true;
 
     [Header("Dash Variables")]
@@ -76,6 +77,7 @@ public class PlayerMovement : MonoBehaviour
 
 	PlayerHealth health;
 	PlayerSheepLift liftcontroller;
+	PlayerGroundPound groundPound;
 	
     #region Debug Stuff
     public void OnDebugRestart(InputAction.CallbackContext context)
@@ -92,7 +94,6 @@ public class PlayerMovement : MonoBehaviour
 	#endregion
 
 
-
 	private void Awake()
 	{
 		//set this as player in game manager
@@ -104,6 +105,7 @@ public class PlayerMovement : MonoBehaviour
 		health = GetComponent<PlayerHealth>();
         animator = GetComponent<PlayerAnimationController>().playerAnimator;
 		liftcontroller = GetComponent<PlayerSheepLift>();
+		groundPound = GetComponent<PlayerGroundPound>();
 
 	}
 
@@ -145,7 +147,7 @@ public class PlayerMovement : MonoBehaviour
     }
     void UpdateAnimation()
     {
-        animator.SetBool("isMoving", isMoving && !Lifting);
+        animator.SetBool("isMoving", isMoving && !isLifting);
         animator.SetBool("isGrounded", isGrounded);
 
         //check if was not grounded last frame and is grounded this frame
@@ -177,39 +179,48 @@ public class PlayerMovement : MonoBehaviour
 
         currentRunTime += Time.deltaTime;
 
-        //do clouds if running and grounded
-        if (isGrounded && isMoving && currentRunTime > timeBetweenRunParticles)
-        {
-            currentRunTime = 0f;
-            runParticles.Play();
-        }
+		//do clouds if running and grounded
+		if (isGrounded && isMoving && currentRunTime > timeBetweenRunParticles)
+		{
+			currentRunTime = 0f;
+			runParticles.Play();
 
-        moveDirection = playerOrientation.forward * moveValue.y + playerOrientation.right * moveValue.x;
+			if (!walker.IsPlaying())
+				walker.Play();
+		}
 
-        if (OnSlope())
+		// stop playing footsteps when not walking
+		if (walker.IsPlaying() && (!isGrounded || !isMoving || !canDash))
+		{
+			walker.Stop();
+		}
+
+
+		moveDirection = playerOrientation.forward * moveValue.y + playerOrientation.right * moveValue.x;
+
+		if (OnSlope())
         {
             rb.AddForce(slopeMoveDirection * acceleration);
         }
         else
         {
-            rb.AddForce(moveDirection * acceleration);
+			rb.AddForce(moveDirection * acceleration);
         }
 
     }
     void SpeedCheck()
     {
         //check if moving
-        if (moveValue.magnitude != 0) isMoving = true;
-        else isMoving = false;
+		isMoving = moveValue.magnitude != 0;
 
         //check current velocity
         Vector3 velocityCheck = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
         //limit velocity if over speed
-        if (velocityCheck.magnitude > maxMoveSpeed * (Lifting ? LiftMaxSpeedModifier : 1)
+        if (velocityCheck.magnitude > maxMoveSpeed * (isLifting ? LiftMaxSpeedModifier : 1)
 			&& canDash && !health.HitStunned)
         {
-            Vector3 velocityLimit = velocityCheck.normalized * maxMoveSpeed * (Lifting ? LiftMaxSpeedModifier : 1);
+            Vector3 velocityLimit = velocityCheck.normalized * maxMoveSpeed * (isLifting ? LiftMaxSpeedModifier : 1);
             rb.velocity = new Vector3(velocityLimit.x, rb.velocity.y, velocityLimit.z);
         }
 
@@ -220,7 +231,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
 		//apply gravity if falling
-		if (Lifting)
+		if (isLifting)
 		{
 			rb.velocity = new Vector3(rb.velocity.x, LiftSpeed, rb.velocity.z).normalized * LiftSpeed;
 		}
@@ -236,18 +247,18 @@ public class PlayerMovement : MonoBehaviour
     }
     public void OnJump(InputAction.CallbackContext context)
     {
-        if(isGrounded && context.started)
-        {
-			//TEMP SOUND
+		if (isGrounded && context.started)
+		{
+			// SOUND
 			FMODUnity.RuntimeManager.PlayOneShotAttached(jumpSound, gameObject);
 
-            //play particles
-            jumpParticles.Play();
+			// play particles
+			jumpParticles.Play();
 
-            animator.Play(jumpAnimation);
-            rb.AddForce(Vector3.up * jumpForce);
-        }
-		else if (context.started && CanLift)
+			animator.Play(jumpAnimation);
+			rb.AddForce(Vector3.up * jumpForce);
+		}
+		else if (context.started && CanLift && !groundPound.isFalling)
 		{
 			if (liftcontroller.StartLifting())
 			{
@@ -260,14 +271,14 @@ public class PlayerMovement : MonoBehaviour
 				StartCoroutine(GetComponent<PlayerSheepLift>().PlayerPath());
 			}
 		}
-		else if (context.canceled && Lifting)
+		else if (context.canceled && isLifting)
 		{
-			Lifting = false;
+			isLifting = false;
 		}
     }
     public void OnDash(InputAction.CallbackContext context)
     {
-        if(canDash && context.started && !health.HitStunned)
+        if(canDash && !isLifting && context.started && !health.HitStunned)
         {
             canDash = false;
 
