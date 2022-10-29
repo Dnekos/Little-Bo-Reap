@@ -367,7 +367,6 @@ public class PlayerSheepAbilities : MonoBehaviour
                 {
                     StartCoroutine(SummonSheep((SheepTypes)i));
                 }
-
             }
 
 
@@ -442,17 +441,6 @@ public class PlayerSheepAbilities : MonoBehaviour
 
             var soulParticle = Instantiate(summonParticle, transform.position, Quaternion.identity) as GameObject;
             soulParticle.GetComponent<Sheep_Summon_Particle>()?.InitSheepParticle(GetCurrentSheepPrefab(theSheepType), summonParticleLerpSpeed, summonPosition, this, theSheepType);
-
-           // //get spawn position
-           // summonPosition = hit.position;
-           //
-           // //spawn sheep
-           // var sheep = Instantiate(GetCurrentSheepPrefab(theSheepType), summonPosition, Quaternion.identity) as GameObject;
-           // GetCurrentSheepFlock(theSheepType).Add(sheep.GetComponent<PlayerSheepAI>());
-           //
-           // //determine if it's a black sheep
-           // float rand = Random.Range(0f, 100f);
-           // if (rand <= summonBlackSheepPercent || gothMode.isGothMode) sheep.GetComponent<PlayerSheepAI>().isBlackSheep = true;
         }
         else
         {
@@ -501,18 +489,22 @@ public class PlayerSheepAbilities : MonoBehaviour
             {
                 for (int i = 0; i < GetSheepFlock(flockType).Count; i++)
                 {
-                    if (GetSheepFlock(flockType)[i].IsCommandable() && Vector3.Distance(transform.position, GetSheepFlock(flockType)[i].transform.position) <= chargeDistanceToUse) GetSheepFlock(flockType)[i]?.BeginCharge(hit.point);
+                    if (GetSheepFlock(flockType)[i].IsCommandable() && 
+						Vector3.Distance(transform.position, GetSheepFlock(flockType)[i].transform.position) <= chargeDistanceToUse)
+						GetSheepFlock(flockType)[i]?.BeginCharge(hit.point);
                 }
             }
-
 
             //start cooldown
             canCharge = false;
             chargeIcon.CooldownUIEffect(chargeCooldown);
             StartCoroutine(ChargeCooldown());
+
+			// dont bother looking at the next if
+			return;
         }
 
-        if (canAttack  && !isPreparingCharge && !hasCharged)
+        if (canAttack && !isPreparingCharge && !hasCharged)
         {
             SheepTypes flockType = currentFlockType;
 
