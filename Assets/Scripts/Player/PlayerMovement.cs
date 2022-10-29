@@ -33,6 +33,15 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float fallRate;
     [SerializeField] ParticleSystem jumpParticles;
 
+	[SerializeField] float CoyoteTime = 0.2f;
+	float CoyoteTimer;
+
+	// this will need some retooling
+	//[SerializeField] float JumpBufferTime = 0.2f;
+	//float BufferTimer;
+
+
+
 	[Header("Sheep Lift")]
 	[SerializeField] float LiftMaxSpeedModifier = 0.5f;
 	public float LiftSpeed = 5;
@@ -134,6 +143,14 @@ public class PlayerMovement : MonoBehaviour
         backCheck = Physics.CheckSphere(groundCheckOriginBack.position, groundCheckDistance, groundLayer);
 
         isGrounded = frontCheck || backCheck;
+
+		// coyote counts down when in air, allows for late inputs
+		if (isGrounded)
+		{
+			CoyoteTimer = CoyoteTime;
+		}
+		else
+			CoyoteTimer -= Time.deltaTime;
 
 		// player should be able to activate lift again once they are back on the ground
 		if (!CanLift && isGrounded)
@@ -248,7 +265,7 @@ public class PlayerMovement : MonoBehaviour
     }
     public void OnJump(InputAction.CallbackContext context)
     {
-		if (isGrounded && context.started)
+		if (CoyoteTimer > 0f && context.started)
 		{
 			// SOUND
 			FMODUnity.RuntimeManager.PlayOneShotAttached(jumpSound, gameObject);
