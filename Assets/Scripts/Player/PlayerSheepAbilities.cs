@@ -737,7 +737,7 @@ public class PlayerSheepAbilities : MonoBehaviour
                 sheepFlocks[flockType].activeSheep[i]?.EndDefendPlayer(sheepFlocks[(int)SheepTypes.FLUFFY].SheepProjectilePrefab);
 
                 // delete all active sheep
-                sheepFlocks[flockType].activeSheep[i].DestroySheep();
+                sheepFlocks[flockType].activeSheep[i].KillSheep();
             }
         }
         sheepFlocks[flockType].activeSheep.Clear();
