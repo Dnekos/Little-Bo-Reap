@@ -349,7 +349,7 @@ public class PlayerSheepAI : Damageable
     }
     public bool IsCommandable()
     {
-        return currentSheepState == SheepStates.CHARGE /*|| currentSheepState == SheepStates.DEFEND_PLAYER */|| currentSheepState == SheepStates.FOLLOW_PLAYER;
+        return currentSheepState == SheepStates.CHARGE /*|| currentSheepState == SheepStates.DEFEND_PLAYER */|| currentSheepState == SheepStates.FOLLOW_PLAYER || currentSheepState == SheepStates.WANDER;
     }
     float GetRandomSheepBaseSpeed()
     {

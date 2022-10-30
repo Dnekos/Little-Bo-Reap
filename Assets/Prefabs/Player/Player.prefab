@@ -12827,7 +12827,7 @@ MonoBehaviour:
   LerpSpeed: 20
   playerCamera: {fileID: 3870380308472901134}
   mouseSensitivityMax: 16
-  mouseSensitivity: 17.5
+  mouseSensitivity: 16
   xCameraClampMax: 50
   xCameraClampMin: -50
   smallShakeMagnitude: 0.25
@@ -13686,6 +13686,8 @@ MonoBehaviour:
   jumpForce: 1250
   fallRate: 50
   jumpParticles: {fileID: 4261654204498698349}
+  superJumpPreventionTimer: 0.2
+  CoyoteTime: 0.2
   LiftMaxSpeedModifier: 0.2
   LiftSpeed: 25
   isLifting: 0
@@ -13707,7 +13709,7 @@ MonoBehaviour:
     m_Bits: 2112
   groundCheckOriginFront: {fileID: 3870380308248943667}
   groundCheckOriginBack: {fileID: 3870380308655863547}
-  groundCheckDistance: 0.35
+  groundCheckDistance: 0.25
   isGrounded: 0
   modelRotateSpeed: 10
   orientCheckDistance: 1.25
@@ -13836,7 +13838,7 @@ MonoBehaviour:
     type: 3}
   attackTargetLayers:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 524352
   attackAnimation: Test_Bo_Spell
   attackIcon: {fileID: 5359815822633376814}
   attackCooldown: 1
@@ -13846,7 +13848,7 @@ MonoBehaviour:
     type: 3}
   chargeTargetLayers:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 524352
   chargeAnimation: Test_Bo_Spell
   chargeIcon: {fileID: 5626668146422006359}
   chargeCooldown: 1

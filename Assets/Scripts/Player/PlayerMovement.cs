@@ -32,7 +32,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float jumpForce;
     [SerializeField] float fallRate;
     [SerializeField] ParticleSystem jumpParticles;
-
+    [SerializeField] float superJumpPreventionTimer = 0.1f;
+    bool canJump = true;
 	[SerializeField] float CoyoteTime = 0.2f;
 	float CoyoteTimer;
 
@@ -265,8 +266,11 @@ public class PlayerMovement : MonoBehaviour
     }
     public void OnJump(InputAction.CallbackContext context)
     {
-		if (CoyoteTimer > 0f && context.started)
+		if (CoyoteTimer > 0f && context.started && canJump)
 		{
+            //prevent super jumps
+            StartCoroutine(SuperJumpPrevention());
+
 			// SOUND
 			FMODUnity.RuntimeManager.PlayOneShotAttached(jumpSound, gameObject);
 
@@ -294,6 +298,14 @@ public class PlayerMovement : MonoBehaviour
 			isLifting = false;
 		}
     }
+
+    IEnumerator SuperJumpPrevention()
+    {
+        canJump = false;
+        yield return new WaitForSeconds(superJumpPreventionTimer);
+        canJump = true;
+    }
+
     public void OnDash(InputAction.CallbackContext context)
     {
         if(canDash && !isLifting && context.started && !health.HitStunned)
