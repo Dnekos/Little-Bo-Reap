@@ -212,10 +212,15 @@ public class EnemyAI : Damageable
 		}
 		else
 			base.OnDeath();
-
 	}
-	//to apply black sheep damage, use this overload
-	public override void TakeDamage(SheepAttack atk, Vector3 attackForward)
+    public override void ForceKill()
+    {
+		isExecutable = false;
+        base.ForceKill();
+    }
+
+    //to apply black sheep damage, use this overload
+    public override void TakeDamage(SheepAttack atk, Vector3 attackForward)
 	{
 		//if they must be executed, return
 		if (mustBeExecuted && Health < executionHealthThreshhold)
