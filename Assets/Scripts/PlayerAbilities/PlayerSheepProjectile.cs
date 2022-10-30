@@ -15,14 +15,21 @@ public class PlayerSheepProjectile : MonoBehaviour
     [SerializeField] float lifeTimeAfterAttack = 1.5f;
     [SerializeField] SheepAttack launchAttack;
     [SerializeField] GameObject blackSheepParticles;
+    [SerializeField] GameObject gibs;
     public bool isBlackSheep = false;
 
     Rigidbody rb;
 
     void Awake()
     {
-        Destroy(gameObject, lifeTime);
+        Invoke("DestroySheepProjectile", lifeTime);
         rb = GetComponent<Rigidbody>();
+    }
+
+    void DestroySheepProjectile()
+    {
+        Instantiate(gibs, transform.position, transform.rotation);
+        Destroy(gameObject);
     }
 
     private void Start()
@@ -72,14 +79,14 @@ public class PlayerSheepProjectile : MonoBehaviour
                 Vector3 forcePoint = new Vector3(collision.GetContact(0).normal.x, 0, collision.GetContact(0).normal.z);
                 collision.gameObject?.GetComponent<EnemyAI>().TakeDamage(launchAttack, -forcePoint);
                 Instantiate(launchAttack.explosionEffect, transform.position, transform.rotation);
-                Destroy(gameObject, lifeTimeAfterAttack);
+                DestroySheepProjectile();
             }
             else
             {
                 gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
                 Vector3 forcePoint = new Vector3(collision.GetContact(0).normal.x, 0, collision.GetContact(0).normal.z);
                 collision.gameObject?.GetComponent<EnemyAI>().TakeDamage((Attack)launchAttack, -forcePoint);
-                Destroy(gameObject, lifeTimeAfterAttack);
+                Invoke("DestroySheepProjectile", lifeTimeAfterAttack);
             }
 		}
 	}

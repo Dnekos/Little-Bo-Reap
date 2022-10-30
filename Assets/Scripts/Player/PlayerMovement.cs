@@ -32,6 +32,16 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float jumpForce;
     [SerializeField] float fallRate;
     [SerializeField] ParticleSystem jumpParticles;
+    [SerializeField] float superJumpPreventionTimer = 0.1f;
+    bool canJump = true;
+	[SerializeField] float CoyoteTime = 0.2f;
+	float CoyoteTimer;
+
+	// this will need some retooling
+	//[SerializeField] float JumpBufferTime = 0.2f;
+	//float BufferTimer;
+
+
 
 	[Header("Sheep Lift")]
 	[SerializeField] float LiftMaxSpeedModifier = 0.5f;
@@ -101,6 +111,7 @@ public class PlayerMovement : MonoBehaviour
 	}
     void Start()
     {
+
         rb = GetComponent<Rigidbody>();
 		health = GetComponent<PlayerHealth>();
         animator = GetComponent<PlayerAnimationController>().playerAnimator;
@@ -111,7 +122,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        GroundCheck();
+		Debug.DrawLine(transform.position, transform.position + slopeMoveDirection);
+
+		GroundCheck();
         UpdateAnimation();
     }
     private void FixedUpdate()
@@ -132,6 +145,14 @@ public class PlayerMovement : MonoBehaviour
 
         isGrounded = frontCheck || backCheck;
 
+		// coyote counts down when in air, allows for late inputs
+		if (isGrounded)
+		{
+			CoyoteTimer = CoyoteTime;
+		}
+		else
+			CoyoteTimer -= Time.deltaTime;
+
 		// player should be able to activate lift again once they are back on the ground
 		if (!CanLift && isGrounded)
 			CanLift = true;
@@ -139,7 +160,7 @@ public class PlayerMovement : MonoBehaviour
     void RotatePlayer()
     {
         //am i on a slope?
-        slopeMoveDirection = Vector3.ProjectOnPlane(moveDirection, slopeHit.normal);
+        slopeMoveDirection = Vector3.ProjectOnPlane(moveDirection, slopeHit.normal).normalized;
 
         //rotate the player body
         if (moveValue.magnitude != 0 && moveDirection != Vector3.zero)
@@ -163,11 +184,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, orientCheckDistance, groundLayer))
         {
-            if (slopeHit.normal != Vector3.up)
-            {
-                return true;
-            }
-            else return false;
+			return slopeHit.normal != Vector3.up;
         }
         return false;
     }
@@ -200,7 +217,9 @@ public class PlayerMovement : MonoBehaviour
 
 		if (OnSlope())
         {
-            rb.AddForce(slopeMoveDirection * acceleration);
+			var slopeRotation = Quaternion.FromToRotation(Vector3.up, slopeHit.normal);
+
+            rb.AddForce(slopeRotation * moveDirection * acceleration);
         }
         else
         {
@@ -235,7 +254,7 @@ public class PlayerMovement : MonoBehaviour
 		{
 			rb.velocity = new Vector3(rb.velocity.x, LiftSpeed, rb.velocity.z).normalized * LiftSpeed;
 		}
-		else if (!isGrounded)
+		else
 			rb.AddForce(Vector3.down * fallRate);
     }
 
@@ -247,8 +266,11 @@ public class PlayerMovement : MonoBehaviour
     }
     public void OnJump(InputAction.CallbackContext context)
     {
-		if (isGrounded && context.started)
+		if (CoyoteTimer > 0f && context.started && canJump)
 		{
+            //prevent super jumps
+            StartCoroutine(SuperJumpPrevention());
+
 			// SOUND
 			FMODUnity.RuntimeManager.PlayOneShotAttached(jumpSound, gameObject);
 
@@ -276,6 +298,14 @@ public class PlayerMovement : MonoBehaviour
 			isLifting = false;
 		}
     }
+
+    IEnumerator SuperJumpPrevention()
+    {
+        canJump = false;
+        yield return new WaitForSeconds(superJumpPreventionTimer);
+        canJump = true;
+    }
+
     public void OnDash(InputAction.CallbackContext context)
     {
         if(canDash && !isLifting && context.started && !health.HitStunned)

@@ -92,15 +92,19 @@ public class PlayerExecution : MonoBehaviour
                 currentPetDistance = 999;
 
                 //this is all for sean don't think too hard about it
-                for(int i = 0; i < flocks.GetSheepFlock(flocks.currentFlockType).Count; i++)
+                for(int j = 0; j < 3; j++)
                 {
-                    if (Vector3.Distance(transform.position, flocks.GetSheepFlock(flocks.currentFlockType)[i].transform.position) < petMaxDistance
-                        && currentPetDistance > Vector3.Distance(transform.position, flocks.GetSheepFlock(flocks.currentFlockType)[i].transform.position))
+                    for (int i = 0; i < flocks.GetSheepFlock((SheepTypes)j).Count; i++)
                     {
-                        currentPetDistance = Vector3.Distance(transform.position, flocks.GetSheepFlock(flocks.currentFlockType)[i].transform.position);
-                        sheepToPet = flocks.GetSheepFlock(flocks.currentFlockType)[i];
+                        if (Vector3.Distance(transform.position, flocks.GetSheepFlock((SheepTypes)j)[i].transform.position) < petMaxDistance
+                            && currentPetDistance > Vector3.Distance(transform.position, flocks.GetSheepFlock((SheepTypes)j)[i].transform.position))
+                        {
+                            currentPetDistance = Vector3.Distance(transform.position, flocks.GetSheepFlock((SheepTypes)j)[i].transform.position);
+                            sheepToPet = flocks.GetSheepFlock((SheepTypes)j)[i];
+                        }
                     }
                 }
+                
 
                 if(sheepToPet != null)
                 {

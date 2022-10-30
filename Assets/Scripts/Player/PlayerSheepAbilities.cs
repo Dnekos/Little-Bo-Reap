@@ -53,7 +53,7 @@ public class PlayerSheepAbilities : MonoBehaviour
     [SerializeField] float flockMenuTimescale = 0.25f;
     [SerializeField] float defaultTimescale = 1;
     bool isInFlockMenu = false;
-    float swapContextValue;
+    float swapContextValue; // i feel like there is a way to not have this non-local
 
     [Header("Sheep Summon Variables")]
     [SerializeField] float summonBloodCost = 25f;
@@ -123,6 +123,8 @@ public class PlayerSheepAbilities : MonoBehaviour
     [SerializeField] string launchAnimation;
     [SerializeField] AbilityIcon launchIcon;
     [SerializeField] float launchCooldown = 1f;
+    int flockIndex;
+    int sheepIndex;
     bool canLaunch = true;
     bool isLaunching = false;
 
@@ -152,17 +154,27 @@ public class PlayerSheepAbilities : MonoBehaviour
     }
 
 	#region Sheep Flock Functions
-	public void DeleteSheep()
+	public void DeleteAllSheep()
 	{
 		for (int i = 0; i < 3; i++) //for each sheep type, delete list and clear it
 		{
 			//delete all active sheep
-			for (int j = 0; j < GetSheepFlock((SheepTypes)i).Count; j++)
+			for (int j = sheepFlocks[i].activeSheep.Count - 1; j >= 0; j--)
 			{
-				GetSheepFlock((SheepTypes)i)[j].DestroySheep();
+				sheepFlocks[i].activeSheep[j].KillSheep();
 			}
-			GetSheepFlock((SheepTypes)i).Clear();
+			sheepFlocks[i].activeSheep.Clear();
 		}
+	}
+	public void DeleteFlock(SheepTypes sheep)
+	{
+		int i = (int)sheep;
+		//delete all active sheep
+		for (int j = sheepFlocks[i].activeSheep.Count - 1; j >= 0; j--)
+		{
+			sheepFlocks[i].activeSheep[j].KillSheep();
+		}
+		sheepFlocks[i].activeSheep.Clear();
 	}
 	public float GetAverageActiveFlockSize()
 	{
@@ -179,62 +191,64 @@ public class PlayerSheepAbilities : MonoBehaviour
 
 	public void OnChangeSheepFlock(InputAction.CallbackContext context)
     {
-        if (context.started)
+		if (context.started)
         {
             swapContextValue = context.ReadValue<float>(); 
             //Debug.Log(swapContextValue);
         }
-        //alright so if we press middle mouse down, context value is one
-        //if useing scroll wheel, its -240 and 240 respectively for some reason
-        //so use these magic numbers to determine what to do
+		//alright so if we press middle mouse down, context value is one
+		//if useing scroll wheel, its -240 and 240 respectively for some reason
+		//so use these magic numbers to determine what to do
 
-        //if held down, open menu and slow time. if pressed, just go to next in list
-        if(context.performed && swapContextValue == 1)
-        {
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
+		//if held down, open menu and slow time. if pressed, just go to next in list
+		if (context.performed && swapContextValue == 1)
+		{
+			Cursor.visible = true;
+			Cursor.lockState = CursorLockMode.None;
 
-            isInFlockMenu = true;
-            //Debug.Log("in flock menu");
+			isInFlockMenu = true;
 
-            //enable flock select menu
-            Time.timeScale = flockMenuTimescale;
-            Time.fixedDeltaTime = 0.02F * Time.timeScale; //evil physics timescale hack to make it smooth
-            flockSelectMenu.gameObject.SetActive(true);
-        }
+			//enable flock select menu
+			Time.timeScale = flockMenuTimescale;
+			Time.fixedDeltaTime = 0.02F * Time.timeScale; //evil physics timescale hack to make it smooth
+			flockSelectMenu.gameObject.SetActive(true);
+		}
 		else if (context.performed)
 		{
-			//go to next sheep type. Mod keep it in the rand of 0-2
-			currentFlockIndex = Mod(currentFlockIndex + (int)Mathf.Sign(swapContextValue), sheepFlocks.Length);
+			// hold onto the original index, so that we can exit the loop if we are back to the start (should only happen if all maxs are 0)
+			int originalIndex = currentFlockIndex;
+			do
+				// go to next sheep type. Mod keep it in the rand of 0-2
+				currentFlockIndex = Mod(currentFlockIndex + (int)Mathf.Sign(swapContextValue), sheepFlocks.Length);
+			while (sheepFlocks[currentFlockIndex].MaxSize <= 0 && originalIndex != currentFlockIndex);
 
 			currentFlockType = (SheepTypes)currentFlockIndex;
 
-			//Debug.Log("Current Flock is: " + currentFlockType);
 			sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
 			sheepTypeText.color = sheepFlocks[currentFlockIndex].UIColor;
 		}
+		else if (context.canceled && swapContextValue == 1 && isInFlockMenu)
+		{
+			// only change flocks if they have valid sheep
+			if (sheepFlocks[(int)flockSelectMenu.flockToChangeTo].MaxSize > 0)
+			{
+				currentFlockType = flockSelectMenu.flockToChangeTo;
+				currentFlockIndex = (int)currentFlockType;
 
-        if (context.canceled && swapContextValue == 1)
-        {
-            if(isInFlockMenu)
-            {
-                currentFlockType = flockSelectMenu.flockToChangeTo;
-                currentFlockIndex = (int)currentFlockType;
+				//Debug.Log("Current Flock is: " + currentFlockType);
+				sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
+				sheepTypeText.color = sheepFlocks[currentFlockIndex].UIColor;
+			}
 
-                //Debug.Log("Current Flock is: " + currentFlockType);
-                sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
-                sheepTypeText.color = sheepFlocks[currentFlockIndex].UIColor;
+			Cursor.visible = false;
+			Cursor.lockState = CursorLockMode.Locked;
 
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
-
-                //disable flock select menu
-                isInFlockMenu = false;
-                Time.timeScale = defaultTimescale;
-                Time.fixedDeltaTime = 0.02F; //evil physics timescale hack
-                flockSelectMenu.gameObject.SetActive(false);
-            }      
-        }
+			//disable flock select menu
+			isInFlockMenu = false;
+			Time.timeScale = defaultTimescale;
+			Time.fixedDeltaTime = 0.02F; //evil physics timescale hack
+			flockSelectMenu.gameObject.SetActive(false);
+		}   
     }
     public List<PlayerSheepAI> GetSheepFlock(SheepTypes theFlockType)
     {
@@ -291,17 +305,11 @@ public class PlayerSheepAbilities : MonoBehaviour
     #region Sheep Summon and Recall
     public void OnRecallSheep(InputAction.CallbackContext context)
     {
-        if(context.started)
-        {
-            //Debug.Log("performed recall");
-            recallPerformed = false;
-        }
 
-        if (context.performed)
+        if (context.started)
         {
-			GetComponent<PlayerSheepLift>().CollapseTower();
+            GetComponent<PlayerSheepLift>().CollapseTower();
 
-            recallPerformed = true;
             //play animation
             animator.Play(summonAnimation);
 
@@ -313,43 +321,59 @@ public class PlayerSheepAbilities : MonoBehaviour
             RecallVFX.Play();
 
             //SUMMON THE HORDE!
-			for (int i = 0; i < sheepFlocks.Length; i++)
-				for (int j = 0; j < sheepFlocks[i].activeSheep.Count; j++)
-					sheepFlocks[i].activeSheep[j]?.RecallSheep();
+
+            for (int i = 0; i < sheepFlocks.Length; i++)
+                for (int j = 0; j < sheepFlocks[i].activeSheep.Count; j++)
+                    sheepFlocks[i].activeSheep[j]?.RecallSheep();
         }
-
-        if (context.canceled && !recallPerformed)
-        {
-			GetComponent<PlayerSheepLift>().CollapseTower();
-
-			//get flock type
-			SheepTypes flockType = currentFlockType;
-
-            //play animation
-            animator.Play(summonAnimation);
-
-            //TEMP SOUND
-            FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound, gameObject);
-            RecallVFX.Stop();
-            RecallVFX.Play();
-
-            //recall current flock!
-            for (int i = 0; i < GetSheepFlock(flockType).Count; i++)
-            {
-                GetSheepFlock(flockType)[i]?.RecallSheep();
-            }
-        }
+            
+        
+        //used to be recall all on hold, now recal just recalls all sheep cause people were too confused
+        //KEEP THIS HERE IN CASE WE GO BACK LATER
+       //if(context.started)
+       //{
+       //    //Debug.Log("performed recall");
+       //    recallPerformed = false;
+       //}
+       //
+		//bool recallAll = context.canceled && !recallPerformed;
+       //
+		//if ((context.performed || recallAll) && sheepFlocks[currentFlockIndex].MaxSize > 0)
+       //{
+		//	GetComponent<PlayerSheepLift>().CollapseTower();
+       //
+       //    recallPerformed = true;
+       //    //play animation
+       //    animator.Play(summonAnimation);
+       //
+       //
+       //    //TEMP SOUND
+       //    FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound, gameObject);
+       //
+       //    RecallVFX.Stop();
+       //    RecallVFX.Play();
+       //
+       //    //SUMMON THE HORDE!
+		//	if (recallAll)
+		//	{
+		//		for (int i = 0; i < GetSheepFlock(currentFlockType).Count; i++)
+		//			GetSheepFlock(currentFlockType)[i]?.RecallSheep();
+		//	}
+		//	else
+		//	{
+		//		for (int i = 0; i < sheepFlocks.Length; i++)
+		//			for (int j = 0; j < sheepFlocks[i].activeSheep.Count; j++)
+		//				sheepFlocks[i].activeSheep[j]?.RecallSheep();
+		//	}
+       //}
+        
     }
 
     public void OnSummonSheep(InputAction.CallbackContext context)
     {
-        if (context.started) summonPerformed = false;
-
-        if(context.performed && canSummonSheep && summonResource.GetCurrentBlood() >= summonBloodCost * 3)
+        if(context.started && canSummonSheep && sheepFlocks[currentFlockIndex].MaxSize > 0 && summonResource.GetCurrentBlood() >= summonBloodCost)
         {
-            summonPerformed = true;
-
-            summonResource.ChangeBloodAmount(-summonBloodCost * 3);
+            summonResource.ChangeBloodAmount(-summonBloodCost);
 
             //disallow summoning
             canSummonSheep = false;
@@ -357,8 +381,9 @@ public class PlayerSheepAbilities : MonoBehaviour
             //play animation
             animator.Play(summonAnimation);
 
-			//delete all sheep
-			DeleteSheep();
+
+            // delete all sheep
+            DeleteAllSheep();
 
             //SUMMON THE HORDE
             for (int i = 0; i < 3; i++) //for each sheep type, delete list and clear it
@@ -367,7 +392,6 @@ public class PlayerSheepAbilities : MonoBehaviour
                 {
                     StartCoroutine(SummonSheep((SheepTypes)i));
                 }
-
             }
 
 
@@ -380,46 +404,86 @@ public class PlayerSheepAbilities : MonoBehaviour
             summonIcon.CooldownUIEffect(summonCooldown);
         }
 
-        //summon 1 flock
-        if(context.canceled && !summonPerformed && canSummonSheep && summonResource.GetCurrentBlood() >= summonBloodCost)
-        {
-            summonResource.ChangeBloodAmount(-summonBloodCost);
 
-            //disallow summoning
-            canSummonSheep = false;
 
-            //get flock type
-            SheepTypes flockType = currentFlockType;
-
-            //play animation
-            animator.Play(summonAnimation);
-
-            // remove list slots that are null (dead sheep)
-            GetSheepFlock(flockType).RemoveAll(x => x == null);
-
-            //delete all active sheep
-            for (int i = 0; i < GetSheepFlock(flockType).Count; i++)
-            {
-                GetSheepFlock(flockType)[i].DestroySheep();
-            }
-            GetSheepFlock(flockType).Clear();
-
-            int amountToSummon = GetSheepAmountToSummon(flockType);
-
-            //summon sheep!
-            for (int i = 0; i < amountToSummon; i++)
-            {
-                StartCoroutine(SummonSheep(flockType));
-            }
-
-            //start cooldown
-            StartCoroutine(SummonSheepCooldown());
-
-            //TEMP SOUND
-            FMODUnity.RuntimeManager.PlayOneShotAttached(summonSound, gameObject);
-
-            summonIcon.CooldownUIEffect(summonCooldown);
-        }
+        //KEEP THIS IN CASE WE GO BACK LATER
+       //if (context.started) summonPerformed = false;
+       //
+       //if(context.performed && canSummonSheep && sheepFlocks[currentFlockIndex].MaxSize > 0 && summonResource.GetCurrentBlood() >= summonBloodCost * 3)
+       //{
+       //    summonPerformed = true;
+       //
+       //    summonResource.ChangeBloodAmount(-summonBloodCost);
+       //
+       //    //disallow summoning
+       //    canSummonSheep = false;
+       //
+       //    //play animation
+       //    animator.Play(summonAnimation);
+       //
+		//	//delete all sheep
+		//	DeleteAllSheep();
+       //
+       //    //SUMMON THE HORDE
+       //    for (int i = 0; i < 3; i++) //for each sheep type, delete list and clear it
+       //    {
+       //        for (int j = 0; j < GetSheepAmountToSummon((SheepTypes)i); j++)
+       //        {
+       //            StartCoroutine(SummonSheep((SheepTypes)i));
+       //        }
+       //    }
+       //
+       //
+       //    //start cooldown
+       //    StartCoroutine(SummonSheepCooldown());
+       //
+       //    //TEMP SOUND
+       //    FMODUnity.RuntimeManager.PlayOneShotAttached(summonSound, gameObject);
+       //
+       //    summonIcon.CooldownUIEffect(summonCooldown);
+       //}
+       //
+        //KEEP THIS IN CASE WE GO BACK LATER
+       // //summon 1 flock
+       // if(context.canceled && !summonPerformed && sheepFlocks[currentFlockIndex].MaxSize > 0 && canSummonSheep && summonResource.GetCurrentBlood() >= summonBloodCost)
+       // {
+       //     summonResource.ChangeBloodAmount(-summonBloodCost);
+       //
+       //     //disallow summoning
+       //     canSummonSheep = false;
+       //
+       //     //get flock type
+       //     SheepTypes flockType = currentFlockType;
+       //
+       //     //play animation
+       //     animator.Play(summonAnimation);
+       //
+       //     // remove list slots that are null (dead sheep)
+       //     GetSheepFlock(flockType).RemoveAll(x => x == null);
+       //
+		//	//delete all active sheep
+		//	for (int i = GetSheepFlock(flockType).Count - 1; i >= 0; i--)
+       //     {
+       //         GetSheepFlock(flockType)[i].KillSheep();
+       //     }
+       //     GetSheepFlock(flockType).Clear();
+       //
+       //     int amountToSummon = GetSheepAmountToSummon(flockType);
+       //
+       //     //summon sheep!
+       //     for (int i = 0; i < amountToSummon; i++)
+       //     {
+       //         StartCoroutine(SummonSheep(flockType));
+       //     }
+       //
+       //     //start cooldown
+       //     StartCoroutine(SummonSheepCooldown());
+       //
+       //     //TEMP SOUND
+       //     FMODUnity.RuntimeManager.PlayOneShotAttached(summonSound, gameObject);
+       //
+       //     summonIcon.CooldownUIEffect(summonCooldown);
+       // }
     }
 
     IEnumerator SummonSheep(SheepTypes theSheepType)
@@ -442,17 +506,6 @@ public class PlayerSheepAbilities : MonoBehaviour
 
             var soulParticle = Instantiate(summonParticle, transform.position, Quaternion.identity) as GameObject;
             soulParticle.GetComponent<Sheep_Summon_Particle>()?.InitSheepParticle(GetCurrentSheepPrefab(theSheepType), summonParticleLerpSpeed, summonPosition, this, theSheepType);
-
-           // //get spawn position
-           // summonPosition = hit.position;
-           //
-           // //spawn sheep
-           // var sheep = Instantiate(GetCurrentSheepPrefab(theSheepType), summonPosition, Quaternion.identity) as GameObject;
-           // GetCurrentSheepFlock(theSheepType).Add(sheep.GetComponent<PlayerSheepAI>());
-           //
-           // //determine if it's a black sheep
-           // float rand = Random.Range(0f, 100f);
-           // if (rand <= summonBlackSheepPercent || gothMode.isGothMode) sheep.GetComponent<PlayerSheepAI>().isBlackSheep = true;
         }
         else
         {
@@ -464,11 +517,6 @@ public class PlayerSheepAbilities : MonoBehaviour
         yield return new WaitForSeconds(summonCooldown);
         canSummonSheep = true;
     }
-   // IEnumerator SummonAllSheepCooldown()
-   // {
-   //     yield return new WaitForSeconds(summonCooldown);
-   //     canSummonAllSheep = true;
-   // }
     #endregion
 
     #region Sheep Attack
@@ -506,18 +554,22 @@ public class PlayerSheepAbilities : MonoBehaviour
             {
                 for (int i = 0; i < GetSheepFlock(flockType).Count; i++)
                 {
-                    if (GetSheepFlock(flockType)[i].IsCommandable() && Vector3.Distance(transform.position, GetSheepFlock(flockType)[i].transform.position) <= chargeDistanceToUse) GetSheepFlock(flockType)[i]?.BeginCharge(hit.point);
+                    if (GetSheepFlock(flockType)[i].IsCommandable() && 
+						Vector3.Distance(transform.position, GetSheepFlock(flockType)[i].transform.position) <= chargeDistanceToUse)
+						GetSheepFlock(flockType)[i]?.BeginCharge(hit.point);
                 }
             }
-
 
             //start cooldown
             canCharge = false;
             chargeIcon.CooldownUIEffect(chargeCooldown);
             StartCoroutine(ChargeCooldown());
+
+			// dont bother looking at the next if
+			return;
         }
 
-        if (canAttack  && !isPreparingCharge && !hasCharged)
+        if (canAttack && !isPreparingCharge && !hasCharged)
         {
             SheepTypes flockType = currentFlockType;
 
@@ -592,65 +644,25 @@ public class PlayerSheepAbilities : MonoBehaviour
     #region Sheep Charge
     public void OnSheepCharge(InputAction.CallbackContext context)
     {
-        if(canCharge && !isPreparingAttack && !isPreparingCharge)
-        {
-            //SheepTypes flockType = currentFlockType;
-            SheepTypes flockType = SheepTypes.RAM;
+		if (context.started && canCharge && !isPreparingAttack && !isPreparingCharge)
+		{
+			int flockType = (int)SheepTypes.RAM;
 
-            if (context.started)
-            {
-                //spawn icon
-                var chargePoint = Instantiate(sheepChargePointPrefab, transform.position, Quaternion.identity) as GameObject;
-                sheepChargePoint = chargePoint;
+			//spawn icon
+			var chargePoint = Instantiate(sheepChargePointPrefab, transform.position, Quaternion.identity) as GameObject;
+			sheepChargePoint = chargePoint;
 
-                //prepare to charge
-                isPreparingCharge = true;
+			//prepare to charge
+			isPreparingCharge = true;
 
-                //get the sheep to move to the player
-                //recall current flock!
-                for (int i = 0; i < GetSheepFlock(flockType).Count; i++)
-                {
-                    GetSheepFlock(flockType)[i]?.RecallSheep();
-                }
-            }
-
-            //reticule mode
-
-            //if (context.canceled)
-           //{
-           //    //stop charging
-           //    isPreparingCharge = false;
-           //
-           //   
-           //
-           //    //play animation
-           //    animator.Play(chargeAnimation);
-           //
-           //    //TEMP SOUND
-           //    FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound,gameObject);
-           //
-           //    //get rid of icon
-           //    Destroy(sheepChargePoint);
-           //
-           //    
-           //    //send sheep to point if valid!
-           //    RaycastHit hit;
-           //    if (Physics.Raycast(Camera.main.transform.position + chargePointOffset, Camera.main.transform.forward, out hit, Mathf.Infinity, chargeTargetLayers))
-           //    {
-           //        for (int i = 0; i < GetSheepFlock(flockType).Count; i++)
-           //        {
-           //            if (GetSheepFlock(flockType)[i].IsCommandable() && Vector3.Distance(transform.position, GetSheepFlock(flockType)[i].transform.position) <= chargeDistanceToUse ) GetSheepFlock(flockType)[i]?.BeginCharge(hit.point);
-           //        }
-           //    }
-           //    
-           //
-           //    //start cooldown
-           //    canCharge = false;
-           //    chargeIcon.CooldownUIEffect(chargeCooldown);
-           //    StartCoroutine(ChargeCooldown());
-           //}
-        }      
-    }
+			//get the sheep to move to the player
+			//recall current flock!
+			for (int i = 0; i < sheepFlocks[flockType].activeSheep.Count; i++)
+			{
+				sheepFlocks[flockType].activeSheep[i]?.RecallSheep();
+			}
+		}
+	}
     void CheckCharge()
     {
         if(isPreparingCharge)
@@ -686,12 +698,10 @@ public class PlayerSheepAbilities : MonoBehaviour
 
             //increase speed over time
             defendPivotRotateSpeed += defendPivotRotateSpeedGain * Time.deltaTime;
-
 			defendPointPivot.Rotate(0f, defendPivotRotateSpeed * Time.deltaTime, 0f);
 
             //add to timer
             currentDefendTime += Time.deltaTime;
-
 
             if(currentDefendTime < defendTimeMax)
             {
@@ -700,8 +710,6 @@ public class PlayerSheepAbilities : MonoBehaviour
                     if (sheepFlocks[(int)SheepTypes.FLUFFY].activeSheep[i].GetSheepState() == SheepStates.DEFEND_PLAYER)
                         return;
             }
-
-			
 
 			//vfx
 			for (int i = 0; i < defendPoints.Count; i++)
@@ -722,9 +730,7 @@ public class PlayerSheepAbilities : MonoBehaviour
         // switching to be only useable by fluffy sheep, keep same architecture in case we change our minds (we probably won't)
         int flockType = (int)SheepTypes.FLUFFY;
 
-
         animator.Play(defendAnimation);
-
 
         //TEMP SOUND
         FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound, gameObject);
@@ -737,10 +743,10 @@ public class PlayerSheepAbilities : MonoBehaviour
                 sheepFlocks[flockType].activeSheep[i]?.EndDefendPlayer(sheepFlocks[(int)SheepTypes.FLUFFY].SheepProjectilePrefab);
 
                 // delete all active sheep
-                sheepFlocks[flockType].activeSheep[i].DestroySheep();
+                sheepFlocks[flockType].activeSheep[i].KillSheep();
             }
         }
-        sheepFlocks[flockType].activeSheep.Clear();
+        //sheepFlocks[flockType].activeSheep.Clear(); // i dont think that should be there? else it'll clear non-defending fluffys?
 
 
         //vfx
@@ -777,14 +783,12 @@ public class PlayerSheepAbilities : MonoBehaviour
 				//TEMP SOUND
 				FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound, gameObject);
 
-
+				// get all following fluffys to follow player
 				for (int i = 0; i < GetSheepFlock(flockType).Count; i++)
-				{
 					if (GetSheepFlock(flockType)[i].IsCommandable()) 
 						GetSheepFlock(flockType)[i]?.BeginDefendPlayer(defendPointPivot);
-				}
 
-				//vfx
+				// turn on vfx
 				for (int i = 0; i < defendPoints.Count; i++)
 				{
 					defendPoints[i].gameObject.SetActive(true);
@@ -792,12 +796,6 @@ public class PlayerSheepAbilities : MonoBehaviour
 
                 //start timer
                 currentDefendTime = 0;
-
-				//start cooldown
-				//canDefend = false;
-				//defendIcon.CooldownUIEffect(defendCooldown);
-				//StartCoroutine(DefendCooldown());
-
 			}
 			else if (isDefending)
 			{
@@ -826,30 +824,69 @@ public class PlayerSheepAbilities : MonoBehaviour
     {
         if (isLaunching && canLaunch)
         {
-            SheepTypes flockType = currentFlockType;
 
-            //do we have any sheep? 
-            if (GetSheepFlock(flockType).Count > 0)
+            PlayerSheepAI sheepToLaunch = null;
+            float currentLaunchDistance = 999f;
+            
+
+            for(int j = 0; j < 3; j++)
             {
-                //are sheep nearby?
-                for (int i = 0; i < GetSheepFlock(flockType).Count; i++)
+                for(int i = 0; i < GetSheepFlock((SheepTypes)j).Count; i++)
                 {
-                    if (Vector3.Distance(transform.position, GetSheepFlock(flockType)[i].transform.position) <= minDistanceToLaunch)
+                    if (Vector3.Distance(transform.position, GetSheepFlock((SheepTypes)j)[i].transform.position) < minDistanceToLaunch
+                            && currentLaunchDistance > Vector3.Distance(transform.position, GetSheepFlock((SheepTypes)j)[i].transform.position))
                     {
-                        animator.Play(launchAnimation);
+                        currentLaunchDistance = Vector3.Distance(transform.position, GetSheepFlock((SheepTypes)j)[i].transform.position);
+                        sheepToLaunch = GetSheepFlock((SheepTypes)j)[i];
 
-                        //break loop and launch that mf
-                        var launchSheep = Instantiate(sheepFlocks[currentFlockIndex].SheepProjectilePrefab, launchOrigin.position, launchOrigin.rotation);
-                        if (GetSheepFlock(flockType)[i].isBlackSheep)
-							launchSheep.GetComponent<PlayerSheepProjectile>().isBlackSheep = true;
-                        launchSheep.GetComponent<PlayerSheepProjectile>().LaunchProjectile();
-
-						GetSheepFlock(flockType)[i].KillSheep();
-
-                        break;
+                        flockIndex = j;
+                        sheepIndex = i;
                     }
                 }
             }
+
+            if(sheepToLaunch != null)
+            {
+                animator.Play(launchAnimation);
+
+                PlayerSheepProjectile launchSheep =
+                    Instantiate(sheepFlocks[flockIndex].SheepProjectilePrefab, launchOrigin.position, launchOrigin.rotation)
+                    .GetComponent<PlayerSheepProjectile>();
+
+                launchSheep.isBlackSheep = GetSheepFlock((SheepTypes)flockIndex)[sheepIndex].isBlackSheep;
+                launchSheep.LaunchProjectile();
+
+                GetSheepFlock((SheepTypes)flockIndex)[sheepIndex].KillSheep();
+            }
+
+
+            //OLD IMPLEMENTATION KEEP IN CASE WE GO BACK
+           //SheepTypes flockType = currentFlockType;
+           //
+           ////do we have any sheep? 
+           //if (GetSheepFlock(flockType).Count > 0)
+           //{
+           //    //are sheep nearby?
+           //    for (int i = 0; i < GetSheepFlock(flockType).Count; i++)
+           //    {
+           //        if (Vector3.Distance(transform.position, GetSheepFlock(flockType)[i].transform.position) <= minDistanceToLaunch)
+           //        {
+           //            animator.Play(launchAnimation);
+           //
+			//			//break loop and launch that mf
+			//			PlayerSheepProjectile launchSheep = 
+			//				Instantiate(sheepFlocks[currentFlockIndex].SheepProjectilePrefab, launchOrigin.position, launchOrigin.rotation)
+			//				.GetComponent<PlayerSheepProjectile>();
+           //
+			//			launchSheep.isBlackSheep = GetSheepFlock(flockType)[i].isBlackSheep;
+           //            launchSheep.LaunchProjectile();
+           //
+			//			GetSheepFlock(flockType)[i].KillSheep();
+           //
+           //            break;
+           //        }
+           //    }
+           //}
 
             //start cooldown
             canLaunch = false;
