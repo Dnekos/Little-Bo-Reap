@@ -56,6 +56,7 @@ public class PlayerSheepAI : Damageable
 	[Header("Sounds")]
 	[SerializeField] FMODUnity.EventReference biteSound;
 	[SerializeField] FMODUnity.EventReference petSound;
+	FMODUnity.StudioEventEmitter walker;
 
 
 	[Header("Wander State Variables")]
@@ -122,7 +123,9 @@ public class PlayerSheepAI : Damageable
     {
         base.Start();
 
-        animator = GetComponent<Animator>();
+		walker = GetComponent<FMODUnity.StudioEventEmitter>();
+
+		animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         baseSpeedCurrent = GetRandomSheepBaseSpeed();
 
@@ -200,6 +203,11 @@ public class PlayerSheepAI : Damageable
 
         CheckAnimation();
         CheckLeader();
+
+		if (!walker.IsPlaying() && agent.enabled && agent.velocity.magnitude > 0.5f)
+			walker.Play();
+		else if (!agent.enabled || agent.velocity.magnitude <= 0.5f)
+			walker.Stop();
 
         //state machine
         switch (currentSheepState)
