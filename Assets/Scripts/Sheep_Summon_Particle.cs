@@ -5,7 +5,9 @@ using UnityEngine;
 public class Sheep_Summon_Particle : MonoBehaviour
 {
     [SerializeField] GameObject crackAndPoof;
-    GameObject sheepToSpawn;
+	[SerializeField] FMODUnity.EventReference dirtSound;
+
+	GameObject sheepToSpawn;
     SheepTypes sheepType;
     float lerpSpeed = 5f;
     Vector3 spawnPoint;
@@ -29,8 +31,10 @@ public class Sheep_Summon_Particle : MonoBehaviour
         {
             canSpawn = false;
 
-            //spawn sheep
-            Instantiate(crackAndPoof, spawnPoint, Quaternion.identity);
+			FMODUnity.RuntimeManager.PlayOneShotAttached(dirtSound, gameObject);
+
+			//spawn sheep
+			Instantiate(crackAndPoof, spawnPoint, Quaternion.identity);
             var sheep = Instantiate(sheepToSpawn, spawnPoint, Quaternion.identity) as GameObject;
             player.GetSheepFlock(sheepType).Add(sheep.GetComponent<PlayerSheepAI>());
            
