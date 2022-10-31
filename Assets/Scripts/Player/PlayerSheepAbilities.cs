@@ -101,7 +101,7 @@ public class PlayerSheepAbilities : MonoBehaviour
     bool isPreparingCharge;
     bool hasCharged;
 
-    [Header("Sheep Defend Variables")]
+    [Header("Sheep Vortex Variables")]
     [SerializeField] List<Transform> defendPoints;
     [SerializeField] Transform defendPointPivot;
     [SerializeField] float defendPivotRotateSpeed = 1f;
@@ -111,7 +111,9 @@ public class PlayerSheepAbilities : MonoBehaviour
     [SerializeField] float defendTimeMax = 6f;
     float currentDefendTime = 0;
     [SerializeField] string defendAnimation;
-    [SerializeField] AbilityIcon defendIcon;
+	[SerializeField] FMODUnity.StudioEventEmitter vortexStartEmitter;
+	[SerializeField] FMODUnity.EventReference vortexEndSound;
+	[SerializeField] AbilityIcon defendIcon;
     [SerializeField] float defendCooldown = 1f;
     bool canDefend = true;
     bool isDefending = false;
@@ -733,8 +735,8 @@ public class PlayerSheepAbilities : MonoBehaviour
         animator.Play(defendAnimation);
 
         //TEMP SOUND
-        FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound, gameObject);
-
+        FMODUnity.RuntimeManager.PlayOneShotAttached(vortexEndSound, gameObject);
+		vortexStartEmitter.Stop();
 
         for (int i = sheepFlocks[flockType].activeSheep.Count - 1; i >= 0; i--)
         {
@@ -779,9 +781,8 @@ public class PlayerSheepAbilities : MonoBehaviour
 
 				animator.Play(defendAnimation);
 
-
-				//TEMP SOUND
-				FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound, gameObject);
+				// SOUND
+				vortexStartEmitter.Play();
 
 				// get all following fluffys to follow player
 				for (int i = 0; i < GetSheepFlock(flockType).Count; i++)

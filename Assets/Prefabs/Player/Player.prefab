@@ -13278,7 +13278,6 @@ GameObject:
   - component: {fileID: 7611933122142456365}
   - component: {fileID: 3274229950097917984}
   - component: {fileID: 5528081572093814127}
-  - component: {fileID: 5732512889961981089}
   m_Layer: 7
   m_Name: Player_Body
   m_TagString: Player
@@ -13298,6 +13297,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 6393257344421966800}
   - {fileID: 3870380308248943667}
   - {fileID: 3870380308655863547}
   - {fileID: 1943766158069221792}
@@ -13676,7 +13676,7 @@ MonoBehaviour:
       Data3: 1215539603
       Data4: -1981390760
     Path: event:/Bo Peep/Dash
-  walker: {fileID: 5732512889961981089}
+  walker: {fileID: 3228697087444620164}
   maxMoveSpeed: 20
   acceleration: 200
   haltRate: 10
@@ -13771,11 +13771,11 @@ MonoBehaviour:
   sheepTypeText: {fileID: 6716116745102799633}
   abilitySound:
     Guid:
-      Data1: 1668816679
-      Data2: 1258504760
-      Data3: 180142773
-      Data4: -892037292
-    Path: event:/Temp/Spell
+      Data1: 1214404282
+      Data2: 1231423630
+      Data3: -523776871
+      Data4: 180147507
+    Path: event:/Bo Peep/AttackConfirm
   summonSound:
     Guid:
       Data1: 1879250342
@@ -13863,6 +13863,14 @@ MonoBehaviour:
   defendDistance: 8
   defendTimeMax: 5
   defendAnimation: Spell Layer.Bo_Peep_Direct
+  vortexStartEmitter: {fileID: 3262082090793423898}
+  vortexEndSound:
+    Guid:
+      Data1: -1483612020
+      Data2: 1283054742
+      Data3: -439304276
+      Data4: 1621090749
+    Path: event:/Sheep/Vortex End
   defendIcon: {fileID: 5727745938368034847}
   defendCooldown: 5
   launchOrigin: {fileID: 8630855891053651535}
@@ -13986,36 +13994,6 @@ MonoBehaviour:
   mainCollider: {fileID: 3870380308813204387}
   SheepLerpSpeed: 0.17
   PlatformSize: {x: 2, y: 1, z: 2}
---- !u!114 &5732512889961981089
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3870380308813204390}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: -1360342316
-      Data2: 1288591920
-      Data3: -251999068
-      Data4: 356061529
-    Path: event:/Bo Peep/Footsteps
-  Event: 
-  PlayEvent: 0
-  StopEvent: 0
-  AllowFadeout: 0
-  TriggerOnce: 0
-  Preload: 1
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
 --- !u!1 &3939397258707507384
 GameObject:
   m_ObjectHideFlags: 0
@@ -30079,6 +30057,68 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   sharedProfile: {fileID: 11400000, guid: c864ac90f036b5b40a1ef1f22d3167ab, type: 2}
+--- !u!1 &5905137200795132607
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8856846112261948765}
+  - component: {fileID: 3262082090793423898}
+  m_Layer: 7
+  m_Name: vortex
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8856846112261948765
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5905137200795132607}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6393257344421966800}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3262082090793423898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5905137200795132607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1996366819
+      Data2: 1311302603
+      Data3: 1792281242
+      Data4: -614374579
+    Path: event:/Sheep/VortexStart
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 0
+  TriggerOnce: 0
+  Preload: 1
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &5912628517375815297
 GameObject:
   m_ObjectHideFlags: 0
@@ -30304,6 +30344,69 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 1
+--- !u!1 &6009869257357436370
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6393257344421966800}
+  - component: {fileID: 3228697087444620164}
+  m_Layer: 7
+  m_Name: Sound Effects
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6393257344421966800
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6009869257357436370}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8856846112261948765}
+  m_Father: {fileID: 3870380308813204389}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3228697087444620164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6009869257357436370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -1360342316
+      Data2: 1288591920
+      Data3: -251999068
+      Data4: 356061529
+    Path: event:/Bo Peep/Footsteps
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 0
+  TriggerOnce: 0
+  Preload: 1
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &6573987031809937911
 GameObject:
   m_ObjectHideFlags: 0
