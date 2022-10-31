@@ -314,7 +314,7 @@ public class PlayerMovement : MonoBehaviour
 
             animator.Play(dashAnimation);
 
-			//TEMP SOUND
+			// SOUND
 			FMODUnity.RuntimeManager.PlayOneShotAttached(dashSound,gameObject);
 
             //halt player

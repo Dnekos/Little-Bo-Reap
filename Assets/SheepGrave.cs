@@ -7,7 +7,10 @@ public class SheepGrave : Interactable
     [Header("Sheep Grave Variables")]
     [SerializeField] SheepTypes sheepType;
     [SerializeField] int flockSizeIncrease;
-    [SerializeField] ParticleSystem graveParticles;
+
+	[Header("Effects")]
+	[SerializeField] FMODUnity.EventReference Sound;
+	[SerializeField] ParticleSystem graveParticles;
     [SerializeField] GameObject graveLight;
     [SerializeField] ParticleSystem gravePoof;
 
@@ -16,7 +19,9 @@ public class SheepGrave : Interactable
     {
         //increase flock size of player
         GameManager.Instance.GetPlayer().GetComponent<PlayerSheepAbilities>().sheepFlocks[(int)sheepType].MaxSize += flockSizeIncrease;
-        graveParticles.Stop(true);
+
+		FMODUnity.RuntimeManager.PlayOneShotAttached(Sound, gameObject);
+		graveParticles.Stop(true);
         graveLight.SetActive(false);
         gravePoof.Play(true);
         base.Interact();
