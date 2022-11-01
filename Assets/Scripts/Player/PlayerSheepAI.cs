@@ -323,7 +323,13 @@ public class PlayerSheepAI : Damageable
 		}
 
 		player.GetComponent<PlayerSheepAbilities>().RemoveSheepFromList(sheepType, this);
+
         Destroy(gameObject);
+    }
+
+    public void GibSheep()
+    {
+        Instantiate(gibs, transform.position, transform.rotation);
     }
 
     public void PetSheep()
