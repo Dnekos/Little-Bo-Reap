@@ -19,8 +19,9 @@ public class SheepGrave : Interactable
     {
         //increase flock size of player
         GameManager.Instance.GetPlayer().GetComponent<PlayerSheepAbilities>().sheepFlocks[(int)sheepType].MaxSize += flockSizeIncrease;
+        GameManager.Instance.GetPlayer().GetComponent<PlayerSheepAbilities>().UpdateFlockUI();
 
-		FMODUnity.RuntimeManager.PlayOneShotAttached(Sound, gameObject);
+        FMODUnity.RuntimeManager.PlayOneShotAttached(Sound, gameObject);
 		graveParticles.Stop(true);
         graveLight.SetActive(false);
         gravePoof.Play(true);

@@ -37,7 +37,9 @@ public class Sheep_Summon_Particle : MonoBehaviour
 			Instantiate(crackAndPoof, spawnPoint, Quaternion.identity);
             var sheep = Instantiate(sheepToSpawn, spawnPoint, Quaternion.identity) as GameObject;
             player.GetSheepFlock(sheepType).Add(sheep.GetComponent<PlayerSheepAI>());
-           
+            player.sheepFlocks[(int)sheepType].currentSize++;
+            player.UpdateFlockUI();
+
             //determine if it's a black sheep
             float rand = Random.Range(0f, 100f);
             if (rand <= player.summonBlackSheepPercent || player.gothMode.isGothMode) 

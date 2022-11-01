@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.AI;
 using TMPro;
+using UnityEngine.UI;
 
 public enum SheepTypes
 {
@@ -17,16 +18,20 @@ public struct Flock
 {
 	public string name;
 	public List<PlayerSheepAI> activeSheep;
+    public int currentSize;
 	public int MaxSize;
 	public GameObject SheepPrefab;
 	public GameObject SheepProjectilePrefab;
 	public Color UIColor;
+    public Sprite sheepIcon;
 }
 
 public class PlayerSheepAbilities : MonoBehaviour
 {
     [Header("UI Test")]
     [SerializeField] TextMeshProUGUI sheepTypeText;
+    [SerializeField] TextMeshProUGUI flockNumber;
+    [SerializeField] Image flockTypeIcon;
 
     [Header("Sounds")]
     [SerializeField] FMODUnity.EventReference abilitySound;
@@ -146,6 +151,8 @@ public class PlayerSheepAbilities : MonoBehaviour
         }
 
         defendRotateBaseSpeed = defendPivotRotateSpeed;
+
+        UpdateFlockUI();
     }
     private void Update()
     {
@@ -229,7 +236,9 @@ public class PlayerSheepAbilities : MonoBehaviour
 
 			sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
 			sheepTypeText.color = sheepFlocks[currentFlockIndex].UIColor;
-		}
+
+            UpdateFlockUI();
+        }
 		else if (context.canceled && swapContextValue == 1 && isInFlockMenu)
 		{
 			// only change flocks if they have valid sheep
@@ -241,7 +250,9 @@ public class PlayerSheepAbilities : MonoBehaviour
 				//Debug.Log("Current Flock is: " + currentFlockType);
 				sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
 				sheepTypeText.color = sheepFlocks[currentFlockIndex].UIColor;
-			}
+
+                UpdateFlockUI();
+            }
 
 			Cursor.visible = false;
 			Cursor.lockState = CursorLockMode.Locked;
@@ -269,6 +280,17 @@ public class PlayerSheepAbilities : MonoBehaviour
     public void RemoveSheepFromList(SheepTypes theType, PlayerSheepAI theSheep)
     {
         GetSheepFlock(theType).Remove(theSheep);
+        sheepFlocks[(int)theType].currentSize--;
+        if (sheepFlocks[(int)theType].currentSize < 0) sheepFlocks[(int)theType].currentSize = 0;
+
+        UpdateFlockUI();
+    }
+
+    public void UpdateFlockUI()
+    {
+        flockTypeIcon.sprite = sheepFlocks[(int)currentFlockType].sheepIcon;
+        flockNumber.text = sheepFlocks[(int)currentFlockType].currentSize + "/" + sheepFlocks[(int)currentFlockType].MaxSize;
+        flockNumber.color = sheepFlocks[(int)currentFlockType].UIColor;
     }
 
     bool CheckIfCloseToLeader(SheepTypes theSheepType)
