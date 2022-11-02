@@ -57,6 +57,8 @@ public class PlayerSheepAbilities : MonoBehaviour
     [SerializeField] PlayerFlockSelectMenu flockSelectMenu;
     [SerializeField] float flockMenuTimescale = 0.25f;
     [SerializeField] float defaultTimescale = 1;
+    [SerializeField] ParticleSystem bellParticles;
+    [SerializeField] ParticleSystem bellParticleBurst;
     bool isInFlockMenu = false;
     float swapContextValue; // i feel like there is a way to not have this non-local
 
@@ -237,6 +239,10 @@ public class PlayerSheepAbilities : MonoBehaviour
 			sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
 			sheepTypeText.color = sheepFlocks[currentFlockIndex].UIColor;
 
+            bellParticles.startColor = sheepFlocks[currentFlockIndex].UIColor;
+            bellParticleBurst.startColor = sheepFlocks[currentFlockIndex].UIColor;
+            bellParticleBurst.Play();
+
             UpdateFlockUI();
         }
 		else if (context.canceled && swapContextValue == 1 && isInFlockMenu)
@@ -250,6 +256,10 @@ public class PlayerSheepAbilities : MonoBehaviour
 				//Debug.Log("Current Flock is: " + currentFlockType);
 				sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
 				sheepTypeText.color = sheepFlocks[currentFlockIndex].UIColor;
+
+                bellParticles.startColor = sheepFlocks[currentFlockIndex].UIColor;
+                bellParticleBurst.startColor = sheepFlocks[currentFlockIndex].UIColor;
+                bellParticleBurst.Play();
 
                 UpdateFlockUI();
             }
