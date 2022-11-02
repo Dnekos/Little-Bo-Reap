@@ -11,10 +11,11 @@ public class BigGuyAI : EnemyAI
 	[SerializeField] Transform[] HPBars;
 
 	[Header("Attacking")]
+	[SerializeField] EnemyAttackBase[] attacks;
 	[SerializeField] Attack StickAttack;
 	[SerializeField] List<Transform> NearbyGuys;
 	[SerializeField] Collider StickCollider;
-	Animator anim;
+	[SerializeField] Animator anim;
 
 	[Header("Shockwave")]
 	[SerializeField] Attack ShockwaveAttack;
@@ -30,7 +31,7 @@ public class BigGuyAI : EnemyAI
     {
 		base.Start();
 		NearbyGuys = new List<Transform>();
-		anim = GetComponent<Animator>();
+		//anim = GetComponent<Animator>();
 		HealthBarCanvas.SetActive(false);
 	}
 
