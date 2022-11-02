@@ -81,7 +81,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Model Orientation")]
     [SerializeField] float modelRotateSpeed = 10f;
     [SerializeField] float orientCheckDistance = 5f;
-    [SerializeField] Transform playerOrientation;
+    public Transform playerOrientation;
     Vector3 modelRotateNormal;
 
     [Header("Animations")]

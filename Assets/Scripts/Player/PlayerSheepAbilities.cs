@@ -84,6 +84,7 @@ public class PlayerSheepAbilities : MonoBehaviour
     [Header("Sheep Attack Variables")]
     [SerializeField] Vector3 attackPointOffset;
     [SerializeField] GameObject sheepAttackPointPrefab;
+    [SerializeField] GameObject sheepAttackConfirmPrefab;
     [SerializeField] LayerMask attackTargetLayers;
     [SerializeField] string attackAnimation;
     [SerializeField] AbilityIcon attackIcon;
@@ -97,6 +98,7 @@ public class PlayerSheepAbilities : MonoBehaviour
     [Header("Sheep Charge Variables")]
     [SerializeField] Vector3 chargePointOffset;
     [SerializeField] GameObject sheepChargePointPrefab;
+    [SerializeField] GameObject sheepChargeConfirmPrefab;
     [SerializeField] LayerMask chargeTargetLayers;
     [SerializeField] string chargeAnimation;
     [SerializeField] AbilityIcon chargeIcon;
@@ -631,6 +633,16 @@ public class PlayerSheepAbilities : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(Camera.main.transform.position + chargePointOffset, Camera.main.transform.forward, out hit, Mathf.Infinity, chargeTargetLayers))
             {
+
+                //instantiate confirm prefab
+                var attackConfirm = Instantiate(sheepChargeConfirmPrefab, hit.point, Quaternion.identity);
+                attackConfirm.transform.rotation = GetComponent<PlayerMovement>().playerOrientation.transform.rotation;
+                ParticleSystem[] particleSystems = attackConfirm.GetComponentsInChildren<ParticleSystem>();
+                foreach (ParticleSystem particle in particleSystems)
+                {
+                    particle.startColor = sheepFlocks[(int)flockType].UIColor;
+                }
+
                 for (int i = 0; i < GetSheepFlock(flockType).Count; i++)
                 {
                     if (GetSheepFlock(flockType)[i].IsCommandable() && 
@@ -682,10 +694,20 @@ public class PlayerSheepAbilities : MonoBehaviour
                 //get rid of icon
                 Destroy(sheepAttackPoint);
 
+               
+
                 //send sheep to point if valid!
                 RaycastHit hit;
                 if (Physics.Raycast(Camera.main.transform.position + attackPointOffset, Camera.main.transform.forward, out hit, Mathf.Infinity, attackTargetLayers))
                 {
+                    //instantiate confirm prefab
+                    var attackConfirm = Instantiate(sheepAttackConfirmPrefab, hit.point, Quaternion.identity);
+                    ParticleSystem[] particleSystems = attackConfirm.GetComponentsInChildren<ParticleSystem>();
+                    foreach (ParticleSystem particle in particleSystems)
+                    {
+                        particle.startColor = sheepFlocks[(int)flockType].UIColor;
+                    }
+
                     for (int i = 0; i < GetSheepFlock(flockType).Count; i++)
                     {
                         if (GetSheepFlock(flockType)[i].IsCommandable()) GetSheepFlock(flockType)[i]?.CreateListOfAttackTargets(hit.point, attackRadius);
@@ -758,6 +780,7 @@ public class PlayerSheepAbilities : MonoBehaviour
             {
                 //draw charge point
                 sheepChargePoint.transform.position = hit.point;
+                sheepChargePoint.transform.rotation = GetComponent<PlayerMovement>().playerOrientation.transform.rotation;
             }
             else
             {

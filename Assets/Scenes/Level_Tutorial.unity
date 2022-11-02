@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.15602925, g: 0.3119116, b: 0.47769707, a: 1}
+  m_IndirectSpecularColor: {r: 0.15601343, g: 0.31189933, b: 0.47769707, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4578,7 +4578,7 @@ PrefabInstance:
     - target: {fileID: 5561093751769215164, guid: cd15df9b0f33bc4469ec6bc54ac69457,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5561093752755310155, guid: cd15df9b0f33bc4469ec6bc54ac69457,
         type: 3}
@@ -4679,12 +4679,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tutorialText: {fileID: 173480814}
-  newTutorialText: 'Press R to summon sheep!!!
+  newTutorialText: 'Scroll and then summon fluffy sheep!
 
-    Press 2 to start the vortext!
+    Press 2 to start the
+    vortet!
 
-    Press
-    2 again to unleash the sheep!'
+    Press 2 again to unleash the sheep!'
   theGrave: {fileID: 482688403}
   spawnsEnemies: 1
   enemiesToSpawn:
@@ -4695,6 +4695,8 @@ MonoBehaviour:
   - {fileID: 1303738091}
   spawnPoof: {fileID: 2684900647289607401, guid: b47d97f3181406b40a873ad78d950bd9,
     type: 3}
+  enablesUI: 0
+  panelsToEnable: []
 --- !u!4 &173480818 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5561093752755310164, guid: cd15df9b0f33bc4469ec6bc54ac69457,
@@ -5777,7 +5779,7 @@ PrefabInstance:
     - target: {fileID: 5656156271694720180, guid: 3e9675ac1509200489d756cca300a063,
         type: 3}
       propertyPath: flockSizeIncrease
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
@@ -5990,6 +5992,12 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 279079855}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &304644173 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7240937302508819593, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
+    type: 3}
+  m_PrefabInstance: {fileID: 3870380308797193159}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &308648732
 GameObject:
   m_ObjectHideFlags: 0
@@ -8112,7 +8120,7 @@ PrefabInstance:
     - target: {fileID: 5881603976132241540, guid: 6bd1bb2272cf0cd43b1f4fd9e119106b,
         type: 3}
       propertyPath: flockSizeIncrease
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
@@ -11674,14 +11682,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tutorialText: {fileID: 1307319640}
-  newTutorialText: 'Press R to summon sheep!
+  newTutorialText: 'Use the mouse wheel or tab to change your current flock
 
-    Use the mouse wheel or tab to change
-    your current flock'
+    Press
+    R to summon sheep!
+
+'
   theGrave: {fileID: 836649010}
   spawnsEnemies: 0
   enemiesToSpawn: []
   spawnPoof: {fileID: 0}
+  enablesUI: 0
+  panelsToEnable: []
 --- !u!1 &653810094
 GameObject:
   m_ObjectHideFlags: 0
@@ -20409,7 +20421,7 @@ PrefabInstance:
     - target: {fileID: 5656156271694720180, guid: 3e9675ac1509200489d756cca300a063,
         type: 3}
       propertyPath: flockSizeIncrease
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
@@ -28176,7 +28188,7 @@ PrefabInstance:
     - target: {fileID: 217535959457708057, guid: 746cdd0f88c7b7e4da3917b9eec52e8d,
         type: 3}
       propertyPath: flockSizeIncrease
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 217535959457708060, guid: 746cdd0f88c7b7e4da3917b9eec52e8d,
         type: 3}
@@ -38721,7 +38733,7 @@ PrefabInstance:
     - target: {fileID: 217535959457708057, guid: 746cdd0f88c7b7e4da3917b9eec52e8d,
         type: 3}
       propertyPath: flockSizeIncrease
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 217535959457708060, guid: 746cdd0f88c7b7e4da3917b9eec52e8d,
         type: 3}
@@ -46628,6 +46640,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1736208189}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1737560975 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4246551973089202827, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
+    type: 3}
+  m_PrefabInstance: {fileID: 3870380308797193159}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1745161677
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -47938,7 +47956,7 @@ PrefabInstance:
     - target: {fileID: 5881603976132241540, guid: 6bd1bb2272cf0cd43b1f4fd9e119106b,
         type: 3}
       propertyPath: flockSizeIncrease
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
@@ -48163,16 +48181,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tutorialText: {fileID: 1815087817}
-  newTutorialText: 'Press R to sumon sheep!
+  newTutorialText: 'Scroll with mouse to change current flock
 
-    Press F to recall all sheep.
+    Press R to summon
+    sheep!
 
-    Scroll
-    with mouse to change current flock'
+'
   theGrave: {fileID: 728049284}
   spawnsEnemies: 0
   enemiesToSpawn: []
   spawnPoof: {fileID: 0}
+  enablesUI: 0
+  panelsToEnable: []
 --- !u!4 &1815087821 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5561093752755310164, guid: cd15df9b0f33bc4469ec6bc54ac69457,
@@ -49274,6 +49294,8 @@ MonoBehaviour:
   spawnsEnemies: 0
   enemiesToSpawn: []
   spawnPoof: {fileID: 0}
+  enablesUI: 0
+  panelsToEnable: []
 --- !u!43 &1973452114
 Mesh:
   m_ObjectHideFlags: 0
@@ -52502,6 +52524,10 @@ MonoBehaviour:
   spawnsEnemies: 0
   enemiesToSpawn: []
   spawnPoof: {fileID: 0}
+  enablesUI: 1
+  panelsToEnable:
+  - {fileID: 1737560975}
+  - {fileID: 304644173}
 --- !u!1001 &2040352552
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -54410,6 +54436,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4246551973089202827, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4261654204498698348, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -54706,6 +54737,11 @@ PrefabInstance:
       value: 35.60035
       objectReference: {fileID: 0}
     - target: {fileID: 7155012487542898151, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7240937302508819593, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
         type: 3}
       propertyPath: m_IsActive
       value: 0
