@@ -614,7 +614,7 @@ public class PlayerSheepAbilities : MonoBehaviour
             Destroy(sheepChargePoint);
 
             //shake camera
-            playerCam.ShakeCamera(false);
+            //playerCam.ShakeCamera(false);
 
 
             //send sheep to point if valid!
@@ -646,6 +646,12 @@ public class PlayerSheepAbilities : MonoBehaviour
             {
                 //spawn icon
                 var attackPoint = Instantiate(sheepAttackPointPrefab, transform.position, Quaternion.identity) as GameObject;
+                ParticleSystem[] particleSystems = attackPoint.GetComponentsInChildren<ParticleSystem>();
+                foreach(ParticleSystem particle in particleSystems)
+                {
+                    particle.startColor = sheepFlocks[(int)flockType].UIColor;
+                }
+
                 sheepAttackPoint = attackPoint;
 
                 //prepare to attac
@@ -677,7 +683,7 @@ public class PlayerSheepAbilities : MonoBehaviour
                 }
                 //start cooldown
                 canAttack = false;
-                attackIcon.CooldownUIEffect(attackCooldown);
+                //attackIcon.CooldownUIEffect(attackCooldown);
                 StartCoroutine(AttackCooldown());
             }
         }
@@ -961,7 +967,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 
             //start cooldown
             canLaunch = false;
-            launchIcon.CooldownUIEffect(launchCooldown);
+            //launchIcon.CooldownUIEffect(launchCooldown);
             StartCoroutine(SheepLaunchCooldown());
         }
     }
