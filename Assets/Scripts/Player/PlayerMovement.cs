@@ -293,6 +293,7 @@ public class PlayerMovement : MonoBehaviour
 		{
 			if (liftcontroller.StartLifting())
 			{
+                GetComponent<PlayerSheepAbilities>().sheepFlocks[(int)SheepTypes.BUILD].spellParticle.Play(true);
 
 				rb.AddForce(Vector3.down * rb.velocity.y, ForceMode.VelocityChange);
 

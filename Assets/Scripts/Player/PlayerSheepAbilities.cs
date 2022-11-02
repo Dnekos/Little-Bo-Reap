@@ -24,6 +24,7 @@ public struct Flock
 	public GameObject SheepProjectilePrefab;
 	public Color UIColor;
     public Sprite sheepIcon;
+    public ParticleSystem spellParticle;
 }
 
 public class PlayerSheepAbilities : MonoBehaviour
@@ -421,6 +422,8 @@ public class PlayerSheepAbilities : MonoBehaviour
             //play animation
             animator.Play(summonAnimation);
 
+            sheepFlocks[(int)flockType].spellParticle.Play(true);
+
             // remove list slots that are null (dead sheep)
             GetSheepFlock(flockType).RemoveAll(x => x == null);
 
@@ -625,8 +628,7 @@ public class PlayerSheepAbilities : MonoBehaviour
             //get rid of icon
             Destroy(sheepChargePoint);
 
-            //shake camera
-            //playerCam.ShakeCamera(false);
+            sheepFlocks[(int)SheepTypes.RAM].spellParticle.Play(true);
 
 
             //send sheep to point if valid!
@@ -847,6 +849,8 @@ public class PlayerSheepAbilities : MonoBehaviour
         FMODUnity.RuntimeManager.PlayOneShotAttached(vortexEndSound, gameObject);
 		vortexStartEmitter.Stop();
 
+        sheepFlocks[(int)SheepTypes.FLUFFY].spellParticle.Play(true);
+
         for (int i = sheepFlocks[flockType].activeSheep.Count - 1; i >= 0; i--)
         {
             if (sheepFlocks[flockType].activeSheep[i].GetSheepState() == SheepStates.DEFEND_PLAYER)
@@ -880,6 +884,8 @@ public class PlayerSheepAbilities : MonoBehaviour
 				Debug.Log("start defend");
 
 				isDefending = true;
+
+                sheepFlocks[(int)SheepTypes.FLUFFY].spellParticle.Play(true);
 
                 //reset speed
                 defendPivotRotateSpeed = defendRotateBaseSpeed;
