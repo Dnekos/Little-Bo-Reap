@@ -9,13 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da72bbdbfd5f7c7489d15681d71a22fb, type: 3}
-  m_Name: CoolDownEnemySwing
+  m_Script: {fileID: 11500000, guid: e49f067c6f9f87e4c85f407f7ba4a5bf, type: 3}
+  m_Name: Little_Guy_Swing
   m_EditorClassIdentifier: 
-  damage: 5
+  damage: 2
   airborneLift: 0
   animation: Test_Enemy_Attack_1
-  DealsHitstun: 1
-  forwardKnockback: 30
-  upwardKnockback: 20
-  Cooldown: 3
+  DealsHitstun: 0
+  forwardKnockback: 20
+  upwardKnockback: 15
+  hitboxPrefab: {fileID: 0}
+  MaxCooldown: 1
+  AngleWindow: 90

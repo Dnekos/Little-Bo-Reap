@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e28b2398bbb82e841bbf12845c175297, type: 3}
-  m_Name: Big_Guy_Shockwave
+  m_Script: {fileID: 11500000, guid: 6643f54b0a665ed41bbf904033ace10b, type: 3}
+  m_Name: Big_Guy_Slam_new
   m_EditorClassIdentifier: 
   damage: 1
   airborneLift: 0
@@ -18,3 +18,7 @@ MonoBehaviour:
   DealsHitstun: 1
   forwardKnockback: 30
   upwardKnockback: 30
+  hitboxPrefab: {fileID: 3825271835072028399, guid: f705343c7c7775f4b9a6339c61af28ca,
+    type: 3}
+  MaxCooldown: 5
+  PercentOfSheep: 0.5

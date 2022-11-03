@@ -1401,6 +1401,14 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 128
+  attacks:
+  - atk: {fileID: 11400000, guid: 7d960255e96cd4b4599edd0494c14fc4, type: 2}
+    Cooldown: 0
+  - atk: {fileID: 11400000, guid: 2fc84f518e0b9c04cb46ee646173c2c0, type: 2}
+    Cooldown: 0
+  NearbyGuys: []
+  StickCollider: {fileID: 6809579797127332416}
+  anim: {fileID: 1903166476982111845}
   isExecutable: 1
   mustBeExecuted: 1
   executionHealthThreshhold: 60
@@ -1415,17 +1423,6 @@ MonoBehaviour:
   groundCheckDistance: 0.25
   isGrounded: 0
   fallRate: 50
-  HealthBarCanvas: {fileID: 6205843621478331599}
-  HPBars:
-  - {fileID: 6796648429189344285}
-  - {fileID: 7923051507116242579}
-  StickAttack: {fileID: 11400000, guid: 8b4e48972be0fcd458f0bfc8a25c5f78, type: 2}
-  NearbyGuys: []
-  StickCollider: {fileID: 6809579797127332416}
-  ShockwaveAttack: {fileID: 11400000, guid: 4a5d38fb13ca260498bb4972c9683436, type: 2}
-  ShockwavePrefab: {fileID: 3825271835072028399, guid: f705343c7c7775f4b9a6339c61af28ca,
-    type: 3}
-  ShockwaveSpawnPoint: {fileID: 8515251245998492976}
   swingSound:
     Guid:
       Data1: -1516851570
@@ -1440,6 +1437,11 @@ MonoBehaviour:
       Data3: 1148032658
       Data4: 922800040
     Path: event:/Big Guy/Club Hit
+  HealthBarCanvas: {fileID: 6205843621478331599}
+  HPBars:
+  - {fileID: 6796648429189344285}
+  - {fileID: 7923051507116242579}
+  ShockwaveSpawnPoint: {fileID: 8515251245998492976}
 --- !u!54 &8888413981868254818
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -16,10 +16,25 @@ public class EnemyAttackBase
 	[SerializeField]
 	Transform spawnPoint;
 
+	[Header("Cooldown")]
+	[SerializeField] float Cooldown = 3;
+	float cooldownTimer = 0;
 
-	public bool CheckCondition()
+
+	public virtual void Update()
 	{
-		return true;
+		cooldownTimer -= Time.deltaTime;
+	}
+
+	public virtual bool CheckCondition(Transform user, List<Transform> NearbyGuys)
+	{
+		return cooldownTimer <= 0;
+	}
+	public virtual void PerformAttack(Animator anim)
+	{
+		anim.Play(atk.animation);
+		cooldownTimer = Cooldown;
+
 	}
 
 }

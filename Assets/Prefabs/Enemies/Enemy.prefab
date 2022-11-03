@@ -224,6 +224,12 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 128
+  attacks:
+  - atk: {fileID: 11400000, guid: fb373e5babfa12947a123f755f2d9fb0, type: 2}
+    Cooldown: 0
+  NearbyGuys: []
+  StickCollider: {fileID: 8086859480740027240}
+  anim: {fileID: 8715662831902917267}
   isExecutable: 0
   mustBeExecuted: 0
   executionHealthThreshhold: 0
@@ -238,6 +244,20 @@ MonoBehaviour:
   groundCheckDistance: 0.25
   isGrounded: 0
   fallRate: 50
+  swingSound:
+    Guid:
+      Data1: -1516851570
+      Data2: 1275689125
+      Data3: -706628987
+      Data4: 1488203871
+    Path: event:/Big Guy/Club Swing
+  clubHitSound:
+    Guid:
+      Data1: 721644945
+      Data2: 1288483985
+      Data3: 1148032658
+      Data4: 922800040
+    Path: event:/Big Guy/Club Hit
 --- !u!54 &426741378606355007
 Rigidbody:
   m_ObjectHideFlags: 0
