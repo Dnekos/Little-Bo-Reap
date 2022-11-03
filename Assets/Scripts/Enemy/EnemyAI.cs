@@ -126,6 +126,11 @@ public class EnemyAI : Damageable
 			currentEnemyState = EnemyStates.CHASE_PLAYER;
     }
 
+	public void ToChase()
+	{
+		currentEnemyState = EnemyStates.CHASE_PLAYER;
+	}
+
 	#region Execution State
 
 	void DoExecutionState()
