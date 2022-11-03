@@ -33,9 +33,10 @@ public class EnemyAI : Damageable
 	[SerializeField] LayerMask playerLayer;
 
 	[Header("Attacking")]
-	[SerializeField] protected AttackCooldownCombo[] attacks;
+	[SerializeField,Tooltip("priority of attacks are based on how high up they are in the array")] protected AttackCooldownCombo[] attacks;
 	protected int activeAttackIndex = -1;
 	[SerializeField] List<Transform> NearbyGuys;
+	[SerializeField, Tooltip("how frequently enemies query conditions to make an attack")] float delayBetweenAttacks = 1;
 	[SerializeField] Collider StickCollider;
 	[SerializeField] Animator anim;
 
@@ -150,7 +151,7 @@ public class EnemyAI : Damageable
 	}
 	virtual protected IEnumerator AttackCheck()
 	{
-		yield return new WaitForSeconds(3);
+		yield return new WaitForSeconds(delayBetweenAttacks);
 		if (currentEnemyState == EnemyStates.CHASE_PLAYER)
 		{
 			// double check that there are no null sheep (possibly could happen if they are killed in the radius)
@@ -158,7 +159,7 @@ public class EnemyAI : Damageable
 
 			for (int i = 0; i < attacks.Length; i++)
 			{
-				if (attacks[i].atk.CheckCondition(transform, player, NearbyGuys))
+				if (attacks[i].Cooldown < 0 && attacks[i].atk.CheckCondition(transform, player, NearbyGuys))
 				{
 					attacks[i].atk.PerformAttack(anim);
 					attacks[i].Cooldown = attacks[i].atk.MaxCooldown;
