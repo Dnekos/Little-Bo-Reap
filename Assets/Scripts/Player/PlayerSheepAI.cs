@@ -417,7 +417,15 @@ public class PlayerSheepAI : Damageable
             //set speed and follow distance
             agent.speed = baseSpeedCurrent;
             agent.stoppingDistance = agentStoppingDistance;
-            agent.SetDestination(player.position);
+			try
+			{
+				agent.SetDestination(player.position);
+			}
+			catch (System.Exception e)
+			{
+				print(gameObject + " failed to find a destination");
+				KillSheep();
+			}
         }
 
     }
