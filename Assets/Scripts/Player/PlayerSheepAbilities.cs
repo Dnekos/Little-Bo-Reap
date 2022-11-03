@@ -25,6 +25,7 @@ public struct Flock
 	public Color UIColor;
     public Sprite sheepIcon;
     public ParticleSystem spellParticle;
+    public ParticleSystem flockChangeParticle;
 }
 
 public class PlayerSheepAbilities : MonoBehaviour
@@ -241,8 +242,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 			sheepTypeText.color = sheepFlocks[currentFlockIndex].UIColor;
 
             bellParticles.startColor = sheepFlocks[currentFlockIndex].UIColor;
-            bellParticleBurst.startColor = sheepFlocks[currentFlockIndex].UIColor;
-            bellParticleBurst.Play();
+            sheepFlocks[currentFlockIndex].flockChangeParticle.Play(true);
 
             UpdateFlockUI();
         }
@@ -259,8 +259,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 				sheepTypeText.color = sheepFlocks[currentFlockIndex].UIColor;
 
                 bellParticles.startColor = sheepFlocks[currentFlockIndex].UIColor;
-                bellParticleBurst.startColor = sheepFlocks[currentFlockIndex].UIColor;
-                bellParticleBurst.Play();
+                sheepFlocks[currentFlockIndex].flockChangeParticle.Play(true);
 
                 UpdateFlockUI();
             }
@@ -594,7 +593,8 @@ public class PlayerSheepAbilities : MonoBehaviour
 
             var soulParticle = Instantiate(summonParticle, transform.position, Quaternion.identity) as GameObject;
             soulParticle.GetComponent<Sheep_Summon_Particle>()?.InitSheepParticle(GetCurrentSheepPrefab(theSheepType), summonParticleLerpSpeed, summonPosition, this, theSheepType);
-			spawnParticles.Add(soulParticle);
+            soulParticle.GetComponent<ParticleSystem>().startColor = sheepFlocks[(int)theSheepType].UIColor;
+            spawnParticles.Add(soulParticle);
 
 		}
         else
@@ -762,7 +762,7 @@ public class PlayerSheepAbilities : MonoBehaviour
     #region Sheep Charge
     public void OnSheepCharge(InputAction.CallbackContext context)
     {
-		if (context.started && canCharge && !isPreparingAttack && !isPreparingCharge)
+		if (context.started && canCharge && !isPreparingAttack && !isPreparingCharge && GetSheepFlock(SheepTypes.RAM).Count > 0)
 		{
 			int flockType = (int)SheepTypes.RAM;
 
