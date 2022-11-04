@@ -27,7 +27,7 @@ public class CameraCollisionAdjust : MonoBehaviour
         {
             zValue += zSlideRate * -Time.deltaTime;
             camPosition.z = zValue;
-            transform.localPosition = camPosition;
+            transform.localPosition = Vector3.Lerp(transform.localPosition, camPosition, slerpRate);
         }
     }
     private void OnTriggerStay(Collider other)
@@ -37,7 +37,7 @@ public class CameraCollisionAdjust : MonoBehaviour
         {
             zValue -= zSlideRate * -Time.deltaTime;
             camPosition.z = zValue;
-            transform.localPosition = camPosition;
+            transform.localPosition = Vector3.Lerp(transform.localPosition, camPosition, slerpRate);
         } 
     }
     private void OnTriggerExit(Collider other)

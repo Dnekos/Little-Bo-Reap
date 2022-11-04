@@ -14,6 +14,13 @@ public enum EnemyStates
 
 public class EnemyAI : Damageable
 {
+	[System.Serializable]
+	protected struct AttackCooldownCombo
+	{
+		public EnemyAttack atk;
+		public float Cooldown;
+	}
+
 	[Header("Spawning")]
 	public GameObject SpawnParticlePrefab;
 	public float SpawnWaitTime = 2;
@@ -24,6 +31,14 @@ public class EnemyAI : Damageable
 	[SerializeField] protected EnemyStates currentEnemyState;
 	[SerializeField] float StunTime = 0.3f;
 	[SerializeField] LayerMask playerLayer;
+
+	[Header("Attacking")]
+	[SerializeField,Tooltip("priority of attacks are based on how high up they are in the array")] protected AttackCooldownCombo[] attacks;
+	protected int activeAttackIndex = -1;
+	[SerializeField] List<Transform> NearbyGuys;
+	[SerializeField, Tooltip("how frequently enemies query conditions to make an attack")] float delayBetweenAttacks = 1;
+	[SerializeField] Collider StickCollider;
+	[SerializeField] Animator anim;
 
 	[Header("Execution Variables")]
 	public bool isExecutable;
@@ -43,6 +58,10 @@ public class EnemyAI : Damageable
 	public bool isGrounded = false;
 	[SerializeField] float fallRate = 50;
 
+	[Header("Sounds")]
+	[SerializeField] FMODUnity.EventReference swingSound;
+	[SerializeField] FMODUnity.EventReference clubHitSound;
+
 	protected Transform player;
 	NavMeshAgent agent;
 
@@ -50,6 +69,7 @@ public class EnemyAI : Damageable
     override protected void Start()
     {
 		base.Start();
+		NearbyGuys = new List<Transform>();
 		agent = GetComponent<NavMeshAgent>();
 		player = GameManager.Instance.GetPlayer();
 	}
@@ -62,6 +82,11 @@ public class EnemyAI : Damageable
 			DoIdle();
 		}
 
+		// update cooldowns on attacks
+		for (int i = 0; i < attacks.Length; i++)
+		{
+			attacks[i].Cooldown -= Time.deltaTime;
+		}
 
 		// basic state machine
 		switch (currentEnemyState)
@@ -101,6 +126,11 @@ public class EnemyAI : Damageable
 			currentEnemyState = EnemyStates.CHASE_PLAYER;
     }
 
+	public void ToChase()
+	{
+		currentEnemyState = EnemyStates.CHASE_PLAYER;
+	}
+
 	#region Execution State
 
 	void DoExecutionState()
@@ -126,11 +156,63 @@ public class EnemyAI : Damageable
 	}
 	virtual protected IEnumerator AttackCheck()
 	{
-		yield return new WaitForSeconds(0);
-		
+		yield return new WaitForSeconds(delayBetweenAttacks);
+		if (currentEnemyState == EnemyStates.CHASE_PLAYER)
+		{
+			// double check that there are no null sheep (possibly could happen if they are killed in the radius)
+			NearbyGuys.RemoveAll(item => item == null);
+
+			for (int i = 0; i < attacks.Length; i++)
+			{
+				if (attacks[i].Cooldown < 0 && attacks[i].atk.CheckCondition(transform, player, NearbyGuys))
+				{
+					attacks[i].atk.PerformAttack(anim);
+					attacks[i].Cooldown = attacks[i].atk.MaxCooldown;
+					activeAttackIndex = i;
+					break;
+				}
+			}
+		}
 		QueuedAttack = null;
+
 	}
 	#endregion
+
+	#region Collisions
+	private void OnCollisionEnter(Collision collision)
+	{
+		// double check that the collision is due to the attack
+		if (collision.GetContact(0).thisCollider == StickCollider)
+		{
+			Debug.Log("collided with " + collision.gameObject.name);
+			Damageable hitTarget = collision.gameObject.GetComponent<Damageable>();
+			if (hitTarget != null)
+			{
+				collision.gameObject.GetComponent<Damageable>()?.TakeDamage(attacks[activeAttackIndex].atk, transform.forward);
+				FMODUnity.RuntimeManager.PlayOneShotAttached(clubHitSound, gameObject);
+			}
+
+		}
+	}
+
+	private void OnTriggerEnter(Collider other)
+	{
+		if (other.GetComponent<PlayerSheepAI>() != null || other.GetComponent<PlayerMovement>() != null)
+		{
+			NearbyGuys.Add(other.transform);
+		}
+	}
+	private void OnTriggerExit(Collider other)
+	{
+		if (other.GetComponent<PlayerSheepAI>() != null || other.GetComponent<PlayerMovement>() != null)
+		{
+			NearbyGuys.Remove(other.transform);
+		}
+
+	}
+	#endregion
+
+
 
 	#region Movement
 	void GroundCheck()

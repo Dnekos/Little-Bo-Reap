@@ -53,8 +53,13 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float dashForce;
     [SerializeField] float dashAirborneLiftForce;
     [SerializeField] float dashCooldown = 1f;
+    [SerializeField] int dashChargesMax;
+    int dashChargesCurrent;
+    [SerializeField] float dashTimeToRefillCharges = 2f;
+    float dashCurrentFillTime = 0;
     [SerializeField] ParticleSystem dashTrail;
     bool canDash = true;
+    bool dashCharging = false;
 
     [Header("Dash Slow Time Variables")]
     [SerializeField] float dashSlowTimescale = 0.5f;
@@ -76,7 +81,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Model Orientation")]
     [SerializeField] float modelRotateSpeed = 10f;
     [SerializeField] float orientCheckDistance = 5f;
-    [SerializeField] Transform playerOrientation;
+    public Transform playerOrientation;
     Vector3 modelRotateNormal;
 
     [Header("Animations")]
@@ -118,6 +123,8 @@ public class PlayerMovement : MonoBehaviour
 		liftcontroller = GetComponent<PlayerSheepLift>();
 		groundPound = GetComponent<PlayerGroundPound>();
 
+
+        dashChargesCurrent = dashChargesMax;
 	}
 
     private void Update()
@@ -126,6 +133,8 @@ public class PlayerMovement : MonoBehaviour
 
 		GroundCheck();
         UpdateAnimation();
+
+        DashCheck();
     }
     private void FixedUpdate()
     {
@@ -284,6 +293,7 @@ public class PlayerMovement : MonoBehaviour
 		{
 			if (liftcontroller.StartLifting())
 			{
+                GetComponent<PlayerSheepAbilities>().sheepFlocks[(int)SheepTypes.BUILD].spellParticle.Play(true);
 
 				rb.AddForce(Vector3.down * rb.velocity.y, ForceMode.VelocityChange);
 
@@ -308,14 +318,14 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnDash(InputAction.CallbackContext context)
     {
-        if(canDash && !isLifting && context.started && !health.HitStunned)
+        if(canDash && !isLifting && context.started && !health.HitStunned && dashChargesCurrent > 0)
         {
             canDash = false;
 
-            animator.Play(dashAnimation);
+            animator.Play(dashAnimation, 0, 0f);
 
-			//TEMP SOUND
-			FMODUnity.RuntimeManager.PlayOneShotAttached(dashSound,gameObject);
+            // SOUND
+           FMODUnity.RuntimeManager.PlayOneShotAttached(dashSound,gameObject);
 
             //halt player
             rb.AddForce(-rb.velocity, ForceMode.VelocityChange);
@@ -340,6 +350,10 @@ public class PlayerMovement : MonoBehaviour
                 rb.AddForce(moveDirection * dashForce);
             }
 
+            dashChargesCurrent--;
+            dashCurrentFillTime = 0f;
+
+            dashCharging = true;
 
             StartCoroutine(DashCooldown());
         }
@@ -356,6 +370,28 @@ public class PlayerMovement : MonoBehaviour
         dashTrail.Stop();
         canDash = true;
     }
+    IEnumerator DashChargeCooldown()
+    {
+        yield return new WaitForSeconds(dashTimeToRefillCharges);
+        dashChargesCurrent = dashChargesMax;
+        Debug.Log("Dash charges filled");
+    }
+
+    void DashCheck()
+    {
+        if(dashCharging)
+        {
+            dashCurrentFillTime += Time.deltaTime;
+
+            if(dashCurrentFillTime >= dashTimeToRefillCharges)
+            {
+                dashChargesCurrent = dashChargesMax;
+                dashCharging = false;
+            }
+        }
+        
+    }
+
     public void DidDashAvoidAttack()
     {
         if (Physics.CheckSphere(transform.position, dashTriggerRadius, enemyAttackLayer))

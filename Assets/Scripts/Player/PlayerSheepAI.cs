@@ -56,6 +56,7 @@ public class PlayerSheepAI : Damageable
 	[Header("Sounds")]
 	[SerializeField] FMODUnity.EventReference biteSound;
 	[SerializeField] FMODUnity.EventReference petSound;
+	FMODUnity.StudioEventEmitter walker;
 
 
 	[Header("Wander State Variables")]
@@ -122,7 +123,9 @@ public class PlayerSheepAI : Damageable
     {
         base.Start();
 
-        animator = GetComponent<Animator>();
+		walker = GetComponent<FMODUnity.StudioEventEmitter>();
+
+		animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         baseSpeedCurrent = GetRandomSheepBaseSpeed();
 
@@ -200,6 +203,11 @@ public class PlayerSheepAI : Damageable
 
         CheckAnimation();
         CheckLeader();
+
+		if (!walker.IsPlaying() && agent.enabled && agent.velocity.magnitude > 0.5f)
+			walker.Play();
+		else if (!agent.enabled || agent.velocity.magnitude <= 0.5f)
+			walker.Stop();
 
         //state machine
         switch (currentSheepState)
@@ -315,7 +323,13 @@ public class PlayerSheepAI : Damageable
 		}
 
 		player.GetComponent<PlayerSheepAbilities>().RemoveSheepFromList(sheepType, this);
+
         Destroy(gameObject);
+    }
+
+    public void GibSheep()
+    {
+        Instantiate(gibs, transform.position, transform.rotation);
     }
 
     public void PetSheep()
@@ -403,7 +417,15 @@ public class PlayerSheepAI : Damageable
             //set speed and follow distance
             agent.speed = baseSpeedCurrent;
             agent.stoppingDistance = agentStoppingDistance;
-            agent.SetDestination(player.position);
+			try
+			{
+				agent.SetDestination(player.position);
+			}
+			catch (System.Exception e)
+			{
+				print(gameObject + " failed to find a destination");
+				KillSheep();
+			}
         }
 
     }
