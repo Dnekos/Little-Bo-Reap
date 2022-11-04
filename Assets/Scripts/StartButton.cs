@@ -9,6 +9,13 @@ public class StartButton : MonoBehaviour
     [SerializeField] List<PlayerSheepAI> menuSheep;
     [SerializeField] GameObject gothExplosion;
     [SerializeField] GameObject gothVolume;
+
+    private void Start()
+    {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+    }
+
     public void StartGame()
     {
         gothVolume.SetActive(true);
