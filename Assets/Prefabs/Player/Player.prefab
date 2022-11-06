@@ -66715,12 +66715,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9520c32a0e9f840408c438c4d236349d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zSlideRate: 50
-  slerpRate: 5
-  zSlideMin: -5
+  slerpRate: 10
   zSlideMax: -15
-  zValue: 0
-  innerCollideRadius: 1.5
+  collisionOffset: 0.01
   collideLayers:
     serializedVersion: 2
     m_Bits: 64
@@ -67290,7 +67287,7 @@ MonoBehaviour:
   modelRotateSpeed: 10
   orientCheckDistance: 1.25
   playerOrientation: {fileID: 3870380307216974260}
-  jumpAnimation: Test_Bo_Jump
+  jumpAnimation: Bo_Peep_Jump
   dashAnimation: Test_Bo_Dash
   landingAnimation: Bo_Peep_Idle
 --- !u!114 &2643546360396193640
@@ -67468,7 +67465,7 @@ MonoBehaviour:
   defendCooldown: 5
   launchOrigin: {fileID: 8630855891053651535}
   minDistanceToLaunch: 20
-  launchAnimation: Spell Layer.Bo_Peep_Direct
+  launchAnimation: Spell Layer.Bo_Peep_Launch
   launchIcon: {fileID: 7344943566344680018}
   launchCooldown: 0.35
 --- !u!114 &4791982548798101685

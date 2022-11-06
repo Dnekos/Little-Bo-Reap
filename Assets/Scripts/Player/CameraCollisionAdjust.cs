@@ -5,12 +5,10 @@ using UnityEngine;
 public class CameraCollisionAdjust : MonoBehaviour
 {
     [Header("Camera Z Slide Variables")]
-    [SerializeField] float zSlideRate;
     [SerializeField] float slerpRate;
-    [SerializeField] float zSlideMin;
     [SerializeField] float zSlideMax;
-    [SerializeField] float zValue;
-    [SerializeField] float innerCollideRadius;
+	[SerializeField] float collisionOffset = 0.1f;
+    float zValue;
     [SerializeField] LayerMask collideLayers;
     Vector3 camPosition;
     public bool isColliding = false;
@@ -21,27 +19,13 @@ public class CameraCollisionAdjust : MonoBehaviour
         camPosition = transform.localPosition;
     }
 
-    private void Update()
-    {
-        if(!isColliding && zValue > zSlideMax)
-        {
-            zValue += zSlideRate * -Time.deltaTime;
-            camPosition.z = zValue;
-            transform.localPosition = Vector3.Lerp(transform.localPosition, camPosition, slerpRate);
-        }
-    }
-    private void OnTriggerStay(Collider other)
-    {
-        isColliding = true;
-        if (zValue < zSlideMin && Physics.CheckSphere(transform.position, innerCollideRadius, collideLayers))
-        {
-            zValue -= zSlideRate * -Time.deltaTime;
-            camPosition.z = zValue;
-            transform.localPosition = Vector3.Lerp(transform.localPosition, camPosition, slerpRate);
-        } 
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        isColliding = false;   
-    }
+	private void Update()
+	{
+		Debug.DrawRay(transform.parent.position, transform.position - transform.parent.position, Color.red);
+
+		RaycastHit info;
+		Physics.Raycast(transform.parent.position, -transform.forward, out info, -zSlideMax, collideLayers, QueryTriggerInteraction.Ignore);
+
+		transform.localPosition = Vector3.Lerp(transform.localPosition, new Vector3(0, 2, info.distance == 0 ? zValue : collisionOffset - info.distance), Time.deltaTime * slerpRate);
+	}
 }
