@@ -70,7 +70,7 @@ public class PlayerSheepAbilities : MonoBehaviour
     [SerializeField] float summonCooldown = 5f;
     [Range(0f, 100f)]
     public float summonBlackSheepPercent = 10f;
-    [SerializeField] string summonAnimation;
+    [SerializeField] string summonAnimation, racallAnimation;
 	[SerializeField] ParticleSystem RecallVFX;
     [SerializeField] GameObject summonParticle;
     [SerializeField] float summonParticleLerpSpeed = 5f;
@@ -346,7 +346,7 @@ public class PlayerSheepAbilities : MonoBehaviour
             GetComponent<PlayerSheepLift>().CollapseTower();
 
             //play animation
-            animator.Play(summonAnimation);
+            animator.Play(racallAnimation);
 
 
             //TEMP SOUND
@@ -945,80 +945,84 @@ public class PlayerSheepAbilities : MonoBehaviour
         else if(context.canceled)
             isLaunching = false;
     }
-    void CheckLaunch()
-    {
-        if (isLaunching && canLaunch)
-        {
+	void CheckLaunch()
+	{
+		if (isLaunching && canLaunch)
+		{
+			/*
+			PlayerSheepAI sheepToLaunch = null;
+			float currentLaunchDistance = 999f;
+			
+			
+			for(int j = 0; j < 3; j++)
+			{
+			    for(int i = 0; i < GetSheepFlock((SheepTypes)j).Count; i++)
+			    {
+			        if (Vector3.Distance(transform.position, GetSheepFlock((SheepTypes)j)[i].transform.position) < minDistanceToLaunch
+			                && currentLaunchDistance > Vector3.Distance(transform.position, GetSheepFlock((SheepTypes)j)[i].transform.position))
+			        {
+			            currentLaunchDistance = Vector3.Distance(transform.position, GetSheepFlock((SheepTypes)j)[i].transform.position);
+			            sheepToLaunch = GetSheepFlock((SheepTypes)j)[i];
+			
+			            flockIndex = j;
+			            sheepIndex = i;
+			        }
+			    }
+			}
+			
+			if(sheepToLaunch != null)
+			{
+			    animator.Play(launchAnimation);
+			
+			    PlayerSheepProjectile launchSheep =
+			        Instantiate(sheepFlocks[flockIndex].SheepProjectilePrefab, launchOrigin.position, launchOrigin.rotation)
+			        .GetComponent<PlayerSheepProjectile>();
+			
+			    launchSheep.isBlackSheep = GetSheepFlock((SheepTypes)flockIndex)[sheepIndex].isBlackSheep;
+			    launchSheep.LaunchProjectile();
+			
+			    GetSheepFlock((SheepTypes)flockIndex)[sheepIndex].KillSheep();
+			}
+			*/
 
-            //PlayerSheepAI sheepToLaunch = null;
-            //float currentLaunchDistance = 999f;
-            //
-            //
-            //for(int j = 0; j < 3; j++)
-            //{
-            //    for(int i = 0; i < GetSheepFlock((SheepTypes)j).Count; i++)
-            //    {
-            //        if (Vector3.Distance(transform.position, GetSheepFlock((SheepTypes)j)[i].transform.position) < minDistanceToLaunch
-            //                && currentLaunchDistance > Vector3.Distance(transform.position, GetSheepFlock((SheepTypes)j)[i].transform.position))
-            //        {
-            //            currentLaunchDistance = Vector3.Distance(transform.position, GetSheepFlock((SheepTypes)j)[i].transform.position);
-            //            sheepToLaunch = GetSheepFlock((SheepTypes)j)[i];
-            //
-            //            flockIndex = j;
-            //            sheepIndex = i;
-            //        }
-            //    }
-            //}
-            //
-            //if(sheepToLaunch != null)
-            //{
-            //    animator.Play(launchAnimation);
-            //
-            //    PlayerSheepProjectile launchSheep =
-            //        Instantiate(sheepFlocks[flockIndex].SheepProjectilePrefab, launchOrigin.position, launchOrigin.rotation)
-            //        .GetComponent<PlayerSheepProjectile>();
-            //
-            //    launchSheep.isBlackSheep = GetSheepFlock((SheepTypes)flockIndex)[sheepIndex].isBlackSheep;
-            //    launchSheep.LaunchProjectile();
-            //
-            //    GetSheepFlock((SheepTypes)flockIndex)[sheepIndex].KillSheep();
-            //}
+			//OLD IMPLEMENTATION KEEP IN CASE WE GO BACK
+			SheepTypes flockType = currentFlockType;
 
+			//do we have any sheep? 
+			if (GetSheepFlock(flockType).Count > 0)
+			{
+				//are sheep nearby?
+				for (int i = 0; i < GetSheepFlock(flockType).Count; i++)
+				{
+					if (Vector3.Distance(transform.position, GetSheepFlock(flockType)[i].transform.position) <= minDistanceToLaunch)
+					{
+						// rotate Bo to look in direction of launch
+						transform.eulerAngles = new Vector3(0, launchOrigin.rotation.eulerAngles.y, 0);
+						animator.Rebind(); // Rebind resets the animation state, allowing up to restart launch if its in progress
+						animator.Play(launchAnimation);
 
-            //OLD IMPLEMENTATION KEEP IN CASE WE GO BACK
-           SheepTypes flockType = currentFlockType;
-           
-           //do we have any sheep? 
-           if (GetSheepFlock(flockType).Count > 0)
-           {
-               //are sheep nearby?
-               for (int i = 0; i < GetSheepFlock(flockType).Count; i++)
-               {
-                   if (Vector3.Distance(transform.position, GetSheepFlock(flockType)[i].transform.position) <= minDistanceToLaunch)
-                   {
-                       animator.Play(launchAnimation);
-           
-						//break loop and launch that mf
-						PlayerSheepProjectile launchSheep = 
+						// launch that mf
+						PlayerSheepProjectile launchSheep =
 							Instantiate(sheepFlocks[currentFlockIndex].SheepProjectilePrefab, launchOrigin.position, launchOrigin.rotation)
 							.GetComponent<PlayerSheepProjectile>();
-           
-						launchSheep.isBlackSheep = GetSheepFlock(flockType)[i].isBlackSheep;
-                       launchSheep.LaunchProjectile();
-           
-						GetSheepFlock(flockType)[i].KillSheep();
-           
-                       break;
-                   }
-               }
-           }
 
-            //start cooldown
-            canLaunch = false;
-            //launchIcon.CooldownUIEffect(launchCooldown);
-            StartCoroutine(SheepLaunchCooldown());
-        }
-    }
+						launchSheep.isBlackSheep = GetSheepFlock(flockType)[i].isBlackSheep;
+						launchSheep.LaunchProjectile();
+
+						GetSheepFlock(flockType)[i].KillSheep();
+
+						// break loop
+						break;
+					}
+				}
+			}
+
+			//start cooldown
+			canLaunch = false;
+			//launchIcon.CooldownUIEffect(launchCooldown);
+			StartCoroutine(SheepLaunchCooldown());
+		}
+	}
 
     IEnumerator SheepLaunchCooldown()
     {
