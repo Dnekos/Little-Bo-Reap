@@ -86,7 +86,7 @@ public class EnemyAI : Damageable
         }
 		else
         {
-			GetComponent<Animator>()?.SetBool("ssMoving", false);
+			GetComponent<Animator>()?.SetBool("isMoving", false);
 		}
         }
 		
