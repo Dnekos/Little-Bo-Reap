@@ -241,7 +241,8 @@ public class PlayerSheepAbilities : MonoBehaviour
 			sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
 			sheepTypeText.color = sheepFlocks[currentFlockIndex].UIColor;
 
-            bellParticles.startColor = sheepFlocks[currentFlockIndex].UIColor;
+            var particleModule = bellParticles.main;
+            particleModule.startColor = sheepFlocks[currentFlockIndex].UIColor;
             sheepFlocks[currentFlockIndex].flockChangeParticle.Play(true);
 
             UpdateFlockUI();
@@ -258,7 +259,8 @@ public class PlayerSheepAbilities : MonoBehaviour
 				sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
 				sheepTypeText.color = sheepFlocks[currentFlockIndex].UIColor;
 
-                bellParticles.startColor = sheepFlocks[currentFlockIndex].UIColor;
+                var particleModule = bellParticles.main;
+                particleModule.startColor = sheepFlocks[currentFlockIndex].UIColor;
                 sheepFlocks[currentFlockIndex].flockChangeParticle.Play(true);
 
                 UpdateFlockUI();
@@ -593,7 +595,8 @@ public class PlayerSheepAbilities : MonoBehaviour
 
             var soulParticle = Instantiate(summonParticle, transform.position, Quaternion.identity) as GameObject;
             soulParticle.GetComponent<Sheep_Summon_Particle>()?.InitSheepParticle(GetCurrentSheepPrefab(theSheepType), summonParticleLerpSpeed, summonPosition, this, theSheepType);
-            soulParticle.GetComponent<ParticleSystem>().startColor = sheepFlocks[(int)theSheepType].UIColor;
+            var module = soulParticle.GetComponent<ParticleSystem>().main;
+            module.startColor = sheepFlocks[(int)theSheepType].UIColor;
             spawnParticles.Add(soulParticle);
 
 		}
@@ -651,7 +654,8 @@ public class PlayerSheepAbilities : MonoBehaviour
                 ParticleSystem[] particleSystems = attackConfirm.GetComponentsInChildren<ParticleSystem>();
                 foreach (ParticleSystem particle in particleSystems)
                 {
-                    particle.startColor = sheepFlocks[(int)flockType].UIColor;
+                    var module = particle.main;
+                    module.startColor = sheepFlocks[(int)flockType].UIColor;
                 }
 
                 for (int i = 0; i < GetSheepFlock(flockType).Count; i++)
@@ -682,7 +686,8 @@ public class PlayerSheepAbilities : MonoBehaviour
                 ParticleSystem[] particleSystems = attackPoint.GetComponentsInChildren<ParticleSystem>();
                 foreach(ParticleSystem particle in particleSystems)
                 {
-                    particle.startColor = sheepFlocks[(int)flockType].UIColor;
+                    var module = particle.main;
+                    module.startColor = sheepFlocks[(int)flockType].UIColor;
                 }
 
                 sheepAttackPoint = attackPoint;
@@ -716,7 +721,8 @@ public class PlayerSheepAbilities : MonoBehaviour
                     ParticleSystem[] particleSystems = attackConfirm.GetComponentsInChildren<ParticleSystem>();
                     foreach (ParticleSystem particle in particleSystems)
                     {
-                        particle.startColor = sheepFlocks[(int)flockType].UIColor;
+                        var module = particle.main;
+                        module.startColor = sheepFlocks[(int)flockType].UIColor;
                     }
 
                     for (int i = 0; i < GetSheepFlock(flockType).Count; i++)

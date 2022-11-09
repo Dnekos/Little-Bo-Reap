@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.Rendering;
 
 public class PlayerHealth : Damageable
 {
@@ -12,6 +13,10 @@ public class PlayerHealth : Damageable
 	public bool HitStunned = false;
 	[SerializeField]
 	float hitstunTimer = 0.2f;
+
+	[Header("Hurt Vignette")]
+	[SerializeField] GameObject hurtVignette;
+	[SerializeField] float vignetteTime = 0.2f;
 
 
 	[Header("Respawning")]
@@ -88,6 +93,9 @@ public class PlayerHealth : Damageable
 
 	public override void TakeDamage(Attack atk, Vector3 attackForward)
 	{
+		StopCoroutine("HitVignette");
+		StartCoroutine("HitVignette");
+
 		// stop moving, to hopefully prevent too wacky knockback
 		rb.AddForce(-rb.velocity, ForceMode.VelocityChange);
 
@@ -100,6 +108,15 @@ public class PlayerHealth : Damageable
 			StartCoroutine("HitstunTracker");
 		}
 	}
+
+	IEnumerator HitVignette()
+    {
+		hurtVignette.SetActive(true);
+		yield return new WaitForSeconds(vignetteTime); 
+		hurtVignette.SetActive(false);
+
+    }
+
 	IEnumerator HitstunTracker()
 	{
 		HitStunned = true;
