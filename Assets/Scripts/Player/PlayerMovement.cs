@@ -58,6 +58,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float dashTimeToRefillCharges = 2f;
     float dashCurrentFillTime = 0;
     [SerializeField] ParticleSystem dashTrail;
+    [SerializeField] AbilityIcon dashIcon;
     bool canDash = true;
     bool dashCharging = false;
 
@@ -355,6 +356,7 @@ public class PlayerMovement : MonoBehaviour
 
             dashCharging = true;
 
+            dashIcon.CooldownUIEffect(dashTimeToRefillCharges);
             StartCoroutine(DashCooldown());
         }
     }
