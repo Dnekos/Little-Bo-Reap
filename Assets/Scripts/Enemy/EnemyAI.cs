@@ -37,6 +37,7 @@ public class EnemyAI : Damageable
 	protected int activeAttackIndex = -1;
 	[SerializeField] List<Transform> NearbyGuys;
 	[SerializeField, Tooltip("how frequently enemies query conditions to make an attack")] float delayBetweenAttacks = 1;
+	[SerializeField] int SheepToDistract = 2;
 	[SerializeField] Collider StickCollider;
 	[SerializeField] Animator anim;
 
@@ -127,7 +128,7 @@ public class EnemyAI : Damageable
 			base.OnDeath();
 		}
 		else
-			agent.SetDestination(player.position);
+			agent.SetDestination(dest);
 	}
 	#endregion
 
@@ -160,19 +161,38 @@ public class EnemyAI : Damageable
     #region Chasing and Attacking
     void DoChase()
 	{
-		//if (isGrounded)
-		EnemySetDestination(player.position);
+		// double check that there are no null sheep (possibly could happen if they are killed in the radius)
+		NearbyGuys.RemoveAll(item => item == null);
+
+		// if there are sheep near it, follow them instead
+		if (NearbyGuys.Count >= SheepToDistract)
+			EnemySetDestination(ClosestGuy());
+		else
+			EnemySetDestination(player.position);
 
 		// if Coroutine is not running, run it
 		QueuedAttack ??= StartCoroutine(AttackCheck());
+	}
+	Vector3 ClosestGuy()
+	{
+		float dist = Mathf.Infinity;
+		Vector3 closestPos = NearbyGuys[0].position;
+		for (int i = 0; i< NearbyGuys.Count; i++)
+		{
+			float newdist = (NearbyGuys[i].position - transform.position).sqrMagnitude;
+			if (newdist < dist)
+			{
+				dist = newdist;
+				closestPos = NearbyGuys[i].position;
+			}
+		}
+		return closestPos;
 	}
 	virtual protected IEnumerator AttackCheck()
 	{
 		yield return new WaitForSeconds(delayBetweenAttacks);
 		if (currentEnemyState == EnemyStates.CHASE_PLAYER)
 		{
-			// double check that there are no null sheep (possibly could happen if they are killed in the radius)
-			NearbyGuys.RemoveAll(item => item == null);
 
 			for (int i = 0; i < attacks.Length; i++)
 			{
