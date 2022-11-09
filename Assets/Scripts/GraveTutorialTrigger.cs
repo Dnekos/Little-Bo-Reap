@@ -33,7 +33,7 @@ public class GraveTutorialTrigger : MonoBehaviour
                 {
                     Instantiate(spawnPoof, enemiesToSpawn[i].transform.position, Quaternion.identity);
                 }
-                Invoke("SpawnEnemies", 2f);
+                Invoke("SpawnEnemies", 7.5f);
             }
 
             //enable ui elements
