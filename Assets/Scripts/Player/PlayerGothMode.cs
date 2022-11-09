@@ -16,6 +16,9 @@ public class PlayerGothMode : MonoBehaviour
 	[SerializeField] float GothMeterCount = 0;
     [SerializeField] float gothMeterChargeTime;
     [SerializeField] float gothMeterDuration;
+    [SerializeField] GameObject materialParent;
+    [SerializeField] Material defaultMat;
+    [SerializeField] Material gothMat;
     public bool isGothMode = false;
 
     [Header("Postprocess")]
@@ -55,8 +58,15 @@ public class PlayerGothMode : MonoBehaviour
 	//update bar image
 	void Update()
     {
-        if (GothMeterCount <= 0)
+        if (isGothMode && GothMeterCount <= 0)
         {
+            SkinnedMeshRenderer[] mats = materialParent.GetComponentsInChildren<SkinnedMeshRenderer>();
+            foreach (SkinnedMeshRenderer mesh in mats)
+            {
+                mesh.material = defaultMat;
+            }
+            Instantiate(explosion, transform.position, transform.rotation);
+
             isGothMode = false;
             gothParticles.SetActive(false);
         }
@@ -91,6 +101,13 @@ public class PlayerGothMode : MonoBehaviour
             Instantiate(explosion, transform.position, transform.rotation);
 
             gothSaturation.saturation.value = defaultSaturation;
+
+            SkinnedMeshRenderer[] mats = materialParent.GetComponentsInChildren<SkinnedMeshRenderer>();
+            foreach(SkinnedMeshRenderer mesh in mats)
+            {
+                mesh.material = gothMat;
+            }
+
 
             isGothMode = true;
             gothParticles.SetActive(true);
