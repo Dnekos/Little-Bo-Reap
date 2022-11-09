@@ -47,8 +47,10 @@ public class PlayerCameraFollow : MonoBehaviour
 
     public void ShakeCamera(bool bigShake)
     {
-        if (bigShake) StartCoroutine(CameraShake(bigShakeMagnitude, bigShakeDuration));
-        else StartCoroutine(CameraShake(smallShakeMagnitude, smallShakeDuration));
+        if (bigShake) 
+			StartCoroutine(CameraShake(bigShakeMagnitude, bigShakeDuration));
+        else 
+			StartCoroutine(CameraShake(smallShakeMagnitude, smallShakeDuration));
     }
 
     IEnumerator CameraShake(float magnitude, float duration)

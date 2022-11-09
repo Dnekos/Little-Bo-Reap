@@ -23,7 +23,7 @@ public class WorldState : MonoBehaviour
 	int deaths = 0;
 
 
-	GameObject player;
+	public GameObject player;
 
 	// Start is called before the first frame update
 	void Awake()
@@ -65,7 +65,7 @@ public class WorldState : MonoBehaviour
 
 		Debug.Log(SpawnPoints[activeSpawnPoint] + " " + player +" "+ player.transform.position);
 
-		player.GetComponent<PlayerSheepAbilities>().DeleteSheep();
+		player.GetComponent<PlayerSheepAbilities>().DeleteAllSheep();
 
 
 		deaths++;

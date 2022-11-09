@@ -93,11 +93,11 @@ public class SheepCurve : SheepHolder
 		if (other.GetComponent<SphereCollider>() != null)
 			SheepRadius = other.GetComponent<SphereCollider>().radius * other.transform.lossyScale.x;
 		else if (other.GetComponent<CapsuleCollider>() != null)
-			SheepRadius = other.GetComponent<CapsuleCollider>().radius * other.transform.lossyScale.x;
+			SheepRadius = other.GetComponent<CapsuleCollider>().height * other.transform.lossyScale.x;
 
 		// set height if this is the first sheep
 		if (containedSheep.Count == 0)
-			Height = limits.x;// + SheepRadius;
+			CurveT = limits.x;// + SheepRadius;
 
 		// add the little guy
 		AddSheep(other.transform);
@@ -107,7 +107,7 @@ public class SheepCurve : SheepHolder
 	{
 		float RandomCount = 0;
 		// don't add sheep if the box is filled
-		Plane slice = new Plane(Differentiate(Height), CalcCurvePoint(Height));
+		Plane slice = new Plane(Differentiate(CurveT), CalcCurvePoint(CurveT));
 		int SheepChecked = 0;
 
 		// math estimating the likely amount of sheep needed to check
@@ -115,13 +115,13 @@ public class SheepCurve : SheepHolder
 		float V_s = 1.333f * Mathf.PI * SheepRadius * SheepRadius * SheepRadius;
 		int sheeptocheck = Mathf.CeilToInt( 0.7f * V_c / V_s);
 
-		while (Height + (0.5f * SheepRadius) < limits.y)
+		while (CurveT < limits.y)
 		{
 			// try a point
 			Vector3 randInCircle = Random.insideUnitSphere * (radius - SheepRadius);
 
 			// make a guess at a good spot to place sheep, within collider bounds
-			sheepPlacement = slice.ClosestPointOnPlane(randInCircle + CalcCurvePoint(Height));
+			sheepPlacement = slice.ClosestPointOnPlane(randInCircle + CalcCurvePoint(CurveT));
 			
 			// check if the spot is filled
 			bool Filled = false;
@@ -151,7 +151,7 @@ public class SheepCurve : SheepHolder
 				Debug.Log("Sheep " + containedSheep.Count +" took " + RandomCount + " tries and checked "+ SheepChecked+" sheep");
 
 				// set state of AI
-				newSheep.GetComponent<PlayerSheepAI>()?.DoConstruct(this);
+				newSheep.GetComponent<PlayerSheepAI>()?.DoConstruct(this, sheepPlacement);
 
 				return;
 			}
@@ -162,11 +162,12 @@ public class SheepCurve : SheepHolder
 			{
 				// if done as many checks as allowed, increase height
 				RandomCount = 0;
-				Height += HeightStep * SheepRadius;
+				CurveT += HeightStep * SheepRadius;
+				Debug.Log("Increased height, t=" + CurveT);
 				layerCount++;
 
 				// recalculate the plane 
-				slice = new Plane(Differentiate(Height), CalcCurvePoint(Height));
+				slice = new Plane(Differentiate(CurveT), CalcCurvePoint(CurveT));
 			}
 		}
 		if (RandomCount != 0)

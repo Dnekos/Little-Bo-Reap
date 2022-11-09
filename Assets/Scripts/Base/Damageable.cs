@@ -13,6 +13,11 @@ public class Damageable : MonoBehaviour
 	[SerializeField] GameObject damageNumberGoth;
 	public bool isInvulnerable;
 
+	[Header("Sounds")]
+	[SerializeField] protected FMODUnity.EventReference hurtSound;
+	[SerializeField] protected FMODUnity.EventReference deathSound;
+
+
 	[Header("Drop Variables")]
 	[Tooltip("Number of souls dropped on death.")]
 	[SerializeField] protected int soulValue;
@@ -35,7 +40,7 @@ public class Damageable : MonoBehaviour
 
 	virtual public void TakeDamage(Attack atk, Vector3 attackForward)
 	{
-		if(!isInvulnerable)
+		if(!isInvulnerable || Health <= 0)
         {
 			// deal damage
 			Health -= atk.damage;
@@ -51,8 +56,11 @@ public class Damageable : MonoBehaviour
 			// invoke death
 			if (Health <= 0)
 				OnDeath();
+			else // don't play hurt sound when dying smh
+				FMODUnity.RuntimeManager.PlayOneShotAttached(hurtSound, gameObject);
+
 		}
-		
+
 	}
 
 	virtual public void TakeDamage(SheepAttack atk, Vector3 attackForward)
@@ -76,10 +84,17 @@ public class Damageable : MonoBehaviour
 		}
 	}
 	
+	virtual public void ForceKill()
+    {
+		OnDeath();
+    }
 
 	virtual protected void OnDeath()
 	{
 		SoulDropCalculation(soulValue);
+
+		FMODUnity.RuntimeManager.PlayOneShot(deathSound, transform.position);
+
 		Instantiate(gibs, transform.position + Vector3.up * 1.4f, new Quaternion());
 		Destroy(gameObject); // base effect is deleting object
 	}

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.Rendering;
 
 public class PlayerHealth : Damageable
 {
@@ -12,6 +13,10 @@ public class PlayerHealth : Damageable
 	public bool HitStunned = false;
 	[SerializeField]
 	float hitstunTimer = 0.2f;
+
+	[Header("Hurt Vignette")]
+	[SerializeField] Volume hurtVignette;
+	[SerializeField] float vignetteStrength = 1, vignetteTime = 0.2f;
 
 
 	[Header("Respawning")]
@@ -53,6 +58,9 @@ public class PlayerHealth : Damageable
 		Health = MaxHealth;
 		healthBar.ChangeFill(1);
 
+		// resume collisions
+		rb.isKinematic = false;
+
 		HUD.SetActive(true);
 		DeathUI.SetActive(false);
 		foreach (PlayerInput input in inputs)
@@ -67,6 +75,11 @@ public class PlayerHealth : Damageable
 	{
 		WorldState.instance.Dead = true;
 
+		FMODUnity.RuntimeManager.PlayOneShot(deathSound, transform.position);
+
+		// stop collisions
+		rb.isKinematic = true;
+
 		HUD.SetActive(false);
 		DeathUI.SetActive(true);
 		foreach (PlayerInput input in inputs)
@@ -77,9 +90,19 @@ public class PlayerHealth : Damageable
 
 	}
 	#endregion
+	
+	public void Heal(float heal)
+	{
+		Health = Mathf.Min(MaxHealth, Health + heal);
+		healthBar.ChangeFill(Health / MaxHealth);
+
+	}
 
 	public override void TakeDamage(Attack atk, Vector3 attackForward)
 	{
+		StopCoroutine("HitVignette");
+		StartCoroutine("HitVignette");
+
 		// stop moving, to hopefully prevent too wacky knockback
 		rb.AddForce(-rb.velocity, ForceMode.VelocityChange);
 
@@ -92,6 +115,20 @@ public class PlayerHealth : Damageable
 			StartCoroutine("HitstunTracker");
 		}
 	}
+
+	IEnumerator HitVignette()
+    {
+		hurtVignette.gameObject.SetActive(true);
+		hurtVignette.weight = vignetteStrength;
+		float inverse_time = 1 / vignetteTime;
+
+		for (; hurtVignette.weight > 0; hurtVignette.weight -= Time.deltaTime * inverse_time)
+			yield return new WaitForEndOfFrame();
+
+		hurtVignette.gameObject.SetActive(false);
+
+    }
+
 	IEnumerator HitstunTracker()
 	{
 		HitStunned = true;

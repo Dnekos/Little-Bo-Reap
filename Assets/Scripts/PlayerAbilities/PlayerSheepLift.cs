@@ -59,10 +59,11 @@ public class PlayerSheepLift : MonoBehaviour
 	public bool StartLifting()
 	{
 		RaycastHit info;
-		Physics.Raycast(transform.position, Vector3.down, out info, 100, LayerMask.GetMask("Ground"));
+		Physics.Raycast(transform.position, Vector3.down, out info, 100, LayerMask.GetMask("Ground"), QueryTriggerInteraction.Ignore);
 
+		Debug.Log(info.collider.gameObject + " " + info.collider.isTrigger);
 		// not enough sheep to make the ladder
-		if (info.distance > sheepHeight * SheepSpacingMod * flocks.GetSheepFlock(SheepTypes.BUILD).Count)
+		if (!info.collider.CompareTag("Sheep") && info.distance > sheepHeight * SheepSpacingMod * flocks.GetSheepFlock(SheepTypes.BUILD).Count)
 			return false;
 
 
@@ -179,7 +180,10 @@ public class PlayerSheepLift : MonoBehaviour
 	private void OnCollisionExit(Collision collision)
 	{
 		if (collision.gameObject == platform)
+		{
 			player.CanLift = false;
+			//CollapseTower();
+		}
 		else if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
 			CollapseTower();
 	}

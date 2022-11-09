@@ -6,11 +6,12 @@ using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [Header("Temp sounds")]
+    [Header("Sounds")]
     [SerializeField] FMODUnity.EventReference jumpSound;
     [SerializeField] FMODUnity.EventReference dashSound;
-	
-    [Header("Movement Variables")]
+	[SerializeField] FMODUnity.StudioEventEmitter walker;
+
+	[Header("Movement Variables")]
     [SerializeField] float maxMoveSpeed;
     [SerializeField] float acceleration;
     [SerializeField] float haltRate;
@@ -31,6 +32,16 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float jumpForce;
     [SerializeField] float fallRate;
     [SerializeField] ParticleSystem jumpParticles;
+    [SerializeField] float superJumpPreventionTimer = 0.1f;
+    bool canJump = true;
+	[SerializeField] float CoyoteTime = 0.2f;
+	float CoyoteTimer;
+
+	// this will need some retooling
+	//[SerializeField] float JumpBufferTime = 0.2f;
+	//float BufferTimer;
+
+
 
 	[Header("Sheep Lift")]
 	[SerializeField] float LiftMaxSpeedModifier = 0.5f;
@@ -42,8 +53,15 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float dashForce;
     [SerializeField] float dashAirborneLiftForce;
     [SerializeField] float dashCooldown = 1f;
+    [SerializeField] int dashChargesMax;
+    int dashChargesCurrent;
+    [SerializeField] float dashTimeToRefillCharges = 2f;
+    float dashCurrentFillTime = 0;
     [SerializeField] ParticleSystem dashTrail;
+    [SerializeField] AbilityIcon dashIcon;
     bool canDash = true;
+    bool dashCharging = false;
+	bool canAirDash = true;
 
     [Header("Dash Slow Time Variables")]
     [SerializeField] float dashSlowTimescale = 0.5f;
@@ -65,7 +83,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Model Orientation")]
     [SerializeField] float modelRotateSpeed = 10f;
     [SerializeField] float orientCheckDistance = 5f;
-    [SerializeField] Transform playerOrientation;
+    public Transform playerOrientation;
     Vector3 modelRotateNormal;
 
     [Header("Animations")]
@@ -100,18 +118,25 @@ public class PlayerMovement : MonoBehaviour
 	}
     void Start()
     {
+
         rb = GetComponent<Rigidbody>();
 		health = GetComponent<PlayerHealth>();
         animator = GetComponent<PlayerAnimationController>().playerAnimator;
 		liftcontroller = GetComponent<PlayerSheepLift>();
 		groundPound = GetComponent<PlayerGroundPound>();
 
+
+        dashChargesCurrent = dashChargesMax;
 	}
 
     private void Update()
     {
-        GroundCheck();
+		Debug.DrawLine(transform.position, transform.position + slopeMoveDirection);
+
+		GroundCheck();
         UpdateAnimation();
+
+        DashCheck();
     }
     private void FixedUpdate()
     {
@@ -131,6 +156,17 @@ public class PlayerMovement : MonoBehaviour
 
         isGrounded = frontCheck || backCheck;
 
+		// coyote counts down when in air, allows for late inputs
+		if (isGrounded)
+		{
+			CoyoteTimer = CoyoteTime;
+		}
+		else
+			CoyoteTimer -= Time.deltaTime;
+
+		if (isGrounded && dashChargesCurrent > 0)
+			canAirDash = true;
+
 		// player should be able to activate lift again once they are back on the ground
 		if (!CanLift && isGrounded)
 			CanLift = true;
@@ -138,7 +174,7 @@ public class PlayerMovement : MonoBehaviour
     void RotatePlayer()
     {
         //am i on a slope?
-        slopeMoveDirection = Vector3.ProjectOnPlane(moveDirection, slopeHit.normal);
+        slopeMoveDirection = Vector3.ProjectOnPlane(moveDirection, slopeHit.normal).normalized;
 
         //rotate the player body
         if (moveValue.magnitude != 0 && moveDirection != Vector3.zero)
@@ -162,11 +198,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, orientCheckDistance, groundLayer))
         {
-            if (slopeHit.normal != Vector3.up)
-            {
-                return true;
-            }
-            else return false;
+			return slopeHit.normal != Vector3.up;
         }
         return false;
     }
@@ -178,18 +210,30 @@ public class PlayerMovement : MonoBehaviour
 
         currentRunTime += Time.deltaTime;
 
-        //do clouds if running and grounded
-        if (isGrounded && isMoving && currentRunTime > timeBetweenRunParticles)
-        {
-            currentRunTime = 0f;
-            runParticles.Play();
-        }
+		//do clouds if running and grounded
+		if (isGrounded && isMoving && currentRunTime > timeBetweenRunParticles)
+		{
+			currentRunTime = 0f;
+			runParticles.Play();
+
+			if (!walker.IsPlaying())
+				walker.Play();
+		}
+
+		// stop playing footsteps when not walking
+		if (walker.IsPlaying() && (!isGrounded || !isMoving || !canDash))
+		{
+			walker.Stop();
+		}
+
 
 		moveDirection = playerOrientation.forward * moveValue.y + playerOrientation.right * moveValue.x;
 
 		if (OnSlope())
         {
-            rb.AddForce(slopeMoveDirection * acceleration);
+			var slopeRotation = Quaternion.FromToRotation(Vector3.up, slopeHit.normal);
+
+            rb.AddForce(slopeRotation * moveDirection * acceleration);
         }
         else
         {
@@ -224,7 +268,7 @@ public class PlayerMovement : MonoBehaviour
 		{
 			rb.velocity = new Vector3(rb.velocity.x, LiftSpeed, rb.velocity.z).normalized * LiftSpeed;
 		}
-		else if (!isGrounded)
+		else
 			rb.AddForce(Vector3.down * fallRate);
     }
 
@@ -236,12 +280,15 @@ public class PlayerMovement : MonoBehaviour
     }
     public void OnJump(InputAction.CallbackContext context)
     {
-		if (isGrounded && context.started)
+		if (CoyoteTimer > 0f && context.started && canJump && !isLifting)
 		{
-			//TEMP SOUND
+            //prevent super jumps
+            StartCoroutine(SuperJumpPrevention());
+
+			// SOUND
 			FMODUnity.RuntimeManager.PlayOneShotAttached(jumpSound, gameObject);
 
-			//play particles
+			// play particles
 			jumpParticles.Play();
 
 			animator.Play(jumpAnimation);
@@ -251,6 +298,7 @@ public class PlayerMovement : MonoBehaviour
 		{
 			if (liftcontroller.StartLifting())
 			{
+                GetComponent<PlayerSheepAbilities>().sheepFlocks[(int)SheepTypes.BUILD].spellParticle.Play(true);
 
 				rb.AddForce(Vector3.down * rb.velocity.y, ForceMode.VelocityChange);
 
@@ -265,16 +313,25 @@ public class PlayerMovement : MonoBehaviour
 			isLifting = false;
 		}
     }
+
+    IEnumerator SuperJumpPrevention()
+    {
+        canJump = false;
+        yield return new WaitForSeconds(superJumpPreventionTimer);
+        canJump = true;
+    }
+
     public void OnDash(InputAction.CallbackContext context)
     {
-        if(canDash && !isLifting && context.started && !health.HitStunned)
+        if(context.started && canDash && canAirDash && !isLifting && !health.HitStunned && dashChargesCurrent > 0)
         {
             canDash = false;
+			canAirDash = false;
 
-            animator.Play(dashAnimation);
+			animator.Play(dashAnimation, 0, 0f);
 
-			//TEMP SOUND
-			FMODUnity.RuntimeManager.PlayOneShotAttached(dashSound,gameObject);
+            // SOUND
+           FMODUnity.RuntimeManager.PlayOneShotAttached(dashSound,gameObject);
 
             //halt player
             rb.AddForce(-rb.velocity, ForceMode.VelocityChange);
@@ -299,7 +356,12 @@ public class PlayerMovement : MonoBehaviour
                 rb.AddForce(moveDirection * dashForce);
             }
 
+            dashChargesCurrent--;
+            dashCurrentFillTime = 0f;
 
+            dashCharging = true;
+
+            dashIcon.CooldownUIEffect(dashTimeToRefillCharges);
             StartCoroutine(DashCooldown());
         }
     }
@@ -315,6 +377,28 @@ public class PlayerMovement : MonoBehaviour
         dashTrail.Stop();
         canDash = true;
     }
+    IEnumerator DashChargeCooldown()
+    {
+        yield return new WaitForSeconds(dashTimeToRefillCharges);
+        dashChargesCurrent = dashChargesMax;
+        Debug.Log("Dash charges filled");
+    }
+
+    void DashCheck()
+    {
+        if(dashCharging)
+        {
+            dashCurrentFillTime += Time.deltaTime;
+
+            if(dashCurrentFillTime >= dashTimeToRefillCharges)
+            {
+                dashChargesCurrent = dashChargesMax;
+                dashCharging = false;
+            }
+        }
+        
+    }
+
     public void DidDashAvoidAttack()
     {
         if (Physics.CheckSphere(transform.position, dashTriggerRadius, enemyAttackLayer))

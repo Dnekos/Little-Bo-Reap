@@ -13,6 +13,6 @@ public class LookSensitivtySlider : MonoBehaviour
     public void ChangeSensitivity()
     {
         playerCam.mouseSensitivity = senitivitySlider.value * playerCam.mouseSensitivityMax;
-        sliderText.text = "Mouse Sensitivity: " + playerCam.mouseSensitivity;
+        sliderText.text = "Mouse Sensitivity: " + (int)playerCam.mouseSensitivity;
     }
 }

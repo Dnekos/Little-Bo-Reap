@@ -81,13 +81,11 @@ public class BattleArena : MonoBehaviour
 
 		Instantiate(particle, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder);
 		yield return new WaitForSeconds(enemy.GetComponent<EnemyAI>().SpawnWaitTime);
-		Instantiate(enemy, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder);
-
+		Instantiate(enemy, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder).GetComponent<EnemyAI>().ToChase();
 	}
 
 	private void OnTriggerEnter(Collider other)
 	{
-		Debug.Log("HEY");
 		if (CurrentWave == -1 && other.gameObject.CompareTag("Player")) // untriggered
 		{
 			DoorsFolder.SetActive(true);

@@ -14795,7 +14795,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5656156271671896534}
   m_LocalRotation: {x: 0.6087604, y: -0, z: -0, w: 0.7933541}
-  m_LocalPosition: {x: 0, y: 8.53, z: 0.8499999}
+  m_LocalPosition: {x: -0, y: 8.83, z: 1.98}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -14814,8 +14814,8 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 0, g: 0.6853483, b: 1, a: 1}
-  m_Intensity: 300
-  m_Range: 15
+  m_Intensity: 350
+  m_Range: 30
   m_SpotAngle: 122.23093
   m_InnerSpotAngle: 30
   m_CookieSize: 10
@@ -14920,7 +14920,7 @@ Transform:
   - {fileID: 5656156271671896537}
   - {fileID: 9011307317795934634}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 150, z: 0}
 --- !u!65 &5656156271694720178
 BoxCollider:
@@ -14951,6 +14951,13 @@ MonoBehaviour:
   onlyInteractableOnce: 1
   sheepType: 0
   flockSizeIncrease: 25
+  Sound:
+    Guid:
+      Data1: 636365892
+      Data2: 1195801325
+      Data3: -2101075267
+      Data4: -1900672583
+    Path: event:/Finished/GraveInteract
   graveParticles: {fileID: 5656156270693600709}
   graveLight: {fileID: 5656156271671896534}
   gravePoof: {fileID: 6008864871704696526}

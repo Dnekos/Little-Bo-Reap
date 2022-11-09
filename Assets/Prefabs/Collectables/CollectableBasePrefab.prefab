@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 6048175850917063764}
   - component: {fileID: 6915857925316740038}
   - component: {fileID: 6551879923446670450}
-  - component: {fileID: -7559429031216494707}
   - component: {fileID: 33123834980676924}
   m_Layer: 0
   m_Name: CollectableBasePrefab
@@ -117,20 +116,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &-7559429031216494707
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6048175850917063721}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d0b58d51ebb9804d87187a3f1457f50, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attractSpeed: 1
-  playerBody: {fileID: 0}
 --- !u!135 &33123834980676924
 SphereCollider:
   m_ObjectHideFlags: 0
