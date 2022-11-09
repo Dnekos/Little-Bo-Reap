@@ -15,8 +15,8 @@ public class PlayerHealth : Damageable
 	float hitstunTimer = 0.2f;
 
 	[Header("Hurt Vignette")]
-	[SerializeField] GameObject hurtVignette;
-	[SerializeField] float vignetteTime = 0.2f;
+	[SerializeField] Volume hurtVignette;
+	[SerializeField] float vignetteStrength = 1, vignetteTime = 0.2f;
 
 
 	[Header("Respawning")]
@@ -111,9 +111,14 @@ public class PlayerHealth : Damageable
 
 	IEnumerator HitVignette()
     {
-		hurtVignette.SetActive(true);
-		yield return new WaitForSeconds(vignetteTime); 
-		hurtVignette.SetActive(false);
+		hurtVignette.gameObject.SetActive(true);
+		hurtVignette.weight = vignetteStrength;
+		float inverse_time = 1 / vignetteTime;
+
+		for (; hurtVignette.weight > 0; hurtVignette.weight -= Time.deltaTime * inverse_time)
+			yield return new WaitForEndOfFrame();
+
+		hurtVignette.gameObject.SetActive(false);
 
     }
 
