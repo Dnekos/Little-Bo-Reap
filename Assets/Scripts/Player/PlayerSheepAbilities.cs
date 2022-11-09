@@ -32,6 +32,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 {
     [Header("UI Test")]
     [SerializeField] TextMeshProUGUI sheepTypeText;
+    [SerializeField] TextMeshProUGUI redText;
     [SerializeField] TextMeshProUGUI flockNumber;
     [SerializeField] Image flockTypeIcon;
 
@@ -61,6 +62,9 @@ public class PlayerSheepAbilities : MonoBehaviour
     [SerializeField] float defaultTimescale = 1;
     [SerializeField] ParticleSystem bellParticles;
     [SerializeField] ParticleSystem bellParticleBurst;
+    [SerializeField] Animator SwapUIAnimator;
+    [SerializeField] string swapAnimationUI;
+    [SerializeField] string noSheepAnimUI;
     bool isInFlockMenu = false;
     float swapContextValue; // i feel like there is a way to not have this non-local
 
@@ -245,6 +249,8 @@ public class PlayerSheepAbilities : MonoBehaviour
             particleModule.startColor = sheepFlocks[currentFlockIndex].UIColor;
             sheepFlocks[currentFlockIndex].flockChangeParticle.Play(true);
 
+            SwapUIAnimator.Play(swapAnimationUI);
+
             UpdateFlockUI();
         }
 		else if (context.canceled && swapContextValue == 1 && isInFlockMenu)
@@ -262,6 +268,8 @@ public class PlayerSheepAbilities : MonoBehaviour
                 var particleModule = bellParticles.main;
                 particleModule.startColor = sheepFlocks[currentFlockIndex].UIColor;
                 sheepFlocks[currentFlockIndex].flockChangeParticle.Play(true);
+
+                SwapUIAnimator.Play(swapAnimationUI);
 
                 UpdateFlockUI();
             }
@@ -302,6 +310,7 @@ public class PlayerSheepAbilities : MonoBehaviour
     {
         flockTypeIcon.sprite = sheepFlocks[(int)currentFlockType].sheepIcon;
         flockNumber.text = sheepFlocks[(int)currentFlockType].currentSize + "/" + sheepFlocks[(int)currentFlockType].MaxSize;
+        redText.text = sheepFlocks[(int)currentFlockType].currentSize + "/" + sheepFlocks[(int)currentFlockType].MaxSize;
         flockNumber.color = sheepFlocks[(int)currentFlockType].UIColor;
     }
 
@@ -621,7 +630,7 @@ public class PlayerSheepAbilities : MonoBehaviour
         }
 
         //CHARGE
-        if(context.started && isPreparingCharge && sheepFlocks[currentFlockIndex].MaxSize > 0)
+        if(context.started && isPreparingCharge && sheepFlocks[(int)SheepTypes.RAM].MaxSize > 0)
         {
             SheepTypes flockType = SheepTypes.RAM;
 
@@ -665,6 +674,8 @@ public class PlayerSheepAbilities : MonoBehaviour
 						GetSheepFlock(flockType)[i]?.BeginCharge(hit.point);
                 }
             }
+
+            //if (sheepFlocks[(int)SheepTypes.RAM].currentSize <= 0) SwapUIAnimator.Play(noSheepAnimUI);
 
             //start cooldown
             canCharge = false;
@@ -732,6 +743,11 @@ public class PlayerSheepAbilities : MonoBehaviour
                 }
                 //start cooldown
                 canAttack = false;
+
+                //no sheep?
+                if (sheepFlocks[currentFlockIndex].currentSize <= 0) SwapUIAnimator.Play(noSheepAnimUI);
+
+
                 //attackIcon.CooldownUIEffect(attackCooldown);
                 StartCoroutine(AttackCooldown());
             }
@@ -1022,9 +1038,10 @@ public class PlayerSheepAbilities : MonoBehaviour
 					}
 				}
 			}
+            else SwapUIAnimator.Play(noSheepAnimUI);
 
-			//start cooldown
-			canLaunch = false;
+            //start cooldown
+            canLaunch = false;
 			//launchIcon.CooldownUIEffect(launchCooldown);
 			StartCoroutine(SheepLaunchCooldown());
 		}
