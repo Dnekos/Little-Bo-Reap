@@ -78,6 +78,19 @@ public class EnemyAI : Damageable
 	// Update is called once per frame
 	protected virtual void Update()
     {
+		if(GetComponent<Animator>()!=null)
+        {
+		if(agent.velocity.magnitude > 1)
+        {
+			GetComponent<Animator>()?.SetBool("isMoving", true);
+        }
+		else
+        {
+			GetComponent<Animator>()?.SetBool("isMoving", false);
+		}
+        }
+		
+
 		if (WorldState.instance.Dead)
 		{
 			DoIdle();

@@ -161,6 +161,7 @@ Transform:
   - {fileID: 426741379166760419}
   - {fileID: 426741377753046947}
   - {fileID: 426741379166052166}
+  - {fileID: 5199182049682783102}
   m_Father: {fileID: 426741378606355000}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -227,6 +228,7 @@ GameObject:
   - component: {fileID: 426741378606355003}
   - component: {fileID: 426741378606355007}
   - component: {fileID: 6649870422154189951}
+  - component: {fileID: 4268591538955714863}
   m_Layer: 12
   m_Name: Enemy_WEAK
   m_TagString: Enemy
@@ -247,7 +249,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 426741378263486879}
-  - {fileID: 5199182049682783102}
   - {fileID: 3171478351851915431}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -387,6 +388,26 @@ CapsuleCollider:
   m_Height: 3
   m_Direction: 1
   m_Center: {x: 0, y: 1.52, z: 0}
+--- !u!95 &4268591538955714863
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 426741378606354996}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d76e2d0ff5ab47f4c996fd67d2c162bd, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &426741379166052167
 GameObject:
   m_ObjectHideFlags: 0
@@ -527,12 +548,12 @@ Transform:
   m_GameObject: {fileID: 2049568724155644797}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.39999998, y: 0.39999998, z: 0.39999998}
+  m_LocalScale: {x: 0.26666665, y: 0.39999998, z: 0.26666665}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4368368180489273121}
   - {fileID: 5078584668114409717}
-  m_Father: {fileID: 426741378606355000}
+  m_Father: {fileID: 426741378263486879}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &698929894327262353
