@@ -145,7 +145,7 @@ public class PlayerSheepAI : Damageable
         //if default state is wander, go wandering
         if (currentSheepState == SheepStates.WANDER)
         {
-            agent.SetDestination(transform.position);
+			SheepSetDestination(transform.position);
             agent.speed = wanderSpeed;
             agent.stoppingDistance = wanderStopDistance;
             currentSheepState = SheepStates.WANDER;
@@ -324,8 +324,20 @@ public class PlayerSheepAI : Damageable
 
 		player.GetComponent<PlayerSheepAbilities>().RemoveSheepFromList(sheepType, this);
 
-        Destroy(gameObject);
+		Destroy(gameObject);
     }
+
+	void SheepSetDestination(Vector3 dest)
+	{
+		if (!agent.isOnNavMesh && !agent.isOnOffMeshLink)
+		{
+			print(gameObject + " failed to find a destination");
+			GibSheep();
+			KillSheep();
+		}
+		else
+			agent.SetDestination(dest);
+	}
 
     public void GibSheep()
     {
@@ -408,8 +420,7 @@ public class PlayerSheepAI : Damageable
             //move away
             agent.speed = avoidPlayerSpeed;
             agent.stoppingDistance = 0;
-            agent.SetDestination(avoidDestination);
-
+			SheepSetDestination(avoidDestination);
             return;
         }
         else if (!isJumping)
@@ -417,15 +428,7 @@ public class PlayerSheepAI : Damageable
             //set speed and follow distance
             agent.speed = baseSpeedCurrent;
             agent.stoppingDistance = agentStoppingDistance;
-			try
-			{
-				agent.SetDestination(player.position);
-			}
-			catch (System.Exception e)
-			{
-				print(gameObject + " failed to find a destination");
-				KillSheep();
-			}
+			SheepSetDestination(player.position);
         }
 
     }
@@ -535,9 +538,9 @@ public class PlayerSheepAI : Damageable
 
     #region Attack
     void DoAttack()
-    {  
-        if(attackTargetCurrent!= null)
-			agent.SetDestination(attackTargetCurrent.transform.position);
+    {
+		if (attackTargetCurrent != null)
+			SheepSetDestination(attackTargetCurrent.transform.position);
 
 
         if (canAttack)
@@ -554,7 +557,7 @@ public class PlayerSheepAI : Damageable
 
                 else
                 {
-                    agent.SetDestination(transform.position);
+					SheepSetDestination(transform.position);
                     transform.LookAt(attackTargetCurrent.transform);
                     animator.Play(attackAnimation);
                     canAttack = false;
@@ -571,7 +574,7 @@ public class PlayerSheepAI : Damageable
                 if (attackTargetCurrent == null)
                 {
                     Debug.Log("Attack target is null, going to wander");
-                    agent.SetDestination(transform.position);
+					SheepSetDestination(transform.position);
                     agent.speed = wanderSpeed;
                     agent.stoppingDistance = wanderStopDistance;
                     currentSheepState = SheepStates.WANDER;

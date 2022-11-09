@@ -2,14 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Collectable : MonoBehaviour
+public abstract class Collectable : MonoBehaviour
 {
     bool isCollected;
     bool isPulled;
     [SerializeField] float attractSpeed;
     [SerializeField] float collectDistance = 1.5f;
     [SerializeField] float attractSpeedIncreaseOverTime = 1f;
-    public GameObject playerBody;
+	[HideInInspector]
+	public GameObject playerBody;
 
     // Start is called before the first frame update
     void Start()
@@ -20,16 +21,10 @@ public class Collectable : MonoBehaviour
     // Update is called once per frame
     virtual protected void OnTriggerEnter(Collider col)
     {
-        if (col.tag == "GrabRadius" && isCollected == false)
+        if ((col.CompareTag("Player") || col.CompareTag("GrabRadius")) && isCollected == false)
         {
-            if (playerBody == null) playerBody = GameManager.Instance.GetPlayer().gameObject;
-            isPulled = true;
-            gameObject.layer = LayerMask.NameToLayer("Collectables");
-            Debug.Log("GrabRadiusTriggered");
-        }
-        if (col.tag == "Player" && isCollected == false)
-        {
-            if (playerBody == null) playerBody = GameManager.Instance.GetPlayer().gameObject;
+            if (playerBody == null)
+				playerBody = GameManager.Instance.GetPlayer().gameObject;
             isPulled = true;
             gameObject.layer = LayerMask.NameToLayer("Collectables");
             Debug.Log("GrabRadiusTriggered");
@@ -57,8 +52,5 @@ public class Collectable : MonoBehaviour
         }
     }
 
-    virtual protected void CollectableEffect()
-    {
-        //put whatever you want the collectable to do in the override of this script
-    }
+	protected abstract void CollectableEffect(); // put whatever you want the collectable to do in the override of this script
 }

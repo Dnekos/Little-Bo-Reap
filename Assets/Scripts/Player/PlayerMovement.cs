@@ -280,7 +280,7 @@ public class PlayerMovement : MonoBehaviour
     }
     public void OnJump(InputAction.CallbackContext context)
     {
-		if (CoyoteTimer > 0f && context.started && canJump)
+		if (CoyoteTimer > 0f && context.started && canJump && !isLifting)
 		{
             //prevent super jumps
             StartCoroutine(SuperJumpPrevention());

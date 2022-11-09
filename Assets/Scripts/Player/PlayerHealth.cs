@@ -90,6 +90,13 @@ public class PlayerHealth : Damageable
 
 	}
 	#endregion
+	
+	public void Heal(float heal)
+	{
+		Health = Mathf.Min(MaxHealth, Health + heal);
+		healthBar.ChangeFill(Health / MaxHealth);
+
+	}
 
 	public override void TakeDamage(Attack atk, Vector3 attackForward)
 	{

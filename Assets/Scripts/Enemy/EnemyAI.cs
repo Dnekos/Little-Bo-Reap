@@ -114,10 +114,22 @@ public class EnemyAI : Damageable
 		}
 	}
 
+	#region UtilityFunctions
 	public EnemyStates GetState()
     {
 		return currentEnemyState;
     }
+	protected void EnemySetDestination(Vector3 dest)
+	{
+		if (!agent.isOnNavMesh && !agent.isOnOffMeshLink)
+		{
+			print(gameObject + " failed to find a destination");
+			base.OnDeath();
+		}
+		else
+			agent.SetDestination(player.position);
+	}
+	#endregion
 
 	void DoIdle()
     {
@@ -149,7 +161,7 @@ public class EnemyAI : Damageable
     void DoChase()
 	{
 		//if (isGrounded)
-			agent.SetDestination(player.position);
+		EnemySetDestination(player.position);
 
 		// if Coroutine is not running, run it
 		QueuedAttack ??= StartCoroutine(AttackCheck());

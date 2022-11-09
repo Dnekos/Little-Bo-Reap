@@ -6,6 +6,7 @@ public class SoulCollectableScript : Collectable
 {
     GameObject soulCounter;
     [SerializeField] int soulValue;
+	[SerializeField] float healingValue = 3;
     // Start is called before the first frame update
     void Start()
     {
@@ -14,8 +15,9 @@ public class SoulCollectableScript : Collectable
     //effect: adds souls equal to value and updates the UI
     protected override void CollectableEffect()
     {
-        //soulCounter.GetComponent<PlayerSoulCounter>().incrementSouls(soulValue);
-        //Debug.Log("OverrideSuccessful");
-        base.CollectableEffect();
+		//soulCounter.GetComponent<PlayerSoulCounter>().incrementSouls(soulValue);
+		Debug.Log("OverrideSuccessful");
+
+		playerBody.GetComponentInChildren<PlayerHealth>().Heal(healingValue);
     }
 }
