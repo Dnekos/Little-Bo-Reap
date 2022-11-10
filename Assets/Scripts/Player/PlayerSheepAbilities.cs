@@ -56,8 +56,9 @@ public class PlayerSheepAbilities : MonoBehaviour
     [Header("Sheep Flock Leaders")]
     public List<PlayerSheepAI> leaderSheep;
 
-    [Header("Sheep Swap Variables")]
-    [SerializeField] PlayerFlockSelectMenu flockSelectMenu;
+	[Header("Sheep Swap Variables")]
+	[SerializeField] GameObject flockSelectMenu;
+	[SerializeField] TextMeshProUGUI[] flockSelectTexts;
     [SerializeField] float flockMenuTimescale = 0.25f;
     [SerializeField] float defaultTimescale = 1;
     [SerializeField] ParticleSystem bellParticles;
@@ -65,6 +66,7 @@ public class PlayerSheepAbilities : MonoBehaviour
     [SerializeField] Animator SwapUIAnimator;
     [SerializeField] string swapAnimationUI;
     [SerializeField] string noSheepAnimUI;
+	Vector2 WheelOpenMousePos;
     bool isInFlockMenu = false;
     float swapContextValue; // i feel like there is a way to not have this non-local
 
@@ -227,6 +229,8 @@ public class PlayerSheepAbilities : MonoBehaviour
 			isInFlockMenu = true;
 
 			//enable flock select menu
+			WheelOpenMousePos = Mouse.current.position.ReadValue();
+
 			Time.timeScale = flockMenuTimescale;
 			Time.fixedDeltaTime = 0.02F * Time.timeScale; //evil physics timescale hack to make it smooth
 			flockSelectMenu.gameObject.SetActive(true);
@@ -255,11 +259,14 @@ public class PlayerSheepAbilities : MonoBehaviour
         }
 		else if (context.canceled && swapContextValue == 1 && isInFlockMenu)
 		{
+			float SelectorAngle = -Vector2.SignedAngle(Vector2.up, Mouse.current.position.ReadValue() - WheelOpenMousePos);
+			int flockToChange = Mod(Mathf.FloorToInt(SelectorAngle / (360 / sheepFlocks.Length)) + 1, sheepFlocks.Length);
+
 			// only change flocks if they have valid sheep
-			if (sheepFlocks[(int)flockSelectMenu.flockToChangeTo].MaxSize > 0)
+			if (sheepFlocks[flockToChange].MaxSize > 0)
 			{
-				currentFlockType = flockSelectMenu.flockToChangeTo;
-				currentFlockIndex = (int)currentFlockType;
+				currentFlockIndex = flockToChange;
+				currentFlockType = (SheepTypes)currentFlockIndex;
 
 				//Debug.Log("Current Flock is: " + currentFlockType);
 				sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
@@ -312,7 +319,10 @@ public class PlayerSheepAbilities : MonoBehaviour
         flockNumber.text = sheepFlocks[(int)currentFlockType].currentSize + "/" + sheepFlocks[(int)currentFlockType].MaxSize;
         redText.text = sheepFlocks[(int)currentFlockType].currentSize + "/" + sheepFlocks[(int)currentFlockType].MaxSize;
         flockNumber.color = sheepFlocks[(int)currentFlockType].UIColor;
-    }
+
+		for (int i = 0; i < sheepFlocks.Length; i++)
+			flockSelectTexts[i].text = sheepFlocks[i].currentSize + "/" + sheepFlocks[i].MaxSize;
+	}
 
     bool CheckIfCloseToLeader(SheepTypes theSheepType)
     {
