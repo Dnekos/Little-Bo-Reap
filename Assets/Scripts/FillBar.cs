@@ -43,6 +43,8 @@ public class FillBar : MonoBehaviour
 
 		GlowPos.anchoredPosition = vertical ? new Vector2(original_y, pos) :
 												new Vector2(pos, original_y);
+		GlowPos.gameObject.SetActive(ratio == 1);
+
 		FillingImage.fillAmount = ratio;
 	}
 
