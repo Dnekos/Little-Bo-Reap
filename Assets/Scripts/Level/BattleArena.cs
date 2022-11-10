@@ -16,11 +16,14 @@ public class BattleArena : MonoBehaviour
 		public GameObject EnemyPrefab;
 		public Transform SpawnPoint; // can be spawned at point or vector, point has priority
 		public Vector3 AlternateSpawn;
+		[Range(1, 10)]
+		public int NumEnemies;
+		public float  RandomRadius;
 	}
 
 	[SerializeField]
-	EnemyWave[] waves;
-	int CurrentWave = -1;
+	protected EnemyWave[] waves;
+	protected int CurrentWave = -1;
 
 	GameObject DoorsFolder;
 	Transform SpawnedEnemiesFolder;
@@ -58,25 +61,29 @@ public class BattleArena : MonoBehaviour
 
 	}
 
-	void AdvanceWave()
+	virtual protected void AdvanceWave()
 	{
 		CurrentWave++;
 		if (CurrentWave == waves.Length) // if all waves done,
-		{
 			DoorsFolder.SetActive(false); // open doors
-		}
 		else
-		{
 			// spawn each enemy
 			foreach (EnemySpawn enemy in waves[CurrentWave].Enemies)
 			{
-				StartCoroutine(SpawnEnemy(enemy.EnemyPrefab, enemy.EnemyPrefab.GetComponent<EnemyAI>().SpawnParticlePrefab, (enemy.SpawnPoint == null) ? enemy.AlternateSpawn : enemy.SpawnPoint.position));
+				Debug.Log(enemy.NumEnemies);
+				for (int i = 0; i < enemy.NumEnemies; i++)
+				{
+					Vector3 SpawnPoint = (enemy.SpawnPoint == null) ? enemy.AlternateSpawn : enemy.SpawnPoint.position;
+					SpawnPoint = SpawnPoint + new Vector3(Random.Range(-enemy.RandomRadius, enemy.RandomRadius), 0, Random.Range(-enemy.RandomRadius, enemy.RandomRadius));
+					StartCoroutine(SpawnEnemy(enemy.EnemyPrefab, enemy.EnemyPrefab.GetComponent<EnemyAI>().SpawnParticlePrefab, SpawnPoint));
+
+				}
 			}
-		}
+				
 
 	}
 
-	IEnumerator SpawnEnemy(GameObject enemy, GameObject particle, Vector3 pos)
+	protected IEnumerator SpawnEnemy(GameObject enemy, GameObject particle, Vector3 pos)
 	{
 
 		Instantiate(particle, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder);
