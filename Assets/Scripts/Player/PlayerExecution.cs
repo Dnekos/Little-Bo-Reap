@@ -89,7 +89,7 @@ public class PlayerExecution : MonoBehaviour
             else
             {
                 sheepToPet = null;
-                currentPetDistance = 999;
+                currentPetDistance = Mathf.Infinity;
 
                 //this is all for sean don't think too hard about it
                 for(int j = 0; j < 3; j++)
@@ -110,7 +110,8 @@ public class PlayerExecution : MonoBehaviour
                 {
                     transform.LookAt(sheepToPet.transform.position);
                     transform.eulerAngles = new Vector3(0, transform.rotation.eulerAngles.y, 0);
-                    anim.playerAnimator.Play(petAnimation);
+                    
+					anim.playerAnimator.Play(petAnimation);
                     sheepToPet.PetSheep();
                 }
             }
