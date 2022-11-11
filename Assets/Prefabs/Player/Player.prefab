@@ -70659,12 +70659,12 @@ MonoBehaviour:
   GothMeterCount: 0
   gothMeterChargeTime: 1
   gothMeterDuration: 7
-  materialParent: {fileID: 8266972903759878792}
-  defaultMat: {fileID: 2100000, guid: dfa25515b018d81408985b26f04e8303, type: 2}
-  gothMat: {fileID: 2100000, guid: 64cb2ab49af31364a91c6504a0b96bf4, type: 2}
   isGothMode: 0
   defaultSaturation: -100
   saturationIncreaseOverTime: 14.29
+  materialParent: {fileID: 8266972903759878792}
+  defaultMat: {fileID: 2100000, guid: dfa25515b018d81408985b26f04e8303, type: 2}
+  gothMat: {fileID: 2100000, guid: 64cb2ab49af31364a91c6504a0b96bf4, type: 2}
   RespawnEvent: {fileID: 11400000, guid: 19937298da8f18b41b1d2572d7bb5bcb, type: 2}
 --- !u!114 &8582151330752332035
 MonoBehaviour:
@@ -124882,6 +124882,11 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: a14d09bb6fab0934fb8576b95c0e2717, type: 2}
     - target: {fileID: 2932611252329966150, guid: 491ec6d47386f9c489310f2bb85ffeb9,
         type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2932611252329966150, guid: 491ec6d47386f9c489310f2bb85ffeb9,
+        type: 3}
       propertyPath: m_Materials.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -124894,7 +124899,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
-      objectReference: {fileID: 2100000, guid: ef088f00a1656c54dbb7c1af3cc1385c, type: 2}
+      objectReference: {fileID: 2100000, guid: 78e51bfd17e4dc24b91ded709f74572b, type: 2}
     - target: {fileID: 2932611252329966150, guid: 491ec6d47386f9c489310f2bb85ffeb9,
         type: 3}
       propertyPath: m_Materials.Array.data[2]

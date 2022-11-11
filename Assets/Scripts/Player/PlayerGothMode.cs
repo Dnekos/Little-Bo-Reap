@@ -16,15 +16,18 @@ public class PlayerGothMode : MonoBehaviour
 	[SerializeField] float GothMeterCount = 0;
     [SerializeField] float gothMeterChargeTime;
     [SerializeField] float gothMeterDuration;
-    [SerializeField] GameObject materialParent;
-    [SerializeField] Material defaultMat;
-    [SerializeField] Material gothMat;
     public bool isGothMode = false;
 
     [Header("Postprocess")]
     [SerializeField] float defaultSaturation = -100f;
     [SerializeField] float saturationIncreaseOverTime = 10f;
     UnityEngine.Rendering.Universal.ColorAdjustments gothSaturation;
+
+	[Header("Materials")]
+	[SerializeField] GameObject materialParent;
+	SkinnedMeshRenderer[] meshes;
+	[SerializeField] Material defaultMat;
+	[SerializeField] Material gothMat;
 
 	[Header("Respawning")]
 	[SerializeField]
@@ -44,6 +47,7 @@ public class PlayerGothMode : MonoBehaviour
 
 		RespawnEvent.listener.AddListener(delegate { ResetGoth(); });
 
+		meshes = materialParent.GetComponentsInChildren<SkinnedMeshRenderer>();
 	}
 
 	void ResetGoth()
@@ -60,8 +64,7 @@ public class PlayerGothMode : MonoBehaviour
     {
         if (isGothMode && GothMeterCount <= 0)
         {
-            SkinnedMeshRenderer[] mats = materialParent.GetComponentsInChildren<SkinnedMeshRenderer>();
-            foreach (SkinnedMeshRenderer mesh in mats)
+            foreach (SkinnedMeshRenderer mesh in meshes)
             {
                 mesh.material = defaultMat;
             }
@@ -102,8 +105,7 @@ public class PlayerGothMode : MonoBehaviour
 
             gothSaturation.saturation.value = defaultSaturation;
 
-            SkinnedMeshRenderer[] mats = materialParent.GetComponentsInChildren<SkinnedMeshRenderer>();
-            foreach(SkinnedMeshRenderer mesh in mats)
+            foreach(SkinnedMeshRenderer mesh in meshes)
             {
                 mesh.material = gothMat;
             }
