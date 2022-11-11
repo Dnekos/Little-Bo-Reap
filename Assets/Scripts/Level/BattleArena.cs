@@ -28,6 +28,10 @@ public class BattleArena : MonoBehaviour
 	GameObject DoorsFolder;
 	Transform SpawnedEnemiesFolder;
 
+	[SerializeField] float slowTimeScale = 0.3f;
+	[SerializeField] float slowTimeAtEnd = 1f;
+	[SerializeField] GameObject slowTimeVolume;
+
 	[Header("Resetting"), SerializeField]
 	GameEvent RespawnPlayer;
 
@@ -64,8 +68,12 @@ public class BattleArena : MonoBehaviour
 	virtual protected void AdvanceWave()
 	{
 		CurrentWave++;
-		if (CurrentWave == waves.Length) // if all waves done,
+		if (CurrentWave == waves.Length)
+		{
+			// if all waves done,
 			DoorsFolder.SetActive(false); // open doors
+			StartCoroutine(EndBattleSlow());
+		}
 		else
 			// spawn each enemy
 			foreach (EnemySpawn enemy in waves[CurrentWave].Enemies)
@@ -98,5 +106,18 @@ public class BattleArena : MonoBehaviour
 			DoorsFolder.SetActive(true);
 			AdvanceWave();
 		}
+	}
+
+	IEnumerator EndBattleSlow()
+    {
+		slowTimeVolume.SetActive(true);
+		Time.timeScale = slowTimeScale;
+		Time.fixedDeltaTime = 0.02F * Time.timeScale;
+
+		yield return new WaitForSeconds(slowTimeAtEnd);
+
+		slowTimeVolume.SetActive(false);
+		Time.timeScale = 1f;
+		Time.fixedDeltaTime = 0.02F * Time.timeScale;
 	}
 }
