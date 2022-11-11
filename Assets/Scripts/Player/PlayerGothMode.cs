@@ -114,4 +114,25 @@ public class PlayerGothMode : MonoBehaviour
             playerSheep.GoGothMode();
         }
     }
+
+
+    public void ForceGothMode()
+    {
+        //TEMP SOUND
+        FMODUnity.RuntimeManager.PlayOneShotAttached(gothSound, gameObject);
+
+        Instantiate(explosion, transform.position, transform.rotation);
+
+        gothSaturation.saturation.value = defaultSaturation;
+
+        SkinnedMeshRenderer[] mats = materialParent.GetComponentsInChildren<SkinnedMeshRenderer>();
+        foreach (SkinnedMeshRenderer mesh in mats)
+        {
+            mesh.material = gothMat;
+        }
+
+
+        isGothMode = true;
+        gothParticles.SetActive(true);
+    }
 }
