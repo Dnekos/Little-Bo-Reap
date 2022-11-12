@@ -321,6 +321,7 @@ public class PlayerSheepAI : Damageable
 			owningConstruct.RemoveSheep(transform);
 			owningConstruct = null;
 		}
+		walker.Stop();
 
 		player.GetComponent<PlayerSheepAbilities>().RemoveSheepFromList(sheepType, this);
 
