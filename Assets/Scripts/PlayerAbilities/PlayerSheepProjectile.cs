@@ -41,9 +41,6 @@ public class PlayerSheepProjectile : MonoBehaviour
 		FMOD.Studio.EventInstance eventInst = FMODUnity.RuntimeManager.CreateInstance(launchSound);
 		FMODUnity.RuntimeManager.AttachInstanceToGameObject(eventInst, this.transform, rb);
 		eventInst.start();
-
-		//FMODUnity.RuntimeManager.PlayOneShotAttached(launchSound, gameObject);
-
 	}
 
 	public void LaunchProjectile()

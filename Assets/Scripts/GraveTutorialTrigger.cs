@@ -42,7 +42,7 @@ public class GraveTutorialTrigger : MonoBehaviour
             {
                 for (int i = 0; i < panelsToEnable.Count; i++)
                 {
-                    Debug.Log("Panel enabled");
+                    //Debug.Log("Panel enabled");
                     panelsToEnable[i].SetActive(true);
                 }
             }
@@ -51,7 +51,7 @@ public class GraveTutorialTrigger : MonoBehaviour
             {
                 for (int i = 0; i < panelsToDisable.Count; i++)
                 {
-                    Debug.Log("Panel enabled");
+                    //Debug.Log("Panel enabled");
                     panelsToDisable[i].SetActive(false);
                 }
             }

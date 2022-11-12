@@ -31,7 +31,10 @@ public class SheepBezier : SheepHolder
 	[SerializeField, Tooltip("How much of a sheep's radius is the height raised when a layer is filled")]
 	float HeightStep = 0.01f;
 
-	[Header ("Collider")]
+	[Header("Collider")]
+	[SerializeField] float ColliderHorzBuffer = 0.7f;
+	[SerializeField] float ColliderVertBuffer = 0.7f;
+
 	[SerializeField] MeshCollider col;
 	Mesh mesh;
 	public List<Vector3> newVertices = new List<Vector3>();
@@ -237,13 +240,9 @@ public class SheepBezier : SheepHolder
 				CurveT += HeightStep * SheepRadius;
 				layerCount++;
 
-
-				// this works but the colliders aren't connected so the player can't easily walk, but at least they cant walk smoothly
-				//GameObject colliderSegment = Instantiate(new GameObject(), CalcCurvePoint(CurveT), Quaternion.LookRotation(Differentiate(CurveT),DoubleDerivative(CurveT)), transform.parent);
-				//colliderSegment.AddComponent<BoxCollider>().size = new Vector3(width,height, Vector3.Distance(colliderSegment.transform.position, CalcCurvePoint(CurveT + (HeightStep * SheepRadius))));
-
 				AddQuad();
 				ConnectTriangles();
+				SetMesh();
 			}
 		}
 		if (RandomCount != 0)
@@ -299,16 +298,16 @@ public class SheepBezier : SheepHolder
 		Vector3 center = CalcCurvePoint(CurveT) - transform.position;
 
 		// bottom left
-		newVertices.Add(center + down * height * (-0.7f - SheepRadius) + right * (-0.7f - SheepRadius) * height);
+		newVertices.Add(center + down * height * (-ColliderVertBuffer - SheepRadius) + right * (-ColliderHorzBuffer - SheepRadius) * height);
 
 		// bottom right
-		newVertices.Add(center + down * height * (-0.7f - SheepRadius) + right * (0.7f + SheepRadius) * height);
+		newVertices.Add(center + down * height * (-ColliderVertBuffer - SheepRadius) + right * (ColliderHorzBuffer + SheepRadius) * height);
 
 		// top left
-		newVertices.Add(center + down * height * (0.7f + SheepRadius) + right * (-0.7f - SheepRadius) * height);
+		newVertices.Add(center + down * height * (ColliderVertBuffer + SheepRadius) + right * (-ColliderHorzBuffer - SheepRadius) * height);
 
 		// top right
-		newVertices.Add(center + down * height * (0.7f + SheepRadius) + right * (0.7f + SheepRadius) * height);
+		newVertices.Add(center + down * height * (ColliderVertBuffer + SheepRadius) + right * (ColliderHorzBuffer + SheepRadius) * height);
 	}
 	void ConnectCap()
 	{
@@ -369,10 +368,6 @@ public class SheepBezier : SheepHolder
 	}
 	void SetMesh()
 	{
-		Debug.Log(newVertices.Count + " " + newTriangles.Count);
-
-		//Debug.Log(newVertices[808] + " " + newTriangles[4824]);
-
 		mesh.Clear();
 		mesh.vertices = newVertices.ToArray();
 		mesh.triangles = newTriangles.ToArray();
@@ -382,7 +377,6 @@ public class SheepBezier : SheepHolder
 		mesh.RecalculateNormals();
 
 		col.sharedMesh = mesh;
-
 	}
 	#endregion
 }

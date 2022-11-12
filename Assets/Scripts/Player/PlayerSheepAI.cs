@@ -106,14 +106,13 @@ public class PlayerSheepAI : Damageable
     [SerializeField] float defendMinHeight = 0f;
     [SerializeField] float defendMaxHeight = 2f;
     [SerializeField] float defendSlerpTime = 5f;
-    //[SerializeField] float defendFrequency = 3f;
-    //[SerializeField] float defendAmplitude = 1f;
     Transform defendPoint;
     bool isMovingToDefend;
 
     [Header("Stun State Variables")]
     [SerializeField] float StunTime = 1;
     [SerializeField] float fallRate = 50;
+	Coroutine hitstunCo;
     bool isGrounded;
     SheepHolder owningConstruct;
 	[HideInInspector] // hold new position so that constructs can query it even if sheep is still lerping to it
@@ -140,7 +139,8 @@ public class PlayerSheepAI : Damageable
 
 
         //check black sheep stuff
-        if (isBlackSheep) blackSheepParticles.SetActive(true);
+        if (isBlackSheep)
+			blackSheepParticles.SetActive(true);
 
         //if default state is wander, go wandering
         if (currentSheepState == SheepStates.WANDER)
@@ -148,7 +148,7 @@ public class PlayerSheepAI : Damageable
 			SheepSetDestination(transform.position);
             agent.speed = wanderSpeed;
             agent.stoppingDistance = wanderStopDistance;
-            currentSheepState = SheepStates.WANDER;
+			SetSheepState(SheepStates.WANDER);
 
             GoWandering();
         }
@@ -332,7 +332,7 @@ public class PlayerSheepAI : Damageable
 	{
 		if (!agent.isOnNavMesh && !agent.isOnOffMeshLink)
 		{
-			print(gameObject + " failed to find a destination");
+			print(gameObject + " failed to find a destination "+isGrounded);
 			GibSheep();
 			KillSheep();
 		}
@@ -362,11 +362,11 @@ public class PlayerSheepAI : Damageable
         // if the sheep is too high up, stun it first so that it gets closer to the ground
         if (!Physics.Raycast(transform.position, Vector3.down, 10, LayerMask.GetMask("Ground")))
         {
-            StartCoroutine(OnHitStun(SheepStates.FOLLOW_PLAYER));
+			SetHitstun(SheepStates.FOLLOW_PLAYER);
             return;
         }
 
-        currentSheepState = SheepStates.FOLLOW_PLAYER;
+		SetSheepState(SheepStates.FOLLOW_PLAYER);
 
         EndConstruct();
     }
@@ -374,9 +374,15 @@ public class PlayerSheepAI : Damageable
     {
         return currentSheepState;
     }
+	public void SetSheepState(SheepStates newstate)
+	{
+		if (hitstunCo != null)
+			StopCoroutine(hitstunCo);
+		currentSheepState = newstate;
+	}
     public bool IsCommandable()
     {
-        return currentSheepState == SheepStates.CHARGE /*|| currentSheepState == SheepStates.DEFEND_PLAYER */|| currentSheepState == SheepStates.FOLLOW_PLAYER || currentSheepState == SheepStates.WANDER;
+        return currentSheepState == SheepStates.CHARGE || currentSheepState == SheepStates.FOLLOW_PLAYER || currentSheepState == SheepStates.WANDER;
     }
     float GetRandomSheepBaseSpeed()
     {
@@ -395,10 +401,8 @@ public class PlayerSheepAI : Damageable
     }
     public override void TakeDamage(Attack atk, Vector3 attackForward)
     {
-        if (atk.DealsHitstun)
-        {
-            StartCoroutine(OnHitStun(SheepStates.WANDER));
-        }
+		if (atk.DealsHitstun)
+			SetHitstun(SheepStates.WANDER);
 
         base.TakeDamage(atk, attackForward);
     }
@@ -436,7 +440,13 @@ public class PlayerSheepAI : Damageable
     #endregion
 
     #region Sheep Stun 
-    IEnumerator OnHitStun(SheepStates stateAfterStun)
+	public void SetHitstun(SheepStates stateAfterStun)
+	{
+		if (hitstunCo != null)
+			StopCoroutine(hitstunCo);
+		hitstunCo = StartCoroutine(OnHitStun(SheepStates.WANDER));
+	}
+	IEnumerator OnHitStun(SheepStates stateAfterStun)
     {
         // save current state and set to Hitstun
         currentSheepState = SheepStates.STUN;
@@ -463,9 +473,10 @@ public class PlayerSheepAI : Damageable
     {
         if (currentSheepState == SheepStates.STUN && collision.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
+			//Debug.Log("sheep collided with " + collision.gameObject);
             isGrounded = true;
-            //rb.isKinematic = true;
-            agent.enabled = true;
+
+			agent.enabled = true;
 
             rb.constraints = RigidbodyConstraints.FreezeAll;
 
@@ -578,7 +589,7 @@ public class PlayerSheepAI : Damageable
 					SheepSetDestination(transform.position);
                     agent.speed = wanderSpeed;
                     agent.stoppingDistance = wanderStopDistance;
-                    currentSheepState = SheepStates.WANDER;
+					SetSheepState(SheepStates.WANDER);
 
                     GoWandering();
                 }
@@ -614,8 +625,8 @@ public class PlayerSheepAI : Damageable
             if (enemy.GetComponent<EnemyAI>() != null && enemy.GetComponent<EnemyAI>().GetState() != EnemyStates.EXECUTABLE) attackTargets?.Add(enemy.GetComponent<EnemyAI>());
         }
 
-        //start attacking!
-        currentSheepState = SheepStates.ATTACK;
+		//start attacking!
+		SetSheepState(SheepStates.ATTACK);
         agent.stoppingDistance = attackStopDistance;
         agent.speed = baseSpeedCurrent;
     }
@@ -651,7 +662,7 @@ public class PlayerSheepAI : Damageable
             isCharging = false;
             agent.speed = wanderSpeed;
             agent.stoppingDistance = wanderStopDistance;
-            currentSheepState = SheepStates.WANDER;
+			SetSheepState(SheepStates.WANDER);
 
             chargeParticles.SetActive(false);
         }
@@ -662,17 +673,16 @@ public class PlayerSheepAI : Damageable
     {
         chargeCheckCurrent += Time.deltaTime;
 
-        //if time is past threshold and our movement velocity is too low, end charge early.
-        if(chargeCheckCurrent > chargeCheckTime && agent.velocity.magnitude <= chargeCheckSpeed)
-        {
-            isCharging = false;
-            agent.speed = wanderSpeed;
-            agent.stoppingDistance = wanderStopDistance;
-            agent.obstacleAvoidanceType = ObstacleAvoidanceType.MedQualityObstacleAvoidance;
-            currentSheepState = SheepStates.WANDER;
-
-            chargeParticles.SetActive(false);
-        }
+		//if time is past threshold and our movement velocity is too low, end charge early.
+		if (chargeCheckCurrent > chargeCheckTime && agent.velocity.magnitude <= chargeCheckSpeed)
+		{
+			isCharging = false;
+			agent.speed = wanderSpeed;
+			agent.stoppingDistance = wanderStopDistance;
+			agent.obstacleAvoidanceType = ObstacleAvoidanceType.MedQualityObstacleAvoidance;
+			SetSheepState(SheepStates.WANDER);
+			chargeParticles.SetActive(false);
+		}
     }
 
     public void BeginCharge(Vector3 theChargePosition)
@@ -710,8 +720,8 @@ public class PlayerSheepAI : Damageable
         agent.stoppingDistance = chargeStopDistance;
         agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
 
-        //set sheep state
-        currentSheepState = SheepStates.CHARGE;
+		//set sheep state
+		SetSheepState(SheepStates.CHARGE);
     }
     #endregion
 
@@ -761,7 +771,7 @@ public class PlayerSheepAI : Damageable
         //set speed
         agent.speed = defendSpeed;
         agent.stoppingDistance = defendStopDistance;
-        currentSheepState = SheepStates.DEFEND_PLAYER;
+		SetSheepState(SheepStates.DEFEND_PLAYER);
     }
 
     public void EndDefendPlayer(GameObject fluffyProjectile)
@@ -776,13 +786,13 @@ public class PlayerSheepAI : Damageable
     #region Sheep Construct / Lift
 	public void StartLift()
 	{
-		currentSheepState = SheepStates.LIFT;
+		SetSheepState(SheepStates.LIFT);
 		agent.enabled = false;
 		rb.isKinematic = true;
 	}
 	public void CancelLift()
 	{
-		currentSheepState = SheepStates.FOLLOW_PLAYER;
+		SetSheepState(SheepStates.FOLLOW_PLAYER);
 		agent.enabled = true;
 
 		rb.constraints = RigidbodyConstraints.FreezeAll;
@@ -795,14 +805,14 @@ public class PlayerSheepAI : Damageable
 		if (kill)
 			KillSheep();
 		else
-			StartCoroutine(OnHitStun(SheepStates.FOLLOW_PLAYER));
+			SetHitstun(SheepStates.FOLLOW_PLAYER);
 	}
 
 	public void DoConstruct(SheepHolder cons, Vector3 newPos)
 	{
 		constructPos = newPos;
 		owningConstruct = cons;
-		currentSheepState = SheepStates.CONSTRUCT;
+		SetSheepState(SheepStates.CONSTRUCT);
 		agent.enabled = false;
 	}
 	public void EndConstruct()
@@ -816,7 +826,7 @@ public class PlayerSheepAI : Damageable
 
 		// if not already changed, make sure its not on CONSTRUCT
 		if (currentSheepState == SheepStates.CONSTRUCT)
-			StartCoroutine(OnHitStun(SheepStates.WANDER));
+			SetHitstun(SheepStates.WANDER);
 	}
 	#endregion
 }

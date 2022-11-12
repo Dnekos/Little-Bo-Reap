@@ -308,7 +308,6 @@ public class EnemyAI : Damageable
 		// give them hitstun
 		if (atk.DealsHitstun)
 		{
-			//StopCoroutine("OnHitStun");
 			StopAllCoroutines();
 			StartCoroutine("OnHitStun");
 		}

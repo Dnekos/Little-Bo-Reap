@@ -314,6 +314,8 @@ public class PlayerMovement : MonoBehaviour
 		}
 		else if (context.canceled && isLifting)
 		{
+			rb.AddForce(Vector3.down * rb.velocity.y, ForceMode.VelocityChange);
+
 			isLifting = false;
 		}
     }

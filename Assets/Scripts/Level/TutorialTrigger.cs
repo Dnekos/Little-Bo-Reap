@@ -20,12 +20,7 @@ public class TutorialTrigger : MonoBehaviour
 	{
 		UIOff = !UIOff;
 		if (UIOff)
-		{
 			tutorialCanvas.SetActive(false);
-			//if (enablesPanel)
-			//	panelToEnable.SetActive(false);
-
-		}
 	}
 
     private void OnTriggerEnter(Collider other)

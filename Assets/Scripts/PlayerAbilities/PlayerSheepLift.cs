@@ -34,7 +34,8 @@ public class PlayerSheepLift : MonoBehaviour
 		rb = GetComponent<Rigidbody>();
 		player = GetComponent<PlayerMovement>();
 		flocks = GetComponent<PlayerSheepAbilities>();
-		sheepHeight = flocks.GetCurrentSheepPrefab(SheepTypes.BUILD).GetComponentInChildren<CapsuleCollider>().height;
+		CapsuleCollider sheepcap = flocks.GetCurrentSheepPrefab(SheepTypes.BUILD).GetComponentInChildren<CapsuleCollider>();
+		sheepHeight = sheepcap.height + sheepcap.radius;
 		RecordedPositions = new List<Vector3>();
 
 		platform = null;
@@ -61,9 +62,11 @@ public class PlayerSheepLift : MonoBehaviour
 		RaycastHit info;
 		Physics.Raycast(transform.position, Vector3.down, out info, 100, LayerMask.GetMask("Ground"), QueryTriggerInteraction.Ignore);
 
-		Debug.Log(info.collider.gameObject + " " + info.collider.isTrigger);
+		Debug.DrawLine(transform.position, info.point, Color.red, 3);
+		Debug.Log("sheep lift attempt at height "+ (info.distance * SheepSpacingMod) +", estimated sheep height is "+ (sheepHeight * flocks.GetSheepFlock(SheepTypes.BUILD).Count));
+		
 		// not enough sheep to make the ladder
-		if (!info.collider.CompareTag("Sheep") && info.distance > sheepHeight * SheepSpacingMod * flocks.GetSheepFlock(SheepTypes.BUILD).Count)
+		if (info.collider.CompareTag("Sheep") || info.collider.gameObject == platform || info.distance * SheepSpacingMod > sheepHeight * flocks.GetSheepFlock(SheepTypes.BUILD).Count)
 			return false;
 
 
@@ -139,8 +142,9 @@ public class PlayerSheepLift : MonoBehaviour
 		}
 
 		platform = new GameObject("Lift Platform");
-		platform.transform.position = RecordedPositions[RecordedPositions.Count - 1];
+		platform.transform.position = transform.position - Vector3.up * PlatformSize.y * 1.05f; //RecordedPositions[RecordedPositions.Count - 1];
 		platform.layer = LayerMask.NameToLayer("Ground");
+		platform.tag = "Sheep";
 		platform.AddComponent<BoxCollider>().size = PlatformSize;
 	}
 
