@@ -292,6 +292,10 @@ public class PlayerMovement : MonoBehaviour
 			jumpParticles.Play();
 
 			animator.Play(jumpAnimation);
+
+			// stop current momentum, then jump
+			if (!canDash) // for jess, it doesnt do this during dashes so that dash jump glitch works still
+				rb.AddForce(Vector3.down * rb.velocity.y, ForceMode.VelocityChange);
 			rb.AddForce(Vector3.up * jumpForce);
 		}
 		else if (context.started && CanLift && !groundPound.isFalling)
