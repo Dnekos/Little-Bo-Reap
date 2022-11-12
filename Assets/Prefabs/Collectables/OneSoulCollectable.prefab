@@ -23,6 +23,16 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6048175850917063764, guid: d48341c11c99a5243b26d1d0891c7d55,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0b2ea1bc7c47c7742bb9fa9603ec61e3, type: 2}
+    - target: {fileID: 6048175850917063765, guid: d48341c11c99a5243b26d1d0891c7d55,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
     - target: {fileID: 6048175850917063766, guid: d48341c11c99a5243b26d1d0891c7d55,
         type: 3}
       propertyPath: m_RootOrder
@@ -110,3 +120,4 @@ MonoBehaviour:
   attractSpeedIncreaseOverTime: 7.5
   playerBody: {fileID: 0}
   soulValue: 1
+  healingValue: 0.5

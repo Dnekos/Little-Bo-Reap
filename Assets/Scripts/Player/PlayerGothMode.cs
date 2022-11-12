@@ -23,6 +23,12 @@ public class PlayerGothMode : MonoBehaviour
     [SerializeField] float saturationIncreaseOverTime = 10f;
     UnityEngine.Rendering.Universal.ColorAdjustments gothSaturation;
 
+	[Header("Materials")]
+	[SerializeField] GameObject materialParent;
+	SkinnedMeshRenderer[] meshes;
+	[SerializeField] Material defaultMat;
+	[SerializeField] Material gothMat;
+
 	[Header("Respawning")]
 	[SerializeField]
 	GameEvent RespawnEvent;
@@ -41,6 +47,7 @@ public class PlayerGothMode : MonoBehaviour
 
 		RespawnEvent.listener.AddListener(delegate { ResetGoth(); });
 
+		meshes = materialParent.GetComponentsInChildren<SkinnedMeshRenderer>();
 	}
 
 	void ResetGoth()
@@ -55,8 +62,14 @@ public class PlayerGothMode : MonoBehaviour
 	//update bar image
 	void Update()
     {
-        if (GothMeterCount <= 0)
+        if (isGothMode && GothMeterCount <= 0)
         {
+            foreach (SkinnedMeshRenderer mesh in meshes)
+            {
+                mesh.material = defaultMat;
+            }
+            Instantiate(explosion, transform.position, transform.rotation);
+
             isGothMode = false;
             gothParticles.SetActive(false);
         }
@@ -92,9 +105,36 @@ public class PlayerGothMode : MonoBehaviour
 
             gothSaturation.saturation.value = defaultSaturation;
 
+            foreach(SkinnedMeshRenderer mesh in meshes)
+            {
+                mesh.material = gothMat;
+            }
+
+
             isGothMode = true;
             gothParticles.SetActive(true);
             playerSheep.GoGothMode();
         }
+    }
+
+
+    public void ForceGothMode()
+    {
+        //TEMP SOUND
+        FMODUnity.RuntimeManager.PlayOneShotAttached(gothSound, gameObject);
+
+        Instantiate(explosion, transform.position, transform.rotation);
+
+        gothSaturation.saturation.value = defaultSaturation;
+
+        SkinnedMeshRenderer[] mats = materialParent.GetComponentsInChildren<SkinnedMeshRenderer>();
+        foreach (SkinnedMeshRenderer mesh in mats)
+        {
+            mesh.material = gothMat;
+        }
+
+
+        isGothMode = true;
+        gothParticles.SetActive(true);
     }
 }

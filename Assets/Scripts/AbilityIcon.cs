@@ -8,6 +8,8 @@ public class AbilityIcon : MonoBehaviour
 {
     float rechargeTime = 1f;
     Image image;
+    bool isFilling = false;
+
 
     private void Start()
     {
@@ -16,11 +18,18 @@ public class AbilityIcon : MonoBehaviour
     private void Update()
     {
         //i know this is sloppy but whatever, needed to test this
-        image.fillAmount += 1.0f / rechargeTime * Time.unscaledDeltaTime;
+        if(isFilling)
+        {
+            image.fillAmount += 1.0f / rechargeTime * Time.unscaledDeltaTime;
+
+            if (image.fillAmount >= 1) isFilling = false;
+        }
+        
     }
 
     public void CooldownUIEffect(float theCooldown)
     {
+        isFilling = true;
         image.fillAmount = 0f;
         rechargeTime = theCooldown;
     }

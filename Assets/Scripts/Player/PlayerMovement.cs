@@ -58,8 +58,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float dashTimeToRefillCharges = 2f;
     float dashCurrentFillTime = 0;
     [SerializeField] ParticleSystem dashTrail;
+    [SerializeField] AbilityIcon dashIcon;
     bool canDash = true;
     bool dashCharging = false;
+	bool canAirDash = true;
 
     [Header("Dash Slow Time Variables")]
     [SerializeField] float dashSlowTimescale = 0.5f;
@@ -161,6 +163,9 @@ public class PlayerMovement : MonoBehaviour
 		}
 		else
 			CoyoteTimer -= Time.deltaTime;
+
+		if (isGrounded && dashChargesCurrent > 0)
+			canAirDash = true;
 
 		// player should be able to activate lift again once they are back on the ground
 		if (!CanLift && isGrounded)
@@ -275,7 +280,7 @@ public class PlayerMovement : MonoBehaviour
     }
     public void OnJump(InputAction.CallbackContext context)
     {
-		if (CoyoteTimer > 0f && context.started && canJump)
+		if (CoyoteTimer > 0f && context.started && canJump && !isLifting)
 		{
             //prevent super jumps
             StartCoroutine(SuperJumpPrevention());
@@ -318,11 +323,12 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnDash(InputAction.CallbackContext context)
     {
-        if(canDash && !isLifting && context.started && !health.HitStunned && dashChargesCurrent > 0)
+        if(context.started && canDash && canAirDash && !isLifting && !health.HitStunned && dashChargesCurrent > 0)
         {
             canDash = false;
+			canAirDash = false;
 
-            animator.Play(dashAnimation, 0, 0f);
+			animator.Play(dashAnimation, 0, 0f);
 
             // SOUND
            FMODUnity.RuntimeManager.PlayOneShotAttached(dashSound,gameObject);
@@ -355,6 +361,7 @@ public class PlayerMovement : MonoBehaviour
 
             dashCharging = true;
 
+            dashIcon.CooldownUIEffect(dashTimeToRefillCharges);
             StartCoroutine(DashCooldown());
         }
     }

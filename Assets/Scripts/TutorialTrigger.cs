@@ -5,6 +5,8 @@ using UnityEngine;
 public class TutorialTrigger : MonoBehaviour
 {
     [SerializeField] GameObject tutorialCanvas;
+    [SerializeField] bool enablesPanel;
+    [SerializeField] GameObject panelToEnable;
 
     private void Awake()
     {
@@ -13,7 +15,11 @@ public class TutorialTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player")) tutorialCanvas.SetActive(true);
+        if (other.CompareTag("Player"))
+        {
+            tutorialCanvas.SetActive(true);
+            if (enablesPanel) panelToEnable.SetActive(true);
+        }
     }
 
     private void OnTriggerExit(Collider other)

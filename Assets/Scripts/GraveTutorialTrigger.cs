@@ -17,7 +17,8 @@ public class GraveTutorialTrigger : MonoBehaviour
     [Header("UI")]
     [SerializeField] bool enablesUI;
     [SerializeField] List<GameObject> panelsToEnable;
-
+    [SerializeField] bool disablesUI;
+    [SerializeField] List<GameObject> panelsToDisable;
 
     private void Update()
     {
@@ -33,7 +34,7 @@ public class GraveTutorialTrigger : MonoBehaviour
                 {
                     Instantiate(spawnPoof, enemiesToSpawn[i].transform.position, Quaternion.identity);
                 }
-                Invoke("SpawnEnemies", 2f);
+                Invoke("SpawnEnemies", 7.5f);
             }
 
             //enable ui elements
@@ -43,6 +44,15 @@ public class GraveTutorialTrigger : MonoBehaviour
                 {
                     Debug.Log("Panel enabled");
                     panelsToEnable[i].SetActive(true);
+                }
+            }
+
+            if(disablesUI)
+            {
+                for (int i = 0; i < panelsToDisable.Count; i++)
+                {
+                    Debug.Log("Panel enabled");
+                    panelsToDisable[i].SetActive(false);
                 }
             }
 

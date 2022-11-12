@@ -180,7 +180,10 @@ public class PlayerSheepLift : MonoBehaviour
 	private void OnCollisionExit(Collision collision)
 	{
 		if (collision.gameObject == platform)
+		{
 			player.CanLift = false;
+			//CollapseTower();
+		}
 		else if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
 			CollapseTower();
 	}
