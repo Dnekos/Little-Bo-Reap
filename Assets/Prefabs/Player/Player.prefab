@@ -70579,6 +70579,7 @@ MonoBehaviour:
   attackCooldown: 1
   attackRadius: 10
   chargePointOffset: {x: 0, y: 5, z: 0}
+  chargeLocalForwardOffset: 8
   sheepChargePointPrefab: {fileID: 1751060722446382379, guid: 9034eb190968b01468884f5079c22703,
     type: 3}
   sheepChargeConfirmPrefab: {fileID: 1751060722446382379, guid: 6f0da326ad30a9447b99176f7e723795,
@@ -112176,7 +112177,6 @@ GameObject:
   - component: {fileID: 7882233914748186751}
   - component: {fileID: 2957353150710697841}
   - component: {fileID: 6982049387805439303}
-  - component: {fileID: 7098081465848298810}
   m_Layer: 5
   m_Name: Sheep_Flock_Select_Menu
   m_TagString: Untagged
@@ -112245,19 +112245,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &7098081465848298810
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7949227887930999156}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6fa4c5a7020a4142be1a105c00efc09, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  flockToChangeTo: 0
 --- !u!1 &7994354624581319597
 GameObject:
   m_ObjectHideFlags: 0
