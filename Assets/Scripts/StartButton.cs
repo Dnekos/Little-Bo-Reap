@@ -9,6 +9,8 @@ public class StartButton : MonoBehaviour
     [SerializeField] List<PlayerSheepAI> menuSheep;
     [SerializeField] GameObject gothExplosion;
     [SerializeField] GameObject gothVolume;
+    [SerializeField] PlayerGothMode theBoPeeper;
+    [SerializeField] Animator boPeeperAnimator;
 
     private void Start()
     {
@@ -23,6 +25,8 @@ public class StartButton : MonoBehaviour
         {
             Instantiate(gothExplosion, menuSheep[i].transform.position, menuSheep[i].transform.rotation);
             menuSheep[i].GothMode();
+            boPeeperAnimator.Play("Bo_Peep_Summon");
+            theBoPeeper.ForceGothMode();
         }
         Invoke("LoadScene", 2f);
     }

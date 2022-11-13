@@ -6,7 +6,7 @@ public class OrientWorldSpaceCanvasToCamera : MonoBehaviour
 {
     void Update()
     {
-		if (Camera.main.enabled)
+		if (Camera.main != null && Camera.main.enabled)
 			transform.LookAt(Camera.main.transform);
     }
 }

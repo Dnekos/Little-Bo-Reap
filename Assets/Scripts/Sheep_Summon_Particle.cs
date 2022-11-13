@@ -6,6 +6,7 @@ public class Sheep_Summon_Particle : MonoBehaviour
 {
     [SerializeField] GameObject crackAndPoof;
 	[SerializeField] FMODUnity.EventReference dirtSound;
+	[SerializeField] int maxSheepBeforeIgnoreParticle = 100;
 
 	GameObject sheepToSpawn;
     SheepTypes sheepType;
@@ -33,9 +34,12 @@ public class Sheep_Summon_Particle : MonoBehaviour
 
 			FMODUnity.RuntimeManager.PlayOneShotAttached(dirtSound, gameObject);
 
+			// only spawn particles if we have low numbers of sheep
+			if (player.sheepFlocks[(int)sheepType].activeSheep.Count < maxSheepBeforeIgnoreParticle)
+				Instantiate(crackAndPoof, spawnPoint, Quaternion.identity);
+
 			//spawn sheep
-			Instantiate(crackAndPoof, spawnPoint, Quaternion.identity);
-            var sheep = Instantiate(sheepToSpawn, spawnPoint, Quaternion.identity) as GameObject;
+			var sheep = Instantiate(sheepToSpawn, spawnPoint, Quaternion.identity) as GameObject;
             player.GetSheepFlock(sheepType).Add(sheep.GetComponent<PlayerSheepAI>());
             player.sheepFlocks[(int)sheepType].currentSize++;
             player.UpdateFlockUI();

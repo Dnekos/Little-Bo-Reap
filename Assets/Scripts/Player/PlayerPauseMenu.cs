@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerPauseMenu : MonoBehaviour
 {
     [SerializeField] GameObject pauseMenu;
+    [SerializeField] GameObject controlMenu;
     public PlayerInput inputs;
     bool isPaused = false;
 
@@ -15,25 +16,31 @@ public class PlayerPauseMenu : MonoBehaviour
     {
         if(context.started)
         {
-            Debug.Log("pause");
-            isPaused = !isPaused;
+            PauseGame();
+        }
+    }
 
-            if(isPaused)
-            {
-                inputs.enabled = false;
-                pauseMenu.SetActive(true);
-                Time.timeScale = 0f;
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
-            }
-            else
-            {
-                inputs.enabled = true;
-                pauseMenu.SetActive(false);
-                Time.timeScale = 1f;
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
-            }
+    public void PauseGame()
+    {
+        Debug.Log("pause");
+        isPaused = !isPaused;
+
+        if (isPaused)
+        {
+            inputs.enabled = false;
+            pauseMenu.SetActive(true);
+            Time.timeScale = 0f;
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
+        else
+        {
+            inputs.enabled = true;
+            controlMenu.SetActive(false);
+            pauseMenu.SetActive(false);
+            Time.timeScale = 1f;
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
         }
     }
 }

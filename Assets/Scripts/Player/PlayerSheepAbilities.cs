@@ -56,8 +56,9 @@ public class PlayerSheepAbilities : MonoBehaviour
     [Header("Sheep Flock Leaders")]
     public List<PlayerSheepAI> leaderSheep;
 
-    [Header("Sheep Swap Variables")]
-    [SerializeField] PlayerFlockSelectMenu flockSelectMenu;
+	[Header("Sheep Swap Variables")]
+	[SerializeField] GameObject flockSelectMenu;
+	[SerializeField] TextMeshProUGUI[] flockSelectTexts;
     [SerializeField] float flockMenuTimescale = 0.25f;
     [SerializeField] float defaultTimescale = 1;
     [SerializeField] ParticleSystem bellParticles;
@@ -65,6 +66,7 @@ public class PlayerSheepAbilities : MonoBehaviour
     [SerializeField] Animator SwapUIAnimator;
     [SerializeField] string swapAnimationUI;
     [SerializeField] string noSheepAnimUI;
+	Vector2 WheelOpenMousePos;
     bool isInFlockMenu = false;
     float swapContextValue; // i feel like there is a way to not have this non-local
 
@@ -99,9 +101,11 @@ public class PlayerSheepAbilities : MonoBehaviour
     Vector3 attackPosition;
     bool isPreparingAttack;
 
-    [Header("Sheep Charge Variables")]
+    [Header("Sheep Stampede Variables")]
     [SerializeField] Vector3 chargePointOffset;
-    [SerializeField] GameObject sheepChargePointPrefab;
+	[SerializeField,Tooltip("How far beyond the point the sheep charge to")]
+	float chargeLocalForwardOffset = 0;
+	[SerializeField] GameObject sheepChargePointPrefab;
     [SerializeField] GameObject sheepChargeConfirmPrefab;
     [SerializeField] LayerMask chargeTargetLayers;
     [SerializeField] string chargeAnimation;
@@ -227,6 +231,8 @@ public class PlayerSheepAbilities : MonoBehaviour
 			isInFlockMenu = true;
 
 			//enable flock select menu
+			WheelOpenMousePos = Mouse.current.position.ReadValue();
+
 			Time.timeScale = flockMenuTimescale;
 			Time.fixedDeltaTime = 0.02F * Time.timeScale; //evil physics timescale hack to make it smooth
 			flockSelectMenu.gameObject.SetActive(true);
@@ -255,11 +261,14 @@ public class PlayerSheepAbilities : MonoBehaviour
         }
 		else if (context.canceled && swapContextValue == 1 && isInFlockMenu)
 		{
+			float SelectorAngle = -Vector2.SignedAngle(Vector2.up, Mouse.current.position.ReadValue() - WheelOpenMousePos);
+			int flockToChange = Mod(Mathf.FloorToInt(SelectorAngle / (360 / sheepFlocks.Length)) + 1, sheepFlocks.Length);
+
 			// only change flocks if they have valid sheep
-			if (sheepFlocks[(int)flockSelectMenu.flockToChangeTo].MaxSize > 0)
+			if (sheepFlocks[flockToChange].MaxSize > 0)
 			{
-				currentFlockType = flockSelectMenu.flockToChangeTo;
-				currentFlockIndex = (int)currentFlockType;
+				currentFlockIndex = flockToChange;
+				currentFlockType = (SheepTypes)currentFlockIndex;
 
 				//Debug.Log("Current Flock is: " + currentFlockType);
 				sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
@@ -312,7 +321,10 @@ public class PlayerSheepAbilities : MonoBehaviour
         flockNumber.text = sheepFlocks[(int)currentFlockType].currentSize + "/" + sheepFlocks[(int)currentFlockType].MaxSize;
         redText.text = sheepFlocks[(int)currentFlockType].currentSize + "/" + sheepFlocks[(int)currentFlockType].MaxSize;
         flockNumber.color = sheepFlocks[(int)currentFlockType].UIColor;
-    }
+
+		for (int i = 0; i < sheepFlocks.Length; i++)
+			flockSelectTexts[i].text = sheepFlocks[i].currentSize + "/" + sheepFlocks[i].MaxSize;
+	}
 
     bool CheckIfCloseToLeader(SheepTypes theSheepType)
     {
@@ -632,55 +644,8 @@ public class PlayerSheepAbilities : MonoBehaviour
         //CHARGE
         if(context.started && isPreparingCharge && sheepFlocks[(int)SheepTypes.RAM].MaxSize > 0)
         {
-            SheepTypes flockType = SheepTypes.RAM;
-
-            //stop charging
-            isPreparingCharge = false;
-
-            //has charged
-            hasCharged = true;
-
-            //play animation
-            animator.Play(chargeAnimation);
-
-            //TEMP SOUND
-            FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound, gameObject);
-
-            //get rid of icon
-            Destroy(sheepChargePoint);
-
-            sheepFlocks[(int)SheepTypes.RAM].spellParticle.Play(true);
-
-
-            //send sheep to point if valid!
-            RaycastHit hit;
-            if (Physics.Raycast(Camera.main.transform.position + chargePointOffset, Camera.main.transform.forward, out hit, Mathf.Infinity, chargeTargetLayers))
-            {
-
-                //instantiate confirm prefab
-                var attackConfirm = Instantiate(sheepChargeConfirmPrefab, hit.point, Quaternion.identity);
-                attackConfirm.transform.rotation = GetComponent<PlayerMovement>().playerOrientation.transform.rotation;
-                ParticleSystem[] particleSystems = attackConfirm.GetComponentsInChildren<ParticleSystem>();
-                foreach (ParticleSystem particle in particleSystems)
-                {
-                    var module = particle.main;
-                    module.startColor = sheepFlocks[(int)flockType].UIColor;
-                }
-
-                for (int i = 0; i < GetSheepFlock(flockType).Count; i++)
-                {
-                    if (GetSheepFlock(flockType)[i].IsCommandable() && 
-						Vector3.Distance(transform.position, GetSheepFlock(flockType)[i].transform.position) <= chargeDistanceToUse)
-						GetSheepFlock(flockType)[i]?.BeginCharge(hit.point);
-                }
-            }
-
-            //if (sheepFlocks[(int)SheepTypes.RAM].currentSize <= 0) SwapUIAnimator.Play(noSheepAnimUI);
-
-            //start cooldown
-            canCharge = false;
-            chargeIcon.CooldownUIEffect(chargeCooldown);
-            StartCoroutine(ChargeCooldown());
+			// shortened for brevity
+			DoStampede();
 
 			// dont bother looking at the next if
 			return;
@@ -709,51 +674,58 @@ public class PlayerSheepAbilities : MonoBehaviour
 
             if (context.canceled)
             {
-                //stop ATTACK
-                isPreparingAttack = false;
-
-                //play animation
-                animator.Play(attackAnimation);
-
-                //TEMP SOUND
-                FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound, gameObject);
-
-                //get rid of icon
-                Destroy(sheepAttackPoint);
-
-               
-
-                //send sheep to point if valid!
-                RaycastHit hit;
-                if (Physics.Raycast(Camera.main.transform.position + attackPointOffset, Camera.main.transform.forward, out hit, Mathf.Infinity, attackTargetLayers))
-                {
-                    //instantiate confirm prefab
-                    var attackConfirm = Instantiate(sheepAttackConfirmPrefab, hit.point, Quaternion.identity);
-                    ParticleSystem[] particleSystems = attackConfirm.GetComponentsInChildren<ParticleSystem>();
-                    foreach (ParticleSystem particle in particleSystems)
-                    {
-                        var module = particle.main;
-                        module.startColor = sheepFlocks[(int)flockType].UIColor;
-                    }
-
-                    for (int i = 0; i < GetSheepFlock(flockType).Count; i++)
-                    {
-                        if (GetSheepFlock(flockType)[i].IsCommandable()) GetSheepFlock(flockType)[i]?.CreateListOfAttackTargets(hit.point, attackRadius);
-                    }
-                }
-                //start cooldown
-                canAttack = false;
-
-                //no sheep?
-                if (sheepFlocks[currentFlockIndex].currentSize <= 0) SwapUIAnimator.Play(noSheepAnimUI);
-
-
-                //attackIcon.CooldownUIEffect(attackCooldown);
-                StartCoroutine(AttackCooldown());
+				DoAttack();
             }
         }
 
     }
+	void DoAttack()
+	{
+		SheepTypes flockType = currentFlockType;
+
+		//stop ATTACK
+		isPreparingAttack = false;
+
+		//play animation
+		animator.Play(attackAnimation);
+
+		//TEMP SOUND
+		FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound, gameObject);
+
+		//get rid of icon
+		Destroy(sheepAttackPoint);
+
+
+
+		//send sheep to point if valid!
+		RaycastHit hit;
+		if (Physics.Raycast(Camera.main.transform.position + attackPointOffset, Camera.main.transform.forward, out hit, Mathf.Infinity, attackTargetLayers))
+		{
+			//instantiate confirm prefab
+			var attackConfirm = Instantiate(sheepAttackConfirmPrefab, hit.point, Quaternion.identity);
+			ParticleSystem[] particleSystems = attackConfirm.GetComponentsInChildren<ParticleSystem>();
+			foreach (ParticleSystem particle in particleSystems)
+			{
+				var module = particle.main;
+				module.startColor = sheepFlocks[(int)flockType].UIColor;
+			}
+
+			for (int i = 0; i < GetSheepFlock(flockType).Count; i++)
+			{
+				if (GetSheepFlock(flockType)[i].IsCommandable()) GetSheepFlock(flockType)[i]?.CreateListOfAttackTargets(hit.point, attackRadius);
+			}
+		}
+		//start cooldown
+		canAttack = false;
+
+		//no sheep?
+		if (sheepFlocks[currentFlockIndex].currentSize <= 0)
+			SwapUIAnimator.Play(noSheepAnimUI);
+
+
+		//attackIcon.CooldownUIEffect(attackCooldown);
+		StartCoroutine(AttackCooldown());
+	}
     void CheckAttack()
     {
         if (isPreparingAttack)
@@ -803,7 +775,59 @@ public class PlayerSheepAbilities : MonoBehaviour
 			}
 		}
 	}
-    void CheckCharge()
+	void DoStampede()
+	{
+		SheepTypes flockType = SheepTypes.RAM;
+
+		//stop charging
+		isPreparingCharge = false;
+
+		//has charged
+		hasCharged = true;
+
+		//play animation
+		animator.Play(chargeAnimation);
+
+		//TEMP SOUND
+		FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound, gameObject);
+
+		//get rid of icon
+		Destroy(sheepChargePoint);
+
+		sheepFlocks[(int)SheepTypes.RAM].spellParticle.Play(true);
+
+
+		//send sheep to point if valid!
+		RaycastHit hit;
+		if (Physics.Raycast(Camera.main.transform.position + chargePointOffset + sheepChargePoint.transform.forward * chargeLocalForwardOffset, Camera.main.transform.forward, out hit, Mathf.Infinity, chargeTargetLayers))
+		{
+
+			//instantiate confirm prefab
+			var attackConfirm = Instantiate(sheepChargeConfirmPrefab, hit.point, Quaternion.identity);
+			attackConfirm.transform.rotation = GetComponent<PlayerMovement>().playerOrientation.transform.rotation;
+			ParticleSystem[] particleSystems = attackConfirm.GetComponentsInChildren<ParticleSystem>();
+			foreach (ParticleSystem particle in particleSystems)
+			{
+				var module = particle.main;
+				module.startColor = sheepFlocks[(int)flockType].UIColor;
+			}
+
+			for (int i = 0; i < GetSheepFlock(flockType).Count; i++)
+			{
+				if (GetSheepFlock(flockType)[i].IsCommandable() &&
+					Vector3.Distance(transform.position, GetSheepFlock(flockType)[i].transform.position) <= chargeDistanceToUse)
+					GetSheepFlock(flockType)[i]?.BeginCharge(hit.point);
+			}
+		}
+
+		//if (sheepFlocks[(int)SheepTypes.RAM].currentSize <= 0) SwapUIAnimator.Play(noSheepAnimUI);
+
+		//start cooldown
+		canCharge = false;
+		chargeIcon.CooldownUIEffect(chargeCooldown);
+		StartCoroutine(ChargeCooldown());
+	}
+	void CheckCharge()
     {
         if(isPreparingCharge)
         {

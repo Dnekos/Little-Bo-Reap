@@ -280,6 +280,8 @@ public class EnemyAI : Damageable
 
 		isGrounded = frontCheck || backCheck;
 
+		Debug.Log(isGrounded);
+
 		if (!agent.enabled && isGrounded)
 		{
 			//rb.isKinematic = true;
@@ -306,7 +308,6 @@ public class EnemyAI : Damageable
 		// give them hitstun
 		if (atk.DealsHitstun)
 		{
-			//StopCoroutine("OnHitStun");
 			StopAllCoroutines();
 			StartCoroutine("OnHitStun");
 		}
