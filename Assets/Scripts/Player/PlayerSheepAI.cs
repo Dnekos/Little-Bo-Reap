@@ -86,13 +86,18 @@ public class PlayerSheepAI : Damageable
     [SerializeField] float chargeSpeed = 35f;
     [SerializeField] float chargePointRadius = 10f;
     [SerializeField] float chargeStopDistance = 0f;
-    [SerializeField] float chargeEndDistance = 1f;
     [SerializeField] float chargeCheckTime = 1f;
     [SerializeField] float chargeCheckSpeed = 2f;
     [SerializeField] SheepAttack chargeAttack;
     [SerializeField] Collider chargeCollider;
     [SerializeField] GameObject chargeParticles;
     [SerializeField] GameObject chargeExplosion;
+
+	//[SerializeField]
+	//float chargeTimeLength = 5;
+	//float chargeTime = 0;
+
+	Vector3 chargeDirection;
     float chargeCheckCurrent = 0;
     Vector3 chargePoint;
     bool isCharging;
@@ -128,7 +133,7 @@ public class PlayerSheepAI : Damageable
         agent = GetComponent<NavMeshAgent>();
         baseSpeedCurrent = GetRandomSheepBaseSpeed();
 
-        player = GameManager.Instance.GetPlayer();
+        player = WorldState.instance.player.transform;
 
         //get random follow stopping distance
         //this prevents sheep from clumping up and getting jittery when in a flock behind player
@@ -658,8 +663,11 @@ public class PlayerSheepAI : Damageable
     #region Charge
     void DoCharge()
     {
-        //if agent reaches charge point, go into wander mode
-        if(Vector3.Distance(transform.position, agent.destination) <= chargeEndDistance)
+		//if agent reaches charge point, go into wander mode
+		UpdateChargeDestination();
+		/*
+		chargeTime += Time.deltaTime;
+		if (chargeTimeLength <= chargeTime)
         {
             isCharging = false;
             agent.speed = wanderSpeed;
@@ -667,7 +675,7 @@ public class PlayerSheepAI : Damageable
 			SetSheepState(SheepStates.WANDER);
 
             chargeParticles.SetActive(false);
-        }
+        }*/
     }
 
     //check here to make sure our sheep arent stuck in charge or caught on something.
@@ -678,6 +686,10 @@ public class PlayerSheepAI : Damageable
 		//if time is past threshold and our movement velocity is too low, end charge early.
 		if (chargeCheckCurrent > chargeCheckTime && agent.velocity.magnitude <= chargeCheckSpeed)
 		{
+			if (isLeader)
+				Debug.Log("stopping charge "+ (chargeCheckCurrent > chargeCheckTime) + " " + (agent.velocity.magnitude <= chargeCheckSpeed));
+			
+
 			isCharging = false;
 			agent.speed = wanderSpeed;
 			agent.stoppingDistance = wanderStopDistance;
@@ -697,34 +709,52 @@ public class PlayerSheepAI : Damageable
         //set timer to 0
         chargeCheckCurrent = 0;
 
-        //set destination
-        //get random point inside radius
-        Vector3 chargePosition = theChargePosition;
-        Vector3 randomPosition = Random.insideUnitSphere * chargePointRadius;
-        randomPosition += theChargePosition;
 
-        //if inside navmesh, charge!
-        if (NavMesh.SamplePosition(randomPosition, out NavMeshHit hit, chargePointRadius, 1))
-        {
-            //get charge
-            chargePosition = hit.position;
 
-            //set agent destination
-            agent.destination = chargePosition;
-        }
-        else
-        {
-            agent.destination = chargePosition;
-        }
+		//set destination
+		chargeDirection = theChargePosition;
+		UpdateChargeDestination();
 
-        //set speed
-        agent.speed = chargeSpeed;
+		//set speed
+		agent.speed = chargeSpeed;
         agent.stoppingDistance = chargeStopDistance;
         agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
 
 		//set sheep state
 		SetSheepState(SheepStates.CHARGE);
     }
+
+	void UpdateChargeDestination()
+	{
+		//set destination
+		//get random point inside radius
+		Vector3 chargePosition = transform.position + chargeDirection * 5;
+
+		//if inside navmesh, charge!
+		if (NavMesh.SamplePosition(chargePosition, out NavMeshHit hit, chargePointRadius, 1))
+		{
+			//get charge
+			chargePosition = hit.position;
+
+			//set agent destination
+			agent.destination = chargePosition;
+		}
+		else
+		{
+
+			if (isLeader)
+				Debug.Log("didn't find a chargepoint");
+			agent.destination = chargePosition;
+
+			// end charge
+			isCharging = false;
+			agent.speed = wanderSpeed;
+			agent.stoppingDistance = wanderStopDistance;
+			agent.obstacleAvoidanceType = ObstacleAvoidanceType.MedQualityObstacleAvoidance;
+			SetSheepState(SheepStates.WANDER);
+			chargeParticles.SetActive(false);
+		}
+	}
     #endregion
 
     #region Defend Player

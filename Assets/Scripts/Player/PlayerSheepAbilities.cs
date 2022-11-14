@@ -103,8 +103,6 @@ public class PlayerSheepAbilities : MonoBehaviour
 
     [Header("Sheep Stampede Variables")]
     [SerializeField] Vector3 chargePointOffset;
-	[SerializeField,Tooltip("How far beyond the point the sheep charge to")]
-	float chargeLocalForwardOffset = 0;
 	[SerializeField] GameObject sheepChargePointPrefab;
     [SerializeField] GameObject sheepChargeConfirmPrefab;
     [SerializeField] LayerMask chargeTargetLayers;
@@ -753,7 +751,7 @@ public class PlayerSheepAbilities : MonoBehaviour
     }
     #endregion
 
-    #region Sheep Charge
+    #region Sheep Stampede
     public void OnSheepCharge(InputAction.CallbackContext context)
     {
 		if (context.started && canCharge && !isPreparingAttack && !isPreparingCharge && GetSheepFlock(SheepTypes.RAM).Count > 0)
@@ -799,24 +797,13 @@ public class PlayerSheepAbilities : MonoBehaviour
 
 		//send sheep to point if valid!
 		RaycastHit hit;
-		if (Physics.Raycast(Camera.main.transform.position + chargePointOffset + sheepChargePoint.transform.forward * chargeLocalForwardOffset, Camera.main.transform.forward, out hit, Mathf.Infinity, chargeTargetLayers))
+		if (Physics.Raycast(Camera.main.transform.position + chargePointOffset, Camera.main.transform.forward, out hit, Mathf.Infinity, chargeTargetLayers))
 		{
-
-			//instantiate confirm prefab
-			var attackConfirm = Instantiate(sheepChargeConfirmPrefab, hit.point, Quaternion.identity);
-			attackConfirm.transform.rotation = GetComponent<PlayerMovement>().playerOrientation.transform.rotation;
-			ParticleSystem[] particleSystems = attackConfirm.GetComponentsInChildren<ParticleSystem>();
-			foreach (ParticleSystem particle in particleSystems)
-			{
-				var module = particle.main;
-				module.startColor = sheepFlocks[(int)flockType].UIColor;
-			}
-
 			for (int i = 0; i < GetSheepFlock(flockType).Count; i++)
 			{
 				if (GetSheepFlock(flockType)[i].IsCommandable() &&
 					Vector3.Distance(transform.position, GetSheepFlock(flockType)[i].transform.position) <= chargeDistanceToUse)
-					GetSheepFlock(flockType)[i]?.BeginCharge(hit.point);
+					GetSheepFlock(flockType)[i]?.BeginCharge((hit.point- transform.position).normalized);
 			}
 		}
 
