@@ -103,6 +103,8 @@ public class PlayerHealth : Damageable
 		StopCoroutine("HitVignette");
 		StartCoroutine("HitVignette");
 
+		Debug.Log("getting attacked lmao");
+
 		// stop moving, to hopefully prevent too wacky knockback
 		rb.AddForce(-rb.velocity, ForceMode.VelocityChange);
 
