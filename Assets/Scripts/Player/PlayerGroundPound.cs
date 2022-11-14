@@ -10,7 +10,6 @@ public class PlayerGroundPound : MonoBehaviour
     [SerializeField] string heavyAirAnimation;
     [SerializeField] float coolDown = 3f;
     [SerializeField] float timeTillSlamDown = 0.25f;
-    [SerializeField] float damageMultiplierPerSecInAir = 3f;
     [SerializeField] float baseGroundDamage = 25f;
     [SerializeField] float baseGroundDamageBlack = 50f;
     Vector3 startFallPos;

@@ -72,7 +72,7 @@ public class EnemyAI : Damageable
 		base.Start();
 		NearbyGuys = new List<Transform>();
 		agent = GetComponent<NavMeshAgent>();
-		player = GameManager.Instance.GetPlayer();
+		player = WorldState.instance.player.transform;
 	}
 
 	// Update is called once per frame

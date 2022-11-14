@@ -114,7 +114,7 @@ public class PlayerMovement : MonoBehaviour
 	private void Awake()
 	{
 		//set this as player in game manager
-		GameManager.Instance.SetPlayer(this.transform);
+		//GameManager.Instance.SetPlayer(this.transform);
 	}
     void Start()
     {

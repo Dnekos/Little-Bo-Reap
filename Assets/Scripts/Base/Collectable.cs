@@ -15,7 +15,7 @@ public abstract class Collectable : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerBody = GameManager.Instance.GetPlayer().gameObject;
+        playerBody = WorldState.instance.player;
     }
 
     // Update is called once per frame
@@ -24,7 +24,7 @@ public abstract class Collectable : MonoBehaviour
         if ((col.CompareTag("Player") || col.CompareTag("GrabRadius")) && isCollected == false)
         {
             if (playerBody == null)
-				playerBody = GameManager.Instance.GetPlayer().gameObject;
+				playerBody = WorldState.instance.player;
             isPulled = true;
             gameObject.layer = LayerMask.NameToLayer("Collectables");
             Debug.Log("GrabRadiusTriggered");
