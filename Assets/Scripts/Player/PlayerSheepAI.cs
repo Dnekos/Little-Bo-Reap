@@ -208,6 +208,8 @@ public class PlayerSheepAI : Damageable
 			walker.Play();
 		else if (!agent.enabled || agent.velocity.magnitude <= 0.5f)
 			walker.Stop();
+		walker.SetParameter("Speed", agent.velocity.magnitude);
+
 
         //state machine
         switch (currentSheepState)

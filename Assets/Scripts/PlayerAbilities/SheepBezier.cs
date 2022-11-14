@@ -45,7 +45,7 @@ public class SheepBezier : SheepHolder
 
 	private void Start()
 	{
-		col.sharedMaterial = null;
+		col.sharedMesh = null;
 
 		containedSheep = new List<Transform>();
 		mesh = new Mesh();
@@ -85,12 +85,13 @@ public class SheepBezier : SheepHolder
 
 	public override void RemoveSheep(Transform sheep)
 	{
-		if (col.sharedMaterial != null)
+		if (col.sharedMesh != null)
 		{
-			col.sharedMaterial = null;
 			newTriangles.Clear();
 			newVertices.Clear();
 			mesh.Clear();
+
+			col.sharedMesh = null;
 		}
 
 		StopAllCoroutines();
@@ -100,7 +101,7 @@ public class SheepBezier : SheepHolder
 
 	public void RemoveAll()
 	{
-		col.sharedMaterial = null;
+		col.sharedMesh = null;
 		newTriangles.Clear();
 		newVertices.Clear();
 		mesh.Clear();

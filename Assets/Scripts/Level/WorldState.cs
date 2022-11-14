@@ -18,11 +18,15 @@ public class WorldState : MonoBehaviour
 	[SerializeField] GameEvent Respawn;
 
 	public float currentScore = 0;
-
 	float checkedScore = 0;
+
+	[Header("Cinematic"), SerializeField] GameEvent MusicToggle;
+	bool UIOff = false;
+	FMODUnity.StudioEventEmitter music;
+
 	int deaths = 0;
 
-
+	[HideInInspector]
 	public GameObject player;
 
 	// Start is called before the first frame update
@@ -36,8 +40,27 @@ public class WorldState : MonoBehaviour
 
 			Debug.Log("made World Instance");
 			//StopSong.Post(gameObject);
-			//PlaySong.Post(gameObject);
+			//PlaySong.Post(gameObject);\
+			MusicToggle.listener.AddListener(delegate { Toggle(); });
+			music = GetComponent<FMODUnity.StudioEventEmitter>();
+
+			// default settings
+			PlayerCameraFollow cam = FindObjectOfType<PlayerCameraFollow>();
+			cam.mouseSensitivity = PlayerPrefs.GetFloat("sensitivity", 1) * cam.mouseSensitivityMax;
+			FMOD.Studio.Bus myBus = FMODUnity.RuntimeManager.GetBus("bus:/SFX");
+			myBus.setVolume(PlayerPrefs.GetFloat("sfx", 1));
+			myBus = FMODUnity.RuntimeManager.GetBus("bus:/Music");
+			myBus.setVolume(PlayerPrefs.GetFloat("music", 1));
 		}
+	}
+
+	void Toggle()
+	{
+		UIOff = !UIOff;
+		if (UIOff)
+			music.Stop();
+		else
+			music.Play();
 	}
 
 	public void SetSpawnPoint(Checkpoint point)
