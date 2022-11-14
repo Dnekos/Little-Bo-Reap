@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.15602925, g: 0.3119116, b: 0.47769707, a: 1}
+  m_IndirectSpecularColor: {r: 0.15601343, g: 0.31189933, b: 0.47769707, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -11517,6 +11517,7 @@ GameObject:
   m_Component:
   - component: {fileID: 348259049}
   - component: {fileID: 348259050}
+  - component: {fileID: 348259051}
   m_Layer: 0
   m_Name: WorldState
   m_TagString: Untagged
@@ -11560,7 +11561,38 @@ MonoBehaviour:
   activeSpawnPoint: -1
   Respawn: {fileID: 11400000, guid: 19937298da8f18b41b1d2572d7bb5bcb, type: 2}
   currentScore: 0
+  MusicToggle: {fileID: 11400000, guid: 9bd00c9cd9464204d8a6799a3e7142d3, type: 2}
   player: {fileID: 0}
+--- !u!114 &348259051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 348259048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1637806147
+      Data2: 1330873044
+      Data3: 2050376077
+      Data4: 1122967596
+    Path: event:/Music/World Music
+  Event: 
+  PlayEvent: 1
+  StopEvent: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!43 &353292397
 Mesh:
   m_ObjectHideFlags: 0
@@ -40936,7 +40968,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh50918
+  m_Name: pb_Mesh28234
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -75983,12 +76015,6 @@ PrefabInstance:
       propertyPath: m_Center.z
       value: 13.03
       objectReference: {fileID: 0}
-    - target: {fileID: 5561093752755310166, guid: cd15df9b0f33bc4469ec6bc54ac69457,
-        type: 3}
-      propertyPath: UIToggle
-      value: 
-      objectReference: {fileID: 11400000, guid: a9b6a379a82367946a4e2467c272569b,
-        type: 2}
     m_RemovedComponents: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 5561093751769215164, guid: cd15df9b0f33bc4469ec6bc54ac69457,

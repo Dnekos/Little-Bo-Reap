@@ -94504,6 +94504,7 @@ MonoBehaviour:
   - {fileID: 2687122356230286742}
   UI: {fileID: 5723843503518091983}
   UIToggle: {fileID: 11400000, guid: a9b6a379a82367946a4e2467c272569b, type: 2}
+  MusicToggle: {fileID: 11400000, guid: 9bd00c9cd9464204d8a6799a3e7142d3, type: 2}
 --- !u!114 &5284923278688455130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94630,6 +94631,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 727a08d8-8b18-40e9-8c97-e1eeec386726
     m_ActionName: CinematicCameras/ToggleUI[/Keyboard/0]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1199978496640173548}
+        m_TargetAssemblyTypeName: CinematicCameras, Assembly-CSharp
+        m_MethodName: OnToggleMusic
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 421454de-18e2-4b3c-8d51-edd04bb6ccca
+    m_ActionName: CinematicCameras/ToggleMusic[/Keyboard/minus,/Keyboard/equals]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: CinematicCameras

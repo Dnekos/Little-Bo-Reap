@@ -9,9 +9,10 @@ public class CinematicCameras : MonoBehaviour
 	[SerializeField] Canvas UI;
 	int activeCam = 0;
 	[SerializeField] GameEvent UIToggle;
+	[SerializeField] GameEvent MusicToggle;
 
-    // Start is called before the first frame update
-    void Start()
+	// Start is called before the first frame update
+	void Start()
     {
 		Cameras[0].enabled = true;
 		for (int i = 1; i < Cameras.Length; i++)
@@ -37,5 +38,8 @@ public class CinematicCameras : MonoBehaviour
 		UI.enabled = !UI.enabled;
 		UIToggle.listener.Invoke();
 	}
-
+	public void OnToggleMusic(InputAction.CallbackContext context)
+	{
+		MusicToggle.listener.Invoke();
+	}
 }
