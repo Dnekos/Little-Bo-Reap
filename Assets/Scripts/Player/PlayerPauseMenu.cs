@@ -25,9 +25,12 @@ public class PlayerPauseMenu : MonoBehaviour
         Debug.Log("pause");
         isPaused = !isPaused;
 
+		FMOD.Studio.Bus myBus = FMODUnity.RuntimeManager.GetBus("bus:/SFX");
+
         if (isPaused)
         {
-            inputs.enabled = false;
+			myBus.setPaused(true);
+			inputs.enabled = false;
             pauseMenu.SetActive(true);
             Time.timeScale = 0f;
             Cursor.visible = true;
@@ -35,7 +38,9 @@ public class PlayerPauseMenu : MonoBehaviour
         }
         else
         {
-            inputs.enabled = true;
+			myBus.setPaused(false);
+
+			inputs.enabled = true;
             controlMenu.SetActive(false);
             pauseMenu.SetActive(false);
             Time.timeScale = 1f;

@@ -35,7 +35,7 @@ public class BigGuyAI : EnemyAI
 		base.Update();
 
 		// if healthbar is active, billboard it
-		if (Health != MaxHealth)
+		if (HealthBarCanvas.activeSelf && Health != MaxHealth)
 			HealthBarCanvas.transform.LookAt(Camera.main.transform);
 	}
 
@@ -44,7 +44,7 @@ public class BigGuyAI : EnemyAI
 		base.TakeDamage(atk, attackForward);
 
 		// when taking damage, open healthbar
-		if (Health != MaxHealth)
+		if (Health != MaxHealth && Health > executionHealthThreshhold)
 		{
 			HealthBarCanvas.SetActive(true);
 			float healthbarScale = 1 - (Health / MaxHealth);

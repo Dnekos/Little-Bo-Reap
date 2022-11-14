@@ -43,6 +43,14 @@ public class WorldState : MonoBehaviour
 			//PlaySong.Post(gameObject);\
 			MusicToggle.listener.AddListener(delegate { Toggle(); });
 			music = GetComponent<FMODUnity.StudioEventEmitter>();
+
+			// default settings
+			PlayerCameraFollow cam = FindObjectOfType<PlayerCameraFollow>();
+			cam.mouseSensitivity = PlayerPrefs.GetFloat("sensitivity", 1) * cam.mouseSensitivityMax;
+			FMOD.Studio.Bus myBus = FMODUnity.RuntimeManager.GetBus("bus:/SFX");
+			myBus.setVolume(PlayerPrefs.GetFloat("sfx", 1));
+			myBus = FMODUnity.RuntimeManager.GetBus("bus:/Music");
+			myBus.setVolume(PlayerPrefs.GetFloat("music", 1));
 		}
 	}
 

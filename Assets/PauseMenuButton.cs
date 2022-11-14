@@ -6,7 +6,8 @@ public class PauseMenuButton : MonoBehaviour
 {
     [SerializeField] PlayerPauseMenu pp; //hehe
     [SerializeField] GameObject panel;
-    public void ResumeGame()
+
+	public void ResumeGame()
     {
         pp.PauseGame();
     }
