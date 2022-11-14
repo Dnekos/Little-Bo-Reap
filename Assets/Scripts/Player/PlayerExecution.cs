@@ -13,6 +13,7 @@ public class PlayerExecution : MonoBehaviour
 
     [Header("Execution Command Variables")]
     [SerializeField] float executeRadius = 10f;
+	[SerializeField] Vector3 CameraOffset;
     [SerializeField] LayerMask enemyExecuteLayer;
     public List<EnemyAI> executableEnemies;
 
@@ -37,7 +38,6 @@ public class PlayerExecution : MonoBehaviour
         //when you press the execute key
         if(context.started)
         {
-
             //look for an interactable object first
             Collider[] interactables = Physics.OverlapSphere(transform.position, interactRadius, interactLayer);
             foreach(Collider interactable in interactables)
