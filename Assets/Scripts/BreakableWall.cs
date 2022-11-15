@@ -7,7 +7,10 @@ public class BreakableWall : MonoBehaviour
     [SerializeField] int health = 3;
     [SerializeField] GameObject gibs;
 
-    public void DamageWall()
+	[Header("Sounds")]
+	[SerializeField] FMODUnity.EventReference breakSound;
+
+	public void DamageWall()
     {
         health--;
         if (health <= 0) BreakWall();
@@ -15,7 +18,8 @@ public class BreakableWall : MonoBehaviour
 
     void BreakWall()
     {
-        Instantiate(gibs, transform.position, transform.rotation);
+		FMODUnity.RuntimeManager.PlayOneShot(breakSound, transform.position);
+		Instantiate(gibs, transform.position, transform.rotation);
         Destroy(gameObject);
     }
 }
