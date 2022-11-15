@@ -175,7 +175,9 @@ public class EnemyAI : Damageable
     void DoChase()
 	{
 		// double check that there are no null sheep (possibly could happen if they are killed in the radius)
-		NearbyGuys.RemoveAll(item => item == null);
+		NearbyGuys.RemoveAll(item => item == null || 
+			(item.GetComponent<PlayerSheepAI>() != null && // if sheep is construct/lift
+			(item.GetComponent<PlayerSheepAI>().GetSheepState()  == SheepStates.CONSTRUCT || item.GetComponent<PlayerSheepAI>().GetSheepState() == SheepStates.LIFT))); 
 
 		// if there are sheep near it, follow them instead
 		if (NearbyGuys.Count >= SheepToDistract)
