@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 public class WorldState : MonoBehaviour
 {
@@ -68,6 +69,16 @@ public class WorldState : MonoBehaviour
 		activeSpawnPoint = System.Array.FindIndex<Checkpoint>(SpawnPoints, spawnpoint => spawnpoint == point);
 		checkedScore = currentScore;
 	}
+
+	public void OnSpawnNextSpawnPoint(InputAction.CallbackContext context)
+	{
+		if (context.performed)
+		{
+			activeSpawnPoint = Mathf.Min(activeSpawnPoint + 1, SpawnPoints.Length - 1);
+			Respawn.listener.Invoke();
+		}
+	}
+
 
 	void RespawnPlayer()
 	{
