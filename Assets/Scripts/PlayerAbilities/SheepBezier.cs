@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public class SheepBezier : SheepHolder
 {
@@ -21,6 +22,7 @@ public class SheepBezier : SheepHolder
 	[Header("Shown for Debug Visibility")]
 	float SheepRadius = 1;
 	[SerializeField]  int layerCount = 0;
+	[SerializeField] bool SaveToDatabase = false;
 	//[SerializeField]  Vector3 sheepPlacement;
 
 	[Header("Settings")]
@@ -161,6 +163,12 @@ public class SheepBezier : SheepHolder
 				CurveT = 0;// + SheepRadius;
 				AddQuad();
 				ConnectCap();
+				#if UNITY_EDITOR
+				if (SaveToDatabase)
+				{
+					AssetDatabase.CreateAsset(mesh, "Assets/BridgeMesh.mesh");
+				}
+				#endif
 			}
 
 			// add the little guy
@@ -179,6 +187,12 @@ public class SheepBezier : SheepHolder
 		}
 		ConnectCap();
 		SetMesh();
+#if UNITY_EDITOR
+		if (SaveToDatabase)
+		{
+			AssetDatabase.CreateAsset(mesh, "Assets/BridgeMesh.mesh");
+		}
+#endif
 	}
 
 	void AddSheep(Transform newSheep)

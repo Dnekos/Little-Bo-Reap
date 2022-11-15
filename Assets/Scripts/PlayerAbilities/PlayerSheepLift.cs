@@ -60,13 +60,13 @@ public class PlayerSheepLift : MonoBehaviour
 	public bool StartLifting()
 	{
 		RaycastHit info;
-		Physics.Raycast(transform.position, Vector3.down, out info, 100, LayerMask.GetMask("Ground"), QueryTriggerInteraction.Ignore);
+		bool hitGround = Physics.Raycast(transform.position, Vector3.down, out info, 100, LayerMask.GetMask("Ground"), QueryTriggerInteraction.Ignore);
 
 		Debug.DrawLine(transform.position, info.point, Color.red, 3);
 		Debug.Log("sheep lift attempt at height "+ (info.distance * SheepSpacingMod) +", estimated sheep height is "+ (sheepHeight * flocks.GetSheepFlock(SheepTypes.BUILD).Count));
 		
 		// not enough sheep to make the ladder
-		if (info.collider.CompareTag("Sheep") || info.collider.gameObject == platform || info.distance * SheepSpacingMod > sheepHeight * flocks.GetSheepFlock(SheepTypes.BUILD).Count)
+		if (!hitGround || info.distance * SheepSpacingMod > sheepHeight * flocks.GetSheepFlock(SheepTypes.BUILD).Count || info.collider.CompareTag("Sheep") || info.collider.gameObject == platform)
 			return false;
 
 

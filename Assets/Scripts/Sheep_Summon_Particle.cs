@@ -41,7 +41,6 @@ public class Sheep_Summon_Particle : MonoBehaviour
 			//spawn sheep
 			var sheep = Instantiate(sheepToSpawn, spawnPoint, Quaternion.identity) as GameObject;
             player.GetSheepFlock(sheepType).Add(sheep.GetComponent<PlayerSheepAI>());
-            player.sheepFlocks[(int)sheepType].currentSize++;
             player.UpdateFlockUI();
 
             //determine if it's a black sheep
