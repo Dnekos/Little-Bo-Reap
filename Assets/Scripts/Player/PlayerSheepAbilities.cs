@@ -442,8 +442,8 @@ public class PlayerSheepAbilities : MonoBehaviour
 
 			for (int i = spawnParticles.Count - 1; i >= 0; i--)
 			{
-				// ignore list slots that are null (dead sheep)
-				if (spawnParticles[i] != null)
+				// ignore list slots that are null 
+				if (spawnParticles[i] != null && spawnParticles[i].GetComponent<Sheep_Summon_Particle>().sheepType == flockType)
 				{
 					Destroy(spawnParticles[i]);
 				}

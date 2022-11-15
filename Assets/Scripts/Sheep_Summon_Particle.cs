@@ -9,7 +9,7 @@ public class Sheep_Summon_Particle : MonoBehaviour
 	[SerializeField] int maxSheepBeforeIgnoreParticle = 100;
 
 	GameObject sheepToSpawn;
-    SheepTypes sheepType;
+    [HideInInspector] public SheepTypes sheepType;
     float lerpSpeed = 5f;
     Vector3 spawnPoint;
     PlayerSheepAbilities player;
