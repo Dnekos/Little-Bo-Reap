@@ -47,7 +47,8 @@ public class WorldState : MonoBehaviour
 
 			// default settings
 			PlayerCameraFollow cam = FindObjectOfType<PlayerCameraFollow>();
-			cam.mouseSensitivity = PlayerPrefs.GetFloat("sensitivity", 1) * cam.mouseSensitivityMax;
+			if (cam != null)
+				cam.mouseSensitivity = PlayerPrefs.GetFloat("sensitivity", 1) * cam.mouseSensitivityMax;
 			FMOD.Studio.Bus myBus = FMODUnity.RuntimeManager.GetBus("bus:/SFX");
 			myBus.setVolume(PlayerPrefs.GetFloat("sfx", 1));
 			myBus = FMODUnity.RuntimeManager.GetBus("bus:/Music");

@@ -12,7 +12,10 @@ public class StartButton : MonoBehaviour
     [SerializeField] PlayerGothMode theBoPeeper;
     [SerializeField] Animator boPeeperAnimator;
 
-    private void Start()
+	[Header("Sounds")]
+	[SerializeField] FMODUnity.EventReference clickSound;
+
+	private void Start()
     {
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
@@ -20,7 +23,9 @@ public class StartButton : MonoBehaviour
 
     public void StartGame()
     {
-        gothVolume.SetActive(true);
+		FMODUnity.RuntimeManager.PlayOneShot(clickSound);
+
+		gothVolume.SetActive(true);
         for(int i = 0; i < menuSheep.Count; i++)
         {
             Instantiate(gothExplosion, menuSheep[i].transform.position, menuSheep[i].transform.rotation);
