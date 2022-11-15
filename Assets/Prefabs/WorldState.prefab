@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4016259675076083574}
   - component: {fileID: 4016259675076083573}
   - component: {fileID: 4016259675076083572}
+  - component: {fileID: 3365873462784824161}
   m_Layer: 0
   m_Name: WorldState
   m_TagString: Untagged
@@ -82,3 +83,114 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &3365873462784824161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4016259675076083575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 8fe16c4b43117424da9582a7a48789b4,
+    type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9aa03caf-92f3-44bc-9759-0f80adc7f3bd
+    m_ActionName: PlayerMovement/WASDMovement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 36abf3f6-e746-48a3-bd04-791a62adb8f1
+    m_ActionName: PlayerMovement/Jump[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e1211aa8-4046-4a8c-bf04-58603676129c
+    m_ActionName: PlayerMovement/Dash[/Keyboard/shift]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: a6eca5f5-b4ce-4f87-b4b0-67cbf3be8da7
+    m_ActionName: PlayerMovement/SummonSheep[/Keyboard/r]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 90d9266a-db84-4e15-a7a5-eb0ac7b38f73
+    m_ActionName: PlayerMovement/RecallSheep[/Keyboard/f]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b5e0f688-f74e-4c19-be91-ee2e61a3c217
+    m_ActionName: PlayerMovement/SheepAttack[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c00b0f8d-1ae7-4803-ac2f-1bfa7399fd8e
+    m_ActionName: PlayerMovement/SheepCharge[/Keyboard/1]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 4a884deb-20d3-4d2d-ad28-8b437cd7911d
+    m_ActionName: PlayerMovement/SheepDefend[/Keyboard/2]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 31bb77aa-fa27-4092-8373-921feaf5562f
+    m_ActionName: PlayerMovement/LaunchSheep[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 735a6ce6-7551-405d-a3a9-54ce15ed6fd0
+    m_ActionName: PlayerMovement/GroundPound[/Keyboard/ctrl,/Keyboard/c]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 4a6a57a9-3ec2-4a16-9344-e2f236e81c20
+    m_ActionName: PlayerMovement/ChangeFlock[/Mouse/middleButton,/Mouse/scroll/down,/Mouse/scroll/up,/Keyboard/tab]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 80238228-5c71-489b-9d37-0b4210825d8b
+    m_ActionName: PlayerMovement/GothMode[/Keyboard/q]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: dba34b27-d5db-4088-9dfd-b9e8bbb33e1d
+    m_ActionName: PlayerMovement/Execute[/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 4dfd2a40-9301-4cfb-93b9-9991e2e4a4ab
+    m_ActionName: PlayerMenu/PauseMenu[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 69cc146f-1176-465e-8891-58ba71261dc3
+    m_ActionName: PlayerMenu/DEBUG_Quit_Game[/Keyboard/equals]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 4b3eee06-5db7-4006-a3b4-dc1b721ea95c
+    m_ActionName: PlayerMenu/DEBUG_Restart_Scene[/Keyboard/p]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c695fcfb-8769-4fb5-b8b8-9cbdc0cab715
+    m_ActionName: PlayerMenu/CameraMovement[/Mouse/delta]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0b8923f4-4cc2-443b-be5f-def5128f4988
+    m_ActionName: CinematicCameras/Cameras[/Keyboard/3,/Keyboard/4,/Keyboard/5,/Keyboard/6,/Keyboard/7,/Keyboard/8,/Keyboard/9]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 727a08d8-8b18-40e9-8c97-e1eeec386726
+    m_ActionName: CinematicCameras/ToggleUI[/Keyboard/0]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 421454de-18e2-4b3c-8d51-edd04bb6ccca
+    m_ActionName: CinematicCameras/ToggleMusic[/Keyboard/minus,/Keyboard/equals]
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: CinematicCameras
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
