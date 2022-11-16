@@ -434,6 +434,15 @@ public class PlayerMovement : MonoBehaviour
 		Color uiCol = new Color(slowTimeUI.color.r, slowTimeUI.color.g, slowTimeUI.color.b, slowUIOpacity);
 		slowTimeUI.color = uiCol;
 
+		yield return new WaitForSecondsRealtime(dashSlowLength);
+
+		gameObject.layer = LayerMask.NameToLayer("Player");
+		Time.timeScale = defaultTimescale;
+		Time.fixedDeltaTime = 0.02F;
+		health.isInvulnerable = false;
+
+
+
 		// this makes the perfect dash fade out smoother. TODO: make this curved better. actually, maybe this should be an animation?
 		float inverse_time_opacity = 0.4f / dashSlowLength;
 		for (float inverse_time = 1 / dashSlowLength; slowTimeVolume.weight > 0; slowTimeVolume.weight -= Time.deltaTime * inverse_time)
@@ -443,12 +452,8 @@ public class PlayerMovement : MonoBehaviour
 			yield return new WaitForEndOfFrame();
 		}
 
-		gameObject.layer = LayerMask.NameToLayer("Player");
-        Time.timeScale = defaultTimescale;
-        Time.fixedDeltaTime = 0.02F;
 		slowTimeVolume.gameObject.SetActive(false);
         slowTimeUI.gameObject.SetActive(false);
-        health.isInvulnerable = false;
         
     }
 
