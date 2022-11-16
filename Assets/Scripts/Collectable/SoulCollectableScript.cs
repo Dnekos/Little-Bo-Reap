@@ -16,7 +16,7 @@ public class SoulCollectableScript : Collectable
     protected override void CollectableEffect()
     {
 		//soulCounter.GetComponent<PlayerSoulCounter>().incrementSouls(soulValue);
-		Debug.Log("OverrideSuccessful");
+		//Debug.Log("OverrideSuccessful");
 
 		playerBody.GetComponentInChildren<PlayerHealth>().Heal(healingValue);
     }

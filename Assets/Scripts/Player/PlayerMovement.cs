@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.Rendering;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -66,8 +68,11 @@ public class PlayerMovement : MonoBehaviour
     [Header("Dash Slow Time Variables")]
     [SerializeField] float dashSlowTimescale = 0.5f;
     [SerializeField] float dashSlowLength = 0.25f;
-    [SerializeField] GameObject slowTimeVolume;
-    [SerializeField] GameObject slowTimeUI;
+	[SerializeField] float volumeStrength = 1;
+	[SerializeField] float slowUIOpacity = 0.4f;
+
+	[SerializeField] Volume slowTimeVolume;
+    [SerializeField] Image slowTimeUI;
     [SerializeField] float dashTriggerRadius = 5f;
     [SerializeField] LayerMask enemyAttackLayer;
     float defaultTimescale = 1.0f;
@@ -412,22 +417,37 @@ public class PlayerMovement : MonoBehaviour
             StartCoroutine(DashSlowTime());
         }
     }
-    IEnumerator DashSlowTime()
+
+
+	IEnumerator DashSlowTime()
     {
         gameObject.layer = LayerMask.NameToLayer("PlayerInvulnerable");
         Time.timeScale = dashSlowTimescale;
         Time.fixedDeltaTime = 0.02F * Time.timeScale;
-        slowTimeVolume.SetActive(true);
-        slowTimeUI.SetActive(true); 
+
         health.isInvulnerable = true;
 
-        yield return new WaitForSeconds(dashSlowLength);
+		slowTimeVolume.gameObject.SetActive(true);
+		slowTimeVolume.weight = volumeStrength;
 
-        gameObject.layer = LayerMask.NameToLayer("Player");
+        slowTimeUI.gameObject.SetActive(true);
+		Color uiCol = new Color(slowTimeUI.color.r, slowTimeUI.color.g, slowTimeUI.color.b, slowUIOpacity);
+		slowTimeUI.color = uiCol;
+
+		// this makes the perfect dash fade out smoother. TODO: make this curved better. actually, maybe this should be an animation?
+		float inverse_time_opacity = 0.4f / dashSlowLength;
+		for (float inverse_time = 1 / dashSlowLength; slowTimeVolume.weight > 0; slowTimeVolume.weight -= Time.deltaTime * inverse_time)
+		{
+			uiCol.a -= Time.deltaTime * inverse_time_opacity;
+			slowTimeUI.color = uiCol;
+			yield return new WaitForEndOfFrame();
+		}
+
+		gameObject.layer = LayerMask.NameToLayer("Player");
         Time.timeScale = defaultTimescale;
         Time.fixedDeltaTime = 0.02F;
-        slowTimeVolume.SetActive(false);
-        slowTimeUI.SetActive(false);
+		slowTimeVolume.gameObject.SetActive(false);
+        slowTimeUI.gameObject.SetActive(false);
         health.isInvulnerable = false;
         
     }

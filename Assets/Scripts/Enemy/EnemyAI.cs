@@ -294,8 +294,6 @@ public class EnemyAI : Damageable
 
 		isGrounded = frontCheck || backCheck;
 
-		Debug.Log(isGrounded);
-
 		if (!agent.enabled && isGrounded)
 		{
 			//rb.isKinematic = true;
@@ -373,7 +371,7 @@ public class EnemyAI : Damageable
 		{
 			//StopCoroutine("OnHitStun");
 			StopAllCoroutines();
-			StartCoroutine("OnHitStun");
+			StartCoroutine(OnHitStun());
 		}
 
 		// subtract health
@@ -405,8 +403,11 @@ public class EnemyAI : Damageable
 		rb.constraints = RigidbodyConstraints.FreezeRotation;
 
 		// stop queueing, else they stop knowing how to attack
-		StopCoroutine(QueuedAttack);
-		QueuedAttack = null;
+		if (QueuedAttack != null)
+		{
+			StopCoroutine(QueuedAttack);
+			QueuedAttack = null;
+		}
 
 		yield return new WaitForSeconds(StunTime);
 

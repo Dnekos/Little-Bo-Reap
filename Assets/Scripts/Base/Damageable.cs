@@ -44,20 +44,28 @@ public class Damageable : MonoBehaviour
         {
 			// deal damage
 			Health -= atk.damage;
-			Debug.Log(gameObject.name + " took " + atk.damage + " damage (force: "+(attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback)+")");
+			Vector3 knockbackForce = attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback;
+
+			Debug.Log(gameObject.name + " took " + atk.damage + " damage (force: "+ knockbackForce + ", mag "+ knockbackForce .magnitude+ ")");
 
 			//create damage number
 			var number = Instantiate(damageNumber, transform.position, transform.rotation) as GameObject;
 			number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)atk.damage).ToString();
 
 			// add knockback if the current knockback is stronger than the current velocity
-			Vector3 knockbackForce = attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback;
+			//Vector3 knockbackForce = attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback;
+			// this isnt working, maybe because the object is getting too much knockback in one frame?
 			if (rb.velocity.sqrMagnitude < knockbackForce.sqrMagnitude)
+			// TODO: make this not shit
+			//if (true)
 			{
 				// we want to cancel out the current velocity, so as to knock launch them into the stratosphere
-				rb.AddForce(-rb.velocity, ForceMode.VelocityChange);
-
-				rb.AddForce(attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback, ForceMode.Impulse);
+				//rb.AddForce(-rb.velocity, ForceMode.VelocityChange);
+				rb.velocity = Vector3.zero;
+				Debug.Log("before vel: " + rb.velocity + " " + rb.velocity.magnitude);
+				// TODO: make this force, not impulse, idiot
+				rb.velocity = attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback;
+				Debug.Log("after vel: " + rb.velocity + " " + rb.velocity.magnitude);
 			}
 
 			// invoke death

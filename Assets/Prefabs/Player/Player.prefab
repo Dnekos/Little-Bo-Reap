@@ -10144,7 +10144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.4}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -70592,6 +70592,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 421454de-18e2-4b3c-8d51-edd04bb6ccca
     m_ActionName: CinematicCameras/ToggleMusic[/Keyboard/minus,/Keyboard/equals]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c91e9761-51bb-4a02-b792-3aeeb97af856
+    m_ActionName: CinematicCameras/JumpCheckpoint[/Keyboard/o]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerMovement
@@ -70698,8 +70702,10 @@ MonoBehaviour:
   dashIcon: {fileID: 907139125339156067}
   dashSlowTimescale: 0.5
   dashSlowLength: 0.25
-  slowTimeVolume: {fileID: 7433092586906844035}
-  slowTimeUI: {fileID: 336687220343814816}
+  volumeStrength: 1
+  slowUIOpacity: 0.4
+  slowTimeVolume: {fileID: 5792201188272440870}
+  slowTimeUI: {fileID: 7013257432448054243}
   dashTriggerRadius: 15
   enemyAttackLayer:
     serializedVersion: 2
