@@ -660,7 +660,7 @@ public class PlayerSheepAI : Damageable
 
     #endregion
 
-    #region Charge
+    #region Stampede
     void DoCharge()
     {
 		//if agent reaches charge point, go into wander mode

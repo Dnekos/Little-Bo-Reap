@@ -149,6 +149,16 @@ public class EnemyAI : Damageable
 		else
 		{
 			agent.SetDestination(dest);
+			if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 5, 1))
+			{
+				transform.position = hit.position;
+			}
+			else
+			{
+				print(gameObject + " tried finding a destination while not on a valid point");
+				base.OnDeath();
+
+			}
 			transform.LookAt(dest);
 			transform.eulerAngles = new Vector3(0, transform.eulerAngles.y);
 		}
@@ -415,6 +425,7 @@ public class EnemyAI : Damageable
 		do
 		{
 			yield return new WaitForSeconds(0.01f);
+			Debug.Log(gameObject + " groundchecking");
 			GroundCheck();
 		} while (!isGrounded);
 
