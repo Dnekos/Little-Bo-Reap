@@ -10,6 +10,8 @@ public class SheepBezier : SheepHolder
 	[SerializeField] int SheepBars = 2;
 	[SerializeField] float lerpSpeed;
 
+	[Header("Sounds")]
+	[SerializeField] protected FMODUnity.EventReference placeSound;
 
 	[Header("Math")]
 	[SerializeField] float height = 4;
@@ -161,6 +163,8 @@ public class SheepBezier : SheepHolder
 			{
 				Debug.Log("meh");
 				CurveT = 0;// + SheepRadius;
+				FMODUnity.RuntimeManager.StudioSystem.setParameterByName("ConstructCompletion", CurveT);
+
 				AddQuad();
 				ConnectCap();
 				#if UNITY_EDITOR
@@ -255,6 +259,8 @@ public class SheepBezier : SheepHolder
 				CurveT += HeightStep * SheepRadius;
 				layerCount++;
 
+				FMODUnity.RuntimeManager.StudioSystem.setParameterByName("ConstructCompletion", CurveT);
+
 				AddQuad();
 				ConnectTriangles();
 				SetMesh();
@@ -284,6 +290,7 @@ public class SheepBezier : SheepHolder
 		{
 			newSheep.position = SheepPlacement;
 			newSheep.eulerAngles = Random.insideUnitSphere * 360;
+			FMODUnity.RuntimeManager.PlayOneShotAttached(placeSound, gameObject);
 
 		}
 

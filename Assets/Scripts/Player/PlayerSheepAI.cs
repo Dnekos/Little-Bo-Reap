@@ -846,6 +846,11 @@ public class PlayerSheepAI : Damageable
 		owningConstruct = cons;
 		SetSheepState(SheepStates.CONSTRUCT);
 		agent.enabled = false;
+
+		rb.constraints = RigidbodyConstraints.FreezeAll;
+
+		rb.angularVelocity = Vector3.zero;
+		rb.velocity = Vector3.zero;
 	}
 	public void EndConstruct()
 	{

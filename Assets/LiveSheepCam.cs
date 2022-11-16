@@ -16,7 +16,7 @@ public class LiveSheepCam : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		if (player.leaderSheep.Count > 0)
+		if (player.leaderSheep.Count > 0 && player.leaderSheep[0] != null)
 		{
 			transform.position = player.leaderSheep[0].transform.position + Vector3.Project(offset, player.leaderSheep[0].transform.forward).normalized * offset.magnitude;
 			transform.LookAt(player.leaderSheep[0].transform);
