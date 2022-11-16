@@ -50,8 +50,15 @@ public class Damageable : MonoBehaviour
 			var number = Instantiate(damageNumber, transform.position, transform.rotation) as GameObject;
 			number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)atk.damage).ToString();
 
-			// add knockback
-			rb.AddForce(attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback, ForceMode.Impulse);
+			// add knockback if the current knockback is stronger than the current velocity
+			Vector3 knockbackForce = attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback;
+			if (rb.velocity.sqrMagnitude < knockbackForce.sqrMagnitude)
+			{
+				// we want to cancel out the current velocity, so as to knock launch them into the stratosphere
+				rb.AddForce(-rb.velocity, ForceMode.VelocityChange);
+
+				rb.AddForce(attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback, ForceMode.Impulse);
+			}
 
 			// invoke death
 			if (Health <= 0)
