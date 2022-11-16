@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.15601343, g: 0.31189933, b: 0.47769707, a: 1}
+  m_IndirectSpecularColor: {r: 0.15598553, g: 0.31193423, b: 0.47769707, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -11825,6 +11825,7 @@ MonoBehaviour:
       Data3: 0
       Data4: 0
     Path: 
+  printAttackTests: 0
 --- !u!195 &357503902
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -11942,6 +11943,16 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 168569475}
     m_Modifications:
+    - target: {fileID: 3844457705400015417, guid: 380692eb3a0898649a6ae67ad58fa5aa,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7645711094133676293, guid: 380692eb3a0898649a6ae67ad58fa5aa,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8920508003233014521, guid: 380692eb3a0898649a6ae67ad58fa5aa,
         type: 3}
       propertyPath: m_RootOrder
@@ -32463,6 +32474,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 1
   gibs: {fileID: 7302312219567745433, guid: 2b49233b069a4044db67ada0f788b65b, type: 3}
+  breakSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!65 &949124978
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -39020,6 +39038,16 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 168569475}
     m_Modifications:
+    - target: {fileID: 3844457705400015417, guid: 380692eb3a0898649a6ae67ad58fa5aa,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7645711094133676293, guid: 380692eb3a0898649a6ae67ad58fa5aa,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8920508003233014521, guid: 380692eb3a0898649a6ae67ad58fa5aa,
         type: 3}
       propertyPath: m_RootOrder
@@ -52689,6 +52717,16 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 1845898726}
     m_Modifications:
+    - target: {fileID: 3844457705400015417, guid: 380692eb3a0898649a6ae67ad58fa5aa,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7645711094133676293, guid: 380692eb3a0898649a6ae67ad58fa5aa,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8920508003233014521, guid: 380692eb3a0898649a6ae67ad58fa5aa,
         type: 3}
       propertyPath: m_RootOrder
@@ -52973,6 +53011,7 @@ MonoBehaviour:
       Data3: 0
       Data4: 0
     Path: 
+  printAttackTests: 0
 --- !u!195 &1407616231
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -64613,6 +64652,7 @@ MonoBehaviour:
       Data3: 0
       Data4: 0
     Path: 
+  printAttackTests: 0
 --- !u!195 &1815218146
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -77565,6 +77605,26 @@ PrefabInstance:
       propertyPath: m_Cameras.Array.data[1]
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 3870380308472901134, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
+        type: 3}
+      propertyPath: m_ClearFlags
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3870380308472901134, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
+        type: 3}
+      propertyPath: m_BackGroundColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3870380308472901134, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
+        type: 3}
+      propertyPath: m_BackGroundColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3870380308472901134, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
+        type: 3}
+      propertyPath: m_BackGroundColor.r
+      value: 0.061918497
+      objectReference: {fileID: 0}
     - target: {fileID: 3870380308813204384, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
         type: 3}
       propertyPath: m_DefaultActionMap
@@ -79375,6 +79435,16 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 1845898726}
     m_Modifications:
+    - target: {fileID: 3844457705400015417, guid: 380692eb3a0898649a6ae67ad58fa5aa,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7645711094133676293, guid: 380692eb3a0898649a6ae67ad58fa5aa,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8920508003233014521, guid: 380692eb3a0898649a6ae67ad58fa5aa,
         type: 3}
       propertyPath: m_RootOrder
