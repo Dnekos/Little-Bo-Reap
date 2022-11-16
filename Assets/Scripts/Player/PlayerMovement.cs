@@ -189,7 +189,7 @@ public class PlayerMovement : MonoBehaviour
 
         if(isGrounded && !wasGroundedLastFrame)
         {
-            animator.Play(landingAnimation);
+           // animator.Play(landingAnimation);
         }
         wasGroundedLastFrame = isGrounded;
     }
