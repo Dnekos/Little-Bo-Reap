@@ -25,6 +25,7 @@ public class PlayerSheepAI : Damageable
     [SerializeField] float baseSpeedMax = 20f;
     [SerializeField] string jumpAnimation;
     [SerializeField] float jumpSpeed = 8f;
+    [SerializeField] float invulnTimeOnSpawn = 1.5f;
     bool isJumping = false;
     float storedSpeed;
     float baseSpeedCurrent;
@@ -142,6 +143,8 @@ public class PlayerSheepAI : Damageable
 
         FindLeader();
 
+        isInvulnerable = true;
+        Invoke("DisableSpawnInvuln", invulnTimeOnSpawn);
 
         //check black sheep stuff
         if (isBlackSheep)
@@ -157,6 +160,11 @@ public class PlayerSheepAI : Damageable
 
             GoWandering();
         }
+    }
+
+    void DisableSpawnInvuln()
+    {
+        isInvulnerable = false;
     }
     void FindLeader()
     {

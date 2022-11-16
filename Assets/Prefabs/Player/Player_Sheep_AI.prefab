@@ -14949,8 +14949,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17310ee7d1b92074db1f8d6546879b05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Health: 5
-  MaxHealth: 5
+  Health: 6
+  MaxHealth: 6
   gibs: {fileID: 735357586941648123, guid: 65656d2e71159634f9c29f83fa9b60ad, type: 3}
   damageNumber: {fileID: 123927598583382559, guid: 56f5627162d4e6d46a90e60219193b3c,
     type: 3}
@@ -14980,6 +14980,7 @@ MonoBehaviour:
   baseSpeedMax: 35
   jumpAnimation: Test_Sheep_Jump
   jumpSpeed: 8
+  invulnTimeOnSpawn: 1.5
   avoidPlayerDistance: 2.5
   avoidPlayerSpeed: 45
   followStoppingDistanceMin: 5
@@ -15025,7 +15026,6 @@ MonoBehaviour:
   chargeSpeed: 35
   chargePointRadius: 5
   chargeStopDistance: 0
-  chargeEndDistance: 1
   chargeCheckTime: 1
   chargeCheckSpeed: 2
   chargeAttack: {fileID: 11400000, guid: 014aa54f483c37442a9e9d49bf8d477f, type: 2}
