@@ -114,10 +114,6 @@ public class EnemyAI : Damageable
 				DoChase();
 				break;
 			case EnemyStates.HITSTUN:
-				//apply gravity if falling
-				if (!isGrounded)
-					rb.AddForce(Vector3.down * fallRate);
-
 				break;
 			case EnemyStates.IDLE:
 				DoIdle();
@@ -129,6 +125,13 @@ public class EnemyAI : Damageable
 				Debug.LogWarning("Enemy at unexpected state and defaulted!");
 				break;
 		}
+	}
+
+	private void FixedUpdate()
+	{
+		//apply gravity if falling
+		if (currentEnemyState == EnemyStates.HITSTUN)
+			rb.AddForce(Vector3.down * fallRate);
 	}
 
 	#region UtilityFunctions
