@@ -72,7 +72,8 @@ public class PlayerExecution : MonoBehaviour
                 enemyToExecute = executableEnemies[0];
                 targetPos = enemyToExecute.executePlayerPos;
 
-                GetComponent<PlayerAnimationController>().playerAnimator.Play(enemyToExecute.execution.playerAnimation);
+				anim.playerAnimator.Rebind();
+				anim.playerAnimator.Play(enemyToExecute.execution.playerAnimation);
                 enemyToExecute.GetComponent<Animator>().Play(enemyToExecute.execution.enemyAnimation);
 
                 Debug.Log(enemyToExecute.execution.executionLength);
