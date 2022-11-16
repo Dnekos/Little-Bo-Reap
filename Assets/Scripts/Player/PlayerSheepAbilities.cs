@@ -18,7 +18,6 @@ public struct Flock
 {
 	public string name;
 	public List<PlayerSheepAI> activeSheep;
-    public int currentSize;
 	public int MaxSize;
 	public GameObject SheepPrefab;
 	public GameObject SheepProjectilePrefab;
@@ -307,21 +306,18 @@ public class PlayerSheepAbilities : MonoBehaviour
     public void RemoveSheepFromList(SheepTypes theType, PlayerSheepAI theSheep)
     {
         GetSheepFlock(theType).Remove(theSheep);
-        sheepFlocks[(int)theType].currentSize--;
-        if (sheepFlocks[(int)theType].currentSize < 0) sheepFlocks[(int)theType].currentSize = 0;
-
         UpdateFlockUI();
     }
 
     public void UpdateFlockUI()
     {
         flockTypeIcon.sprite = sheepFlocks[(int)currentFlockType].sheepIcon;
-        flockNumber.text = sheepFlocks[(int)currentFlockType].currentSize + "/" + sheepFlocks[(int)currentFlockType].MaxSize;
-        redText.text = sheepFlocks[(int)currentFlockType].currentSize + "/" + sheepFlocks[(int)currentFlockType].MaxSize;
+        flockNumber.text = sheepFlocks[(int)currentFlockType].activeSheep.Count + "/" + sheepFlocks[(int)currentFlockType].MaxSize;
+        redText.text = sheepFlocks[(int)currentFlockType].activeSheep.Count + "/" + sheepFlocks[(int)currentFlockType].MaxSize;
         flockNumber.color = sheepFlocks[(int)currentFlockType].UIColor;
 
 		for (int i = 0; i < sheepFlocks.Length; i++)
-			flockSelectTexts[i].text = sheepFlocks[i].currentSize + "/" + sheepFlocks[i].MaxSize;
+			flockSelectTexts[i].text = sheepFlocks[i].activeSheep.Count + "/" + sheepFlocks[i].MaxSize;
 	}
 
     bool CheckIfCloseToLeader(SheepTypes theSheepType)
@@ -446,8 +442,8 @@ public class PlayerSheepAbilities : MonoBehaviour
 
 			for (int i = spawnParticles.Count - 1; i >= 0; i--)
 			{
-				// ignore list slots that are null (dead sheep)
-				if (spawnParticles[i] != null)
+				// ignore list slots that are null 
+				if (spawnParticles[i] != null && spawnParticles[i].GetComponent<Sheep_Summon_Particle>().sheepType == flockType)
 				{
 					Destroy(spawnParticles[i]);
 				}
@@ -717,7 +713,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 		canAttack = false;
 
 		//no sheep?
-		if (sheepFlocks[currentFlockIndex].currentSize <= 0)
+		if (sheepFlocks[currentFlockIndex].activeSheep.Count <= 0)
 			SwapUIAnimator.Play(noSheepAnimUI);
 
 

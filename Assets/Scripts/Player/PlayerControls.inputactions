@@ -486,6 +486,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "JumpCheckpoint",
+                    "type": "Button",
+                    "id": "c91e9761-51bb-4a02-b792-3aeeb97af856",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -596,6 +605,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "ToggleMusic",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8cedbabe-0efd-4567-99ed-06e9f06cf602",
+                    "path": "<Keyboard>/o",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "JumpCheckpoint",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

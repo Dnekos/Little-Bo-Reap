@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 public class WorldState : MonoBehaviour
 {
@@ -46,7 +47,8 @@ public class WorldState : MonoBehaviour
 
 			// default settings
 			PlayerCameraFollow cam = FindObjectOfType<PlayerCameraFollow>();
-			cam.mouseSensitivity = PlayerPrefs.GetFloat("sensitivity", 1) * cam.mouseSensitivityMax;
+			if (cam != null)
+				cam.mouseSensitivity = PlayerPrefs.GetFloat("sensitivity", 1) * cam.mouseSensitivityMax;
 			FMOD.Studio.Bus myBus = FMODUnity.RuntimeManager.GetBus("bus:/SFX");
 			myBus.setVolume(PlayerPrefs.GetFloat("sfx", 1));
 			myBus = FMODUnity.RuntimeManager.GetBus("bus:/Music");
@@ -68,6 +70,16 @@ public class WorldState : MonoBehaviour
 		activeSpawnPoint = System.Array.FindIndex<Checkpoint>(SpawnPoints, spawnpoint => spawnpoint == point);
 		checkedScore = currentScore;
 	}
+
+	public void OnSpawnNextSpawnPoint(InputAction.CallbackContext context)
+	{
+		if (context.performed)
+		{
+			activeSpawnPoint = Mathf.Min(activeSpawnPoint + 1, SpawnPoints.Length - 1);
+			Respawn.listener.Invoke();
+		}
+	}
+
 
 	void RespawnPlayer()
 	{

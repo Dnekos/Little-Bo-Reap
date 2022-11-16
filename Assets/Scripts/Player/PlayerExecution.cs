@@ -26,7 +26,7 @@ public class PlayerExecution : MonoBehaviour
 
     bool canExecute;
     EnemyAI enemyToExecute;
-    Transform targetPos;
+   // Transform targetPos;
     public PlayerInput inputs;
     bool isExecuting;
 
@@ -70,9 +70,12 @@ public class PlayerExecution : MonoBehaviour
             if(canExecute)
             {
                 enemyToExecute = executableEnemies[0];
-                targetPos = enemyToExecute.executePlayerPos;
+				//targetPos = enemyToExecute.executePlayerPos;
+				transform.position = enemyToExecute.executePlayerPos.transform.position;
+				//GetComponent<PlayerMovement>().dash
 
-                GetComponent<PlayerAnimationController>().playerAnimator.Play(enemyToExecute.execution.playerAnimation);
+				anim.playerAnimator.Rebind();
+				anim.playerAnimator.Play(enemyToExecute.execution.playerAnimation);
                 enemyToExecute.GetComponent<Animator>().Play(enemyToExecute.execution.enemyAnimation);
 
                 Debug.Log(enemyToExecute.execution.executionLength);

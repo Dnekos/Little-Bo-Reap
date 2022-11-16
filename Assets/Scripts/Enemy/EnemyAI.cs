@@ -63,6 +63,9 @@ public class EnemyAI : Damageable
 	[SerializeField] FMODUnity.EventReference swingSound;
 	[SerializeField] FMODUnity.EventReference clubHitSound;
 
+	[Header("Debug")]
+	[SerializeField] bool printAttackTests = false;
+
 	protected Transform player;
 	NavMeshAgent agent;
 
@@ -141,7 +144,11 @@ public class EnemyAI : Damageable
 			base.OnDeath();
 		}
 		else
+		{
 			agent.SetDestination(dest);
+			transform.LookAt(dest);
+			transform.eulerAngles = new Vector3(0, transform.eulerAngles.y);
+		}
 	}
 	#endregion
 
@@ -175,7 +182,9 @@ public class EnemyAI : Damageable
     void DoChase()
 	{
 		// double check that there are no null sheep (possibly could happen if they are killed in the radius)
-		NearbyGuys.RemoveAll(item => item == null);
+		NearbyGuys.RemoveAll(item => item == null || 
+			(item.GetComponent<PlayerSheepAI>() != null && // if sheep is construct/lift
+			(item.GetComponent<PlayerSheepAI>().GetSheepState()  == SheepStates.CONSTRUCT || item.GetComponent<PlayerSheepAI>().GetSheepState() == SheepStates.LIFT))); 
 
 		// if there are sheep near it, follow them instead
 		if (NearbyGuys.Count >= SheepToDistract)
@@ -209,6 +218,8 @@ public class EnemyAI : Damageable
 
 			for (int i = 0; i < attacks.Length; i++)
 			{
+				if (printAttackTests)
+					Debug.Log(attacks[i].atk.CheckCondition(transform, player, NearbyGuys));
 				if (attacks[i].Cooldown < 0 && attacks[i].atk.CheckCondition(transform, player, NearbyGuys))
 				{
 					attacks[i].atk.PerformAttack(anim);
@@ -390,6 +401,10 @@ public class EnemyAI : Damageable
 		rb.constraints = RigidbodyConstraints.None;
 		rb.constraints = RigidbodyConstraints.FreezeRotation;
 
+		// stop queueing, else they stop knowing how to attack
+		StopCoroutine(QueuedAttack);
+		QueuedAttack = null;
+
 		yield return new WaitForSeconds(StunTime);
 
 		// stay in stun until touching the ground
@@ -401,9 +416,10 @@ public class EnemyAI : Damageable
 
 		//reset if not in execute stage
 		//Demetri this is a quick n dirty fix might need to move around execute stuff eventually
-		if (currentEnemyState != EnemyStates.EXECUTABLE) currentEnemyState = stunState;
+		if (currentEnemyState != EnemyStates.EXECUTABLE) 
+			currentEnemyState = stunState;
 
-		//freeze dammit
+		// freeze dammit
 		rb.constraints = RigidbodyConstraints.FreezeAll;
 
 		rb.velocity = Vector3.zero;
