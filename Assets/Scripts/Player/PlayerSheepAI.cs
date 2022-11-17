@@ -860,10 +860,10 @@ public class PlayerSheepAI : Damageable
 		rb.angularVelocity = Vector3.zero;
 		rb.velocity = Vector3.zero;
 	}
-	public void EndConstruct()
+	public void EndConstruct(bool callRemove = true)
 	{
 		agent.enabled = true;
-		if (owningConstruct != null)
+		if (owningConstruct != null && callRemove)
 		{
 			owningConstruct.RemoveSheep(transform);
 			owningConstruct = null;

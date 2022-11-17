@@ -103,7 +103,16 @@ public class SheepBezier : SheepHolder
 		base.RemoveSheep(sheep);
 	}
 
-	public void RemoveAll()
+	public void RemoveAllSheep()
+	{
+		for (int i = containedSheep.Count - 1; i >= 0; i--)
+		{
+			containedSheep[i].GetComponent<PlayerSheepAI>().EndConstruct(false);
+		}
+		containedSheep.Clear();
+	}
+
+	public void RemoveAll(bool StopCoroutine = true)
 	{
 		col.sharedMesh = null;
 		newTriangles.Clear();
@@ -112,14 +121,15 @@ public class SheepBezier : SheepHolder
 
 		layerCount = 0;
 		CurveT = 0;
-		StopAllCoroutines();
+		if (StopCoroutine)
+			StopAllCoroutines();
 	}
 
 	#region Adding Sheep
 	private void OnTriggerEnter(Collider other)
 	{
 		// only add charging sheep
-		if (other.GetComponent<PlayerSheepAI>() == null || other.GetComponent<PlayerSheepAI>().GetSheepState() != SheepStates.CHARGE)
+		if (true)//if (other.GetComponent<PlayerSheepAI>() == null || other.GetComponent<PlayerSheepAI>().GetSheepState() != SheepStates.CHARGE)
 			return;
 
 		// approximate radius
@@ -144,13 +154,16 @@ public class SheepBezier : SheepHolder
 	public override void Interact()
 	{
 		base.Interact();
+		StopAllCoroutines();
 		StartCoroutine(AddAllSheep(WorldState.instance.player.GetComponent<PlayerSheepAbilities>().sheepFlocks[(int)SheepTypes.BUILD].activeSheep, delay));
 	}
 	IEnumerator AddAllSheep(List<PlayerSheepAI> flock, float delay)
 	{
+		RemoveAll(false);
+		RemoveAllSheep();
 
 		yield return new WaitForSeconds(delay);
-
+		
 		for (int i = 0; i < flock.Count; i++)
 		{
 			if (flock[i].GetComponent<SphereCollider>() != null)
