@@ -32,6 +32,7 @@ public class PlayerExecution : MonoBehaviour
 
 	PlayerAnimationController anim;
 	PlayerSheepAbilities flocks;
+    PlayerMovement movement;
 
 	public void OnExecute(InputAction.CallbackContext context)
     {
@@ -75,7 +76,8 @@ public class PlayerExecution : MonoBehaviour
 				//GetComponent<PlayerMovement>().dash
 
 				anim.playerAnimator.Rebind();
-				anim.playerAnimator.Play(enemyToExecute.execution.playerAnimation);
+				anim.playerAnimator.Play(enemyToExecute.execution.playerAnimation, 0, 0);
+                Debug.Log("play execute anim");
                 enemyToExecute.GetComponent<Animator>().Play(enemyToExecute.execution.enemyAnimation);
 
                 Debug.Log(enemyToExecute.execution.executionLength);
@@ -126,6 +128,7 @@ public class PlayerExecution : MonoBehaviour
 	{
 		anim = GetComponent<PlayerAnimationController>();
 		flocks = GetComponent<PlayerSheepAbilities>();
+        movement = GetComponent<PlayerMovement>();
 	}
 
 	//if executing, figure out positions. TODO
@@ -153,6 +156,7 @@ public class PlayerExecution : MonoBehaviour
     {
         isExecuting = true;
         inputs.enabled = false;
+        movement.enabled = false;
         gameObject.layer = LayerMask.NameToLayer("PlayerInvulnerable");
     }
 
@@ -162,6 +166,7 @@ public class PlayerExecution : MonoBehaviour
         enemyToExecute.Execute();
         
         inputs.enabled = true;
+        movement.enabled = true;
         gameObject.layer = LayerMask.NameToLayer("Player");
 
         executableEnemies.Clear();
