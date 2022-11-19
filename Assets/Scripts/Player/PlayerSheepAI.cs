@@ -72,8 +72,8 @@ public class PlayerSheepAI : Damageable
     [Header("Attack State Variables")]
 	[SerializeField] LayerMask enemyLayer;
     [SerializeField] float attackDetectionRadius;
-    [SerializeField] EnemyAI attackTargetCurrent;
-    [SerializeField] List<EnemyAI> attackTargets;
+    [SerializeField] Damageable attackTargetCurrent;
+    [SerializeField] List<Damageable> attackTargets;
     [SerializeField] string attackAnimation;
     [SerializeField] float attackCooldown = 1.5f;
     [SerializeField] float distanceToAttack;
@@ -381,6 +381,8 @@ public class PlayerSheepAI : Damageable
             return;
         }
 
+		animator.SetBool("isDefending", false);
+
 		SetSheepState(SheepStates.FOLLOW_PLAYER);
 
         EndConstruct();
@@ -578,7 +580,7 @@ public class PlayerSheepAI : Damageable
             if (attackTargetCurrent != null && Vector3.Distance(transform.position, attackTargetCurrent.transform.position) <= distanceToAttack)
             {
                 //if the target is executable, remove them from the list
-                if (attackTargetCurrent.GetState() == EnemyStates.EXECUTABLE)
+                if (attackTargetCurrent is EnemyAI && ((EnemyAI)attackTargetCurrent).GetState() == EnemyStates.EXECUTABLE)
                 {
                     attackTargets.Remove(attackTargetCurrent);
                     attackTargetCurrent = null;
@@ -614,7 +616,7 @@ public class PlayerSheepAI : Damageable
         }
 
     }
-    EnemyAI GetAttackTarget()
+	Damageable GetAttackTarget()
     {
         //find targets to attack
         //FindAttackTargets();
@@ -639,7 +641,8 @@ public class PlayerSheepAI : Damageable
         Collider[] enemyHits = (Physics.OverlapSphere(targetPos, targetRadius, enemyLayer));
         foreach (Collider enemy in enemyHits)
         {
-            if (enemy.GetComponent<EnemyAI>() != null && enemy.GetComponent<EnemyAI>().GetState() != EnemyStates.EXECUTABLE) attackTargets?.Add(enemy.GetComponent<EnemyAI>());
+            if (enemy.GetComponent<Damageable>() != null && (enemy.GetComponent<EnemyAI>() == null ||  enemy.GetComponent<EnemyAI>().GetState() != EnemyStates.EXECUTABLE))
+				attackTargets?.Add(enemy.GetComponent<Damageable>());
         }
 
 		//start attacking!
@@ -658,7 +661,8 @@ public class PlayerSheepAI : Damageable
         Collider[] enemyHits = (Physics.OverlapSphere(transform.position, attackDetectionRadius, enemyLayer));
         foreach(Collider enemy in enemyHits)
         {
-            if (enemy.GetComponent<EnemyAI>() !=null && enemy.GetComponent<EnemyAI>().GetState() != EnemyStates.EXECUTABLE) attackTargets?.Add(enemy.GetComponent<EnemyAI>());
+			if (enemy.GetComponent<Damageable>() != null && (enemy.GetComponent<EnemyAI>() == null || enemy.GetComponent<EnemyAI>().GetState() != EnemyStates.EXECUTABLE))
+				attackTargets?.Add(enemy.GetComponent<Damageable>());
         }
     }
 

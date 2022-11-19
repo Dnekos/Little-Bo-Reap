@@ -27,12 +27,12 @@ public class SheepAttackHitbox : MonoBehaviour
 			if (sheepParent.isBlackSheep)
             {
                 Instantiate(attack.explosionEffect, transform.position, transform.rotation);
-                other?.GetComponent<EnemyAI>().TakeDamage(attack, sheepParent.transform.forward);
+                other?.GetComponent<Damageable>().TakeDamage(attack, sheepParent.transform.forward);
 
                 sheepParent.TakeDamage(sheepParent.selfDamage, transform.forward);
             }
             else
-				other?.GetComponent<EnemyAI>().TakeDamage((Attack)attack, sheepParent.transform.forward);
+				other?.GetComponent<Damageable>().TakeDamage((Attack)attack, sheepParent.transform.forward);
         }
     }
 }

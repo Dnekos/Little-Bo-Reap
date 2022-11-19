@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DummyTarget : MonoBehaviour
+public class DummyTarget : Damageable
 {
     Vector3 targetPos;
-    // Start is called before the first frame update
-    void Start()
+	// Start is called before the first frame update
+	override protected void Start()
     {
+		base.Start();
         targetPos = transform.position;
     }
 

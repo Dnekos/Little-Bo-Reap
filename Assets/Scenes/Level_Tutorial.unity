@@ -11311,10 +11311,9 @@ GameObject:
   m_Component:
   - component: {fileID: 357503903}
   - component: {fileID: 357503902}
-  - component: {fileID: 357503901}
+  - component: {fileID: 357503898}
   - component: {fileID: 357503900}
   - component: {fileID: 357503899}
-  - component: {fileID: 357503898}
   m_Layer: 12
   m_Name: Dummy_Target (1)
   m_TagString: Enemy
@@ -11334,6 +11333,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bda2d92c462ca9f4d82b2881c7fb1b18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Health: 99999
+  MaxHealth: 99999
+  gibs: {fileID: 9082597936765375905, guid: 954fa77ba0781eb49a21da27f26832ec, type: 3}
+  damageNumber: {fileID: 758784450076825086, guid: 917e1ac09e21f3f499d8aa30f802b69e,
+    type: 3}
+  damageNumberGoth: {fileID: 758784450076825086, guid: 0a7b484cc73c2c047b45b91fd1f75b6d,
+    type: 3}
+  isInvulnerable: 0
+  hurtSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  deathSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  soulValue: 0
+  soulSpeed: 0
+  soulSpawnHeight: 0
+  soulCollectableOne: {fileID: 0}
 --- !u!136 &357503899
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -11364,86 +11389,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
---- !u!114 &357503901
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 357503897}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4de3925a6fab897459dbb71af2ab3b07, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Health: 99999
-  MaxHealth: 99999
-  gibs: {fileID: 9082597936765375905, guid: 954fa77ba0781eb49a21da27f26832ec, type: 3}
-  damageNumber: {fileID: 758784450076825086, guid: 917e1ac09e21f3f499d8aa30f802b69e,
-    type: 3}
-  damageNumberGoth: {fileID: 758784450076825086, guid: 0a7b484cc73c2c047b45b91fd1f75b6d,
-    type: 3}
-  isInvulnerable: 0
-  hurtSound:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  deathSound:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  soulValue: 0
-  soulSpeed: 0
-  soulSpawnHeight: 0
-  soulCollectableOne: {fileID: 0}
-  SpawnParticlePrefab: {fileID: 0}
-  SpawnWaitTime: 2
-  currentEnemyState: 3
-  StunTime: 0.3
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  attacks: []
-  NearbyGuys: []
-  delayBetweenAttacks: 1
-  SheepToDistract: 2
-  StickCollider: {fileID: 0}
-  anim: {fileID: 0}
-  isExecutable: 0
-  mustBeExecuted: 0
-  executionHealthThreshhold: 0
-  executeTrigger: {fileID: 0}
-  executePlayerPos: {fileID: 0}
-  execution: {fileID: 0}
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  groundCheckOriginFront: {fileID: 357503903}
-  groundCheckOriginBack: {fileID: 357503903}
-  groundCheckDistance: 0.25
-  isGrounded: 0
-  fallRate: 50
-  swingSound:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  clubHitSound:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  printAttackTests: 0
 --- !u!195 &357503902
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -54283,10 +54228,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1407616232}
   - component: {fileID: 1407616231}
-  - component: {fileID: 1407616230}
+  - component: {fileID: 1407616227}
   - component: {fileID: 1407616229}
   - component: {fileID: 1407616228}
-  - component: {fileID: 1407616227}
   m_Layer: 12
   m_Name: Dummy_Target
   m_TagString: Enemy
@@ -54306,6 +54250,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bda2d92c462ca9f4d82b2881c7fb1b18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Health: 99999
+  MaxHealth: 99999
+  gibs: {fileID: 9082597936765375905, guid: 954fa77ba0781eb49a21da27f26832ec, type: 3}
+  damageNumber: {fileID: 758784450076825086, guid: 917e1ac09e21f3f499d8aa30f802b69e,
+    type: 3}
+  damageNumberGoth: {fileID: 758784450076825086, guid: 0a7b484cc73c2c047b45b91fd1f75b6d,
+    type: 3}
+  isInvulnerable: 0
+  hurtSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  deathSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  soulValue: 0
+  soulSpeed: 0
+  soulSpawnHeight: 0
+  soulCollectableOne: {fileID: 0}
 --- !u!136 &1407616228
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -54336,86 +54306,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
---- !u!114 &1407616230
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1407616226}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4de3925a6fab897459dbb71af2ab3b07, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Health: 99999
-  MaxHealth: 99999
-  gibs: {fileID: 9082597936765375905, guid: 954fa77ba0781eb49a21da27f26832ec, type: 3}
-  damageNumber: {fileID: 758784450076825086, guid: 917e1ac09e21f3f499d8aa30f802b69e,
-    type: 3}
-  damageNumberGoth: {fileID: 758784450076825086, guid: 0a7b484cc73c2c047b45b91fd1f75b6d,
-    type: 3}
-  isInvulnerable: 0
-  hurtSound:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  deathSound:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  soulValue: 0
-  soulSpeed: 0
-  soulSpawnHeight: 0
-  soulCollectableOne: {fileID: 0}
-  SpawnParticlePrefab: {fileID: 0}
-  SpawnWaitTime: 2
-  currentEnemyState: 3
-  StunTime: 0.3
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  attacks: []
-  NearbyGuys: []
-  delayBetweenAttacks: 1
-  SheepToDistract: 2
-  StickCollider: {fileID: 0}
-  anim: {fileID: 0}
-  isExecutable: 0
-  mustBeExecuted: 0
-  executionHealthThreshhold: 0
-  executeTrigger: {fileID: 0}
-  executePlayerPos: {fileID: 0}
-  execution: {fileID: 0}
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  groundCheckOriginFront: {fileID: 1407616232}
-  groundCheckOriginBack: {fileID: 1407616232}
-  groundCheckDistance: 0.25
-  isGrounded: 0
-  fallRate: 50
-  swingSound:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  clubHitSound:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  printAttackTests: 0
 --- !u!195 &1407616231
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -66599,10 +66489,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1815218147}
   - component: {fileID: 1815218146}
-  - component: {fileID: 1815218145}
+  - component: {fileID: 1815218142}
   - component: {fileID: 1815218144}
   - component: {fileID: 1815218143}
-  - component: {fileID: 1815218142}
   m_Layer: 12
   m_Name: Dummy_Target (2)
   m_TagString: Enemy
@@ -66622,6 +66511,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bda2d92c462ca9f4d82b2881c7fb1b18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Health: 99999
+  MaxHealth: 99999
+  gibs: {fileID: 9082597936765375905, guid: 954fa77ba0781eb49a21da27f26832ec, type: 3}
+  damageNumber: {fileID: 758784450076825086, guid: 917e1ac09e21f3f499d8aa30f802b69e,
+    type: 3}
+  damageNumberGoth: {fileID: 758784450076825086, guid: 0a7b484cc73c2c047b45b91fd1f75b6d,
+    type: 3}
+  isInvulnerable: 0
+  hurtSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  deathSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  soulValue: 0
+  soulSpeed: 0
+  soulSpawnHeight: 0
+  soulCollectableOne: {fileID: 0}
 --- !u!136 &1815218143
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -66652,86 +66567,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
---- !u!114 &1815218145
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1815218141}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4de3925a6fab897459dbb71af2ab3b07, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Health: 99999
-  MaxHealth: 99999
-  gibs: {fileID: 9082597936765375905, guid: 954fa77ba0781eb49a21da27f26832ec, type: 3}
-  damageNumber: {fileID: 758784450076825086, guid: 917e1ac09e21f3f499d8aa30f802b69e,
-    type: 3}
-  damageNumberGoth: {fileID: 758784450076825086, guid: 0a7b484cc73c2c047b45b91fd1f75b6d,
-    type: 3}
-  isInvulnerable: 0
-  hurtSound:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  deathSound:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  soulValue: 0
-  soulSpeed: 0
-  soulSpawnHeight: 0
-  soulCollectableOne: {fileID: 0}
-  SpawnParticlePrefab: {fileID: 0}
-  SpawnWaitTime: 2
-  currentEnemyState: 3
-  StunTime: 0.3
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  attacks: []
-  NearbyGuys: []
-  delayBetweenAttacks: 1
-  SheepToDistract: 2
-  StickCollider: {fileID: 0}
-  anim: {fileID: 0}
-  isExecutable: 0
-  mustBeExecuted: 0
-  executionHealthThreshhold: 0
-  executeTrigger: {fileID: 0}
-  executePlayerPos: {fileID: 0}
-  execution: {fileID: 0}
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  groundCheckOriginFront: {fileID: 1815218147}
-  groundCheckOriginBack: {fileID: 1815218147}
-  groundCheckDistance: 0.25
-  isGrounded: 0
-  fallRate: 50
-  swingSound:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  clubHitSound:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  printAttackTests: 0
 --- !u!195 &1815218146
 NavMeshAgent:
   m_ObjectHideFlags: 0
