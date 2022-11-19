@@ -180,12 +180,6 @@ public class SheepBezier : SheepHolder
 
 				AddQuad();
 				ConnectCap();
-				#if UNITY_EDITOR
-				if (SaveToDatabase)
-				{
-					AssetDatabase.CreateAsset(mesh, "Assets/BridgeMesh.mesh");
-				}
-				#endif
 			}
 
 			// add the little guy

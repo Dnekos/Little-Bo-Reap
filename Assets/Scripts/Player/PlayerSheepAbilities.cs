@@ -598,18 +598,41 @@ public class PlayerSheepAbilities : MonoBehaviour
     {
         yield return null;
 
-        //get random point inside summoning radius
-        Vector3 summonPosition = Vector3.zero;
-        Vector3 randomPosition = Random.insideUnitSphere * summonRadius;
-        randomPosition += transform.position;
+		int count = 0;
+		bool found = false;
+		NavMeshHit hit;
+		Vector3 randomPosition;
+		NavMeshPath path = new NavMeshPath();
+		do
+		{
+			//get random point inside summoning radius
+			Vector3 summonPosition = Vector3.zero;
+			randomPosition = Random.insideUnitSphere * summonRadius;
+			randomPosition += transform.position;
+
+			found = NavMesh.SamplePosition(randomPosition, out hit, summonRadius, 1);
+			found &= NavMesh.SamplePosition(transform.position, out NavMeshHit start, summonRadius, 1);
+			found &= NavMesh.CalculatePath(start.position, hit.position, 1, path);
+			found &= path.corners.Length > 0;
+			if (found)
+			{
+				found &= path.corners[0] == start.position;
+				found &= path.corners[path.corners.Length - 1] == hit.position;
+
+			}
+			//if (path.corners.Length > 0)
+			//Debug.Log(hit.position + " " + path.corners[path.corners.Length - 1]);
+		} while (++count < 20 && !found);
+
+        
 
         //if inside navmesh, spawn sheep!
-        if (NavMesh.SamplePosition(randomPosition, out NavMeshHit hit, summonRadius, 1))
+        if (found)
         {
-            summonPosition = hit.position;
+			Debug.Log(hit.position + " " + path.corners[path.corners.Length - 1]);
 
-            var soulParticle = Instantiate(summonParticle, transform.position, Quaternion.identity) as GameObject;
-            soulParticle.GetComponent<Sheep_Summon_Particle>()?.InitSheepParticle(GetCurrentSheepPrefab(theSheepType), summonParticleLerpSpeed, summonPosition, this, theSheepType);
+			var soulParticle = Instantiate(summonParticle, transform.position, Quaternion.identity) as GameObject;
+            soulParticle.GetComponent<Sheep_Summon_Particle>()?.InitSheepParticle(GetCurrentSheepPrefab(theSheepType), summonParticleLerpSpeed, hit.position, this, theSheepType);
             var module = soulParticle.GetComponent<ParticleSystem>().main;
             module.startColor = sheepFlocks[(int)theSheepType].UIColor;
             spawnParticles.Add(soulParticle);
