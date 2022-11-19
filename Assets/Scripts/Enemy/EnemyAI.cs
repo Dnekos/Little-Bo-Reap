@@ -159,7 +159,7 @@ public class EnemyAI : Damageable
 				base.OnDeath();
 
 			}
-			transform.LookAt(dest);
+			transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dest - transform.position, Vector3.up), 0.2f);
 			transform.eulerAngles = new Vector3(0, transform.eulerAngles.y);
 		}
 	}

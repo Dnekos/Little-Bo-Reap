@@ -9,7 +9,9 @@ public class LevelEndInteractable : Interactable
 
     public override void Interact()
     {
-        SceneManager.LoadScene(levelName);
+		FMOD.Studio.Bus myBus = FMODUnity.RuntimeManager.GetBus("bus:/SFX");
+		myBus.stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
+		SceneManager.LoadScene(levelName);
         base.Interact();
     }
 }

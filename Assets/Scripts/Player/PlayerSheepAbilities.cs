@@ -736,7 +736,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 		canAttack = false;
 
 		//no sheep?
-		if (sheepFlocks[currentFlockIndex].activeSheep.Count <= 0)
+		if (SwapUIAnimator.gameObject.activeSelf && sheepFlocks[currentFlockIndex].activeSheep.Count <= 0)
 			SwapUIAnimator.Play(noSheepAnimUI);
 
 

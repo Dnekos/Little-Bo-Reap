@@ -297,7 +297,7 @@ public class SheepBezier : SheepHolder
 		{
 			newSheep.position = SheepPlacement;
 			newSheep.eulerAngles = Random.insideUnitSphere * 360;
-			FMODUnity.RuntimeManager.PlayOneShotAttached(placeSound, gameObject);
+			FMODUnity.RuntimeManager.PlayOneShotAttached(placeSound, newSheep.gameObject);
 
 		}
 
