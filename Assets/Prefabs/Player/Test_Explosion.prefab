@@ -10723,7 +10723,7 @@ ParticleSystem:
       countCurve:
         serializedVersion: 2
         minMaxState: 0
-        scalar: 7
+        scalar: 1
         minScalar: 30
         maxCurve:
           serializedVersion: 2
@@ -14630,7 +14630,6 @@ GameObject:
   - component: {fileID: 7302312219567745431}
   - component: {fileID: 7302312219567745430}
   - component: {fileID: 642831261576129040}
-  - component: {fileID: 1831888959828226848}
   m_Layer: 0
   m_Name: Test_Explosion
   m_TagString: Untagged
@@ -15602,7 +15601,7 @@ ParticleSystem:
       countCurve:
         serializedVersion: 2
         minMaxState: 0
-        scalar: 10
+        scalar: 4
         minScalar: 30
         maxCurve:
           serializedVersion: 2
@@ -19509,18 +19508,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 3.44
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1831888959828226848
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7302312219567745433}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3bf0fc852aa93e94d89a78ba0b0f350d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7302312219599645782
 GameObject:
   m_ObjectHideFlags: 0
@@ -19637,7 +19624,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 2
+      scalar: 1
       minScalar: 5
       maxCurve:
         serializedVersion: 2
