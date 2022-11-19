@@ -881,7 +881,7 @@ public class PlayerSheepAbilities : MonoBehaviour
             {
                 // check if you have any defending sheep
                 for (int i = sheepFlocks[(int)SheepTypes.FLUFFY].activeSheep.Count - 1; i >= 0; i--)
-                    if (sheepFlocks[(int)SheepTypes.FLUFFY].activeSheep[i].GetSheepState() == SheepStates.DEFEND_PLAYER)
+                    if (sheepFlocks[(int)SheepTypes.FLUFFY].activeSheep[i].GetSheepState() == SheepStates.VORTEX)
                         return;
             }
 
@@ -917,7 +917,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 
         for (int i = sheepFlocks[flockType].activeSheep.Count - 1; i >= 0; i--)
         {
-            if (sheepFlocks[flockType].activeSheep[i].GetSheepState() == SheepStates.DEFEND_PLAYER)
+            if (sheepFlocks[flockType].activeSheep[i].GetSheepState() == SheepStates.VORTEX)
             {
                 sheepFlocks[flockType].activeSheep[i]?.EndDefendPlayer(sheepFlocks[(int)SheepTypes.FLUFFY].SheepProjectilePrefab);
 

@@ -7,8 +7,8 @@ public enum SheepStates
 {
     FOLLOW_PLAYER = 0,
     WANDER = 1,
-    CHARGE = 2,
-    DEFEND_PLAYER = 3,
+    STAMPEDE = 2,
+    VORTEX = 3,
 	CONSTRUCT = 4,
     ATTACK = 5,
 	STUN = 6, // TODO, make this the same as the enemy's
@@ -237,13 +237,13 @@ public class PlayerSheepAI : Damageable
                     DoWander();
                     break;
                 }
-            case SheepStates.CHARGE:
+            case SheepStates.STAMPEDE:
                 {
                     DoCharge();
                     CheckCharge();
                     break;
                 }
-            case SheepStates.DEFEND_PLAYER:
+            case SheepStates.VORTEX:
                 {
                     DoDefendPlayer();
                     break;
@@ -294,7 +294,7 @@ public class PlayerSheepAI : Damageable
     {
         switch (currentSheepState)
         {
-            case SheepStates.CHARGE:
+            case SheepStates.STAMPEDE:
                 {
                     if (other.CompareTag("Enemy"))
                     {
@@ -308,7 +308,7 @@ public class PlayerSheepAI : Damageable
                     }
                     break;
                 }
-            case SheepStates.DEFEND_PLAYER:
+            case SheepStates.VORTEX:
                 {
                     if (other.CompareTag("Enemy"))
                     {
@@ -371,7 +371,7 @@ public class PlayerSheepAI : Damageable
     public void RecallSheep()
     {
         // sheep cant be recalled when stunned OR DEFENDING
-        if (currentSheepState == SheepStates.STUN || currentSheepState == SheepStates.DEFEND_PLAYER)
+        if (currentSheepState == SheepStates.STUN || currentSheepState == SheepStates.VORTEX)
             return;
 
         // if the sheep is too high up, stun it first so that it gets closer to the ground
@@ -399,7 +399,7 @@ public class PlayerSheepAI : Damageable
 	}
     public bool IsCommandable()
     {
-        return currentSheepState == SheepStates.CHARGE || currentSheepState == SheepStates.FOLLOW_PLAYER || currentSheepState == SheepStates.WANDER;
+        return currentSheepState == SheepStates.STAMPEDE || currentSheepState == SheepStates.FOLLOW_PLAYER || currentSheepState == SheepStates.WANDER;
     }
     float GetRandomSheepBaseSpeed()
     {
@@ -735,7 +735,7 @@ public class PlayerSheepAI : Damageable
         agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
 
 		//set sheep state
-		SetSheepState(SheepStates.CHARGE);
+		SetSheepState(SheepStates.STAMPEDE);
     }
 
 	void UpdateChargeDestination()
@@ -817,7 +817,7 @@ public class PlayerSheepAI : Damageable
         //set speed
         agent.speed = defendSpeed;
         agent.stoppingDistance = defendStopDistance;
-		SetSheepState(SheepStates.DEFEND_PLAYER);
+		SetSheepState(SheepStates.VORTEX);
     }
 
     public void EndDefendPlayer(GameObject fluffyProjectile)

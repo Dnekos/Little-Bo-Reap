@@ -126,31 +126,6 @@ public class SheepBezier : SheepHolder
 	}
 
 	#region Adding Sheep
-	private void OnTriggerEnter(Collider other)
-	{
-		// only add charging sheep
-		if (true)//if (other.GetComponent<PlayerSheepAI>() == null || other.GetComponent<PlayerSheepAI>().GetSheepState() != SheepStates.CHARGE)
-			return;
-
-		// approximate radius
-		/* 
-		 * TODO: change this to be a constant once we have the sheep model, 
-		 * or make this a variable on the sheep's end, 
-		 * in case different ones are different sizes
-		*/
-		if (other.GetComponent<SphereCollider>() != null)
-			SheepRadius = other.GetComponent<SphereCollider>().radius * other.transform.lossyScale.x;
-		else if (other.GetComponent<CapsuleCollider>() != null)
-			SheepRadius = other.GetComponent<CapsuleCollider>().radius * other.transform.lossyScale.x;
-
-		// set height if this is the first sheep
-		if (containedSheep.Count == 0)
-			CurveT = 0;// + SheepRadius;
-
-		// add the little guy
-		AddSheep(other.transform);
-	}
-
 	public override void Interact()
 	{
 		base.Interact();
@@ -222,9 +197,6 @@ public class SheepBezier : SheepHolder
 
 		while (CurveT <= 1)
 		{
-			// try a point
-			Vector3 randInCircle = Random.insideUnitSphere * (radius - SheepRadius);
-
 			// make a guess at a good spot to place sheep, within collider bounds
 			Vector3 down = DoubleDerivative(CurveT);
 			Vector3 right = Vector3.Cross(down, Differentiate(CurveT));

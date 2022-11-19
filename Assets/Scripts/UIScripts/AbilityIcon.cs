@@ -20,9 +20,10 @@ public class AbilityIcon : MonoBehaviour
         //i know this is sloppy but whatever, needed to test this
         if(isFilling)
         {
-            image.fillAmount += 1.0f / rechargeTime * Time.unscaledDeltaTime;
+            image.fillAmount += rechargeTime * Time.unscaledDeltaTime;
 
-            if (image.fillAmount >= 1) isFilling = false;
+            if (image.fillAmount >= 1)
+				isFilling = false;
         }
         
     }
@@ -31,6 +32,6 @@ public class AbilityIcon : MonoBehaviour
     {
         isFilling = true;
         image.fillAmount = 0f;
-        rechargeTime = theCooldown;
+        rechargeTime = 1.0f / theCooldown;
     }
 }

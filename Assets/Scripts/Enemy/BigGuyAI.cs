@@ -38,7 +38,8 @@ public class BigGuyAI : EnemyAI
 		if (HealthBarCanvas.activeSelf && Health != MaxHealth)
 			HealthBarCanvas.transform.LookAt(Camera.main.transform);
 
-		if (currentEnemyState == EnemyStates.EXECUTABLE) HealthBarCanvas.SetActive(false);
+		if (currentEnemyState == EnemyStates.EXECUTABLE)
+			HealthBarCanvas.SetActive(false);
 	}
 
 	public override void TakeDamage(Attack atk, Vector3 attackForward)

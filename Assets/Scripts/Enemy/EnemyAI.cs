@@ -108,7 +108,7 @@ public class EnemyAI : Damageable
 		// basic state machine
 		switch (currentEnemyState)
 		{
-			case EnemyStates.WANDER:
+			case EnemyStates.WANDER: // TODO: why is this state a thing???
 				break;
 			case EnemyStates.CHASE_PLAYER:
 				DoChase();
