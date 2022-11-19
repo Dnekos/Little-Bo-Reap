@@ -33,6 +33,7 @@ public class PlayerExecution : MonoBehaviour
 	PlayerAnimationController anim;
 	PlayerSheepAbilities flocks;
     PlayerMovement movement;
+	Rigidbody rb;
 
 	public void OnExecute(InputAction.CallbackContext context)
     {
@@ -129,6 +130,7 @@ public class PlayerExecution : MonoBehaviour
 		anim = GetComponent<PlayerAnimationController>();
 		flocks = GetComponent<PlayerSheepAbilities>();
         movement = GetComponent<PlayerMovement>();
+		rb = GetComponent<Rigidbody>();
 	}
 
 	//if executing, figure out positions. TODO
@@ -136,6 +138,7 @@ public class PlayerExecution : MonoBehaviour
     {
         if(isExecuting)
         {
+			rb.velocity = Vector3.zero;
             transform.LookAt(enemyToExecute.transform.position);
             transform.eulerAngles = new Vector3(0, transform.rotation.eulerAngles.y, 0);
             enemyToExecute.transform.LookAt(transform.position);

@@ -252,7 +252,8 @@ public class PlayerSheepAbilities : MonoBehaviour
             particleModule.startColor = sheepFlocks[currentFlockIndex].UIColor;
             sheepFlocks[currentFlockIndex].flockChangeParticle.Play(true);
 
-            SwapUIAnimator.Play(swapAnimationUI);
+			if (SwapUIAnimator.gameObject.activeSelf && sheepFlocks[currentFlockIndex].activeSheep.Count <= 0)
+				SwapUIAnimator.Play(swapAnimationUI);
 
             UpdateFlockUI();
         }
@@ -275,7 +276,8 @@ public class PlayerSheepAbilities : MonoBehaviour
                 particleModule.startColor = sheepFlocks[currentFlockIndex].UIColor;
                 sheepFlocks[currentFlockIndex].flockChangeParticle.Play(true);
 
-                SwapUIAnimator.Play(swapAnimationUI);
+				if (SwapUIAnimator.gameObject.activeSelf && sheepFlocks[currentFlockIndex].activeSheep.Count <= 0)
+					SwapUIAnimator.Play(swapAnimationUI);
 
                 UpdateFlockUI();
             }
@@ -729,7 +731,8 @@ public class PlayerSheepAbilities : MonoBehaviour
 
 			for (int i = 0; i < GetSheepFlock(flockType).Count; i++)
 			{
-				if (GetSheepFlock(flockType)[i].IsCommandable()) GetSheepFlock(flockType)[i]?.CreateListOfAttackTargets(hit.point, attackRadius);
+				if (GetSheepFlock(flockType)[i].IsCommandable())
+					GetSheepFlock(flockType)[i]?.CreateListOfAttackTargets(hit.point, attackRadius);
 			}
 		}
 		//start cooldown
