@@ -609,19 +609,19 @@ public class PlayerSheepAbilities : MonoBehaviour
 			Vector3 summonPosition = Vector3.zero;
 			randomPosition = Random.insideUnitSphere * summonRadius;
 			randomPosition += transform.position;
-
-			found = NavMesh.SamplePosition(randomPosition, out hit, summonRadius, 1);
-			found &= NavMesh.SamplePosition(transform.position, out NavMeshHit start, summonRadius, 1);
-			found &= NavMesh.CalculatePath(start.position, hit.position, 1, path);
-			found &= path.corners.Length > 0;
-			if (found)
+			if (NavMesh.SamplePosition(randomPosition, out hit, summonRadius, 1) && NavMesh.SamplePosition(transform.position, out NavMeshHit start, summonRadius, 1))
 			{
-				found &= path.corners[0] == start.position;
-				found &= path.corners[path.corners.Length - 1] == hit.position;
+				if (start.position != Vector3.positiveInfinity && hit.position != Vector3.positiveInfinity)
+				{
+					if (NavMesh.CalculatePath(start.position, hit.position, 1, path) && path.corners.Length > 0)
+					{
+						found = path.corners[0] == start.position;
+						found &= path.corners[path.corners.Length - 1] == hit.position;
 
+					}
+				}
 			}
-			//if (path.corners.Length > 0)
-			//Debug.Log(hit.position + " " + path.corners[path.corners.Length - 1]);
+			
 		} while (++count < 20 && !found);
 
         

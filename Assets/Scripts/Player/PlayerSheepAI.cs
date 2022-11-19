@@ -457,6 +457,8 @@ public class PlayerSheepAI : Damageable
     #region Sheep Stun 
 	public void SetHitstun(SheepStates stateAfterStun)
 	{
+		if (this == null)
+			return;
 		if (hitstunCo != null)
 			StopCoroutine(hitstunCo);
 		hitstunCo = StartCoroutine(OnHitStun(SheepStates.WANDER));
