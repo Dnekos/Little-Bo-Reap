@@ -70689,6 +70689,7 @@ MonoBehaviour:
   jumpParticles: {fileID: 4261654204498698349}
   superJumpPreventionTimer: 0.2
   CoyoteTime: 0.2
+  isFalling: 0
   LiftMaxSpeedModifier: 0.2
   LiftSpeed: 25
   isLifting: 0
@@ -70760,7 +70761,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4096
   attackRadius: 15
-  isFalling: 0
 --- !u!114 &8268160106776874863
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70831,6 +70831,7 @@ MonoBehaviour:
     flockChangeParticle: {fileID: 160087325606717774}
   currentFlockType: 0
   maxDistanceToUseAbilities: 30
+  respawnEvent: {fileID: 11400000, guid: 19937298da8f18b41b1d2572d7bb5bcb, type: 2}
   leaderSheep:
   - {fileID: 0}
   - {fileID: 0}
@@ -70857,6 +70858,7 @@ MonoBehaviour:
   summonParticle: {fileID: 3596518442742938129, guid: 8405f9e5746642d4f94a7fb2e1c1a1f8,
     type: 3}
   summonParticleLerpSpeed: 2
+  endConstructsEvent: {fileID: 11400000, guid: 317c263135cb10e4fb6b742e1b2c4763, type: 2}
   attackPointOffset: {x: 0, y: 5, z: 0}
   sheepAttackPointPrefab: {fileID: 1751060722446382379, guid: e90fa84ab86499f4682573bbf40f0c0d,
     type: 3}

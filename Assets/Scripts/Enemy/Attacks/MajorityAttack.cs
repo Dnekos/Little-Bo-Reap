@@ -10,6 +10,6 @@ public class MajorityAttack : EnemyAttack
 
 	public override bool CheckCondition(Transform user, Transform player, List<Transform> NearbyGuys)
 	{
-		return NearbyGuys.Count >= player.GetComponent<PlayerSheepAbilities>().GetAverageActiveFlockSize() * PercentOfSheep;
+		return NearbyGuys.Count >= GameObject.FindGameObjectsWithTag("Sheep").Length;//player.GetComponent<PlayerSheepAbilities>().GetAverageActiveFlockSize() * PercentOfSheep;
 	}
 }

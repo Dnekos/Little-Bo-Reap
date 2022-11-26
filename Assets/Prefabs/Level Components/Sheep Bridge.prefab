@@ -384,8 +384,16 @@ MonoBehaviour:
   SheepLayer: 10
   GroundLayer: 6
   CurveT: -1
+  endConstructEvent: {fileID: 11400000, guid: 317c263135cb10e4fb6b742e1b2c4763, type: 2}
   SheepBars: 6
   lerpSpeed: 3
+  placeSound:
+    Guid:
+      Data1: -1715676877
+      Data2: 1158912244
+      Data3: 260257952
+      Data4: -1284307485
+    Path: event:/Sheep/SheepPlacement
   height: 2
   width: 6
   P0: {fileID: 4580194934431113516}
@@ -468,7 +476,7 @@ Transform:
   - {fileID: 823351510418162966}
   - {fileID: 5875416253633579944}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4580194935137352128
 GameObject:

@@ -51,6 +51,7 @@ public class PlayerSheepAbilities : MonoBehaviour
     public SheepTypes currentFlockType;
     [SerializeField] float maxDistanceToUseAbilities = 30f;
     int currentFlockIndex;
+	[SerializeField] GameEvent respawnEvent;
 
     [Header("Sheep Flock Leaders")]
     public List<PlayerSheepAI> leaderSheep;
@@ -79,6 +80,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 	[SerializeField] ParticleSystem RecallVFX;
     [SerializeField] GameObject summonParticle;
     [SerializeField] float summonParticleLerpSpeed = 5f;
+	[SerializeField] GameEvent endConstructsEvent;
 	List<GameObject> spawnParticles;
     bool canSummonSheep = true;
     //bool canSummonAllSheep = true;
@@ -148,7 +150,9 @@ public class PlayerSheepAbilities : MonoBehaviour
 
     private void Start()
     {
-        summonResource = GetComponent<PlayerSummoningResource>();
+		respawnEvent.listener.AddListener(DeleteAllSheep);
+
+		summonResource = GetComponent<PlayerSummoningResource>();
         animator = GetComponent<PlayerAnimationController>().playerAnimator;
         currentFlockIndex = (int)currentFlockType;
         gothMode = GetComponent<PlayerGothMode>();
@@ -165,6 +169,11 @@ public class PlayerSheepAbilities : MonoBehaviour
     }
     private void Update()
     {
+		// set leader
+		for (int i = 0; i < 3; i++)
+			for (int j = 0; j < sheepFlocks[i].activeSheep.Count; j++)
+				sheepFlocks[i].activeSheep[j].leaderSheep = sheepFlocks[i].activeSheep[0];
+
         CheckAttack();
         CheckCharge();
         CheckDefend();
@@ -305,35 +314,28 @@ public class PlayerSheepAbilities : MonoBehaviour
 		return sheepFlocks[(int)theFlockType].MaxSize;
     }
 
-    public void RemoveSheepFromList(SheepTypes theType, PlayerSheepAI theSheep)
+    public void RemoveSheepFromList(int theType, PlayerSheepAI theSheep)
     {
-        GetSheepFlock(theType).Remove(theSheep);
+        sheepFlocks[theType].activeSheep.Remove(theSheep);
         UpdateFlockUI();
     }
 
     public void UpdateFlockUI()
     {
-        flockTypeIcon.sprite = sheepFlocks[(int)currentFlockType].sheepIcon;
-        flockNumber.text = sheepFlocks[(int)currentFlockType].activeSheep.Count + "/" + sheepFlocks[(int)currentFlockType].MaxSize;
-        redText.text = sheepFlocks[(int)currentFlockType].activeSheep.Count + "/" + sheepFlocks[(int)currentFlockType].MaxSize;
-        flockNumber.color = sheepFlocks[(int)currentFlockType].UIColor;
-
 		for (int i = 0; i < sheepFlocks.Length; i++)
 			flockSelectTexts[i].text = sheepFlocks[i].activeSheep.Count + "/" + sheepFlocks[i].MaxSize;
+
+		flockTypeIcon.sprite = sheepFlocks[currentFlockIndex].sheepIcon;
+		flockNumber.text = flockSelectTexts[currentFlockIndex].text;
+        redText.text = flockNumber.text;
+        flockNumber.color = sheepFlocks[currentFlockIndex].UIColor;
 	}
 
     bool CheckIfCloseToLeader(SheepTypes theSheepType)
     {
-        //make sure you have a flock!
-        if (GetSheepFlock(theSheepType).Count > 0)
-        {
-            float checkDistance = Vector3.Distance(transform.position, leaderSheep[(int)theSheepType].transform.position);
-
-            //if you're close to a given leader, you can use an ability.
-            if (checkDistance <= maxDistanceToUseAbilities) return true;
-            else return false;
-        }
-        else return false;
+		// if you have a flock and you're close to a given leader, you can use an ability.
+		return GetSheepFlock(theSheepType).Count > 0 && 
+			Vector3.Distance(transform.position, leaderSheep[(int)theSheepType].transform.position) <= maxDistanceToUseAbilities;
     }
 
     #endregion
@@ -367,9 +369,11 @@ public class PlayerSheepAbilities : MonoBehaviour
             //play animation
             animator.Play(racallAnimation);
 
+			// stop constructs
+			endConstructsEvent.listener.Invoke();
 
-            //TEMP SOUND
-            FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound, gameObject);
+			//TEMP SOUND
+			FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound, gameObject);
 
             RecallVFX.Stop();
             RecallVFX.Play();
@@ -441,6 +445,9 @@ public class PlayerSheepAbilities : MonoBehaviour
 
 			// remove list slots that are null (dead sheep)
 			//GetSheepFlock(flockType).RemoveAll(x => x == null);
+
+			// stop constructs
+			endConstructsEvent.listener.Invoke();
 
 			for (int i = spawnParticles.Count - 1; i >= 0; i--)
 			{
@@ -634,7 +641,8 @@ public class PlayerSheepAbilities : MonoBehaviour
 			Debug.Log(hit.position + " " + path.corners[path.corners.Length - 1]);
 
 			var soulParticle = Instantiate(summonParticle, transform.position, Quaternion.identity) as GameObject;
-            soulParticle.GetComponent<Sheep_Summon_Particle>()?.InitSheepParticle(GetCurrentSheepPrefab(theSheepType), summonParticleLerpSpeed, hit.position, this, theSheepType);
+			soulParticle.GetComponent<Sheep_Summon_Particle>().removeFunction = new PlayerSheepAI.callSheep(RemoveSheepFromList);
+			soulParticle.GetComponent<Sheep_Summon_Particle>()?.InitSheepParticle(GetCurrentSheepPrefab(theSheepType), summonParticleLerpSpeed, hit.position, this, theSheepType);
             var module = soulParticle.GetComponent<ParticleSystem>().main;
             module.startColor = sheepFlocks[(int)theSheepType].UIColor;
             spawnParticles.Add(soulParticle);
@@ -742,8 +750,6 @@ public class PlayerSheepAbilities : MonoBehaviour
 		if (SwapUIAnimator.gameObject.activeSelf && sheepFlocks[currentFlockIndex].activeSheep.Count <= 0)
 			SwapUIAnimator.Play(noSheepAnimUI);
 
-
-		//attackIcon.CooldownUIEffect(attackCooldown);
 		StartCoroutine(AttackCooldown());
 	}
     void CheckAttack()
@@ -762,7 +768,6 @@ public class PlayerSheepAbilities : MonoBehaviour
                 //draw it way the fuck down so it isnt seen
                 sheepAttackPoint.transform.position = new Vector3(0f, -1000f, 0f);
             }
-
         }
     }
 

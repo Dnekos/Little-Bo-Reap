@@ -25,7 +25,6 @@ public class PlayerGroundPound : MonoBehaviour
     [SerializeField] SheepAttack groundPoundAttack;
     [SerializeField] LayerMask enemyLayer;
     [SerializeField] float attackRadius;
-    [HideInInspector] public bool isFalling = false;
     bool canAttack = true;
 
     PlayerMovement playerMovement;
@@ -41,9 +40,9 @@ public class PlayerGroundPound : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (isFalling)
+        if (playerMovement.isFalling)
         {
-            isFalling = false;
+			playerMovement.isFalling = false;
             animator.SetBool("isFalling", false);
             Instantiate(heavyParticle, transform.position, transform.rotation);
 
@@ -57,7 +56,7 @@ public class PlayerGroundPound : MonoBehaviour
             Collider[] enemies = Physics.OverlapSphere(transform.position, attackRadius, enemyLayer);
             foreach (Collider hit in enemies)
             {
-				EnemyAI enemy = hit.GetComponent<EnemyAI>();
+				Damageable enemy = hit.GetComponent<Damageable>();
 
 				if (enemy != null)
                 {
@@ -66,14 +65,12 @@ public class PlayerGroundPound : MonoBehaviour
 
                     if (GetComponent<PlayerGothMode>().isGothMode)
                     {
-                        groundPoundAttack.damageBlack = baseGroundDamageBlack;
-                        groundPoundAttack.damageBlack *= damage;
+                        groundPoundAttack.damageBlack = baseGroundDamageBlack * damage;
 						enemy.TakeDamage(groundPoundAttack, dir);
                     }
                     else
                     {
-                        groundPoundAttack.damage = baseGroundDamage;
-                        groundPoundAttack.damage *= damage;
+                        groundPoundAttack.damage = baseGroundDamage * damage;
 						enemy.TakeDamage((Attack)groundPoundAttack, dir);
                     }
                 }
@@ -90,7 +87,7 @@ public class PlayerGroundPound : MonoBehaviour
     {
 		startFallPos = transform.position;
 
-		animator.SetBool("isFalling", isFalling);
+		animator.SetBool("isFalling", playerMovement.isFalling);
 
         //called from animator, slam down!!
         rb.AddForce(-rb.velocity, ForceMode.VelocityChange);
@@ -101,7 +98,7 @@ public class PlayerGroundPound : MonoBehaviour
         //if airborne, do a little lift then slam down into the ground!
         if (context.started && canAttack && !playerMovement.isLifting)
         {
-			isFalling = true;
+			playerMovement.isFalling = true;
 
             canAttack = false;
             StartCoroutine(GroundPoundCooldown());

@@ -195,9 +195,9 @@ public class EnemyAI : Damageable
     void DoChase()
 	{
 		// double check that there are no null sheep (possibly could happen if they are killed in the radius)
-		NearbyGuys.RemoveAll(item => item == null || 
-			(item.GetComponent<PlayerSheepAI>() != null && // if sheep is construct/lift
-			(item.GetComponent<PlayerSheepAI>().GetSheepState()  == SheepStates.CONSTRUCT || item.GetComponent<PlayerSheepAI>().GetSheepState() == SheepStates.LIFT))); 
+		NearbyGuys.RemoveAll(item => item == null);// ||  TODO: fix this!!
+			//(item.GetComponent<PlayerSheepAI>() != null && // if sheep is construct/lift
+			//(item.GetComponent<PlayerSheepAI>().GetSheepState()  == SheepStates.CONSTRUCT || item.GetComponent<PlayerSheepAI>().GetSheepState() == SheepStates.LIFT))); 
 
 		// if there are sheep near it, follow them instead
 		if (NearbyGuys.Count >= SheepToDistract)
@@ -266,14 +266,16 @@ public class EnemyAI : Damageable
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if (other.GetComponent<PlayerSheepAI>() != null || other.GetComponent<PlayerMovement>() != null)
+		Damageable target = other.GetComponent<Damageable>();
+		if (target != null && (target is EnemyAI))
 		{
 			NearbyGuys.Add(other.transform);
 		}
 	}
 	private void OnTriggerExit(Collider other)
 	{
-		if (other.GetComponent<PlayerSheepAI>() != null || other.GetComponent<PlayerMovement>() != null)
+		Damageable target = other.GetComponent<Damageable>();
+		if (target != null && (target is EnemyAI))
 		{
 			NearbyGuys.Remove(other.transform);
 		}

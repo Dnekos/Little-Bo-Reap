@@ -39,6 +39,9 @@ public class PlayerMovement : MonoBehaviour
 	[SerializeField] float CoyoteTime = 0.2f;
 	float CoyoteTimer;
 
+
+	// GROUND POUND
+	[HideInInspector] public bool isFalling = false;
 	// this will need some retooling
 	//[SerializeField] float JumpBufferTime = 0.2f;
 	//float BufferTimer;
@@ -115,12 +118,6 @@ public class PlayerMovement : MonoBehaviour
     }
 	#endregion
 
-
-	private void Awake()
-	{
-		//set this as player in game manager
-		//GameManager.Instance.SetPlayer(this.transform);
-	}
     void Start()
     {
 
@@ -191,11 +188,6 @@ public class PlayerMovement : MonoBehaviour
         animator.SetBool("isGrounded", isGrounded);
 
         //check if was not grounded last frame and is grounded this frame
-
-        if(isGrounded && !wasGroundedLastFrame)
-        {
-           // animator.Play(landingAnimation);
-        }
         wasGroundedLastFrame = isGrounded;
     }
 
@@ -303,7 +295,7 @@ public class PlayerMovement : MonoBehaviour
 				rb.AddForce(Vector3.down * rb.velocity.y, ForceMode.VelocityChange);
 			rb.AddForce(Vector3.up * jumpForce);
 		}
-		else if (context.started && CanLift && !groundPound.isFalling)
+		else if (context.started && CanLift && !isFalling)
 		{
 			if (liftcontroller.StartLifting())
 			{
