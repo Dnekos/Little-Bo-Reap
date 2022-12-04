@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using XNode.Examples.StateGraph;
 
 public enum EnemyStates
 {
@@ -14,12 +15,19 @@ public enum EnemyStates
 
 public class EnemyAI : Damageable
 {
+
+	[SerializeField]
+	StateGraph graph;
+
 	[System.Serializable]
 	protected struct AttackCooldownCombo
 	{
 		public EnemyAttack atk;
 		public float Cooldown;
 	}
+
+
+	Dictionary<int, float> Cooldowns;
 
 	[Header("Spawning")]
 	public GameObject SpawnParticlePrefab;
@@ -34,8 +42,8 @@ public class EnemyAI : Damageable
 
 	[Header("Attacking")]
 	[SerializeField,Tooltip("priority of attacks are based on how high up they are in the array")] protected AttackCooldownCombo[] attacks;
-	protected int activeAttackIndex = -1;
-	[SerializeField] List<Transform> NearbyGuys;
+	protected EnemyAttack activeAttackIndex;
+	public List<Transform> NearbyGuys;
 	[SerializeField, Tooltip("how frequently enemies query conditions to make an attack")] float delayBetweenAttacks = 1;
 	[SerializeField] int SheepToDistract = 2;
 	[SerializeField] Collider StickCollider;
@@ -76,22 +84,18 @@ public class EnemyAI : Damageable
 		NearbyGuys = new List<Transform>();
 		agent = GetComponent<NavMeshAgent>();
 		player = WorldState.instance.player.transform;
+
+		Debug.Log("nodes" + graph.nodes.Count);
+		//graph = new StateGraph();
 	}
 
 	// Update is called once per frame
 	protected virtual void Update()
     {
-		if(GetComponent<Animator>()!=null)
-        {
-		if(agent.velocity.magnitude > 1)
-        {
-			GetComponent<Animator>()?.SetBool("isMoving", true);
-        }
-		else
-        {
-			GetComponent<Animator>()?.SetBool("isMoving", false);
+		if (GetComponent<Animator>() != null)
+		{
+			GetComponent<Animator>()?.SetBool("isMoving", agent.velocity.magnitude > 1);
 		}
-        }
 		
 
 		if (WorldState.instance.Dead)
@@ -228,7 +232,7 @@ public class EnemyAI : Damageable
 		yield return new WaitForSeconds(delayBetweenAttacks);
 		if (currentEnemyState == EnemyStates.CHASE_PLAYER)
 		{
-
+			graph.Continue();
 			for (int i = 0; i < attacks.Length; i++)
 			{
 				if (printAttackTests)
@@ -237,13 +241,25 @@ public class EnemyAI : Damageable
 				{
 					attacks[i].atk.PerformAttack(anim);
 					attacks[i].Cooldown = attacks[i].atk.MaxCooldown;
-					activeAttackIndex = i;
+					//activeAttackIndex = atk;
 					break;
 				}
 			}
 		}
 		QueuedAttack = null;
 
+	}
+	public bool RunAttack(EnemyAttack atk)
+	{
+		int index = convert4(atk.ID);
+		if (Cooldowns.ContainsKey(index) && Cooldowns[index] < 0)
+		{
+			atk.PerformAttack(anim);
+			Cooldowns[index]= atk.MaxCooldown;
+			activeAttackIndex = atk;
+			return true;
+		}
+		return false;
 	}
 	#endregion
 
@@ -257,7 +273,7 @@ public class EnemyAI : Damageable
 			Damageable hitTarget = collision.gameObject.GetComponent<Damageable>();
 			if (hitTarget != null)
 			{
-				collision.gameObject.GetComponent<Damageable>()?.TakeDamage(attacks[activeAttackIndex].atk, transform.forward);
+				collision.gameObject.GetComponent<Damageable>()?.TakeDamage(activeAttackIndex, transform.forward);
 				FMODUnity.RuntimeManager.PlayOneShotAttached(clubHitSound, gameObject);
 			}
 
@@ -283,6 +299,11 @@ public class EnemyAI : Damageable
 	}
 	#endregion
 
+	int convert4(string key)
+	{
+		// https://stackoverflow.com/questions/3858908/convert-a-4-char-string-into-int32
+		return (key[3] << 24) + (key[2] << 16) + (key[1] << 8) + key[0];
+	}
 
 
 	#region Movement
