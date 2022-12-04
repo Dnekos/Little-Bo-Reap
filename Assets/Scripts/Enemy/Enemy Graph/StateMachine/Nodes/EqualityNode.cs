@@ -21,6 +21,9 @@ namespace XNode.Examples.StateGraph {
 
 		public override bool Evaluate()
 		{
+			float a = GetInputValue<float>("num1", this.num1);
+			float b = GetInputValue<float>("num2", this.num2);
+
 			switch (opp)
 			{
 				case Operator.EQUAL:

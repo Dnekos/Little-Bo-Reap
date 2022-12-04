@@ -26,8 +26,8 @@ namespace XNode.Examples.StateGraph {
 		public override object GetValue(NodePort port)
 		{
 			// Get new a and b values from input connections. Fallback to field values if input is not connected
-			float a = GetInputValue<float>("a", this.num1);
-			float b = GetInputValue<float>("b", this.num2);
+			float a = GetInputValue<float>("num1", this.num1);
+			float b = GetInputValue<float>("num2", this.num2);
 
 			// After you've gotten your input values, you can perform your calculations and return a value
 			result = 0f;

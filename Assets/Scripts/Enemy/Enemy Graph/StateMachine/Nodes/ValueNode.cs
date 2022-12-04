@@ -10,9 +10,11 @@ namespace XNode.Examples.StateGraph {
 		public enum Variable
 		{
 			ENEMY_POS,
-			NEARBY,
+			NEARBY_COUNT,
+			NEARBY_AVE_POS,
 			ENEMY_FORWARD,
-			ACTIVE_SHEEP
+			ACTIVE_SHEEP_COUNT,
+			ACTIVE_SHEEP_AVE_POS
 
 		}
 		[Input] public Variable desiredValue;
@@ -31,9 +33,19 @@ namespace XNode.Examples.StateGraph {
 			{
 				switch (desiredValue)
 				{
-					case Variable.ACTIVE_SHEEP:
+					case Variable.ACTIVE_SHEEP_COUNT:
 						//if (port.fieldName == "transformListType")
-						return GameObject.FindGameObjectsWithTag("Sheep");
+						return GameObject.FindGameObjectsWithTag("Sheep").Length;
+					case Variable.ACTIVE_SHEEP_AVE_POS:
+						//if (port.fieldName == "transformListType")
+						Vector3 sheep_pos = Vector3.zero;
+						GameObject[] sheep = GameObject.FindGameObjectsWithTag("Sheep");
+						for (int i = 0; i < sheep.Length; i++)
+						{
+							sheep_pos += sheep[i].transform.position;
+						}
+						return sheep_pos / sheep.Length;
+
 					//break;
 					case Variable.ENEMY_FORWARD:
 						//if (port.fieldName == "vectorType")
@@ -43,10 +55,19 @@ namespace XNode.Examples.StateGraph {
 						//if (port.fieldName == "vectorType")
 						return (graph as StateGraph).currentUser.transform.position;
 					//break;
-					case Variable.NEARBY:
+					case Variable.NEARBY_COUNT:
 						//if (port.fieldName == "transformListType")
-						return (graph as StateGraph).currentUser.NearbyGuys;
-						//break;
+						return (graph as StateGraph).currentUser.NearbyGuys.Count;
+					case Variable.NEARBY_AVE_POS:
+						//if (port.fieldName == "transformListType")
+						Vector3 average_pos = Vector3.zero;
+						List<Transform> guys = (graph as StateGraph).currentUser.NearbyGuys;
+						for (int i = 0; i < guys.Count; i++)
+						{
+							average_pos += guys[i].position;
+						}
+						return average_pos / guys.Count;
+					//break;
 				}
 			}
 			return null;

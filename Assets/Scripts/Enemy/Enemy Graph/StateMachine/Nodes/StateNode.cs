@@ -30,7 +30,7 @@ namespace XNode.Examples.StateGraph {
 			
 			// re-add connections
 			exitPort.ClearConnections();
-			for (int i = 0; i < ports.Count; i++)
+			for (int i = ports.Count-1; i >= 0; i--)
 				exitPort.Connect(ports[i]);
 		}
 
