@@ -12,7 +12,7 @@ namespace XNodeEditor.Examples {
 			GUI.color = Color.white;
 			StateNode node = target as StateNode;
 			StateGraph graph = node.graph as StateGraph;
-			if (graph.current == node) GUI.color = Color.blue;
+			//if (graph.current == node) GUI.color = Color.blue;
 			string title = target.name;
 			GUILayout.Label(title, NodeEditorResources.styles.nodeHeader, GUILayout.Height(30));
 			GUI.color = Color.white;

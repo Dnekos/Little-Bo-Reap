@@ -1,10 +1,10 @@
-﻿	using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace XNode.Examples.StateGraph {
-	public class Sequence : StateNode
+	public class SequenceNode : StateNode
 	{
 		[Output] public Empty exit;
 

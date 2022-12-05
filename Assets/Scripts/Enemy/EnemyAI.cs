@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 using XNode.Examples.StateGraph;
@@ -16,7 +17,7 @@ public enum EnemyStates
 public class EnemyAI : Damageable
 {
 
-	[SerializeField]
+	[Header("AI"), SerializeField]
 	StateGraph graph;
 
 	[System.Serializable]
@@ -74,61 +75,37 @@ public class EnemyAI : Damageable
 	[Header("Debug")]
 	[SerializeField] bool printAttackTests = false;
 
-	protected Transform player;
+	[HideInInspector]
+	public Transform player;
 	NavMeshAgent agent;
 
     // Start is called before the first frame update
     override protected void Start()
     {
 		base.Start();
-		NearbyGuys = new List<Transform>();
+
 		agent = GetComponent<NavMeshAgent>();
 		player = WorldState.instance.player.transform;
+		Cooldowns = new Dictionary<int, float>();
+		NearbyGuys = new List<Transform>();
 
-		Debug.Log("nodes" + graph.nodes.Count);
-		//graph = new StateGraph();
+		InvokeRepeating("RunBehaviorTree", 1, 1);
+	}
+
+	void RunBehaviorTree()
+	{
+		NearbyGuys.RemoveAll(item => item == null);
+		graph.AnalyzeGraph(this);
 	}
 
 	// Update is called once per frame
 	protected virtual void Update()
     {
 		if (GetComponent<Animator>() != null)
-		{
-			GetComponent<Animator>()?.SetBool("isMoving", agent.velocity.magnitude > 1);
-		}
-		
+			GetComponent<Animator>().SetBool("isMoving", agent.velocity.magnitude > 1);
 
-		if (WorldState.instance.Dead)
-		{
-			DoIdle();
-		}
-
-		// update cooldowns on attacks
-		for (int i = 0; i < attacks.Length; i++)
-		{
-			attacks[i].Cooldown -= Time.deltaTime;
-		}
-
-		// basic state machine
-		switch (currentEnemyState)
-		{
-			case EnemyStates.WANDER:
-				break;
-			case EnemyStates.CHASE_PLAYER:
-				DoChase();
-				break;
-			case EnemyStates.HITSTUN:
-				break;
-			case EnemyStates.IDLE:
-				DoIdle();
-				break;
-			case EnemyStates.EXECUTABLE:
-				DoExecutionState();
-				break;
-			default:
-				Debug.LogWarning("Enemy at unexpected state and defaulted!");
-				break;
-		}
+		foreach (var key in Cooldowns.Keys.ToList())
+			Cooldowns[key] -= Time.deltaTime;
 	}
 
 	private void FixedUpdate()
@@ -143,12 +120,13 @@ public class EnemyAI : Damageable
     {
 		return currentEnemyState;
     }
-	protected void EnemySetDestination(Vector3 dest)
+	public bool SetDestination(Vector3 dest)
 	{
 		if (!agent.isOnNavMesh && !agent.isOnOffMeshLink)
 		{
 			print(gameObject + " failed to find a destination");
 			base.OnDeath();
+			return false;
 		}
 		else
 		{
@@ -161,11 +139,12 @@ public class EnemyAI : Damageable
 			{
 				print(gameObject + " tried finding a destination while not on a valid point");
 				base.OnDeath();
-
+				return false;
 			}
 			transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dest - transform.position, Vector3.up), 0.2f);
 			transform.eulerAngles = new Vector3(0, transform.eulerAngles.y);
 		}
+		return true;
 	}
 	#endregion
 
@@ -178,15 +157,9 @@ public class EnemyAI : Damageable
 
 	public void ToChase()
 	{
-		currentEnemyState = EnemyStates.CHASE_PLAYER;
 	}
 
-	#region Execution State
-
-	void DoExecutionState()
-    {
-
-    }
+	#region Execution 
 
 	public void Execute()
     {
@@ -195,23 +168,7 @@ public class EnemyAI : Damageable
 
     #endregion
 
-    #region Chasing and Attacking
-    void DoChase()
-	{
-		// double check that there are no null sheep (possibly could happen if they are killed in the radius)
-		NearbyGuys.RemoveAll(item => item == null);// ||  TODO: fix this!!
-			//(item.GetComponent<PlayerSheepAI>() != null && // if sheep is construct/lift
-			//(item.GetComponent<PlayerSheepAI>().GetSheepState()  == SheepStates.CONSTRUCT || item.GetComponent<PlayerSheepAI>().GetSheepState() == SheepStates.LIFT))); 
-
-		// if there are sheep near it, follow them instead
-		if (NearbyGuys.Count >= SheepToDistract)
-			EnemySetDestination(ClosestGuy());
-		else
-			EnemySetDestination(player.position);
-
-		// if Coroutine is not running, run it
-		QueuedAttack ??= StartCoroutine(AttackCheck());
-	}
+    #region Attacking
 	Vector3 ClosestGuy()
 	{
 		float dist = Mathf.Infinity;
@@ -227,35 +184,16 @@ public class EnemyAI : Damageable
 		}
 		return closestPos;
 	}
-	virtual protected IEnumerator AttackCheck()
-	{
-		yield return new WaitForSeconds(delayBetweenAttacks);
-		if (currentEnemyState == EnemyStates.CHASE_PLAYER)
-		{
-			graph.Continue();
-			for (int i = 0; i < attacks.Length; i++)
-			{
-				if (printAttackTests)
-					Debug.Log(attacks[i].atk.CheckCondition(transform, player, NearbyGuys));
-				if (attacks[i].Cooldown < 0 && attacks[i].atk.CheckCondition(transform, player, NearbyGuys))
-				{
-					attacks[i].atk.PerformAttack(anim);
-					attacks[i].Cooldown = attacks[i].atk.MaxCooldown;
-					//activeAttackIndex = atk;
-					break;
-				}
-			}
-		}
-		QueuedAttack = null;
-
-	}
 	public bool RunAttack(EnemyAttack atk)
 	{
 		int index = convert4(atk.ID);
-		if (Cooldowns.ContainsKey(index) && Cooldowns[index] < 0)
+		if (!Cooldowns.ContainsKey(index))
+			Cooldowns.Add(index, -1);
+
+		if (Cooldowns[index] < 0)
 		{
 			atk.PerformAttack(anim);
-			Cooldowns[index]= atk.MaxCooldown;
+			Cooldowns[index] = atk.MaxCooldown;
 			activeAttackIndex = atk;
 			return true;
 		}
@@ -283,7 +221,7 @@ public class EnemyAI : Damageable
 	private void OnTriggerEnter(Collider other)
 	{
 		Damageable target = other.GetComponent<Damageable>();
-		if (target != null && (target is EnemyAI))
+		if (target != null && !(target is EnemyAI) && !NearbyGuys.Contains(other.transform))
 		{
 			NearbyGuys.Add(other.transform);
 		}
@@ -291,7 +229,7 @@ public class EnemyAI : Damageable
 	private void OnTriggerExit(Collider other)
 	{
 		Damageable target = other.GetComponent<Damageable>();
-		if (target != null && (target is EnemyAI))
+		if (target != null && !(target is EnemyAI) && NearbyGuys.Contains(other.transform))
 		{
 			NearbyGuys.Remove(other.transform);
 		}

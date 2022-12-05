@@ -1,4 +1,4 @@
-﻿	using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +7,7 @@ namespace XNode.Examples.StateGraph {
 
 	public class EqualityNode : StateNode
 	{
-		[Input] public float num1;
+		[Input] public float lhs;
 		public enum Operator
 		{
 			[InspectorName(">")] GREATER_THAN,
@@ -17,25 +17,38 @@ namespace XNode.Examples.StateGraph {
 		}
 		[Input] public Operator opp;
 
-		[Input] public float num2;
+		[Input] public float rhs;
 
 		public override bool Evaluate()
 		{
-			float a = GetInputValue<float>("num1", this.num1);
-			float b = GetInputValue<float>("num2", this.num2);
+			float a = lhs, b = rhs;
+			if (GetInputPort("lhs").IsConnected)
+				 a = Convert.ToSingle(GetInputPort("lhs").Connection.GetOutputValue());
+			if (GetInputPort("rhs").IsConnected)
+				b = Convert.ToSingle(GetInputPort("rhs").Connection.GetOutputValue());
+
+			// these two dont work for some reason, idk
+			//float a = GetInputValue<float>("lhs", this.lhs);
+			//float b = GetInputValue<float>("rhs", this.rhs);
+			bool result = false;
 
 			switch (opp)
 			{
 				case Operator.EQUAL:
-					return num1 == num2;
+					result = a == b;
+					break;
 				case Operator.GREATER_THAN:
-					return num1 > num2;
+					result = a > b;
+					break;
 				case Operator.LESS_THAN:
-					return num1 < num2;
+					result = a < b;
+					break;
 				case Operator.NOT_EQUAL:
-					return num1 != num2;
+					result = a != b;
+					break;
 			}
-			return false;
+			Debug.Log(name + " " + a + " " + b + " "  + result);
+			return result;
 		}
 	}
 }

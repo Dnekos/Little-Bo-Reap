@@ -23,6 +23,9 @@ namespace XNode.Examples.StateGraph {
 		{
 			// gather current ports
 			NodePort exitPort = GetOutputPort("exit");
+			if (exitPort == null)
+				return;
+
 			List<NodePort> ports = exitPort.GetConnections();
 
 			// sort based on height
