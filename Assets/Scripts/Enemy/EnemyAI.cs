@@ -89,7 +89,7 @@ public class EnemyAI : Damageable
 		Cooldowns = new Dictionary<int, float>();
 		NearbyGuys = new List<Transform>();
 
-		InvokeRepeating("RunBehaviorTree", 1, 1);
+		InvokeRepeating("RunBehaviorTree", delayBetweenAttacks, delayBetweenAttacks);
 	}
 
 	void RunBehaviorTree()
@@ -116,12 +116,24 @@ public class EnemyAI : Damageable
 	}
 
 	#region UtilityFunctions
+
+	public NavMeshAgent GetAgent()
+	{
+		return agent;
+	}
 	public EnemyStates GetState()
     {
 		return currentEnemyState;
     }
 	public bool SetDestination(Vector3 dest)
 	{
+		// dont pathfind bad destinations
+		if (dest == null || float.IsNaN(dest.x))
+		{
+			Debug.LogWarning("tried giving " + gameObject + " invalid destination");
+			return false;
+		}
+
 		if (!agent.isOnNavMesh && !agent.isOnOffMeshLink)
 		{
 			print(gameObject + " failed to find a destination");

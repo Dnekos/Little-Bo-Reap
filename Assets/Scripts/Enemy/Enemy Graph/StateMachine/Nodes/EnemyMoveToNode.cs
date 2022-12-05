@@ -10,8 +10,8 @@ namespace XNode.Examples.StateGraph {
 
 		public override bool Evaluate()
 		{
+			Debug.Log(name);
 			Vector3 a = GetInputValue<Vector3>("destination", this.destination);
-
 			return (graph as StateGraph).currentUser.SetDestination(a);
 		}
 	}

@@ -10,6 +10,7 @@ namespace XNode.Examples.StateGraph {
 
 		public override bool Evaluate()
 		{
+			Debug.Log(name);
 			List<NodePort> exitPort = GetOutputPort("exit").GetConnections();
 			for (int i = 0; i < exitPort.Count; i++)
 			{

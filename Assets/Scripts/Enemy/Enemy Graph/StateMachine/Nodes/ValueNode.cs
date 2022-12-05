@@ -56,7 +56,9 @@ namespace XNode.Examples.StateGraph {
 						{
 							average_pos += guys[i].position;
 						}
-						return average_pos / guys.Count;
+						if (guys.Count > 1)
+							average_pos /= guys.Count;
+						return average_pos;
 
 					case Variable.PLAYER_POS:
 						return (graph as StateGraph).currentUser.player.position;

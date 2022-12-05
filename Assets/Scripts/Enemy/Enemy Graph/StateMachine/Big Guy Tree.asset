@@ -176,8 +176,7 @@ MonoBehaviour:
     - num1
     - opp
     - num2
-    - vResult
-    - fResult
+    - result
     values:
     - _fieldName: num1
       _node: {fileID: -6913165971577285385}
@@ -212,10 +211,10 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-    - _fieldName: vResult
+    - _fieldName: result
       _node: {fileID: -6913165971577285385}
-      _typeQualifiedName: UnityEngine.Vector3, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
       connections:
       - fieldName: num2
         node: {fileID: 1001110681598145077}
@@ -224,20 +223,10 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-    - _fieldName: fResult
-      _node: {fileID: -6913165971577285385}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 1
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
   num1: {x: 0, y: 0, z: 0}
   opp: 1
   num2: {x: 0, y: 0, z: 0}
-  vResult: {x: NaN, y: NaN, z: NaN}
-  fResult: 0
+  result: 0
 --- !u!114 &-6427765409943727301
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -322,6 +311,47 @@ MonoBehaviour:
       _dynamic: 0
   desiredValue: 2
   result: 0
+--- !u!114 &-5836268909582168705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8c3b281399681f4ca66ceeffd983bab, type: 3}
+  m_Name: Executable
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 168, y: 872}
+  ports:
+    keys:
+    - not
+    - enter
+    values:
+    - _fieldName: not
+      _node: {fileID: -5836268909582168705}
+      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: enter
+      _node: {fileID: -5836268909582168705}
+      _typeQualifiedName: XNode.Examples.StateGraph.StateNode+Empty, Project.Enemy,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: exit
+        node: {fileID: 2769681369106552012}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  not: 1
 --- !u!114 &-5552039581290365707
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -423,13 +453,13 @@ MonoBehaviour:
   m_Name: Enemy Stunned
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 184, y: 888}
+  position: {x: 168, y: 984}
   ports:
     keys:
-    - reverse
+    - not
     - enter
     values:
-    - _fieldName: reverse
+    - _fieldName: not
       _node: {fileID: -3949227092167442910}
       _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
@@ -450,7 +480,7 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-  reverse: 1
+  not: 1
 --- !u!114 &-1803708998616160469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -515,7 +545,7 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   lhs: 0
-  opp: 1
+  opp: 0
   rhs: 3
 --- !u!114 &-631206125309266620
 MonoBehaviour:
@@ -666,6 +696,7 @@ MonoBehaviour:
   - {fileID: 2020777014005987931}
   - {fileID: -6427765409943727301}
   - {fileID: -8781648901870405066}
+  - {fileID: -5836268909582168705}
   currentUser: {fileID: 0}
 --- !u!114 &735015450114438443
 MonoBehaviour:
@@ -728,8 +759,7 @@ MonoBehaviour:
     - num1
     - opp
     - num2
-    - vResult
-    - fResult
+    - result
     values:
     - _fieldName: num1
       _node: {fileID: 1001110681598145077}
@@ -757,23 +787,14 @@ MonoBehaviour:
       _typeQualifiedName: UnityEngine.Vector3, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
       connections:
-      - fieldName: vResult
+      - fieldName: result
         node: {fileID: -6913165971577285385}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-    - _fieldName: vResult
-      _node: {fileID: 1001110681598145077}
-      _typeQualifiedName: UnityEngine.Vector3, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-      connections: []
-      _direction: 1
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: fResult
+    - _fieldName: result
       _node: {fileID: 1001110681598145077}
       _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
@@ -788,8 +809,7 @@ MonoBehaviour:
   num1: {x: 0, y: 0, z: 0}
   opp: 2
   num2: {x: 0, y: 0, z: 0}
-  vResult: {x: 0, y: 0, z: 0}
-  fResult: NaN
+  result: 0
 --- !u!114 &2020777014005987931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -901,6 +921,9 @@ MonoBehaviour:
       connections:
       - fieldName: enter
         node: {fileID: -3949227092167442910}
+        reroutePoints: []
+      - fieldName: enter
+        node: {fileID: -5836268909582168705}
         reroutePoints: []
       - fieldName: enter
         node: {fileID: -5491330496827090157}
@@ -1405,7 +1428,7 @@ MonoBehaviour:
       _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
       connections:
-      - fieldName: fResult
+      - fieldName: result
         node: {fileID: 1001110681598145077}
         reroutePoints: []
       _direction: 0

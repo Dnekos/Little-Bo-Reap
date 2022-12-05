@@ -12,15 +12,16 @@ namespace XNode.Examples.StateGraph {
 		{
 			[InspectorName("+")] ADD,
 			[InspectorName("-")] SUBTRACT,
-			[InspectorName("Angle")] ANGLE
+			[InspectorName("Angle")] ANGLE,
+			[InspectorName("Dist")] DISTANCE,
+
 
 		}
 		[Input] public Operator opp;
 
 		[Input] public Vector3 num2;
 
-		[Output] public Vector3 vResult;
-		[Output] public float fResult;
+		[Output] public float result;
 
 		public override object GetValue(NodePort port)
 		{
@@ -29,24 +30,16 @@ namespace XNode.Examples.StateGraph {
 			Vector3 b = GetInputValue<Vector3>("num2", this.num2);
 
 			// After you've gotten your input values, you can perform your calculations and return a value
-			fResult = 0f;
-			vResult = Vector3.zero;
+			result = 0f;
 
-			if (port.fieldName == "vResult")
-			{
-				switch (opp)
-				{
-					case Operator.ADD: default: vResult = a + b; break;
-					case Operator.SUBTRACT: vResult = a - b; break;
-				}
-				return vResult;
+			switch (opp)
+			{ 
+				case Operator.ADD: default: return a + b;
+				case Operator.SUBTRACT: return a - b;
+				case Operator.ANGLE: return Vector3.Angle(a, b);
+				case Operator.DISTANCE: return Vector3.Distance(a, b);
 			}
-			else if (port.fieldName == "fResult" && opp == Operator.ANGLE)
-			{
-				fResult = Vector3.Angle(a, b);
-				return fResult;
-			}
-			return null;
+			
 		}
 		
 	}
