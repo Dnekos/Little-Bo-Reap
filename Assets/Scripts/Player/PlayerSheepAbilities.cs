@@ -252,8 +252,8 @@ public class PlayerSheepAbilities : MonoBehaviour
             particleModule.startColor = sheepFlocks[currentFlockIndex].UIColor;
             sheepFlocks[currentFlockIndex].flockChangeParticle.Play(true);
 
-			if (SwapUIAnimator.gameObject.activeSelf && sheepFlocks[currentFlockIndex].activeSheep.Count <= 0)
-				SwapUIAnimator.Play(swapAnimationUI);
+			if (SwapUIAnimator.gameObject.activeSelf)
+			SwapUIAnimator.Play(swapAnimationUI);
 
             UpdateFlockUI();
         }
@@ -276,8 +276,8 @@ public class PlayerSheepAbilities : MonoBehaviour
                 particleModule.startColor = sheepFlocks[currentFlockIndex].UIColor;
                 sheepFlocks[currentFlockIndex].flockChangeParticle.Play(true);
 
-				if (SwapUIAnimator.gameObject.activeSelf && sheepFlocks[currentFlockIndex].activeSheep.Count <= 0)
-					SwapUIAnimator.Play(swapAnimationUI);
+				if (SwapUIAnimator.gameObject.activeSelf)
+				SwapUIAnimator.Play(swapAnimationUI);
 
                 UpdateFlockUI();
             }
@@ -827,6 +827,8 @@ public class PlayerSheepAbilities : MonoBehaviour
 					Vector3.Distance(transform.position, GetSheepFlock(flockType)[i].transform.position) <= chargeDistanceToUse)
 					GetSheepFlock(flockType)[i]?.BeginCharge((hit.point- transform.position).normalized);
 			}
+
+			Instantiate(sheepChargeConfirmPrefab, hit.point, GetComponent<PlayerMovement>().playerOrientation.transform.rotation);
 		}
 
 		//if (sheepFlocks[(int)SheepTypes.RAM].currentSize <= 0) SwapUIAnimator.Play(noSheepAnimUI);
