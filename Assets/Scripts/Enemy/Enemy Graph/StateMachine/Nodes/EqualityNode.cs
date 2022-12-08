@@ -47,7 +47,6 @@ namespace XNode.Examples.StateGraph {
 					result = a != b;
 					break;
 			}
-			Debug.Log(name + " " + a + " " + b + " "  + result);
 			return result;
 		}
 	}

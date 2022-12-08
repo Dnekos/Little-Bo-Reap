@@ -12,5 +12,6 @@ namespace XNode.Examples.StateGraph {
 		{
 			return (graph as StateGraph).currentUser.RunAttack(attack);
 		}
+
 	}
 }

@@ -20,21 +20,11 @@ public class EnemyAI : Damageable
 	[Header("AI"), SerializeField]
 	StateGraph graph;
 
-	[System.Serializable]
-	protected struct AttackCooldownCombo
-	{
-		public EnemyAttack atk;
-		public float Cooldown;
-	}
-
-
 	Dictionary<int, float> Cooldowns;
 
 	[Header("Spawning")]
 	public GameObject SpawnParticlePrefab;
 	public float SpawnWaitTime = 2;
-
-	protected Coroutine QueuedAttack = null;
 
 	[Header("Enemy State")]
 	[SerializeField] protected EnemyStates currentEnemyState;
@@ -42,11 +32,10 @@ public class EnemyAI : Damageable
 	[SerializeField] LayerMask playerLayer;
 
 	[Header("Attacking")]
-	[SerializeField,Tooltip("priority of attacks are based on how high up they are in the array")] protected AttackCooldownCombo[] attacks;
-	protected EnemyAttack activeAttackIndex;
 	public List<Transform> NearbyGuys;
-	[SerializeField, Tooltip("how frequently enemies query conditions to make an attack")] float delayBetweenAttacks = 1;
-	[SerializeField] int SheepToDistract = 2;
+	protected EnemyAttack activeAttack;
+	[SerializeField, Tooltip("how frequently the enemy checks their behavior tree")] float delayBetweenAttacks = 1;
+	//[SerializeField] int SheepToDistract = 2;
 	[SerializeField] Collider StickCollider;
 	[SerializeField] Animator anim;
 
@@ -104,6 +93,12 @@ public class EnemyAI : Damageable
 		if (GetComponent<Animator>() != null)
 			GetComponent<Animator>().SetBool("isMoving", agent.velocity.magnitude > 1);
 
+		if (agent.desiredVelocity.sqrMagnitude > 0.8f)
+		{
+			transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(agent.desiredVelocity, Vector3.up), 0.2f);
+			transform.eulerAngles = new Vector3(0, transform.eulerAngles.y);
+		}
+
 		foreach (var key in Cooldowns.Keys.ToList())
 			Cooldowns[key] -= Time.deltaTime;
 	}
@@ -153,8 +148,8 @@ public class EnemyAI : Damageable
 				base.OnDeath();
 				return false;
 			}
-			transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dest - transform.position, Vector3.up), 0.2f);
-			transform.eulerAngles = new Vector3(0, transform.eulerAngles.y);
+			//transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dest - transform.position, Vector3.up), 0.2f);
+			//transform.eulerAngles = new Vector3(0, transform.eulerAngles.y);
 		}
 		return true;
 	}
@@ -206,7 +201,7 @@ public class EnemyAI : Damageable
 		{
 			atk.PerformAttack(anim);
 			Cooldowns[index] = atk.MaxCooldown;
-			activeAttackIndex = atk;
+			activeAttack = atk;
 			return true;
 		}
 		return false;
@@ -223,7 +218,7 @@ public class EnemyAI : Damageable
 			Damageable hitTarget = collision.gameObject.GetComponent<Damageable>();
 			if (hitTarget != null)
 			{
-				collision.gameObject.GetComponent<Damageable>()?.TakeDamage(activeAttackIndex, transform.forward);
+				collision.gameObject.GetComponent<Damageable>()?.TakeDamage(activeAttack, transform.forward);
 				FMODUnity.RuntimeManager.PlayOneShotAttached(clubHitSound, gameObject);
 			}
 
@@ -384,13 +379,6 @@ public class EnemyAI : Damageable
 		agent.enabled = false;
 		rb.constraints = RigidbodyConstraints.None;
 		rb.constraints = RigidbodyConstraints.FreezeRotation;
-
-		// stop queueing, else they stop knowing how to attack
-		if (QueuedAttack != null)
-		{
-			StopCoroutine(QueuedAttack);
-			QueuedAttack = null;
-		}
 
 		yield return new WaitForSeconds(StunTime);
 

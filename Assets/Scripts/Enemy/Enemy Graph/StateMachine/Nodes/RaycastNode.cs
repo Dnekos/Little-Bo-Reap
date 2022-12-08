@@ -8,22 +8,25 @@ namespace XNode.Examples.StateGraph {
 	{
 		[Input] public float range;
 		[Input] public LayerMask mask;
+		[Input] public string LookingForTag;
 		[Input] public Vector3 end;
 
 		[Output] RaycastHit hitInfo;
 
 		public override bool Evaluate()
 		{
-			Vector3 start = (graph as StateGraph).currentUser.transform.position;
-			return Physics.Raycast(start, end - start, range, mask);
-		}
+			float r = GetInputValue<float>("range", this.range);
+			int msk = GetInputValue<int>("mask", this.mask);
+			Vector3 p = GetInputValue<Vector3>("end", this.end);
+			string tag = GetInputValue<string>("LookingForTag", this.LookingForTag);
 
-		public override object GetValue(NodePort port)
-		{
-			Vector3 start = (graph as StateGraph).currentUser.transform.position;
-			Physics.Raycast(start, end - start, out hitInfo, range, mask);
-
-			return hitInfo;
+			Vector3 start = (graph as StateGraph).currentUser.transform.position + new Vector3(0, 4.5f);
+			if (Physics.Raycast(start, (p - start).normalized, out hitInfo, r, msk))
+			{
+				Debug.DrawLine(start, hitInfo.point, Color.cyan, 3);
+				return hitInfo.transform.tag == tag;
+			}
+			return false;
 		}
 	}
 }

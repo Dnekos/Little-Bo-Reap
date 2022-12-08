@@ -23,8 +23,8 @@ public class BigGuyAI : EnemyAI
 	// for animation trigger
 	public void SpawnShockwave()
 	{
-		if (activeAttackIndex != null)
-			activeAttackIndex.SpawnObject(ShockwaveSpawnPoint.position);
+		if (activeAttack != null)
+			activeAttack.SpawnObject(ShockwaveSpawnPoint.position);
 	}	
 
 
