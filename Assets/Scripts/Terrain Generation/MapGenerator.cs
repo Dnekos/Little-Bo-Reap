@@ -29,6 +29,8 @@ public class MapGenerator : MonoBehaviour
 	public bool doErosion;
 	[Range(0,1)]
 	public float threshold;
+	[Range(1,10)]
+	public int neighborSize;
 
 	[Header("Tiling")]
 	public bool repeating;
@@ -42,10 +44,11 @@ public class MapGenerator : MonoBehaviour
 			float[,] erosionMap = (float[,])noiseMap.Clone();
 
 			
-			List<Vector2> neighbors = new List<Vector2>();
-			for (float nLine = -5; nLine < 5; nLine++)
-				for (float nCol = -5; nCol < 5; nCol++)
-					neighbors.Add(new Vector2( nLine, nCol));
+			List<Vector2Int> neighbors = new List<Vector2Int>();
+			int halfNeighbor = (int)(0.5f * neighborSize);
+			for (int nLine = -halfNeighbor; nLine < halfNeighbor; nLine++)
+				for (int nCol = -halfNeighbor; nCol < halfNeighbor; nCol++)
+					neighbors.Add(new Vector2Int( nLine, nCol));
 
 			int changed = 0;
 			for (int l = 5; l < mapWidth - 5; l++)
@@ -68,17 +71,15 @@ public class MapGenerator : MonoBehaviour
 							//std::cout << "height " << height <<" "<< nHeight << std::endl;
 
 							// some of the height moves, from 0 to 1/# of neighbor of the threshold, depending on height difference
-							float delta = (limit - nHeight) / threshold;
-							if (delta > 2)
-								delta = 2;
+							float delta = Mathf.Max((limit - nHeight) / threshold, 2);
 							float change = delta * threshold / ((neighbors.Count - 1) * 2);
 
 							// write to the copy
-							float neg_change = Mathf.Max(0.0f, noiseMap[l, c] - change);
-							float pos_change = Mathf.Max(0.0f, noiseMap[nx, ny] + change);
+							//float neg_change = Mathf.Max(0.0f, noiseMap[l, c] - change);
+							//float pos_change = Mathf.Max(0.0f, noiseMap[nx, ny] + change);
 
-							noiseMap[l, c] = neg_change;
-							noiseMap[nx, ny] = pos_change;
+							noiseMap[l, c] -= change;
+							noiseMap[nx, ny] += change;
 						}
 					}
 				}
