@@ -14,11 +14,6 @@ namespace XNode.Examples.StateGraph {
 			return position.y;
 		}
 
-		public virtual bool Evaluate()
-		{
-			return true;
-		}
-
 		public void SortExits()
 		{
 			// gather current ports
