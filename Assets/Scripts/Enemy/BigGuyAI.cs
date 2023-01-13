@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-
 public class BigGuyAI : EnemyAI
 {
 	[Header("HealthBar")]
@@ -24,8 +23,8 @@ public class BigGuyAI : EnemyAI
 	// for animation trigger
 	public void SpawnShockwave()
 	{
-		if (activeAttackIndex >= 0)
-			attacks[activeAttackIndex].atk.SpawnObject(ShockwaveSpawnPoint.position);
+		if (activeAttack != null)
+			activeAttack.SpawnObject(ShockwaveSpawnPoint.position);
 	}	
 
 

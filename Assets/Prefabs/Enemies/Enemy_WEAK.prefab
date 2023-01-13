@@ -314,6 +314,7 @@ MonoBehaviour:
   soulSpawnHeight: 4
   soulCollectableOne: {fileID: 6060198684946403098, guid: 4b17e9d88b42899429f3f7846d72d21d,
     type: 3}
+  graph: {fileID: 11400000, guid: 118cb8cae2d2c3446bad753040c4c172, type: 2}
   SpawnParticlePrefab: {fileID: 2684900647289607401, guid: b47d97f3181406b40a873ad78d950bd9,
     type: 3}
   SpawnWaitTime: 0
@@ -322,12 +323,8 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 128
-  attacks:
-  - atk: {fileID: 11400000, guid: fb373e5babfa12947a123f755f2d9fb0, type: 2}
-    Cooldown: 0
   NearbyGuys: []
   delayBetweenAttacks: 1
-  SheepToDistract: 2
   StickCollider: {fileID: 5292186470773176089}
   anim: {fileID: 698929894327262353}
   isExecutable: 0
@@ -359,6 +356,7 @@ MonoBehaviour:
       Data4: 922800040
     Path: event:/Big Guy/Club Hit
   printAttackTests: 0
+  player: {fileID: 0}
 --- !u!54 &426741378606355007
 Rigidbody:
   m_ObjectHideFlags: 0

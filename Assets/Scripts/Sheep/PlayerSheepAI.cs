@@ -89,7 +89,7 @@ public class PlayerSheepAI : Damageable
 	Vector3 chargeDirection;
     float chargeCheckCurrent = 0;
     Vector3 chargePoint;
-    bool isCharging;
+    //bool isCharging;
 
     [Header("Defend State Variables")]
     [SerializeField] float defendSpeed = 35f;
@@ -644,7 +644,7 @@ public class PlayerSheepAI : Damageable
 				Debug.Log("stopping charge "+ (chargeCheckCurrent > chargeCheckTime) + " " + (agent.velocity.magnitude <= chargeCheckSpeed));
 			
 
-			isCharging = false;
+			//isCharging = false;
 			agent.speed = wanderSpeed;
 			agent.stoppingDistance = wanderStopDistance;
 			agent.obstacleAvoidanceType = ObstacleAvoidanceType.MedQualityObstacleAvoidance;
@@ -656,7 +656,7 @@ public class PlayerSheepAI : Damageable
     public void BeginCharge(Vector3 theChargePosition)
     {
         //CHARGE!
-        isCharging = true;
+       // isCharging = true;
 
         chargeParticles.SetActive(true);
 
@@ -699,7 +699,7 @@ public class PlayerSheepAI : Damageable
 			agent.destination = chargePosition;
 
 			// end charge
-			isCharging = false;
+		//	isCharging = false;
 			agent.speed = wanderSpeed;
 			agent.stoppingDistance = wanderStopDistance;
 			agent.obstacleAvoidanceType = ObstacleAvoidanceType.MedQualityObstacleAvoidance;

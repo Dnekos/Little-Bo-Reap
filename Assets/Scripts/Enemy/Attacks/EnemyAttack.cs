@@ -13,6 +13,8 @@ public class EnemyAttack : Attack
 	[Tooltip("Enemy will be unable to use this attack while coolingdown")]
 	public float MaxCooldown = 3;
 
+	[Tooltip("keep this 4 characters pls")]
+	public string ID;
 
 	public virtual void SpawnObject(Vector3 pos)
 	{

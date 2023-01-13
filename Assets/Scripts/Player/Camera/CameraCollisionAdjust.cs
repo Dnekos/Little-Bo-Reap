@@ -8,6 +8,7 @@ public class CameraCollisionAdjust : MonoBehaviour
     [SerializeField] float slerpRate;
     [SerializeField] float zSlideMax;
 	[SerializeField] float collisionOffset = 0.1f;
+	[SerializeField] float radius = 0.3f;
     float zValue;
     [SerializeField] LayerMask collideLayers;
     Vector3 camPosition;
@@ -19,13 +20,20 @@ public class CameraCollisionAdjust : MonoBehaviour
         camPosition = transform.localPosition;
     }
 
-	private void Update()
+	
+	private void LateUpdate()
 	{
 		Debug.DrawRay(transform.parent.position, transform.position - transform.parent.position, Color.red);
 
 		RaycastHit info;
-		Physics.Raycast(transform.parent.position, -transform.forward, out info, -zSlideMax, collideLayers, QueryTriggerInteraction.Ignore);
+		
+		Physics.SphereCast(transform.parent.position, radius, - transform.forward, out info, -zSlideMax, collideLayers, QueryTriggerInteraction.Ignore);
 
-		transform.localPosition = Vector3.Lerp(transform.localPosition, new Vector3(0, 2, info.distance == 0 ? zValue : collisionOffset - info.distance), Time.deltaTime * slerpRate);
+		if (info.distance == 0)
+			transform.localPosition = Vector3.Lerp(transform.localPosition, new Vector3(0, 2,  zValue), Time.deltaTime * slerpRate);
+		else
+			transform.localPosition = new Vector3(0, 2, collisionOffset - info.distance);
+
+
 	}
 }
