@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Interactable : MonoBehaviour
+public abstract class Interactable : MonoBehaviour
 {
     [Header("Base Interactable")]
     public bool canInteract = true;
@@ -12,6 +12,7 @@ public class Interactable : MonoBehaviour
     {
         Debug.Log("Interacted with this " + transform.name);
 
-        if (onlyInteractableOnce) canInteract = false;
+        if (onlyInteractableOnce)
+			canInteract = false;
     }
 }

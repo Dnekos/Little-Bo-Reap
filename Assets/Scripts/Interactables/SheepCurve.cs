@@ -81,7 +81,7 @@ public class SheepCurve : SheepHolder
 	private void OnTriggerEnter(Collider other)
 	{
 		// only add charging sheep
-		if (other.GetComponent<PlayerSheepAI>() == null || other.GetComponent<PlayerSheepAI>().GetSheepState() != SheepStates.CHARGE)
+		if (other.GetComponent<PlayerSheepAI>() == null || other.GetComponent<PlayerSheepAI>().GetSheepState() != SheepStates.STAMPEDE)
 			return;
 
 		// approximate radius

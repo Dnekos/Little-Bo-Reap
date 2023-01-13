@@ -197,9 +197,6 @@ public class SheepBezier : SheepHolder
 
 		while (CurveT <= 1)
 		{
-			// try a point
-			Vector3 randInCircle = Random.insideUnitSphere * (radius - SheepRadius);
-
 			// make a guess at a good spot to place sheep, within collider bounds
 			Vector3 down = DoubleDerivative(CurveT);
 			Vector3 right = Vector3.Cross(down, Differentiate(CurveT));

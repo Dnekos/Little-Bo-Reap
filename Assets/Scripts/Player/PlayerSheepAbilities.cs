@@ -261,8 +261,8 @@ public class PlayerSheepAbilities : MonoBehaviour
             particleModule.startColor = sheepFlocks[currentFlockIndex].UIColor;
             sheepFlocks[currentFlockIndex].flockChangeParticle.Play(true);
 
-			if (SwapUIAnimator.gameObject.activeSelf && sheepFlocks[currentFlockIndex].activeSheep.Count <= 0)
-				SwapUIAnimator.Play(swapAnimationUI);
+			if (SwapUIAnimator.gameObject.activeSelf)
+			SwapUIAnimator.Play(swapAnimationUI);
 
             UpdateFlockUI();
         }
@@ -285,8 +285,8 @@ public class PlayerSheepAbilities : MonoBehaviour
                 particleModule.startColor = sheepFlocks[currentFlockIndex].UIColor;
                 sheepFlocks[currentFlockIndex].flockChangeParticle.Play(true);
 
-				if (SwapUIAnimator.gameObject.activeSelf && sheepFlocks[currentFlockIndex].activeSheep.Count <= 0)
-					SwapUIAnimator.Play(swapAnimationUI);
+				if (SwapUIAnimator.gameObject.activeSelf)
+				SwapUIAnimator.Play(swapAnimationUI);
 
                 UpdateFlockUI();
             }
@@ -832,6 +832,8 @@ public class PlayerSheepAbilities : MonoBehaviour
 					Vector3.Distance(transform.position, GetSheepFlock(flockType)[i].transform.position) <= chargeDistanceToUse)
 					GetSheepFlock(flockType)[i]?.BeginCharge((hit.point- transform.position).normalized);
 			}
+
+			Instantiate(sheepChargeConfirmPrefab, hit.point, GetComponent<PlayerMovement>().playerOrientation.transform.rotation);
 		}
 
 		//if (sheepFlocks[(int)SheepTypes.RAM].currentSize <= 0) SwapUIAnimator.Play(noSheepAnimUI);
@@ -886,7 +888,7 @@ public class PlayerSheepAbilities : MonoBehaviour
             {
                 // check if you have any defending sheep
                 for (int i = sheepFlocks[(int)SheepTypes.FLUFFY].activeSheep.Count - 1; i >= 0; i--)
-                    if (sheepFlocks[(int)SheepTypes.FLUFFY].activeSheep[i].GetSheepState() == SheepStates.DEFEND_PLAYER)
+                    if (sheepFlocks[(int)SheepTypes.FLUFFY].activeSheep[i].GetSheepState() == SheepStates.VORTEX)
                         return;
             }
 
@@ -922,7 +924,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 
         for (int i = sheepFlocks[flockType].activeSheep.Count - 1; i >= 0; i--)
         {
-            if (sheepFlocks[flockType].activeSheep[i].GetSheepState() == SheepStates.DEFEND_PLAYER)
+            if (sheepFlocks[flockType].activeSheep[i].GetSheepState() == SheepStates.VORTEX)
             {
                 sheepFlocks[flockType].activeSheep[i]?.EndDefendPlayer(sheepFlocks[(int)SheepTypes.FLUFFY].SheepProjectilePrefab);
 
