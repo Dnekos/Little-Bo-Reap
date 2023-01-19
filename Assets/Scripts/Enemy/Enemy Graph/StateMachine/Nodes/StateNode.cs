@@ -9,6 +9,11 @@ namespace XNode.Examples.StateGraph {
 
 		[Input] public Empty enter;
 
+		public virtual bool Evaluate()
+		{
+			return false;
+		}
+
 		public override object GetValue(NodePort port)
 		{
 			return position.y;

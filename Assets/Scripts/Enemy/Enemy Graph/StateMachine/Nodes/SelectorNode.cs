@@ -13,7 +13,7 @@ namespace XNode.Examples.StateGraph {
 			List<NodePort> exitPort = GetOutputPort("exit").GetConnections();
 			for (int i = 0; i < exitPort.Count; i++)
 			{
-				if (exitPort[i].node.Evaluate())
+				if ((exitPort[i].node as StateNode).Evaluate())
 					return true;
 			}
 			return false;
