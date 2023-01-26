@@ -217,6 +217,30 @@ public class PlayerSheepAbilities : MonoBehaviour
 				sheepFlocks[2].MaxSize) * 0.33f;
 	}
 
+	public void OnSetActiveFlock(InputAction.CallbackContext context)
+	{
+		int newindex = Mathf.FloorToInt(context.ReadValue<float>()) - 1;
+		Debug.Log(newindex);
+		// hold onto the original index, so that we can exit the loop if we are back to the start (should only happen if all maxs are 0)
+		if (context.started && sheepFlocks[newindex].MaxSize <= 0 && newindex != currentFlockIndex)
+		{
+			currentFlockIndex = newindex;
+
+			sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
+			sheepTypeText.color = sheepFlocks[currentFlockIndex].UIColor;
+
+			var particleModule = bellParticles.main;
+			particleModule.startColor = sheepFlocks[currentFlockIndex].UIColor;
+			sheepFlocks[currentFlockIndex].flockChangeParticle.Play(true);
+
+			if (SwapUIAnimator.gameObject.activeSelf)
+				SwapUIAnimator.Play(swapAnimationUI);
+
+			UpdateFlockUI();
+		}
+    }
+
+
 	public void OnChangeSheepFlock(InputAction.CallbackContext context)
     {
 		if (context.started)
@@ -716,16 +740,18 @@ public class PlayerSheepAbilities : MonoBehaviour
 		//play animation
 		animator.Play(attackAnimation);
 
-		//TEMP SOUND
-		FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound, gameObject);
+		Debug.Log(sheepAttackPoint);
+        //TEMP SOUND
+        FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound, gameObject);
 
 		//get rid of icon
 		Destroy(sheepAttackPoint);
+        Debug.Log(sheepAttackPoint);
 
 
 
-		//send sheep to point if valid!
-		RaycastHit hit;
+        //send sheep to point if valid!
+        RaycastHit hit;
 		if (Physics.Raycast(Camera.main.transform.position + attackPointOffset, Camera.main.transform.forward, out hit, Mathf.Infinity, attackTargetLayers))
 		{
 			//instantiate confirm prefab
