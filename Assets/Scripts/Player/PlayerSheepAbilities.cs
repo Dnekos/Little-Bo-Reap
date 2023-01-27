@@ -150,6 +150,9 @@ public class PlayerSheepAbilities : MonoBehaviour
 
     private void Start()
     {
+		// needed to prevent gamepad from opening debuggers, comment out if you want the SRP debug window
+		UnityEngine.Rendering.DebugManager.instance.enableRuntimeUI = false;
+
 		respawnEvent.listener.AddListener(DeleteAllSheep);
 
 		summonResource = GetComponent<PlayerSummoningResource>();
@@ -222,7 +225,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 		int newindex = Mathf.FloorToInt(context.ReadValue<float>()) - 1;
 		Debug.Log(newindex);
 		// hold onto the original index, so that we can exit the loop if we are back to the start (should only happen if all maxs are 0)
-		if (context.started && sheepFlocks[newindex].MaxSize <= 0 && newindex != currentFlockIndex)
+		if (context.started && sheepFlocks[newindex].MaxSize > 0 && newindex != currentFlockIndex)
 		{
 			currentFlockIndex = newindex;
 
