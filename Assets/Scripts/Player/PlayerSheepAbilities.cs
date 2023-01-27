@@ -228,6 +228,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 		if (context.started && sheepFlocks[newindex].MaxSize > 0 && newindex != currentFlockIndex)
 		{
 			currentFlockIndex = newindex;
+			currentFlockType = (SheepTypes)currentFlockIndex;
 
 			sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
 			sheepTypeText.color = sheepFlocks[currentFlockIndex].UIColor;
@@ -696,6 +697,7 @@ public class PlayerSheepAbilities : MonoBehaviour
         }
 
         //CHARGE
+		/*
         if(context.started && isPreparingCharge && sheepFlocks[(int)SheepTypes.RAM].MaxSize > 0)
         {
 			// shortened for brevity
@@ -704,13 +706,17 @@ public class PlayerSheepAbilities : MonoBehaviour
 			// dont bother looking at the next if
 			return;
         }
-
+		*/
         if (canAttack && !isPreparingCharge && !hasCharged)
         {
             SheepTypes flockType = currentFlockType;
 
-            if (context.started)
-            {
+			if (context.canceled)//(context.ReadValue<float>() == 0)
+			{
+				DoAttack();
+            }
+            else if (context.started && sheepAttackPoint == null)//context.ReadValue<float>() == 1)
+			{
                 //spawn icon
                 var attackPoint = Instantiate(sheepAttackPointPrefab, transform.position, Quaternion.identity) as GameObject;
                 ParticleSystem[] particleSystems = attackPoint.GetComponentsInChildren<ParticleSystem>();
@@ -726,10 +732,7 @@ public class PlayerSheepAbilities : MonoBehaviour
                 isPreparingAttack = true;
             }
 
-            if (context.canceled)
-            {
-				DoAttack();
-            }
+            
         }
 
     }
@@ -743,15 +746,14 @@ public class PlayerSheepAbilities : MonoBehaviour
 		//play animation
 		animator.Play(attackAnimation);
 
-		Debug.Log(sheepAttackPoint);
         //TEMP SOUND
         FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound, gameObject);
 
 		//get rid of icon
 		Destroy(sheepAttackPoint);
-        Debug.Log(sheepAttackPoint);
 
-
+		// making sure its gone for input checking
+		sheepAttackPoint = null;
 
         //send sheep to point if valid!
         RaycastHit hit;
@@ -827,6 +829,10 @@ public class PlayerSheepAbilities : MonoBehaviour
 			{
 				sheepFlocks[flockType].activeSheep[i]?.RecallSheep();
 			}
+		}
+		else if (context.canceled && isPreparingCharge && sheepFlocks[(int)SheepTypes.RAM].MaxSize > 0)
+		{
+			DoStampede();
 		}
 	}
 	void DoStampede()
