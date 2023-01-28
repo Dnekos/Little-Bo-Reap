@@ -320,6 +320,10 @@ public class PlayerSheepAI : Damageable
                         DealDamage(other, defendAttack, isBlackSheep);
                         TakeDamage(selfDamage, transform.forward);
                     }
+                    if(other.CompareTag("Pinwheel"))
+                    {
+                        if (!other.GetComponent<Pinwheel>().isSpinning) StartCoroutine(other.GetComponent<Pinwheel>().SpinPinwheel());
+                    }
                     break;
                 }
             case SheepStates.STUN:
