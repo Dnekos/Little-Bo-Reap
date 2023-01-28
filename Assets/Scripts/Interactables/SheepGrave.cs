@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class SheepGrave : Interactable
 {
@@ -13,6 +14,11 @@ public class SheepGrave : Interactable
 	[SerializeField] ParticleSystem graveParticles;
     [SerializeField] GameObject graveLight;
     [SerializeField] ParticleSystem gravePoof;
+    [SerializeField] Transform numberSpawnPoint;
+    [SerializeField] GameObject numberObject;
+    [SerializeField] Color numberColor;
+
+
 
 
     public override void Interact()
@@ -20,6 +26,11 @@ public class SheepGrave : Interactable
 		//increase flock size of player
 		WorldState.instance.player.GetComponent<PlayerSheepAbilities>().sheepFlocks[(int)sheepType].MaxSize += flockSizeIncrease;
 		WorldState.instance.player.GetComponent<PlayerSheepAbilities>().UpdateFlockUI();
+
+        //show flock size increase
+        var number = Instantiate(numberObject, numberSpawnPoint.position, numberSpawnPoint.rotation) as GameObject;
+        number.GetComponentInChildren<TextMeshProUGUI>().color = numberColor;
+        number.GetComponentInChildren<TextMeshProUGUI>().text = "+" + (flockSizeIncrease).ToString();
 
         FMODUnity.RuntimeManager.PlayOneShotAttached(Sound, gameObject);
 		graveParticles.Stop(true);

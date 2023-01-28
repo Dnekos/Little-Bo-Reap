@@ -14979,14 +14979,12 @@ MonoBehaviour:
   baseSpeedMin: 25
   baseSpeedMax: 35
   jumpAnimation: Test_Sheep_Jump
-  jumpSpeed: 8
+  jumpSpeed: 16
   invulnTimeOnSpawn: 1.5
   avoidPlayerDistance: 2.5
   avoidPlayerSpeed: 45
   followStoppingDistanceMin: 5
   followStoppingDistanceMax: 20
-  leaderSheep: {fileID: 0}
-  isLeader: 0
   isBlackSheep: 0
   blackSheepParticles: {fileID: 5162916645674686728}
   selfDamage: {fileID: 11400000, guid: e8f63bf63a2566c40a756ac58fd87c2f, type: 2}
@@ -15043,6 +15041,7 @@ MonoBehaviour:
   StunTime: 1
   fallRate: 50
   constructPos: {x: 0, y: 0, z: 0}
+  leaderSheep: {fileID: 0}
 --- !u!54 &7642856465436953996
 Rigidbody:
   m_ObjectHideFlags: 0

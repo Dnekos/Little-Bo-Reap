@@ -25,6 +25,8 @@ public class PlayerSheepAI : Damageable
     [SerializeField] float baseSpeedMax = 20f;
     [SerializeField] string jumpAnimation;
     [SerializeField] float jumpSpeed = 8f;
+    OffMeshLink link;
+    float oldLinkCost;
     [SerializeField] float invulnTimeOnSpawn = 1.5f;
     bool isJumping = false;
     float storedSpeed;
@@ -124,7 +126,10 @@ public class PlayerSheepAI : Damageable
     {
         base.Start();
 
-		walker = GetComponent<FMODUnity.StudioEventEmitter>();
+        //make sure off mesh link is null
+        link = null;
+
+        walker = GetComponent<FMODUnity.StudioEventEmitter>();
 
 		animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
@@ -155,6 +160,11 @@ public class PlayerSheepAI : Damageable
         }
     }
 
+    private void OnDestroy()
+    {
+        ReleaseOffmeshLink();
+    }
+
     void DisableSpawnInvuln()
     {
         isInvulnerable = false;
@@ -170,6 +180,7 @@ public class PlayerSheepAI : Damageable
         //jump
         if (agent.isOnOffMeshLink && !isJumping)
         {
+            AcquireOffmeshLink();
             storedSpeed = agent.speed;
             agent.speed = jumpSpeed;
             isJumping = true;
@@ -177,6 +188,7 @@ public class PlayerSheepAI : Damageable
         }
         if (isJumping && !agent.isOnOffMeshLink)
         {
+            ReleaseOffmeshLink();
             agent.speed = storedSpeed;
             isJumping = false;
         }
@@ -188,7 +200,26 @@ public class PlayerSheepAI : Damageable
 		walker.SetParameter("Speed", agent.velocity.magnitude);
 	}
 
-	public void GothMode()
+    void AcquireOffmeshLink()
+    {
+        if (link == null)
+        {
+            link = agent.currentOffMeshLinkData.offMeshLink;
+            oldLinkCost = link.costOverride;
+            link.costOverride = 1000.0f;
+        }
+    }
+
+    void ReleaseOffmeshLink()
+    {
+        if (link != null)
+        {
+            link.costOverride = oldLinkCost;
+            link = null;
+        }
+    }
+
+    public void GothMode()
     {
         isBlackSheep = true;
         blackSheepParticles.SetActive(true);
