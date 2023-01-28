@@ -812,7 +812,7 @@ public class PlayerSheepAbilities : MonoBehaviour
     #region Sheep Stampede
     public void OnSheepCharge(InputAction.CallbackContext context)
     {
-		if (context.started && canCharge && !isPreparingAttack && !isPreparingCharge && GetSheepFlock(SheepTypes.RAM).Count > 0)
+		if (context.started && canCharge && !isPreparingAttack && !isPreparingCharge && currentFlockType == SheepTypes.RAM)
 		{
 			int flockType = (int)SheepTypes.RAM;
 
@@ -985,7 +985,7 @@ public class PlayerSheepAbilities : MonoBehaviour
     {
 		if (canDefend && context.started)
 		{
-			if (!isDefending && GetSheepFlock(SheepTypes.FLUFFY).Count > 0)
+			if (!isDefending && currentFlockType == SheepTypes.FLUFFY)
 			{
 				Debug.Log("start defend");
 
