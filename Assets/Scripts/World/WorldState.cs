@@ -1,14 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class WorldState : MonoBehaviour
 {
 	public static WorldState instance;
 
-	public bool Dead = false;
+	public enum State
+	{
+		Play,
+		Dead,
+		Dialog
+	}
+
+	public State gameState = State.Play;
 
 	[SerializeField]
 	Checkpoint[] SpawnPoints;
@@ -90,7 +95,7 @@ public class WorldState : MonoBehaviour
 		Debug.Log(SpawnPoints[activeSpawnPoint] + " " + player +  " " + player.transform.position);
 
 		Cursor.lockState = CursorLockMode.Locked;
-		Dead = false;
+		gameState = State.Play;
 
 		player.GetComponent<Rigidbody>().position = SpawnPoints[activeSpawnPoint].RespawnPoint.position;
 		player.transform.rotation = SpawnPoints[activeSpawnPoint].RespawnPoint.rotation;
