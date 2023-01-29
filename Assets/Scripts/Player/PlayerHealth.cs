@@ -73,7 +73,7 @@ public class PlayerHealth : Damageable
 
 	protected override void OnDeath()
 	{
-		WorldState.instance.Dead = true;
+		WorldState.instance.gameState = WorldState.State.Dead;
 
 		FMODUnity.RuntimeManager.PlayOneShot(deathSound, transform.position);
 
