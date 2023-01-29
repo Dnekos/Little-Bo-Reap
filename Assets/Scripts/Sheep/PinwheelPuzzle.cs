@@ -6,7 +6,7 @@ public class PinwheelPuzzle : MonoBehaviour
 {
     [SerializeField] GameObject door;
     [SerializeField] List<Pinwheel> pinwheels;
-    public bool isCheckingPinwheels = false;
+    bool hasOpened = false;
 
 
     void Update()
@@ -20,8 +20,9 @@ public class PinwheelPuzzle : MonoBehaviour
         }
 
         //for now, destroy door. can have an animation or something more pretty later
-        if(openDoor)
+        if(openDoor && !hasOpened)
         {
+            hasOpened = true;
             Destroy(door);
         }
 
