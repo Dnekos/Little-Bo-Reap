@@ -462,7 +462,7 @@ public class PlayerSheepAI : Damageable
     #region Sheep Stun 
 	public void SetHitstun(SheepStates stateAfterStun)
 	{
-		if (this == null)
+		if (this == null || currentSheepState == SheepStates.VORTEX)
 			return;
 		if (hitstunCo != null)
 			StopCoroutine(hitstunCo);
