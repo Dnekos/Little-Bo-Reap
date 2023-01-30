@@ -75,5 +75,9 @@ public class PlayerSheepProjectile : MonoBehaviour
 				Invoke("DestroySheepProjectile", lifeTimeAfterAttack);
 			}
 		}
+		else if (collision.gameObject.CompareTag("Target"))
+        {
+			collision.gameObject.GetComponent<LaunchTarget>().DoThing();
+        }
 	}
 }
