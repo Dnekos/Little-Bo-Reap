@@ -66,11 +66,11 @@ public class DialogBox : MonoBehaviour
 	/// <summary>
 	/// Turns on the UI gameobjects
 	/// </summary>
-	public void ActivateUI(Conversation active_conversation)
+	public void ActivateUI(Speaker active_conversation)
 	{
-
+		currentspeaker = active_conversation;
 		DialoguePanel.SetActive(true);
-		activeCon = active_conversation;
+		activeCon = currentspeaker.script;
 		lineIndex = 0;
 
 		// switch cameras
@@ -161,7 +161,7 @@ public class DialogBox : MonoBehaviour
 		{
 			case WorldState.State.Dialog:
 				textTimer += textSpeed * Time.deltaTime; // increment time
-
+				currentspeaker.SetTalking(AdvancingText);
 				if (AdvancingText && textTimer > 1) // incrementing text
 				{
 					TextBody.text += Line[textIndex]; // add next letter and increment

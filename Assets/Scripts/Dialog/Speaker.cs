@@ -12,22 +12,19 @@ public class Speaker : Interactable
 	[SerializeField, Tooltip("Primary speechbubble object")]
 	DialogBox DB; // speechbubble
 
+	Animator anim;
 
-	// Start is called before the first frame update
-	void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+	private void Start()
+	{
+		anim = GetComponentInChildren<Animator>();
+	}
 	public override void Interact()
 	{
-		DB.ActivateUI(script);
+		DB.ActivateUI(this);
+	}
 
+	public void SetTalking(bool value)
+	{
+		anim.SetBool("Talking", value);
 	}
 }
