@@ -17,6 +17,8 @@ public class Conversation : ScriptableObject
 	}
 	public DialogLine[] script;
 
+	public float endTime = 0.5f;
+
 	public DialogLine this[int key]
 	{
 		get => script[key];

@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using System.Data;
 using TMPro;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 public class DialogBox : MonoBehaviour
 {
@@ -99,27 +100,48 @@ public class DialogBox : MonoBehaviour
 		{
 			// change camera pos
 			if (activeCon[lineIndex].changeCamera)
-			{
-				cinematicCamera.transform.position = activeCon[lineIndex].CameraPos;
-				cinematicCamera.transform.eulerAngles = activeCon[lineIndex].CameraEuler;
-			}
+				StartCoroutine(ChangeCameraPos(activeCon[lineIndex].CameraPos, Quaternion.Euler(activeCon[lineIndex].CameraEuler), activeCon[lineIndex].CameraTransitionSpeed));
 
 			// set dialogue line
 			Line = activeCon[lineIndex++].body;
 
-			
 			// reset variables and move on
 			ResetText();
 		}
 		else // if end of the knot
 		{
-			// reset back to last state
-			WorldState.instance.gameState = WorldState.State.Play; // switch to whatever state it was before dialogue started
-
-			//ClosedTextThisFrame = true; // don't let Nodes be clicked this frame
-			CloseUI(); // perform cleanup on visual aspects
+			DialoguePanel.SetActive(false);
+			StartCoroutine(ChangeCameraPos(gameCamera.transform.position, gameCamera.transform.rotation, activeCon.endTime, true));
 		}
 	}
+
+	IEnumerator ChangeCameraPos(Vector3 pos, Quaternion rot, float speed, bool endCinematic = false)
+	{
+		Vector3 origPos = cinematicCamera.transform.position;
+		Quaternion origRot = cinematicCamera.transform.rotation;
+		yield return new WaitForEndOfFrame();
+
+		// slerp the cameras
+		if (speed > 0)
+		{
+			float inverse_time = 1 / speed;
+			for (float t = 0; t < 1; t += Time.deltaTime * inverse_time)
+			{
+				cinematicCamera.transform.position = Vector3.Slerp(cinematicCamera.transform.position, pos, t);
+				cinematicCamera.transform.rotation = Quaternion.Slerp(cinematicCamera.transform.rotation, rot, t);
+				yield return new WaitForEndOfFrame();
+
+			}
+		}
+
+		// double check that its in the right spot
+		cinematicCamera.transform.position = pos;
+		cinematicCamera.transform.rotation = rot;
+		if (endCinematic)
+			CloseUI();
+
+	}
+
 
 	/// <summary>
 	/// close the conversation visuals
@@ -136,6 +158,8 @@ public class DialogBox : MonoBehaviour
 		WorldState.instance.gameState = WorldState.State.Play;
 		inputs.SwitchCurrentActionMap("PlayerMovement");
 
+		// reset back to last state
+		WorldState.instance.gameState = WorldState.State.Play; // switch to whatever state it was before dialogue started
 	}
 
 	/// <summary>
