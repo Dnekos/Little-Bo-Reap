@@ -22,6 +22,7 @@ public class Speaker : Interactable
 	{
 		anim = GetComponentInChildren<Animator>();
 		maincam = Camera.main.transform;
+		inputIcon.gameObject.SetActive(false);
 	}
 	public override void Interact()
 	{
