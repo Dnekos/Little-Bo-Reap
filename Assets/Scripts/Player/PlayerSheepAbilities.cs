@@ -1007,8 +1007,14 @@ public class PlayerSheepAbilities : MonoBehaviour
 
 				// get all following fluffys to follow player
 				for (int i = 0; i < GetSheepFlock(flockType).Count; i++)
-					if (GetSheepFlock(flockType)[i].IsCommandable()) 
-						GetSheepFlock(flockType)[i]?.BeginDefendPlayer(defendPointPivot);
+                {
+					if (!GetSheepFlock(flockType)[i].IsCommandable())
+                    {
+
+                    }
+					GetSheepFlock(flockType)[i]?.BeginDefendPlayer(defendPointPivot);
+				}
+					
 
 				// turn on vfx
 				for (int i = 0; i < defendPoints.Count; i++)
