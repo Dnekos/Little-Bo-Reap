@@ -9,7 +9,8 @@ public class SheepGrave : Interactable
     [SerializeField] SheepTypes sheepType;
     [SerializeField] int flockSizeIncrease;
 
-	[Header("Effects")]
+    [Header("Effects")]
+    [SerializeField] Transform inputIcon;
 	[SerializeField] FMODUnity.EventReference Sound;
 	[SerializeField] ParticleSystem graveParticles;
     [SerializeField] GameObject graveLight;
@@ -36,6 +37,21 @@ public class SheepGrave : Interactable
 		graveParticles.Stop(true);
         graveLight.SetActive(false);
         gravePoof.Play(true);
+
+        inputIcon.gameObject.SetActive(false);
+
         base.Interact();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject == WorldState.instance.player && canInteract)
+            inputIcon.gameObject.SetActive(true);
+
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject == WorldState.instance.player)
+            inputIcon.gameObject.SetActive(false);
     }
 }
