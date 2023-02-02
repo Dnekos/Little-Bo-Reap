@@ -5,6 +5,7 @@ using TMPro;
 
 public class Damageable : MonoBehaviour
 {
+	//TODO figure out how to keep health protected
 	[Header("Health")]
 	[SerializeField] protected float Health;
 	[SerializeField] protected float MaxHealth;

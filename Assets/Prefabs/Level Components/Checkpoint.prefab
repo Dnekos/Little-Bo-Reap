@@ -42,6 +42,7 @@ GameObject:
   - component: {fileID: 5870838572739010380}
   - component: {fileID: 6323528660858874146}
   - component: {fileID: 8339615372791349944}
+  - component: {fileID: 5220658151156084738}
   m_Layer: 0
   m_Name: Checkpoint
   m_TagString: Untagged
@@ -64,7 +65,7 @@ Transform:
   - {fileID: 5267564096982754374}
   - {fileID: 3730454077743623387}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &6323528660858874146
 BoxCollider:
@@ -100,6 +101,18 @@ MonoBehaviour:
       Data3: 759095449
       Data4: 509091437
     Path: event:/Finished/Checkpoint
+--- !u!114 &5220658151156084738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7319282972424232426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b16de2cb50aac9743a1cdb93fc62ef4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5661197210226738093
 PrefabInstance:
   m_ObjectHideFlags: 0
