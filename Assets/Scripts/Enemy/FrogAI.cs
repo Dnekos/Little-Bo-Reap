@@ -30,4 +30,9 @@ public class FrogAI : EnemyAI
 
 		OnDeath();//kills enemy
 	}
+
+	//IEnumerator tempExplode()
+	//{
+
+	//}
 }
