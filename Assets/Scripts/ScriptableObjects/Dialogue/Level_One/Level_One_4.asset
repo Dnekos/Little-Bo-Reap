@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7beb0fa201b3e04ea562900ec20dd15, type: 3}
+  m_Name: Level_One_4
+  m_EditorClassIdentifier: 
+  script:
+  - body: Oh. Yo.
+    changeCamera: 1
+    CameraTransitionSpeed: 1
+    CameraPos: {x: -393.95715, y: 20.55432, z: 416.15933}
+    CameraEuler: {x: 33.62095, y: 158.58693, z: 359.99335}
+  - body: You see that target over there?
+    changeCamera: 1
+    CameraTransitionSpeed: 1
+    CameraPos: {x: -396.41592, y: 18.87292, z: 413.6518}
+    CameraEuler: {x: 14.885216, y: 0.28234023, z: -0.00034887117}
+  - body: 'I wonder if it activates something.
+
+      But how will you hit it from
+      here?'
+    changeCamera: 0
+    CameraTransitionSpeed: 0
+    CameraPos: {x: 0, y: 0, z: 0}
+    CameraEuler: {x: 0, y: 0, z: 0}
+  endTime: 0.5
