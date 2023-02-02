@@ -33,6 +33,8 @@ public class WorldState : MonoBehaviour
 
 	[HideInInspector]
 	public GameObject player;
+	[HideInInspector]
+	public HUDManager HUD;
 
 	// Start is called before the first frame update
 	void Awake()

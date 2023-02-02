@@ -8,8 +8,6 @@ public class GameEvent : ScriptableObject
 {
 	public UnityEvent listener;
 
-
-
 	public virtual void Raise()
 	{
 		listener.Invoke();
