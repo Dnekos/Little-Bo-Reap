@@ -63927,14 +63927,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3418737030618834310}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -75.99369, y: 4.7097263, z: 213.41925}
+  m_LocalPosition: {x: 0, y: 2, z: -17}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9186200993472185580}
   m_Father: {fileID: 6219005127216546937}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -1.132}
 --- !u!20 &217434509336612923
 Camera:
   m_ObjectHideFlags: 0
@@ -70127,6 +70127,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: d62e9d4b-30db-4c4b-9c78-0c3283829267
     m_ActionName: PlayerMovement/SetFlock[/DualSenseGamepadHID/dpad/up,/DualSenseGamepadHID/dpad/left,/DualSenseGamepadHID/dpad/right]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f98c3e5d-013f-49eb-a479-09fc6060d8d5
+    m_ActionName: Dialog/AdvanceText[/Mouse/leftButton,/Keyboard/space,/Keyboard/e]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerMenu

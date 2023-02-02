@@ -9,11 +9,18 @@ public class Speaker : Interactable
 
 	public Conversation script;
 
+	//[SerializeField] FMODUnity.EventReference talkSound;
+	FMODUnity.StudioEventEmitter emitter;
+
 	// prevent accidently clicking object when closing dialogue
-	public bool ClosedTextThisFrame = false;
+	//public bool ClosedTextThisFrame = false;
 
 	[SerializeField, Tooltip("Primary speechbubble object")]
 	DialogBox DB; // speechbubble
+
+	[Header("Repeating Dialog"), SerializeField, Tooltip("If filled, the repeating dialog will play instead of the normal script anytime after the first that the player interacts with it.")]
+	Conversation repeatingScript;
+	bool hasSpoken = false;
 
 	Animator anim;
 	Transform maincam;
@@ -23,10 +30,13 @@ public class Speaker : Interactable
 		anim = GetComponentInChildren<Animator>();
 		maincam = Camera.main.transform;
 		inputIcon.gameObject.SetActive(false);
+		emitter = GetComponent<FMODUnity.StudioEventEmitter>();
 	}
 	public override void Interact()
 	{
 		DB.ActivateUI(this);
+		if (repeatingScript != null)
+			script = repeatingScript;
 	}
 	private void Update()
 	{
@@ -34,6 +44,7 @@ public class Speaker : Interactable
 	}
 	private void OnTriggerEnter(Collider other)
 	{
+		// if entered on the forced
 		if (other.gameObject == WorldState.instance.player)
 			inputIcon.gameObject.SetActive(true);
 
@@ -45,6 +56,16 @@ public class Speaker : Interactable
 	}
 	public void SetTalking(bool value)
 	{
+		if (value && !emitter.IsPlaying())
+			emitter.Play();
+		else if (!value && emitter.IsPlaying())
+			emitter.Stop();
 		anim.SetBool("Talking", value);
+	}
+
+	// currently depricated
+	public void FireSoundEvent()
+	{
+		//FMODUnity.RuntimeManager.PlayOneShotAttached(talkSound, gameObject);
 	}
 }

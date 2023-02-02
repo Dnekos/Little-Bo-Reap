@@ -15,7 +15,7 @@ MonoBehaviour:
   script:
   - body: 'HEY '
     changeCamera: 1
-    CameraTransitionSpeed: 5
+    CameraTransitionSpeed: 1
     CameraPos: {x: 17.389608, y: 2.0783982, z: -21.312857}
     CameraEuler: {x: 11.036373, y: 7.8878055, z: 359.98996}
   - body: 'Use <sprite index=8> to walk!
@@ -25,4 +25,9 @@ MonoBehaviour:
     CameraTransitionSpeed: 0
     CameraPos: {x: 0, y: 0, z: 0}
     CameraEuler: {x: 0, y: 0, z: 0}
+  - body: Go be useful over there!
+    changeCamera: 1
+    CameraTransitionSpeed: 1.5
+    CameraPos: {x: 17.340397, y: 1.5460387, z: -20.706213}
+    CameraEuler: {x: 1.514647, y: 332.73312, z: -0.0037114504}
   endTime: 0.5

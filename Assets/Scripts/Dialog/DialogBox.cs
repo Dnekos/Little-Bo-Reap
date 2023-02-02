@@ -100,8 +100,10 @@ public class DialogBox : MonoBehaviour
 		{
 			// change camera pos
 			if (activeCon[lineIndex].changeCamera)
+			{
+				StopAllCoroutines();
 				StartCoroutine(ChangeCameraPos(activeCon[lineIndex].CameraPos, Quaternion.Euler(activeCon[lineIndex].CameraEuler), activeCon[lineIndex].CameraTransitionSpeed));
-
+			}
 			// set dialogue line
 			Line = activeCon[lineIndex++].body;
 
@@ -119,7 +121,6 @@ public class DialogBox : MonoBehaviour
 	{
 		Vector3 origPos = cinematicCamera.transform.position;
 		Quaternion origRot = cinematicCamera.transform.rotation;
-		yield return new WaitForEndOfFrame();
 
 		// slerp the cameras
 		if (speed > 0)
@@ -127,8 +128,9 @@ public class DialogBox : MonoBehaviour
 			float inverse_time = 1 / speed;
 			for (float t = 0; t < 1; t += Time.deltaTime * inverse_time)
 			{
-				cinematicCamera.transform.position = Vector3.Slerp(cinematicCamera.transform.position, pos, t);
-				cinematicCamera.transform.rotation = Quaternion.Slerp(cinematicCamera.transform.rotation, rot, t);
+				float smoothT = Mathf.SmoothStep(0.0f, 1.0f, Mathf.SmoothStep(0.0f, 1.0f, t));
+				cinematicCamera.transform.position = Vector3.Lerp(origPos, pos, smoothT);
+				cinematicCamera.transform.rotation = Quaternion.Lerp(origRot, rot, smoothT);
 				yield return new WaitForEndOfFrame();
 
 			}
@@ -139,7 +141,6 @@ public class DialogBox : MonoBehaviour
 		cinematicCamera.transform.rotation = rot;
 		if (endCinematic)
 			CloseUI();
-
 	}
 
 
@@ -186,6 +187,7 @@ public class DialogBox : MonoBehaviour
 			case WorldState.State.Dialog:
 				textTimer += textSpeed * Time.deltaTime; // increment time
 				currentspeaker.SetTalking(AdvancingText);
+
 				if (AdvancingText && textTimer > 1) // incrementing text
 				{
 					TextBody.text += Line[textIndex]; // add next letter and increment
