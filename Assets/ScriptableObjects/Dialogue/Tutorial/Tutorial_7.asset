@@ -10,18 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a7beb0fa201b3e04ea562900ec20dd15, type: 3}
-  m_Name: Tutorial_6
+  m_Name: Tutorial_7
   m_EditorClassIdentifier: 
   script:
-  - body: 'Left click to attack
-
-      right click to launch
-
-      press f to recall
-
-      press
-      r to summon. got it? good.'
+  - body: Wait a second.
     changeCamera: 0
     CameraTransitionSpeed: 0
     CameraPos: {x: 0, y: 0, z: 0}
     CameraEuler: {x: 0, y: 0, z: 0}
+  - body: This place feels kinda dangerous...
+    changeCamera: 1
+    CameraTransitionSpeed: 1
+    CameraPos: {x: 185.94276, y: 44.274067, z: 269.44577}
+    CameraEuler: {x: 30.010483, y: 82.44106, z: 0.4919995}
+  - body: I'd get ready for a fight if I were you.
+    changeCamera: 0
+    CameraTransitionSpeed: 0
+    CameraPos: {x: 0, y: 0, z: 0}
+    CameraEuler: {x: 0, y: 0, z: 0}
+  endTime: 0.5

@@ -10,16 +10,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a7beb0fa201b3e04ea562900ec20dd15, type: 3}
-  m_Name: Tutorial_5
+  m_Name: Tutorial_8
   m_EditorClassIdentifier: 
   script:
-  - body: "Press E to interact with the grave. \nPress R to summon sheep!"
+  - body: Hold up!
     changeCamera: 0
     CameraTransitionSpeed: 0
     CameraPos: {x: 0, y: 0, z: 0}
     CameraEuler: {x: 0, y: 0, z: 0}
-  - body: Press and hold space while jumping to stack builder sheep!
+  - body: See those trolls down there?
+    changeCamera: 1
+    CameraTransitionSpeed: 1
+    CameraPos: {x: 164.38068, y: 31.237213, z: 339.9963}
+    CameraEuler: {x: 35.51072, y: 59.620598, z: 0.4802219}
+  - body: "If you get up here and press the <sprite name=\"JS Left\"> stick to slam
+      down,\n you can take em all out at once!"
+    changeCamera: 1
+    CameraTransitionSpeed: 1
+    CameraPos: {x: 207.63904, y: 55.996605, z: 348.6105}
+    CameraEuler: {x: 26.057304, y: 230.72739, z: 0.415358}
+  - body: Slam deals more damage the higher up you fall from!
     changeCamera: 0
     CameraTransitionSpeed: 0
     CameraPos: {x: 0, y: 0, z: 0}
     CameraEuler: {x: 0, y: 0, z: 0}
+  endTime: 0.5
