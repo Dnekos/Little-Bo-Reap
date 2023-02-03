@@ -97,6 +97,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Animations")]
     [SerializeField] string jumpAnimation;
     [SerializeField] string dashAnimation;
+    [SerializeField] string dashAnimationAir;
     [SerializeField] string landingAnimation;
     Animator animator;
 
@@ -331,7 +332,8 @@ public class PlayerMovement : MonoBehaviour
             canDash = false;
 			canAirDash = false;
 
-			animator.Play(dashAnimation, 0, 0f);
+            if(!isGrounded) animator.Play(dashAnimationAir, 0, 0f);
+            else animator.Play(dashAnimation, 0, 0f);
 
             // SOUND
            FMODUnity.RuntimeManager.PlayOneShotAttached(dashSound,gameObject);
