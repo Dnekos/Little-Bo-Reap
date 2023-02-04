@@ -47,8 +47,10 @@ public class SheepBezier : SheepHolder
 
 	// components
 
-	private void Start()
+	protected override void Start()
 	{
+		base.Start();
+
 		col.sharedMesh = null;
 
 		containedSheep = new List<Transform>();
@@ -57,8 +59,10 @@ public class SheepBezier : SheepHolder
 		newTriangles = new List<int>();
 	}
 
-	private void Update()
+	protected override void Update()
 	{
+		base.Update();
+
 		for (float i = 0; i < 1; i+=0.01f)
 		{
 			Vector3 point = CalcCurvePoint(i);

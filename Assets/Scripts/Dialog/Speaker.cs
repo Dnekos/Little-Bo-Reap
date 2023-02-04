@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class Speaker : Interactable
 {
-	[Header("Speaker vars"), SerializeField]
-	Transform inputIcon;
-
+	[Header("Speaker vars"), ]
 	public Conversation script;
 
 	//[SerializeField] FMODUnity.EventReference talkSound;
@@ -23,13 +21,12 @@ public class Speaker : Interactable
 	bool hasSpoken = false;
 
 	Animator anim;
-	Transform maincam;
 
-	private void Start()
+	protected override void Start()
 	{
+		base.Start();
+
 		anim = GetComponentInChildren<Animator>();
-		maincam = Camera.main.transform;
-		inputIcon.gameObject.SetActive(false);
 		emitter = GetComponent<FMODUnity.StudioEventEmitter>();
 	}
 	public override void Interact()
@@ -38,22 +35,7 @@ public class Speaker : Interactable
 		if (repeatingScript != null)
 			script = repeatingScript;
 	}
-	private void Update()
-	{
-		inputIcon.rotation = maincam.rotation;//LookAt(WorldState.instance.player.transform.position, Vector3.up);
-	}
-	private void OnTriggerEnter(Collider other)
-	{
-		// if entered on the forced
-		if (other.gameObject == WorldState.instance.player)
-			inputIcon.gameObject.SetActive(true);
-
-	}
-	private void OnTriggerExit(Collider other)
-	{
-		if (other.gameObject == WorldState.instance.player)
-			inputIcon.gameObject.SetActive(false);
-	}
+	
 	public void SetTalking(bool value)
 	{
 		if (value && !emitter.IsPlaying())
