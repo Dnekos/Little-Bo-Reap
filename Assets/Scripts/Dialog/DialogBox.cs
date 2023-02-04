@@ -69,6 +69,10 @@ public class DialogBox : MonoBehaviour
 	/// </summary>
 	public void ActivateUI(Speaker active_conversation)
 	{
+		// disable HUD
+		WorldState.instance.HUD.ToggleHud();
+
+		// set up speaker vars
 		currentspeaker = active_conversation;
 		DialoguePanel.SetActive(true);
 		activeCon = currentspeaker.script;
@@ -149,6 +153,8 @@ public class DialogBox : MonoBehaviour
 	/// </summary>
 	public void CloseUI()
 	{
+
+		// turn off dialog
 		TextBody.text = "";
 		DialoguePanel.SetActive(false);
 
@@ -156,6 +162,9 @@ public class DialogBox : MonoBehaviour
 		gameCamera.enabled = true;
 		cinematicCamera.enabled = false;
 
+
+		// enable HUD and world
+		WorldState.instance.HUD.ToggleHud();
 		WorldState.instance.gameState = WorldState.State.Play;
 		inputs.SwitchCurrentActionMap("PlayerMovement");
 

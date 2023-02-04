@@ -470,9 +470,11 @@ public class PlayerSheepAI : Damageable
 	}
 	IEnumerator OnHitStun(SheepStates stateAfterStun)
     {
-        // save current state and set to Hitstun
-        currentSheepState = SheepStates.STUN;
+		// save current state and set to Hitstun
+		SheepStates origState = currentSheepState;
+		currentSheepState = SheepStates.STUN;
         gameObject.layer = LayerMask.NameToLayer("PlayerSheep");
+
         //turn on rb and turn off navmesh (turned on in GroundCheck (which cant be called when hitstunned))
         //rb.isKinematic = false;
         agent.enabled = false;
@@ -488,7 +490,9 @@ public class PlayerSheepAI : Damageable
         yield return new WaitUntil(() => isGrounded);
         //yield return new WaitForSeconds(0.1f);
 
-        currentSheepState = stateAfterStun;
+		// if sheep were attacking, they can resume attacking 
+		// the condition is needed because actions like vortex and construct should not be resumed
+		currentSheepState = (origState == SheepStates.ATTACK) ? origState : SheepStates.WANDER;
     }
 
     private void OnCollisionEnter(Collision collision)

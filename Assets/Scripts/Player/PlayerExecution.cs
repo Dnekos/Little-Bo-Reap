@@ -35,6 +35,40 @@ public class PlayerExecution : MonoBehaviour
     PlayerMovement movement;
 	Rigidbody rb;
 
+	public void OnPet(InputAction.CallbackContext context)
+	{
+		if (context.performed)
+		{
+			// check to pet nearest sheep of current flock! :D
+			sheepToPet = null;
+			currentPetDistance = Mathf.Infinity;
+
+			//this is all for sean don't think too hard about it
+			for (int j = 0; j < 3; j++)
+			{
+				for (int i = 0; i < flocks.GetSheepFlock((SheepTypes)j).Count; i++)
+				{
+					if (Vector3.Distance(transform.position, flocks.GetSheepFlock((SheepTypes)j)[i].transform.position) < petMaxDistance
+						&& currentPetDistance > Vector3.Distance(transform.position, flocks.GetSheepFlock((SheepTypes)j)[i].transform.position))
+					{
+						currentPetDistance = Vector3.Distance(transform.position, flocks.GetSheepFlock((SheepTypes)j)[i].transform.position);
+						sheepToPet = flocks.GetSheepFlock((SheepTypes)j)[i];
+					}
+				}
+			}
+
+
+			if (sheepToPet != null)
+			{
+				transform.LookAt(sheepToPet.transform.position);
+				transform.eulerAngles = new Vector3(0, transform.rotation.eulerAngles.y, 0);
+
+				anim.playerAnimator.Play(petAnimation);
+				sheepToPet.PetSheep();
+			}
+		}
+	}
+
 	public void OnExecute(InputAction.CallbackContext context)
     {
         //when you press the execute key
@@ -42,7 +76,12 @@ public class PlayerExecution : MonoBehaviour
         {
             //look for an interactable object first
             Collider[] interactables = Physics.OverlapSphere(transform.position, interactRadius, interactLayer);
-            foreach(Collider interactable in interactables)
+
+			// TODO: decouple this
+
+
+
+			foreach (Collider interactable in interactables)
             {
 				Interactable interactComp = interactable.GetComponent<Interactable>();
 
@@ -50,6 +89,7 @@ public class PlayerExecution : MonoBehaviour
                 {
                     interactableInRange = true;
                     interactableObject = interactComp;
+					break;
                 }
             }
 
@@ -66,61 +106,33 @@ public class PlayerExecution : MonoBehaviour
                     canExecute = true;
                 }
             }
-          
 
-            //execute first enemy in list, play animations from execute scriptable object and start execute coroutine
-            if(canExecute)
-            {
-                enemyToExecute = executableEnemies[0];
+
+			//execute first enemy in list, play animations from execute scriptable object and start execute coroutine
+			if (canExecute)
+			{
+				enemyToExecute = executableEnemies[0];
 				//targetPos = enemyToExecute.executePlayerPos;
 				transform.position = enemyToExecute.executePlayerPos.transform.position;
 				//GetComponent<PlayerMovement>().dash
 
 				anim.playerAnimator.Rebind();
 				anim.playerAnimator.Play(enemyToExecute.execution.playerAnimation, 0, 0);
-                Debug.Log("play execute anim");
-                enemyToExecute.GetComponent<Animator>().Play(enemyToExecute.execution.enemyAnimation);
+				Debug.Log("play execute anim");
+				enemyToExecute.GetComponent<Animator>().Play(enemyToExecute.execution.enemyAnimation);
 
-                Debug.Log(enemyToExecute.execution.executionLength);
-                StartCoroutine(ExecuteEnemy(enemyToExecute.execution.executionLength));
+				Debug.Log(enemyToExecute.execution.executionLength);
+				StartCoroutine(ExecuteEnemy(enemyToExecute.execution.executionLength));
 
-                canExecute = false;
-            }
-            else if(interactableInRange)
-            {
-                interactableObject.Interact();
-                interactableInRange = false;
-            }
-            //else check to pet nearest sheep of current flock! :D
-            else
-            {
-                sheepToPet = null;
-                currentPetDistance = Mathf.Infinity;
-
-                //this is all for sean don't think too hard about it
-                for(int j = 0; j < 3; j++)
-                {
-                    for (int i = 0; i < flocks.GetSheepFlock((SheepTypes)j).Count; i++)
-                    {
-                        if (Vector3.Distance(transform.position, flocks.GetSheepFlock((SheepTypes)j)[i].transform.position) < petMaxDistance
-                            && currentPetDistance > Vector3.Distance(transform.position, flocks.GetSheepFlock((SheepTypes)j)[i].transform.position))
-                        {
-                            currentPetDistance = Vector3.Distance(transform.position, flocks.GetSheepFlock((SheepTypes)j)[i].transform.position);
-                            sheepToPet = flocks.GetSheepFlock((SheepTypes)j)[i];
-                        }
-                    }
-                }
-                
-
-                if(sheepToPet != null)
-                {
-                    transform.LookAt(sheepToPet.transform.position);
-                    transform.eulerAngles = new Vector3(0, transform.rotation.eulerAngles.y, 0);
-                    
-					anim.playerAnimator.Play(petAnimation);
-                    sheepToPet.PetSheep();
-                }
-            }
+				canExecute = false;
+			}
+			else if (interactableInRange)
+			{
+				interactableObject.Interact();
+				interactableInRange = false;
+			}
+			else
+				GetComponent<PlayerSheepAbilities>().OnRecallSheep(context);
         }
      
     }

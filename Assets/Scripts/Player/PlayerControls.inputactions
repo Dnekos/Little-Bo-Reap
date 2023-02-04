@@ -130,6 +130,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "SheepActiveAbility",
+                    "type": "Button",
+                    "id": "05cc96a0-ad38-4dc6-bab2-63718e7b2600",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "PetSheep",
+                    "type": "Button",
+                    "id": "56b0c570-cf82-4458-acdd-3c305d71e1d8",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -257,7 +275,7 @@
                 {
                     "name": "",
                     "id": "5efbcefe-f825-4e50-a1a1-1fcf8dae3e6a",
-                    "path": "<Gamepad>/buttonNorth",
+                    "path": "<Gamepad>/leftShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -279,7 +297,7 @@
                 {
                     "name": "",
                     "id": "a717a504-8138-41c0-8854-a8b8d641ab26",
-                    "path": "<Gamepad>/dpad/down",
+                    "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -301,7 +319,7 @@
                 {
                     "name": "",
                     "id": "540f9c81-f8f5-44e7-9c36-132dcfc7ae30",
-                    "path": "<Gamepad>/rightTrigger",
+                    "path": "<Gamepad>/leftTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -389,18 +407,7 @@
                 {
                     "name": "",
                     "id": "364905a8-e658-4045-998b-6b415239c2b3",
-                    "path": "<DualShockGamepad>/touchpadButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "ChangeFlock",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "f733671b-e2f3-45c9-ba82-3bacede92843",
-                    "path": "",
+                    "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -422,7 +429,7 @@
                 {
                     "name": "",
                     "id": "200c82fc-874a-40c5-b8bf-1f7feb9dc11d",
-                    "path": "<Gamepad>/rightTrigger",
+                    "path": "<Gamepad>/leftTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -455,7 +462,7 @@
                 {
                     "name": "",
                     "id": "b2ed844b-7770-42a9-ba5d-fcf43965897c",
-                    "path": "<Gamepad>/leftShoulder",
+                    "path": "<Gamepad>/leftStickPress",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -475,37 +482,48 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "One Modifier",
-                    "id": "6ff92ac9-8248-4fa1-b877-620b4da313dd",
-                    "path": "OneModifier",
+                    "name": "",
+                    "id": "ffe00ac3-b10a-4588-bde6-af6ea59912b0",
+                    "path": "<Gamepad>/dpad/down",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "GothMode",
-                    "isComposite": true,
+                    "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "modifier",
-                    "id": "1cbdb56b-fd28-4198-b474-ab9d26d688e4",
-                    "path": "<Gamepad>/rightStickPress",
+                    "name": "",
+                    "id": "5afbfb9b-afa9-4243-b570-6da4e958638e",
+                    "path": "<Gamepad>/dpad/right",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "GothMode",
                     "isComposite": false,
-                    "isPartOfComposite": true
+                    "isPartOfComposite": false
                 },
                 {
-                    "name": "binding",
-                    "id": "02d01977-1615-47c4-8408-b7153c0edf78",
-                    "path": "<Gamepad>/leftStickPress",
+                    "name": "",
+                    "id": "8edb5d0e-94c5-4a04-8664-4d8f993c4d66",
+                    "path": "<Gamepad>/dpad/left",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "GothMode",
                     "isComposite": false,
-                    "isPartOfComposite": true
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a3c04236-cb73-4870-8e0a-0216c3990918",
+                    "path": "<Gamepad>/dpad/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "GothMode",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 },
                 {
                     "name": "",
@@ -543,7 +561,7 @@
                 {
                     "name": "",
                     "id": "d95c119e-936f-4068-9802-f4c47ea9c90e",
-                    "path": "<Gamepad>/leftTrigger",
+                    "path": "<Gamepad>/rightTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -581,6 +599,28 @@
                     "processors": "Scale(factor=3)",
                     "groups": "",
                     "action": "SetFlock",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "19d10705-39b8-4c4c-9e9e-8e79bc98d0c2",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SheepActiveAbility",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d9ed73cd-fa15-4b2e-88a9-d7429af7e2ab",
+                    "path": "<Gamepad>/rightStickPress",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PetSheep",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

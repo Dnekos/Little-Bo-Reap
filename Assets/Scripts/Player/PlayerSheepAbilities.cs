@@ -246,7 +246,35 @@ public class PlayerSheepAbilities : MonoBehaviour
 
 
 	public void OnChangeSheepFlock(InputAction.CallbackContext context)
-    {
+	{
+		if (context.performed)
+		{
+			int originalIndex = currentFlockIndex;
+			do
+				// go to next sheep type. Mod keep it in the rand of 0-2
+				currentFlockIndex = Mod(currentFlockIndex + (int)Mathf.Sign(swapContextValue), sheepFlocks.Length);
+			while (sheepFlocks[currentFlockIndex].MaxSize <= 0 && originalIndex != currentFlockIndex);
+
+			currentFlockType = (SheepTypes)currentFlockIndex;
+
+			sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
+			sheepTypeText.color = sheepFlocks[currentFlockIndex].UIColor;
+
+			var particleModule = bellParticles.main;
+			particleModule.startColor = sheepFlocks[currentFlockIndex].UIColor;
+			sheepFlocks[currentFlockIndex].flockChangeParticle.Play(true);
+
+			if (SwapUIAnimator.gameObject.activeSelf)
+				SwapUIAnimator.Play(swapAnimationUI);
+
+			UpdateFlockUI();
+		}
+		
+	}
+
+	#region depricated
+	public void OldOnChangeSheepFlock(InputAction.CallbackContext context)
+	{ 
 		if (context.started)
         {
             swapContextValue = context.ReadValue<float>(); 
@@ -329,7 +357,8 @@ public class PlayerSheepAbilities : MonoBehaviour
 			flockSelectMenu.gameObject.SetActive(false);
 		}   
     }
-    public List<PlayerSheepAI> GetSheepFlock(SheepTypes theFlockType)
+	#endregion
+	public List<PlayerSheepAI> GetSheepFlock(SheepTypes theFlockType)
     {
 		return sheepFlocks[(int)theFlockType].activeSheep;
     }
