@@ -8,28 +8,23 @@ public class PlayerExecution : MonoBehaviour
     [Header("Interaction Variables")]
     [SerializeField] float interactRadius = 5f;
     [SerializeField] LayerMask interactLayer;
-    Interactable interactableObject;
-    bool interactableInRange;
 
     [Header("Execution Command Variables")]
     [SerializeField] float executeRadius = 10f;
 	[SerializeField] Vector3 CameraOffset;
     [SerializeField] LayerMask enemyExecuteLayer;
-    public List<EnemyAI> executableEnemies;
 
     [Header("Pet Sheep Variables")]
     [SerializeField] string petAnimation;
     [SerializeField] float petMaxDistance = 7.5f;
     float currentPetDistance;
-    PlayerSheepAI sheepToPet;
-    bool isPetting;
 
-    bool canExecute;
     EnemyAI enemyToExecute;
    // Transform targetPos;
     public PlayerInput inputs;
     bool isExecuting;
 
+	// components
 	PlayerAnimationController anim;
 	PlayerSheepAbilities flocks;
     PlayerMovement movement;
@@ -40,19 +35,19 @@ public class PlayerExecution : MonoBehaviour
 		if (context.performed)
 		{
 			// check to pet nearest sheep of current flock! :D
-			sheepToPet = null;
+			PlayerSheepAI sheepToPet = null;
 			currentPetDistance = Mathf.Infinity;
 
 			//this is all for sean don't think too hard about it
 			for (int j = 0; j < 3; j++)
 			{
-				for (int i = 0; i < flocks.GetSheepFlock((SheepTypes)j).Count; i++)
+				for (int i = 0; i < flocks.GetSheepFlock(j).Count; i++)
 				{
-					if (Vector3.Distance(transform.position, flocks.GetSheepFlock((SheepTypes)j)[i].transform.position) < petMaxDistance
-						&& currentPetDistance > Vector3.Distance(transform.position, flocks.GetSheepFlock((SheepTypes)j)[i].transform.position))
+					float sqrDist = Vector3.SqrMagnitude(transform.position - flocks.GetSheepFlock(j)[i].transform.position);
+					if (sqrDist < petMaxDistance && currentPetDistance > sqrDist)
 					{
-						currentPetDistance = Vector3.Distance(transform.position, flocks.GetSheepFlock((SheepTypes)j)[i].transform.position);
-						sheepToPet = flocks.GetSheepFlock((SheepTypes)j)[i];
+						currentPetDistance = sqrDist;
+						sheepToPet = flocks.GetSheepFlock(j)[i];
 					}
 				}
 			}
@@ -71,68 +66,51 @@ public class PlayerExecution : MonoBehaviour
 
 	public void OnExecute(InputAction.CallbackContext context)
     {
-        //when you press the execute key
-        if(context.started)
+        //when you press the execute key and are not in an execution 
+        if(context.started && !isExecuting)
         {
             //look for an interactable object first
             Collider[] interactables = Physics.OverlapSphere(transform.position, interactRadius, interactLayer);
-
-			// TODO: decouple this
-
-
-
-			foreach (Collider interactable in interactables)
-            {
-				Interactable interactComp = interactable.GetComponent<Interactable>();
+			for (int i = 0; i < interactables.Length; i++)
+			{
+				Interactable interactComp = interactables[i].GetComponent<Interactable>();
 
 				if (interactComp != null && interactComp.canInteract)
-                {
-                    interactableInRange = true;
-                    interactableObject = interactComp;
-					break;
-                }
-            }
+				{
+					interactComp.Interact();
+					// only trigger one interactable or enemey
+					return;
+				}
+			}
 
             //get all enemies in radius, if we get an executable enemy then we can execute
             //execution ovverrides interactable
             Collider[] hits = Physics.OverlapSphere(transform.position, executeRadius, enemyExecuteLayer);
-            foreach(Collider hit in hits)
+			for (int i = 0; i < hits.Length; i++)
             {
-				EnemyAI enemy = hit.GetComponent<EnemyAI>();
+				EnemyAI enemy = hits[i].GetComponent<EnemyAI>();
 				if (enemy != null && enemy.isExecutable)
                 {
-                    executableEnemies.Add(enemy);
-                    interactableInRange = false;
-                    canExecute = true;
-                }
+					enemyToExecute = enemy;
+					//targetPos = enemyToExecute.executePlayerPos;
+					transform.position = enemyToExecute.executePlayerPos.transform.position;
+
+					// a dirty way to get it to stop what its doing
+					anim.playerAnimator.Rebind();
+
+					// play execution animations
+					anim.playerAnimator.Play(enemyToExecute.execution.playerAnimation, 0, 0);
+					enemyToExecute.GetComponent<Animator>().Play(enemyToExecute.execution.enemyAnimation);
+
+					Debug.Log(enemyToExecute.execution.executionLength);
+					StartCoroutine(ExecuteEnemy(enemyToExecute.execution.executionLength));
+
+					return;
+				}
             }
 
-
-			//execute first enemy in list, play animations from execute scriptable object and start execute coroutine
-			if (canExecute)
-			{
-				enemyToExecute = executableEnemies[0];
-				//targetPos = enemyToExecute.executePlayerPos;
-				transform.position = enemyToExecute.executePlayerPos.transform.position;
-				//GetComponent<PlayerMovement>().dash
-
-				anim.playerAnimator.Rebind();
-				anim.playerAnimator.Play(enemyToExecute.execution.playerAnimation, 0, 0);
-				Debug.Log("play execute anim");
-				enemyToExecute.GetComponent<Animator>().Play(enemyToExecute.execution.enemyAnimation);
-
-				Debug.Log(enemyToExecute.execution.executionLength);
-				StartCoroutine(ExecuteEnemy(enemyToExecute.execution.executionLength));
-
-				canExecute = false;
-			}
-			else if (interactableInRange)
-			{
-				interactableObject.Interact();
-				interactableInRange = false;
-			}
-			else
-				GetComponent<PlayerSheepAbilities>().OnRecallSheep(context);
+			// if neither enemy nor interactable are found, recall sheep
+			flocks.OnRecallSheep(context);
         }
      
     }
@@ -170,7 +148,7 @@ public class PlayerExecution : MonoBehaviour
     public void StartExecution()
     {
         isExecuting = true;
-        inputs.enabled = false;
+        inputs.currentActionMap.Disable();
         movement.enabled = false;
         gameObject.layer = LayerMask.NameToLayer("PlayerInvulnerable");
     }
@@ -179,11 +157,9 @@ public class PlayerExecution : MonoBehaviour
     {
         isExecuting = false;
         enemyToExecute.Execute();
-        
-        inputs.enabled = true;
-        movement.enabled = true;
-        gameObject.layer = LayerMask.NameToLayer("Player");
 
-        executableEnemies.Clear();
+		inputs.currentActionMap.Enable();
+		movement.enabled = true;
+        gameObject.layer = LayerMask.NameToLayer("Player");
     }
 }

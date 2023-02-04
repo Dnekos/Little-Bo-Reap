@@ -9,6 +9,10 @@ public class HUDManager : MonoBehaviour
 	{
 		HUD.SetActive(!HUD.activeInHierarchy);
 	}
+	public void ToggleHud(bool value)
+	{
+		HUD.SetActive(value);
+	}
 
 	private void Start()
 	{

@@ -9,29 +9,32 @@ public class SheepGrave : Interactable
     [SerializeField] SheepTypes sheepType;
     [SerializeField] int flockSizeIncrease;
 
-    [Header("Effects")]
+    [Header("Sounds")]
 	[SerializeField] FMODUnity.EventReference Sound;
+
+	[Header("Particles")]
 	[SerializeField] ParticleSystem graveParticles;
     [SerializeField] GameObject graveLight;
     [SerializeField] ParticleSystem gravePoof;
-    [SerializeField] Transform numberSpawnPoint;
+
+	[Header("UI")]
+	[SerializeField] Transform numberSpawnPoint;
     [SerializeField] GameObject numberObject;
     [SerializeField] Color numberColor;
-
-
-
 
     public override void Interact()
     {
 		//increase flock size of player
-		WorldState.instance.player.GetComponent<PlayerSheepAbilities>().sheepFlocks[(int)sheepType].MaxSize += flockSizeIncrease;
-		WorldState.instance.player.GetComponent<PlayerSheepAbilities>().UpdateFlockUI();
+		PlayerSheepAbilities player = WorldState.instance.player.GetComponent<PlayerSheepAbilities>();
+		player.sheepFlocks[(int)sheepType].MaxSize += flockSizeIncrease;
+		player.UpdateFlockUI();
 
-        //show flock size increase
-        var number = Instantiate(numberObject, numberSpawnPoint.position, numberSpawnPoint.rotation) as GameObject;
-        number.GetComponentInChildren<TextMeshProUGUI>().color = numberColor;
-        number.GetComponentInChildren<TextMeshProUGUI>().text = "+" + (flockSizeIncrease).ToString();
+		//show flock size increase
+		TextMeshProUGUI number = Instantiate(numberObject, numberSpawnPoint.position, numberSpawnPoint.rotation).GetComponentInChildren<TextMeshProUGUI>();
+		number.color = numberColor;
+        number.text = "+" + (flockSizeIncrease).ToString();
 
+		// juice
         FMODUnity.RuntimeManager.PlayOneShotAttached(Sound, gameObject);
 		graveParticles.Stop(true);
         graveLight.SetActive(false);

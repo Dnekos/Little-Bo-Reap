@@ -70,7 +70,7 @@ public class DialogBox : MonoBehaviour
 	public void ActivateUI(Speaker active_conversation)
 	{
 		// disable HUD
-		WorldState.instance.HUD.ToggleHud();
+		WorldState.instance.HUD.ToggleHud(false);
 
 		// set up speaker vars
 		currentspeaker = active_conversation;
@@ -164,7 +164,7 @@ public class DialogBox : MonoBehaviour
 
 
 		// enable HUD and world
-		WorldState.instance.HUD.ToggleHud();
+		WorldState.instance.HUD.ToggleHud(true);
 		WorldState.instance.gameState = WorldState.State.Play;
 		inputs.SwitchCurrentActionMap("PlayerMovement");
 

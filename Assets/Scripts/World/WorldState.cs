@@ -41,6 +41,7 @@ public class WorldState : MonoBehaviour
 	{
 		if (instance == null)
 		{
+			// set up instance
 			instance = this;
 			Respawn.listener.AddListener(RespawnPlayer);
 			player = GameObject.FindGameObjectWithTag("Player");
@@ -54,6 +55,8 @@ public class WorldState : MonoBehaviour
 			PlayerCameraFollow cam = FindObjectOfType<PlayerCameraFollow>();
 			if (cam != null)
 				cam.mouseSensitivity = PlayerPrefs.GetFloat("sensitivity", 1) * cam.mouseSensitivityMax;
+
+			// volume settings
 			FMOD.Studio.Bus myBus = FMODUnity.RuntimeManager.GetBus("bus:/SFX");
 			myBus.setVolume(PlayerPrefs.GetFloat("sfx", 1));
 			myBus = FMODUnity.RuntimeManager.GetBus("bus:/Music");

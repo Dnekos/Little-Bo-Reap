@@ -362,7 +362,11 @@ public class PlayerSheepAbilities : MonoBehaviour
     {
 		return sheepFlocks[(int)theFlockType].activeSheep;
     }
-    public GameObject GetCurrentSheepPrefab(SheepTypes theFlockType)
+	public List<PlayerSheepAI> GetSheepFlock(int theFlockIndex)
+	{
+		return sheepFlocks[theFlockIndex].activeSheep;
+	}
+	public GameObject GetCurrentSheepPrefab(SheepTypes theFlockType)
     {
 		return sheepFlocks[(int)theFlockType].SheepPrefab;
     }
