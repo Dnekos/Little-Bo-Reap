@@ -97,6 +97,37 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.7, y: 1, z: 0.7}
   m_Center: {x: 0, y: 0.5, z: -0.2}
+--- !u!1 &2490121335443478620
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4734618446254654461}
+  m_Layer: 12
+  m_Name: SpawnEnemyPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4734618446254654461
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2490121335443478620}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.1, z: 2.3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6442876334591913550}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4430002953939854700
 GameObject:
   m_ObjectHideFlags: 0
@@ -389,11 +420,12 @@ Transform:
   m_GameObject: {fileID: 6442876334591913538}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 129.27145, y: 12.749995, z: -55.278393}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6442876334397910505}
   - {fileID: 1124950815098991842}
+  - {fileID: 4734618446254654461}
   - {fileID: 799240454356266182}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -432,8 +464,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 397dd83476cc93048a466ed125150dee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Health: 200
-  MaxHealth: 200
+  Health: 2000
+  MaxHealth: 2000
   gibs: {fileID: 8630169064506601255, guid: 4957a3768fc0dc74ab3a45202acc48fc, type: 3}
   damageNumber: {fileID: 758784450076825086, guid: 917e1ac09e21f3f499d8aa30f802b69e,
     type: 3}
@@ -469,7 +501,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   NearbyGuys: []
-  delayBetweenAttacks: 6
+  delayBetweenAttacks: 1
   StickCollider: {fileID: 9042595787843843793}
   anim: {fileID: 724469627602778665}
   isExecutable: 0
@@ -504,8 +536,8 @@ MonoBehaviour:
   StompSpawnPoint: {fileID: 1124950815098991842}
   StompDamage: 20
   enemiesSpawned: 0
-  numEnemiesSpawned: 0
-  enemySpawnPoint: {fileID: 0}
+  numEnemiesSpawned: 5
+  enemySpawnPoint: {fileID: 4734618446254654461}
   fireBreathDamage: 0
   fireBreathSpawnPoint: {fileID: 0}
   rangedAttackDamage: 0
