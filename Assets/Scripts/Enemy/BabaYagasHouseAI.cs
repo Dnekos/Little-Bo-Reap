@@ -10,6 +10,7 @@ public class BabaYagasHouseAI : EnemyAI
 	[SerializeField] float StompDamage;
 
 	[Header("Spawning Enemies")]
+	[SerializeField] bool enemiesSpawned = false;
 	[SerializeField] int numEnemiesSpawned;
 	[SerializeField] Transform enemySpawnPoint;
 	//include which enemies will spawn 
@@ -39,6 +40,20 @@ public class BabaYagasHouseAI : EnemyAI
 		}
 
 	}
+
+	public float GetHeath()
+    {
+		return Health;
+    }
+	public float GetMaxHeath()
+	{
+		return MaxHealth;
+	}
+
+	public bool getEnemiesSpawned()
+    {
+		return enemiesSpawned;
+    }
 
 	public void SpawnEnemies()
     {

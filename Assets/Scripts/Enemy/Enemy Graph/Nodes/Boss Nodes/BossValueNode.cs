@@ -10,7 +10,10 @@ namespace XNode.Examples.StateGraph
 	{
 		public enum BossVariables
 		{
-			NUM_CURRENT_ENEMIES
+			NUM_CURRENT_ENEMIES,
+			CURRENT_HEATH,
+			MAX_HEALTH,
+			ENEMIES_SPAWNED
 		}
 		[Input] public BossVariables desiredValue;
 		[Output] public float result;
@@ -25,7 +28,16 @@ namespace XNode.Examples.StateGraph
 					case BossVariables.NUM_CURRENT_ENEMIES:
 						return GameObject.FindGameObjectsWithTag("Enemy").Length;
 
-					
+					case BossVariables.CURRENT_HEATH:
+						return user.GetComponent<BabaYagasHouseAI>().GetHeath();//is this the best way to do this?
+
+					case BossVariables.MAX_HEALTH:
+						return user.GetComponent<BabaYagasHouseAI>().GetMaxHeath();
+
+					case BossVariables.ENEMIES_SPAWNED:
+						return user.GetComponent<BabaYagasHouseAI>().getEnemiesSpawned();
+
+
 				}
 			}
 			return null;

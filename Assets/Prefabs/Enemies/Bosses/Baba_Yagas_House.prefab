@@ -97,6 +97,37 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.7, y: 1, z: 0.7}
   m_Center: {x: 0, y: 0.5, z: -0.2}
+--- !u!1 &4430002953939854700
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1124950815098991842}
+  m_Layer: 12
+  m_Name: StompPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1124950815098991842
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4430002953939854700}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6442876334591913550}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6442876332765062058
 GameObject:
   m_ObjectHideFlags: 0
@@ -362,6 +393,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6442876334397910505}
+  - {fileID: 1124950815098991842}
   - {fileID: 799240454356266182}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -425,19 +457,21 @@ MonoBehaviour:
   soulValue: 0
   soulSpeed: 0
   soulSpawnHeight: 0
-  soulCollectableOne: {fileID: 0}
+  soulCollectableOne: {fileID: 6060198684946403098, guid: 4b17e9d88b42899429f3f7846d72d21d,
+    type: 3}
   graph: {fileID: 11400000, guid: 442bfc3177149354b8a25f6e1f06aaad, type: 2}
-  SpawnParticlePrefab: {fileID: 0}
+  SpawnParticlePrefab: {fileID: 5225625775041053419, guid: 0d79b936ef2eed546926c5bad3a31652,
+    type: 3}
   SpawnWaitTime: 2
-  currentEnemyState: 0
+  currentEnemyState: 3
   StunTime: 0
   playerLayer:
     serializedVersion: 2
     m_Bits: 128
   NearbyGuys: []
   delayBetweenAttacks: 6
-  StickCollider: {fileID: 0}
-  anim: {fileID: 0}
+  StickCollider: {fileID: 9042595787843843793}
+  anim: {fileID: 724469627602778665}
   isExecutable: 0
   mustBeExecuted: 0
   executionHealthThreshhold: 0
@@ -454,21 +488,22 @@ MonoBehaviour:
   fallRate: 50
   swingSound:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: -1516851570
+      Data2: 1275689125
+      Data3: -706628987
+      Data4: 1488203871
+    Path: event:/Big Guy/Club Swing
   clubHitSound:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: 721644945
+      Data2: 1288483985
+      Data3: 1148032658
+      Data4: 922800040
+    Path: event:/Big Guy/Club Hit
   player: {fileID: 0}
-  StompSpawnPoint: {fileID: 0}
-  StompDamage: 0
+  StompSpawnPoint: {fileID: 1124950815098991842}
+  StompDamage: 20
+  enemiesSpawned: 0
   numEnemiesSpawned: 0
   enemySpawnPoint: {fileID: 0}
   fireBreathDamage: 0

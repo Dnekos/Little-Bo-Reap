@@ -9,6 +9,7 @@ namespace XNode.Examples.StateGraph
 	{
 		[Input] public Vector3 point;
         [Input] public float radius;
+		[Input] public Vector3 enemyPosition;
 
 		[Output] public float result;
 
@@ -17,8 +18,13 @@ namespace XNode.Examples.StateGraph
 			Vector3 p = GetInputValue<Vector3>("point", this.point);
 			float r = GetInputValue<float>("radius", this.radius);
 
-			Vector3 result = p;
+			Vector3 randomPosition = UnityEngine.Random.insideUnitSphere * r;
+			Vector3 destinationPosition = new Vector3(randomPosition.x + p.x, p.y, randomPosition.z + p.z);
+
+			Vector3 result = destinationPosition;
 			//calculate
+			//Debug.Log(result);
+
 
 			return result;
 		}
