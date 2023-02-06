@@ -41,13 +41,13 @@ public class PlayerExecution : MonoBehaviour
 			//this is all for sean don't think too hard about it
 			for (int j = 0; j < 3; j++)
 			{
-				for (int i = 0; i < flocks.GetSheepFlock(j).Count; i++)
+				for (int i = 0; i < flocks.GetActiveSheep(j).Count; i++)
 				{
-					float sqrDist = Vector3.SqrMagnitude(transform.position - flocks.GetSheepFlock(j)[i].transform.position);
+					float sqrDist = Vector3.SqrMagnitude(transform.position - flocks.GetActiveSheep(j)[i].transform.position);
 					if (sqrDist < petMaxDistance && currentPetDistance > sqrDist)
 					{
 						currentPetDistance = sqrDist;
-						sheepToPet = flocks.GetSheepFlock(j)[i];
+						sheepToPet = flocks.GetActiveSheep(j)[i];
 					}
 				}
 			}

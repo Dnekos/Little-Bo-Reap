@@ -63,10 +63,10 @@ public class PlayerSheepLift : MonoBehaviour
 		bool hitGround = Physics.Raycast(transform.position, Vector3.down, out info, 100, LayerMask.GetMask("Ground"), QueryTriggerInteraction.Ignore);
 
 		Debug.DrawLine(transform.position, info.point, Color.red, 3);
-		Debug.Log("sheep lift attempt at height "+ (info.distance * SheepSpacingMod) +", estimated sheep height is "+ (sheepHeight * flocks.GetSheepFlock(SheepTypes.BUILD).Count));
+		Debug.Log("sheep lift attempt at height "+ (info.distance * SheepSpacingMod) +", estimated sheep height is "+ (sheepHeight * flocks.GetActiveSheep(SheepTypes.BUILD).Count));
 		
 		// not enough sheep to make the ladder
-		if (!hitGround || info.distance * SheepSpacingMod > sheepHeight * flocks.GetSheepFlock(SheepTypes.BUILD).Count || info.collider.CompareTag("Sheep") || info.collider.gameObject == platform)
+		if (!hitGround || info.distance * SheepSpacingMod > sheepHeight * flocks.GetActiveSheep(SheepTypes.BUILD).Count || info.collider.CompareTag("Sheep") || info.collider.gameObject == platform)
 			return false;
 
 
@@ -106,7 +106,7 @@ public class PlayerSheepLift : MonoBehaviour
 	// returns false if you cannot place a sheep
 	bool PlacePoint(Vector3 newPos, bool PlaceAtTop)
 	{
-		if (usedSheep >= flocks.GetSheepFlock(SheepTypes.BUILD).Count)
+		if (usedSheep >= flocks.GetActiveSheep(SheepTypes.BUILD).Count)
 		{
 			player.isLifting = false;
 			return false;
@@ -121,10 +121,10 @@ public class PlayerSheepLift : MonoBehaviour
 		// check if theres room to add a sheep to the stack
 		if (distTowardsNextSheep * SheepSpacingMod >= sheepHeight)
 		{
-			StartCoroutine(SheepFollow(flocks.GetSheepFlock(SheepTypes.BUILD)[usedSheep], PlaceAtTop ? RecordedPositions.Count - 1 : 0, usedSheep));
+			StartCoroutine(SheepFollow(flocks.GetActiveSheep(SheepTypes.BUILD)[usedSheep], PlaceAtTop ? RecordedPositions.Count - 1 : 0, usedSheep));
 
 			// give them a new rotation
-			flocks.GetSheepFlock(SheepTypes.BUILD)[usedSheep].transform.eulerAngles = new Vector3(0, Random.Range(0, 360));
+			flocks.GetActiveSheep(SheepTypes.BUILD)[usedSheep].transform.eulerAngles = new Vector3(0, Random.Range(0, 360));
 			usedSheep++;
 			distTowardsNextSheep = 0;
 		}

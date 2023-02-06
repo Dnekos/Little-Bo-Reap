@@ -41,7 +41,7 @@ public class Sheep_Summon_Particle : MonoBehaviour
 
 			//spawn sheep
 			var sheep = Instantiate(sheepToSpawn, spawnPoint, Quaternion.identity).GetComponent<PlayerSheepAI>() as PlayerSheepAI;
-            player.GetSheepFlock(sheepType).Add(sheep);
+            player.GetActiveSheep(sheepType).Add(sheep);
             player.UpdateFlockUI();
 
 			sheep.RemoveSheep = new PlayerSheepAI.callSheep(removeFunction);
