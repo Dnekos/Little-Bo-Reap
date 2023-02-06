@@ -32,11 +32,6 @@ public struct Flock
 
 public class PlayerSheepAbilities : MonoBehaviour
 {
-    [Header("UI Test")]
-    [SerializeField] TextMeshProUGUI sheepTypeText;
-    [SerializeField] TextMeshProUGUI redText;
-    [SerializeField] TextMeshProUGUI flockNumber;
-    [SerializeField] Image flockTypeIcon;
 
     [Header("Sounds")]
     [SerializeField] FMODUnity.EventReference abilitySound;
@@ -60,15 +55,8 @@ public class PlayerSheepAbilities : MonoBehaviour
     public List<PlayerSheepAI> leaderSheep;
 
 	[Header("Sheep Swap Variables")]
-	[SerializeField] GameObject flockSelectMenu;
-	[SerializeField] TextMeshProUGUI[] flockSelectTexts;
-    [SerializeField] float flockMenuTimescale = 0.25f;
-    [SerializeField] float defaultTimescale = 1;
     [SerializeField] ParticleSystem bellParticles;
     [SerializeField] ParticleSystem bellParticleBurst;
-    [SerializeField] Animator SwapUIAnimator;
-    [SerializeField] string swapAnimationUI;
-    [SerializeField] string noSheepAnimUI;
 	Vector2 WheelOpenMousePos;
     bool isInFlockMenu = false;
     float swapContextValue; // i feel like there is a way to not have this non-local
@@ -232,16 +220,11 @@ public class PlayerSheepAbilities : MonoBehaviour
 		{
 			currentFlockIndex = newindex;
 			currentFlockType = (SheepTypes)currentFlockIndex;
-
-			sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
-			sheepTypeText.color = sheepFlocks[currentFlockIndex].UIColor;
-
 			var particleModule = bellParticles.main;
 			particleModule.startColor = sheepFlocks[currentFlockIndex].UIColor;
 			sheepFlocks[currentFlockIndex].flockChangeParticle.Play(true);
 
-			if (SwapUIAnimator.gameObject.activeSelf)
-				SwapUIAnimator.Play(swapAnimationUI);
+			WorldState.instance.HUD.SwapAnimation();
 
 			UpdateFlockUI();
 		}
@@ -260,15 +243,11 @@ public class PlayerSheepAbilities : MonoBehaviour
 
 			currentFlockType = (SheepTypes)currentFlockIndex;
 
-			sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
-			sheepTypeText.color = sheepFlocks[currentFlockIndex].UIColor;
-
 			var particleModule = bellParticles.main;
 			particleModule.startColor = sheepFlocks[currentFlockIndex].UIColor;
 			sheepFlocks[currentFlockIndex].flockChangeParticle.Play(true);
 
-			if (SwapUIAnimator.gameObject.activeSelf)
-				SwapUIAnimator.Play(swapAnimationUI);
+			WorldState.instance.HUD.SwapAnimation();
 
 			UpdateFlockUI();
 		}
@@ -298,9 +277,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 			//enable flock select menu
 			WheelOpenMousePos = Mouse.current.position.ReadValue();
 
-			Time.timeScale = flockMenuTimescale;
-			Time.fixedDeltaTime = 0.02F * Time.timeScale; //evil physics timescale hack to make it smooth
-			flockSelectMenu.gameObject.SetActive(true);
+			WorldState.instance.HUD.EnableSheepWheel();
 		}
 		else if (context.performed)
 		{
@@ -313,17 +290,14 @@ public class PlayerSheepAbilities : MonoBehaviour
 
 			currentFlockType = (SheepTypes)currentFlockIndex;
 
-			sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
-			sheepTypeText.color = sheepFlocks[currentFlockIndex].UIColor;
 
             var particleModule = bellParticles.main;
             particleModule.startColor = sheepFlocks[currentFlockIndex].UIColor;
             sheepFlocks[currentFlockIndex].flockChangeParticle.Play(true);
 
-			if (SwapUIAnimator.gameObject.activeSelf)
-			SwapUIAnimator.Play(swapAnimationUI);
+			WorldState.instance.HUD.SwapAnimation();
 
-            UpdateFlockUI();
+			UpdateFlockUI();
         }
 		else if (context.canceled && swapContextValue == 1 && isInFlockMenu)
 		{
@@ -336,18 +310,13 @@ public class PlayerSheepAbilities : MonoBehaviour
 				currentFlockIndex = flockToChange;
 				currentFlockType = (SheepTypes)currentFlockIndex;
 
-				//Debug.Log("Current Flock is: " + currentFlockType);
-				sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
-				sheepTypeText.color = sheepFlocks[currentFlockIndex].UIColor;
-
                 var particleModule = bellParticles.main;
                 particleModule.startColor = sheepFlocks[currentFlockIndex].UIColor;
                 sheepFlocks[currentFlockIndex].flockChangeParticle.Play(true);
 
-				if (SwapUIAnimator.gameObject.activeSelf)
-				SwapUIAnimator.Play(swapAnimationUI);
+				WorldState.instance.HUD.SwapAnimation();
 
-                UpdateFlockUI();
+				UpdateFlockUI();
             }
 
 			Cursor.visible = false;
@@ -355,9 +324,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 
 			//disable flock select menu
 			isInFlockMenu = false;
-			Time.timeScale = defaultTimescale;
-			Time.fixedDeltaTime = 0.02F; //evil physics timescale hack
-			flockSelectMenu.gameObject.SetActive(false);
+			WorldState.instance.HUD.DisableSheepWheel();
 		}   
     }
 	#endregion
@@ -386,13 +353,13 @@ public class PlayerSheepAbilities : MonoBehaviour
 
     public void UpdateFlockUI()
     {
+		HUDManager hud = WorldState.instance.HUD ;
 		for (int i = 0; i < sheepFlocks.Length; i++)
-			flockSelectTexts[i].text = sheepFlocks[i].activeSheep.Count + "/" + sheepFlocks[i].MaxSize;
+			hud.UpdateFlockWheelText(i, sheepFlocks[i].activeSheep.Count, sheepFlocks[i].MaxSize);
 
-		flockTypeIcon.sprite = sheepFlocks[currentFlockIndex].sheepIcon;
-		flockNumber.text = flockSelectTexts[currentFlockIndex].text;
-        redText.text = flockNumber.text;
-        flockNumber.color = sheepFlocks[currentFlockIndex].UIColor;
+		hud.UpdateActiveFlockUI(sheepFlocks[currentFlockIndex].sheepIcon,
+			sheepFlocks[currentFlockIndex].activeSheep +"/"+ sheepFlocks[currentFlockIndex].MaxSize, 
+			sheepFlocks[currentFlockIndex].UIColor);
 	}
 
     bool CheckIfCloseToLeader(SheepTypes theSheepType)
@@ -814,8 +781,8 @@ public class PlayerSheepAbilities : MonoBehaviour
 		canAttack = false;
 
 		//no sheep?
-		if (SwapUIAnimator.gameObject.activeSelf && sheepFlocks[currentFlockIndex].activeSheep.Count <= 0)
-			SwapUIAnimator.Play(noSheepAnimUI);
+		if (sheepFlocks[currentFlockIndex].activeSheep.Count <= 0)
+			WorldState.instance.HUD.SheepErrorAnimation();
 
 		StartCoroutine(AttackCooldown());
 	}
@@ -1155,10 +1122,10 @@ public class PlayerSheepAbilities : MonoBehaviour
 					}
 				}
 			}
-            else SwapUIAnimator.Play(noSheepAnimUI);
+			else WorldState.instance.HUD.SheepErrorAnimation();
 
-            //start cooldown
-            canLaunch = false;
+			//start cooldown
+			canLaunch = false;
 			//launchIcon.CooldownUIEffect(launchCooldown);
 			StartCoroutine(SheepLaunchCooldown());
 		}

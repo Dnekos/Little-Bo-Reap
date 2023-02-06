@@ -70977,10 +70977,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 650a50908be0e3146b3833ca948a5751, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sheepTypeText: {fileID: 6716116745102799633}
-  redText: {fileID: 6405976711048251443}
-  flockNumber: {fileID: 6212349386974765846}
-  flockTypeIcon: {fileID: 6260332553532698462}
   abilitySound:
     Guid:
       Data1: 1214404282
@@ -71052,18 +71048,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  flockSelectMenu: {fileID: 7949227887930999156}
-  flockSelectTexts:
-  - {fileID: 2979362325894295416}
-  - {fileID: 7198362438784277419}
-  - {fileID: 5012241311939147768}
-  flockMenuTimescale: 0.1
-  defaultTimescale: 1
   bellParticles: {fileID: 8444265249257594975}
   bellParticleBurst: {fileID: 7593981264142179448}
-  SwapUIAnimator: {fileID: 325124248287128689}
-  swapAnimationUI: Sheep_Type_Panel_Switch
-  noSheepAnimUI: Sheep_Type_Panel_Empty
   summonBloodCost: 35
   summonRadius: 20
   summonCooldown: 0.5
@@ -89615,6 +89601,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HUD: {fileID: 3307260917247954098}
+  redText: {fileID: 6405976711048251443}
+  flockNumber: {fileID: 6212349386974765846}
+  flockTypeIcon: {fileID: 6260332553532698462}
+  flockSelectMenu: {fileID: 7949227887930999156}
+  flockSelectTexts:
+  - {fileID: 2979362325894295416}
+  - {fileID: 7198362438784277419}
+  - {fileID: 5012241311939147768}
+  flockMenuTimescale: 0.1
+  defaultTimescale: 1
+  SwapUIAnimator: {fileID: 325124248287128689}
+  swapAnimationUI: Sheep_Type_Panel_Switch
+  noSheepAnimUI: Sheep_Type_Panel_Empty
 --- !u!1 &5673028379127726703
 GameObject:
   m_ObjectHideFlags: 0
@@ -95977,6 +95976,18 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: d62e9d4b-30db-4c4b-9c78-0c3283829267
     m_ActionName: PlayerMovement/SetFlock[/DualSenseGamepadHID/dpad/up,/DualSenseGamepadHID/dpad/left,/DualSenseGamepadHID/dpad/right]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 05cc96a0-ad38-4dc6-bab2-63718e7b2600
+    m_ActionName: PlayerMovement/SheepActiveAbility
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 56b0c570-cf82-4458-acdd-3c305d71e1d8
+    m_ActionName: PlayerMovement/PetSheep
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f98c3e5d-013f-49eb-a479-09fc6060d8d5
+    m_ActionName: Dialog/AdvanceText[/Mouse/leftButton,/Keyboard/space,/Keyboard/e]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: CinematicCameras
