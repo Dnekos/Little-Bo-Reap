@@ -358,7 +358,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 			hud.UpdateFlockWheelText(i, sheepFlocks[i].activeSheep.Count, sheepFlocks[i].MaxSize);
 
 		hud.UpdateActiveFlockUI(sheepFlocks[currentFlockIndex].sheepIcon,
-			sheepFlocks[currentFlockIndex].activeSheep +"/"+ sheepFlocks[currentFlockIndex].MaxSize, 
+			sheepFlocks[currentFlockIndex].activeSheep.Count +"/"+ sheepFlocks[currentFlockIndex].MaxSize, 
 			sheepFlocks[currentFlockIndex].UIColor);
 	}
 
