@@ -25,6 +25,9 @@ public struct Flock
     public Sprite sheepIcon;
     public ParticleSystem spellParticle;
     public ParticleSystem flockChangeParticle;
+	public GameObject reticleSustainPrefab;
+	public GameObject reticleConfirmPrefab;
+
 }
 
 public class PlayerSheepAbilities : MonoBehaviour
@@ -751,7 +754,7 @@ public class PlayerSheepAbilities : MonoBehaviour
             else if (context.started && sheepAttackPoint == null)//context.ReadValue<float>() == 1)
 			{
                 //spawn icon
-                var attackPoint = Instantiate(sheepAttackPointPrefab, transform.position, Quaternion.identity) as GameObject;
+                var attackPoint = Instantiate(sheepFlocks[currentFlockIndex].reticleSustainPrefab, transform.position, Quaternion.identity) as GameObject;
                 ParticleSystem[] particleSystems = attackPoint.GetComponentsInChildren<ParticleSystem>();
                 foreach(ParticleSystem particle in particleSystems)
                 {
@@ -793,7 +796,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 		if (Physics.Raycast(Camera.main.transform.position + attackPointOffset, Camera.main.transform.forward, out hit, Mathf.Infinity, attackTargetLayers))
 		{
 			//instantiate confirm prefab
-			var attackConfirm = Instantiate(sheepAttackConfirmPrefab, hit.point, Quaternion.identity);
+			var attackConfirm = Instantiate(sheepFlocks[currentFlockIndex].reticleConfirmPrefab, hit.point, Quaternion.identity);
 			ParticleSystem[] particleSystems = attackConfirm.GetComponentsInChildren<ParticleSystem>();
 			foreach (ParticleSystem particle in particleSystems)
 			{
