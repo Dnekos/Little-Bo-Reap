@@ -21,7 +21,7 @@ public class PlayerSummoningResource : MonoBehaviour
 		bar.ChangeFill(currentBlood / maxBlood);
 	}
 
-	void ResetBlood()
+	public void ResetBlood()
 	{
 		currentBlood = maxBlood;
 		bar.ChangeFill(1);
