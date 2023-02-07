@@ -70429,6 +70429,10 @@ GameObject:
   - component: {fileID: 7611933122142456365}
   - component: {fileID: 3274229950097917984}
   - component: {fileID: 5528081572093814127}
+  - component: {fileID: 7822986866785685827}
+  - component: {fileID: 3249871464365083299}
+  - component: {fileID: 4775500475753401295}
+  - component: {fileID: 412837391465133713}
   m_Layer: 7
   m_Name: Player_Body
   m_TagString: Player
@@ -70593,8 +70597,8 @@ MonoBehaviour:
     m_ActionName: PlayerMovement/SummonSheep[/Keyboard/e]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8268160106776874863}
-        m_TargetAssemblyTypeName: PlayerSheepAbilities, Assembly-CSharp
+      - m_Target: {fileID: 3249871464365083299}
+        m_TargetAssemblyTypeName: PlayerStampede, Project.Player
         m_MethodName: OnSheepCharge
         m_Mode: 0
         m_Arguments:
@@ -70613,8 +70617,8 @@ MonoBehaviour:
     m_ActionName: PlayerMovement/RecallSheep[/Keyboard/q]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8268160106776874863}
-        m_TargetAssemblyTypeName: PlayerSheepAbilities, Assembly-CSharp
+      - m_Target: {fileID: 7822986866785685827}
+        m_TargetAssemblyTypeName: PlayerVortex, Project.Player
         m_MethodName: OnSheepDefend
         m_Mode: 0
         m_Arguments:
@@ -70629,8 +70633,8 @@ MonoBehaviour:
     m_ActionName: PlayerMovement/SheepDefend[/Keyboard/2]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8268160106776874863}
-        m_TargetAssemblyTypeName: PlayerSheepAbilities, Assembly-CSharp
+      - m_Target: {fileID: 4775500475753401295}
+        m_TargetAssemblyTypeName: PlayerLaunch, Project.Player
         m_MethodName: OnSheepLaunch
         m_Mode: 0
         m_Arguments:
@@ -70709,8 +70713,8 @@ MonoBehaviour:
     m_ActionName: PlayerMovement/Execute[/Keyboard/e]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8268160106776874863}
-        m_TargetAssemblyTypeName: PlayerSheepAbilities, Assembly-CSharp
+      - m_Target: {fileID: 412837391465133713}
+        m_TargetAssemblyTypeName: PlayerAttackCommand, Project.Player
         m_MethodName: OnSheepAttack
         m_Mode: 0
         m_Arguments:
@@ -71061,55 +71065,6 @@ MonoBehaviour:
     type: 3}
   summonParticleLerpSpeed: 2
   endConstructsEvent: {fileID: 11400000, guid: 317c263135cb10e4fb6b742e1b2c4763, type: 2}
-  attackPointOffset: {x: 0, y: 5, z: 0}
-  sheepAttackPointPrefab: {fileID: 5205314416653801945, guid: 16af187e6be701644a31bf1415871af5,
-    type: 3}
-  sheepAttackConfirmPrefab: {fileID: 6126763084745668659, guid: 9971aad3802332b4b9abc5e7460cdaeb,
-    type: 3}
-  attackTargetLayers:
-    serializedVersion: 2
-    m_Bits: 528448
-  attackAnimation: Spell Layer.Bo_Peep_Direct
-  attackIcon: {fileID: 5359815822633376814}
-  attackCooldown: 1
-  attackRadius: 10
-  chargePointOffset: {x: 0, y: 5, z: 0}
-  sheepChargePointPrefab: {fileID: 1751060722446382379, guid: 9034eb190968b01468884f5079c22703,
-    type: 3}
-  sheepChargeConfirmPrefab: {fileID: 1751060722446382379, guid: 6f0da326ad30a9447b99176f7e723795,
-    type: 3}
-  chargeTargetLayers:
-    serializedVersion: 2
-    m_Bits: 524352
-  chargeAnimation: Spell Layer.Bo_Peep_Direct
-  chargeIcon: {fileID: 5626668146422006359}
-  chargeCooldown: 3.5
-  chargeDistanceToUse: 20
-  defendPoints:
-  - {fileID: 640480015000480680}
-  - {fileID: 201184947909430875}
-  - {fileID: 6145056365066389885}
-  defendPointPivot: {fileID: 7224856639458476861}
-  defendPivotRotateSpeed: 100
-  defendPivotRotateSpeedGain: 100
-  defendDistance: 8
-  defendTimeMax: 5
-  defendAnimation: Spell Layer.Bo_Peep_Direct
-  vortexStartEmitter: {fileID: 3262082090793423898}
-  vortexEndSound:
-    Guid:
-      Data1: -1483612020
-      Data2: 1283054742
-      Data3: -439304276
-      Data4: 1621090749
-    Path: event:/Sheep/Vortex End
-  defendIcon: {fileID: 5727745938368034847}
-  defendCooldown: 5
-  launchOrigin: {fileID: 8630855891053651535}
-  minDistanceToLaunch: 20
-  launchAnimation: Base Layer.Bo_Peep_Launch
-  launchIcon: {fileID: 7344943566344680018}
-  launchCooldown: 0.35
 --- !u!114 &4791982548798101685
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -71230,6 +71185,116 @@ MonoBehaviour:
   mainCollider: {fileID: 3870380308813204387}
   SheepLerpSpeed: 0.17
   PlatformSize: {x: 2, y: 1, z: 2}
+--- !u!114 &7822986866785685827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3870380308813204390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 684f0736fdac24743b664ac67daa3894, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defendPoints:
+  - {fileID: 640480015000480680}
+  - {fileID: 201184947909430875}
+  - {fileID: 6145056365066389885}
+  defendPointPivot: {fileID: 7224856639458476861}
+  defendPivotRotateSpeed: 100
+  defendPivotRotateSpeedGain: 100
+  defendDistance: 8
+  defendTimeMax: 5
+  defendAnimation: Spell Layer.Bo_Peep_Direct
+  vortexStartEmitter: {fileID: 3262082090793423898}
+  vortexEndSound:
+    Guid:
+      Data1: -1483612020
+      Data2: 1283054742
+      Data3: -439304276
+      Data4: 1621090749
+    Path: event:/Sheep/Vortex End
+  defendIcon: {fileID: 5727745938368034847}
+  defendCooldown: 5
+--- !u!114 &3249871464365083299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3870380308813204390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ab6628973bd4564e9909fefa2af1118, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chargePointOffset: {x: 0, y: 5, z: 0}
+  sheepChargePointPrefab: {fileID: 1751060722446382379, guid: 9034eb190968b01468884f5079c22703,
+    type: 3}
+  sheepChargeConfirmPrefab: {fileID: 1751060722446382379, guid: 6f0da326ad30a9447b99176f7e723795,
+    type: 3}
+  chargeTargetLayers:
+    serializedVersion: 2
+    m_Bits: 524352
+  chargeAnimation: Spell Layer.Bo_Peep_Direct
+  chargeIcon: {fileID: 5626668146422006359}
+  chargeCooldown: 3.5
+  chargeDistanceToUse: 20
+  isPreparingCharge: 0
+  hasCharged: 0
+  abilitySound:
+    Guid:
+      Data1: 1214404282
+      Data2: 1231423630
+      Data3: -523776871
+      Data4: 180147507
+    Path: event:/Bo Peep/AttackConfirm
+--- !u!114 &4775500475753401295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3870380308813204390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7ced56f4e24f374aa3d47aa5871ad6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  launchOrigin: {fileID: 8630855891053651535}
+  minDistanceToLaunch: 20
+  launchAnimation: base Layer.Bo_Peep_Launch
+  launchIcon: {fileID: 7344943566344680018}
+  launchCooldown: 0.35
+--- !u!114 &412837391465133713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3870380308813204390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c3995162d86e844ea1b4a8305ab6388, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackPointOffset: {x: 0, y: 5, z: 0}
+  attackTargetLayers:
+    serializedVersion: 2
+    m_Bits: 64
+  attackAnimation: Spell Layer.Bo_Peep_Direct
+  attackIcon: {fileID: 5359815822633376814}
+  attackCooldown: 0.35
+  attackRadius: 10
+  isPreparingAttack: 0
+  abilitySound:
+    Guid:
+      Data1: 1214404282
+      Data2: 1231423630
+      Data3: -523776871
+      Data4: 180147507
+    Path: event:/Bo Peep/AttackConfirm
 --- !u!1 &3908626412805337848
 GameObject:
   m_ObjectHideFlags: 0
