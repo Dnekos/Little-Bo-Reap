@@ -341,8 +341,8 @@ MonoBehaviour:
   soulValue: 20
   soulSpeed: 0
   soulSpawnHeight: 0
-  soulCollectableOne: {fileID: 6060198684946403098, guid: 4b17e9d88b42899429f3f7846d72d21d,
-    type: 3}
+  soulCollectables:
+  - {fileID: 6060198684946403098, guid: 4b17e9d88b42899429f3f7846d72d21d, type: 3}
   graph: {fileID: 11400000, guid: fcdf494c27592514395720d5b6c8c8ad, type: 2}
   SpawnParticlePrefab: {fileID: 6246327466764470281, guid: 817debac214ef9f4ba98b6f41baf3376,
     type: 3}
@@ -384,7 +384,6 @@ MonoBehaviour:
       Data3: 1148032658
       Data4: 922800040
     Path: event:/Big Guy/Club Hit
-  printAttackTests: 0
   player: {fileID: 0}
   HealthBarCanvas: {fileID: 2332527933704318648}
   HPBars:

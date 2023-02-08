@@ -27,8 +27,8 @@ public class Damageable : MonoBehaviour
 	[Tooltip("Affects the height at which souls spawn from. should be higher for larger enemies.")]
 	[SerializeField] protected float soulSpawnHeight;
 
-	[Tooltip("The collectable that is worth one soul.")]
-	[SerializeField] protected GameObject soulCollectableOne;
+	[Tooltip("The Array of Soul Collectable increments.")]
+	[SerializeField] protected GameObject[] soulCollectables;
 
 	protected Rigidbody rb;
 
@@ -120,7 +120,7 @@ public class Damageable : MonoBehaviour
 		while (soulsToDrop > 0)
 		{
 			var soulSpawnOffset = new Vector3(Random.Range(-1,1),soulSpawnHeight, Random.Range(-1,1));
-			var soulCollectable = Instantiate(soulCollectableOne, transform.position + soulSpawnOffset, transform.rotation) as GameObject;
+			var soulCollectable = Instantiate(soulCollectables[0], transform.position + soulSpawnOffset, transform.rotation) as GameObject;
 			soulCollectable.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-1,1), 1f, Random.Range(-1,1)) * soulSpeed;
 			Debug.Log("SoulDropped");
 			soulsToDrop--;
