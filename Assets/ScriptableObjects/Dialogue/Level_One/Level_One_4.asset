@@ -13,8 +13,16 @@ MonoBehaviour:
   m_Name: Level_One_4
   m_EditorClassIdentifier: 
   script:
-  - body: Demo ends here for now. Check again later for more!
-    changeCamera: 1
+  - body: 'Look at that. Endless clouds as far as the eye can see.
+
+      (Even though
+      I don''t have eyes)'
+    changeCamera: 0
+    CameraTransitionSpeed: 1
+    CameraPos: {x: -401.58945, y: 29.331087, z: 416.2176}
+    CameraEuler: {x: 30.698877, y: 124.55263, z: 359.99164}
+  - body: I'd love to see below the clouds some day, I bet its beautiful down there.
+    changeCamera: 0
     CameraTransitionSpeed: 1
     CameraPos: {x: -401.58945, y: 29.331087, z: 416.2176}
     CameraEuler: {x: 30.698877, y: 124.55263, z: 359.99164}
