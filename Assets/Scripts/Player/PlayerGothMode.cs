@@ -59,6 +59,12 @@ public class PlayerGothMode : MonoBehaviour
 		gothMeter.ChangeFill(GothMeterCount);
 	}
 
+    public void AddToGothMeter(float amount)
+    {
+        GothMeterCount += amount;
+        gothSaturation.saturation.value = defaultSaturation;
+    }
+
 	//update bar image
 	void Update()
     {

@@ -178,7 +178,7 @@ public class PlayerSheepAI : Damageable
 			animator.SetBool("isMoving", false);
 
         //jump
-        if (agent.isOnOffMeshLink && !isJumping)
+        if (agent.isOnOffMeshLink && !isJumping )
         {
             AcquireOffmeshLink();
             storedSpeed = agent.speed;
