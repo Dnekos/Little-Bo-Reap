@@ -884,7 +884,7 @@ public class PlayerSheepAbilities : MonoBehaviour
             //add to timer
             currentDefendTime += Time.deltaTime;
 
-            if(currentDefendTime < defendTimeMax)
+            if(currentDefendTime < defendTimeMax + WorldState.instance.passiveValues.fluffyVortexDuration)
             {
                 // check if you have any defending sheep
                 for (int i = sheepFlocks[(int)SheepTypes.FLUFFY].activeSheep.Count - 1; i >= 0; i--)

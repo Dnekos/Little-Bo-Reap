@@ -4,10 +4,38 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 
+public struct SheepPassives
+{
+	[Header("Soul Count")]
+	public int soulsCount;
+	public int bossSoulsCount;
+
+	[Header("Active Abilities")]
+	public string activeBuilderAbility;
+	public string activeRamAbility;
+	public string activeFluffyAbility;
+
+	[Header("Builder Upgrades")]
+	public int builderLaunchDam;
+	public int builderCorruptChance;
+	public int builderMaxStackHeight;
+
+	[Header("Ram Upgrades")]
+	public int ramDamageReduction;
+	public int ramDamage;
+	public int ramKnockback;
+
+	[Header("Fluffy Upgrades")]
+	public int fluffyHealth;
+	public int fluffyKnockResist;
+	public int fluffyVortexDuration;
+}
+
 public class WorldState : MonoBehaviour
 {
 	public static WorldState instance;
 
+	public SheepPassives passiveValues;
 	public bool Dead = false;
 
 	[SerializeField]

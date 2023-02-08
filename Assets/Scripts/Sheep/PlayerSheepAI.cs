@@ -124,6 +124,12 @@ public class PlayerSheepAI : Damageable
     {
         base.Start();
 
+        if (sheepType == 2)
+        {
+            MaxHealth += WorldState.instance.passiveValues.fluffyHealth;
+        }
+
+
 		walker = GetComponent<FMODUnity.StudioEventEmitter>();
 
 		animator = GetComponent<Animator>();
