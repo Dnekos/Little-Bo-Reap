@@ -174,9 +174,8 @@ public class PlayerVortex : MonoBehaviour
 				{
 					if (!flocks.GetActiveSheep(SheepTypes.FLUFFY)[i].IsCommandable())
 					{
-
+						flocks.GetActiveSheep(SheepTypes.FLUFFY)[i]?.BeginDefendPlayer(defendPointPivot);
 					}
-					flocks.GetActiveSheep(SheepTypes.FLUFFY)[i]?.BeginDefendPlayer(defendPointPivot);
 				}
 
 

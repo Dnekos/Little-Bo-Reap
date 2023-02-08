@@ -16,7 +16,7 @@ public enum SheepStates
 }
 
 [RequireComponent(typeof(NavMeshAgent))]
-public class PlayerSheepAI : Damageable
+ public partial class PlayerSheepAI : Damageable
 {
     [Header("Sheep State Variables")]
     [SerializeField] int sheepType;
@@ -77,20 +77,11 @@ public class PlayerSheepAI : Damageable
     //public float attackDamage = 5f;
     [SerializeField] bool canAttack = true;
 
-    [Header("Charge State Variables")]
-    [SerializeField] float chargeSpeed = 35f;
-    [SerializeField] float chargePointRadius = 10f;
-    [SerializeField] float chargeStopDistance = 0f;
-    [SerializeField] float chargeCheckTime = 1f;
-    [SerializeField] float chargeCheckSpeed = 2f;
-    [SerializeField] SheepAttack chargeAttack;
-    [SerializeField] Collider chargeCollider;
-    [SerializeField] GameObject chargeParticles;
-    [SerializeField] GameObject chargeExplosion;
-
+	[Header("Charge State Variables")]
+	[SerializeField]  SheepStampedeBehavior stampede;
+	public GameObject chargeParticles;
 	Vector3 chargeDirection;
     float chargeCheckCurrent = 0;
-    Vector3 chargePoint;
     //bool isCharging;
 
     [Header("Defend State Variables")]
@@ -117,7 +108,7 @@ public class PlayerSheepAI : Damageable
 
 	// components
     Transform player;
-    NavMeshAgent agent;
+    [HideInInspector] public NavMeshAgent agent;
     Animator animator;
 	public delegate void callSheep(int x, PlayerSheepAI y);
 	public callSheep RemoveSheep;
@@ -244,8 +235,7 @@ public class PlayerSheepAI : Damageable
                 }
             case SheepStates.STAMPEDE:
                 {
-					UpdateChargeDestination();
-                    CheckCharge();
+					stampede.AbilityUpdate(this);
                     break;
                 }
             case SheepStates.VORTEX:
@@ -280,7 +270,7 @@ public class PlayerSheepAI : Damageable
         }
     }
 
-	void DealDamage(Collider target, SheepAttack theAttack, bool blackSheepDamage)
+	public void DealDamage(Collider target, SheepAttack theAttack, bool blackSheepDamage)
 	{
 		FMODUnity.RuntimeManager.PlayOneShotAttached(biteSound, gameObject);
 
@@ -301,16 +291,9 @@ public class PlayerSheepAI : Damageable
         {
             case SheepStates.STAMPEDE:
                 {
-                    if (other.CompareTag("Enemy"))
-                    {
-                        Instantiate(chargeExplosion, transform.position, transform.rotation);
-                        DealDamage(other, chargeAttack, isBlackSheep);
-                        TakeDamage(selfDamage, transform.forward);
-                    }
-                    if (other.CompareTag("Breakable"))
-                    {
-                        other.GetComponent<BreakableWall>()?.DamageWall();
-                    }
+					stampede.AbilityTriggerEnter(this, other);
+
+					
                     break;
                 }
             case SheepStates.VORTEX:
@@ -322,7 +305,8 @@ public class PlayerSheepAI : Damageable
                     }
                     if(other.CompareTag("Pinwheel"))
                     {
-                        if (!other.GetComponent<Pinwheel>().isSpinning) StartCoroutine(other.GetComponent<Pinwheel>().SpinPinwheel());
+                        if (!other.GetComponent<Pinwheel>().isSpinning)
+							StartCoroutine(other.GetComponent<Pinwheel>().SpinPinwheel());
                     }
                     break;
                 }
@@ -399,6 +383,14 @@ public class PlayerSheepAI : Damageable
 		if (hitstunCo != null)
 			StopCoroutine(hitstunCo);
 		currentSheepState = newstate;
+
+		// reset speed (notable for stampede)
+		if (currentSheepState == SheepStates.WANDER)
+		{
+			agent.speed = wanderSpeed;
+			agent.stoppingDistance = wanderStopDistance;
+			agent.obstacleAvoidanceType = ObstacleAvoidanceType.MedQualityObstacleAvoidance;
+		}
 	}
     public bool IsCommandable()
     {
@@ -670,83 +662,10 @@ public class PlayerSheepAI : Damageable
 
     #endregion
 
-    #region Stampede
-    //check here to make sure our sheep arent stuck in charge or caught on something.
-    void CheckCharge()
-    {
-        chargeCheckCurrent += Time.deltaTime;
-
-		//if time is past threshold and our movement velocity is too low, end charge early.
-		if (chargeCheckCurrent > chargeCheckTime && agent.velocity.magnitude <= chargeCheckSpeed)
-		{
-			if (leaderSheep == this)
-				Debug.Log("stopping charge "+ (chargeCheckCurrent > chargeCheckTime) + " " + (agent.velocity.magnitude <= chargeCheckSpeed));
-			
-
-			//isCharging = false;
-			agent.speed = wanderSpeed;
-			agent.stoppingDistance = wanderStopDistance;
-			agent.obstacleAvoidanceType = ObstacleAvoidanceType.MedQualityObstacleAvoidance;
-			SetSheepState(SheepStates.WANDER);
-			chargeParticles.SetActive(false);
-		}
-    }
-
     public void BeginCharge(Vector3 theChargePosition)
     {
-        //CHARGE!
-       // isCharging = true;
-
-        chargeParticles.SetActive(true);
-
-        //set timer to 0
-        chargeCheckCurrent = 0;
-
-		//set destination
-		chargeDirection = theChargePosition;
-		UpdateChargeDestination();
-
-		//set speed
-		agent.speed = chargeSpeed;
-        agent.stoppingDistance = chargeStopDistance;
-        agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
-
-		//set sheep state
-		SetSheepState(SheepStates.STAMPEDE);
+		stampede.Begin(this, theChargePosition);
     }
-
-	void UpdateChargeDestination()
-	{
-		//set destination
-		//get random point inside radius
-		Vector3 chargePosition = transform.position + chargeDirection * 5;
-
-		//if inside navmesh, charge!
-		if (NavMesh.SamplePosition(chargePosition, out NavMeshHit hit, chargePointRadius, 1))
-		{
-			//get charge
-			chargePosition = hit.position;
-
-			//set agent destination
-			agent.destination = chargePosition;
-		}
-		else
-		{
-
-			if (leaderSheep == this)
-				Debug.Log("didn't find a chargepoint");
-			agent.destination = chargePosition;
-
-			// end charge
-		//	isCharging = false;
-			agent.speed = wanderSpeed;
-			agent.stoppingDistance = wanderStopDistance;
-			agent.obstacleAvoidanceType = ObstacleAvoidanceType.MedQualityObstacleAvoidance;
-			SetSheepState(SheepStates.WANDER);
-			chargeParticles.SetActive(false);
-		}
-	}
-    #endregion
 
     #region Defend Player
     void DoDefendPlayer()
