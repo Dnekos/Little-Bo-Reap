@@ -56,10 +56,13 @@ public class BabaYagasHouseAI : EnemyAI
     }
 
 	public void SpawnEnemies()
-    {
+	{
+		if (activeAttack != null)
+		{
+			activeAttack.SpawnObject(enemySpawnPoint.position);
+		}
 
 	}
-
 	public void BreatheFire()
     {
 		if (activeAttack != null)

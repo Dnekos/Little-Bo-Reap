@@ -237,10 +237,7 @@ MonoBehaviour:
       _node: {fileID: -8341996841495950683}
       _typeQualifiedName: XNode.Examples.StateGraph.StateNode+Empty, Project.Enemy,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      connections:
-      - fieldName: exit
-        node: {fileID: 1287909075633376893}
-        reroutePoints: []
+      connections: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
@@ -547,10 +544,7 @@ MonoBehaviour:
       _node: {fileID: -6789361354702577084}
       _typeQualifiedName: XNode.Examples.StateGraph.StateNode+Empty, Project.Enemy,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      connections:
-      - fieldName: exit
-        node: {fileID: 1287909075633376893}
-        reroutePoints: []
+      connections: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
@@ -749,7 +743,7 @@ MonoBehaviour:
   m_Name: Flame Attack
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -360, y: -2200}
+  position: {x: -88, y: -2200}
   ports:
     keys:
     - attack
@@ -1428,12 +1422,6 @@ MonoBehaviour:
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       connections:
       - fieldName: enter
-        node: {fileID: -6789361354702577084}
-        reroutePoints: []
-      - fieldName: enter
-        node: {fileID: -8341996841495950683}
-        reroutePoints: []
-      - fieldName: enter
         node: {fileID: 2174788637391328423}
         reroutePoints: []
       _direction: 1
@@ -1444,7 +1432,10 @@ MonoBehaviour:
       _node: {fileID: 1287909075633376893}
       _typeQualifiedName: XNode.Examples.StateGraph.StateNode+Empty, Project.Enemy,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: exit
+        node: {fileID: 9197588226662332365}
+        reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
@@ -2236,10 +2227,7 @@ MonoBehaviour:
       _node: {fileID: 8095850062193833890}
       _typeQualifiedName: XNode.Examples.StateGraph.StateNode+Empty, Project.Enemy,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      connections:
-      - fieldName: exit
-        node: {fileID: 9197588226662332365}
-        reroutePoints: []
+      connections: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
@@ -2390,7 +2378,7 @@ MonoBehaviour:
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       connections:
       - fieldName: enter
-        node: {fileID: 8095850062193833890}
+        node: {fileID: 1287909075633376893}
         reroutePoints: []
       _direction: 1
       _connectionType: 0
