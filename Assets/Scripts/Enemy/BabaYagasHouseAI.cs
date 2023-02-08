@@ -58,16 +58,25 @@ public class BabaYagasHouseAI : EnemyAI
 	public void SpawnEnemies()
     {
 
-    }
+	}
 
 	public void BreatheFire()
     {
-
-    }
+		if (activeAttack != null)
+		{
+			activeAttack.SpawnObject(fireBreathSpawnPoint.position);
+			activeAttack.damage = fireBreathDamage;
+		}
+	}
 
 	public void RangedAttack()
     {
+		if (activeAttack != null)
+		{
+			activeAttack.SpawnObject(rangedAttackSpawnPoint.position);
+			activeAttack.damage = rangedAttackDamage;
+		}
 
-    }
+	}
 
 }
