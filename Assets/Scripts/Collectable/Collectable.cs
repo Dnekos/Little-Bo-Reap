@@ -9,6 +9,7 @@ public abstract class Collectable : MonoBehaviour
     [SerializeField] float attractSpeed;
     [SerializeField] float collectDistance = 1.5f;
     [SerializeField] float attractSpeedIncreaseOverTime = 1f;
+    [SerializeField] GameObject collectParticles;
 	[HideInInspector]
 	public GameObject playerBody;
 
@@ -32,6 +33,11 @@ public abstract class Collectable : MonoBehaviour
         
     }
 
+    protected void SpawnCollectParticles()
+    {
+        Instantiate(collectParticles, transform.position, transform.rotation);
+    }
+
     void Update()
     {
         if (isPulled == true)
@@ -47,6 +53,7 @@ public abstract class Collectable : MonoBehaviour
                 isCollected = true;
                 Debug.Log("Colliding with player");
                 CollectableEffect();
+                if(collectParticles !=null) SpawnCollectParticles();
                 Destroy(gameObject); //deletes self after being collected by default
             }
         }
