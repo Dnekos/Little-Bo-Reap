@@ -20,13 +20,14 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Material_Test_Red
+  m_Name: Material_Test_Bone
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_Parent: {fileID: 2100000, guid: 861bd6eb2988a0a409b99e99c1cf492e, type: 2}
   m_ModifiedSerializedProperties: 18
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - _EMISSION
   m_InvalidKeywords: []
-  m_LightmapFlags: 4
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 2000
@@ -41,9 +42,9 @@ Material:
     m_Floats:
     - _AlphaClip: 0
     - _Metallic: 0.972
-    - _Smoothness: 0.101
+    - _Smoothness: 0.087
     m_Colors:
-    - _BaseColor: {r: 0.6981132, g: 0.0059266663, b: 0, a: 1}
-    - _Color: {r: 0.6981132, g: 0.0059266663, b: 0, a: 1}
+    - _BaseColor: {r: 1, g: 0.9652371, b: 0.9103774, a: 1}
+    - _Color: {r: 1, g: 0.9652371, b: 0.9103774, a: 1}
     - _EmissionColor: {r: 0.13397168, g: 0.13397168, b: 0.13397168, a: 1}
   m_BuildTextureStacks: []
