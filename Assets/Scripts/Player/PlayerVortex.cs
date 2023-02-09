@@ -64,11 +64,8 @@ public class PlayerVortex : MonoBehaviour
 
 			//vfx
 			for (int i = 0; i < defendPoints.Count; i++)
-			{
 				defendPoints[i].gameObject.SetActive(false);
-			}
-			Debug.Log("ending?");
-			isDefending = false;
+
 			EndSheepDefend();
 		}
 	}
@@ -124,7 +121,7 @@ public class PlayerVortex : MonoBehaviour
 		// command sheep and check if we have the right sheep ability
 		List<PlayerSheepAI> sheep = flocks.GetActiveSheep(flockType);
 
-		if (canDefend && context.started && sheep.Count >= 0)
+		if (canDefend && context.performed && sheep.Count >= 0)
 		{
 			if (!isDefending)
 			{
