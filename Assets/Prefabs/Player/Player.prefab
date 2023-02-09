@@ -37132,10 +37132,10 @@ RectTransform:
   m_Father: {fileID: 7864167130429891179}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 468.75, y: -75}
+  m_SizeDelta: {x: 167.5, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6123924538688397410
 CanvasRenderer:
@@ -70433,6 +70433,7 @@ GameObject:
   - component: {fileID: 3249871464365083299}
   - component: {fileID: 4775500475753401295}
   - component: {fileID: 412837391465133713}
+  - component: {fileID: 4502468381360255210}
   m_Layer: 7
   m_Name: Player_Body
   m_TagString: Player
@@ -71240,7 +71241,8 @@ MonoBehaviour:
   chargeAnimation: Spell Layer.Bo_Peep_Direct
   chargeIcon: {fileID: 5626668146422006359}
   chargeCooldown: 3.5
-  chargeDistanceToUse: 20
+  distanceToUse: 20
+  recallingStopDist: 5
   isPreparingCharge: 0
   hasCharged: 0
   abilitySound:
@@ -71295,6 +71297,18 @@ MonoBehaviour:
       Data3: -523776871
       Data4: 180147507
     Path: event:/Bo Peep/AttackConfirm
+--- !u!114 &4502468381360255210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3870380308813204390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0d27a51e60a9cf44a6d0f3cfa0c0eb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3908626412805337848
 GameObject:
   m_ObjectHideFlags: 0
@@ -95546,10 +95560,10 @@ RectTransform:
   m_Father: {fileID: 7864167130429891179}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 656.25, y: -75}
+  m_SizeDelta: {x: 167.5, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8916900918813138493
 CanvasRenderer:
@@ -96094,10 +96108,10 @@ RectTransform:
   m_Father: {fileID: 7864167130429891179}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 281.25, y: -75}
+  m_SizeDelta: {x: 167.5, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7233753321948296360
 CanvasRenderer:
@@ -124856,10 +124870,10 @@ RectTransform:
   m_Father: {fileID: 7864167130429891179}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 93.75, y: -75}
+  m_SizeDelta: {x: 167.5, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &739010926068410148
 CanvasRenderer:
