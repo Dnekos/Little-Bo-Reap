@@ -9,6 +9,8 @@ public class PlayerSheepLift : MonoBehaviour
 	[Tooltip("this should be the primary collider on the player"), SerializeField] CapsuleCollider mainCollider;
 	float sheepHeight;
 
+	[SerializeField] FMODUnity.EventReference placeSound;
+
 	[SerializeField] float SheepLerpSpeed = 0.5f;
 
 	// Platform Stuff
@@ -146,6 +148,7 @@ public class PlayerSheepLift : MonoBehaviour
 		platform.layer = LayerMask.NameToLayer("Ground");
 		platform.tag = "Sheep";
 		platform.AddComponent<BoxCollider>().size = PlatformSize;
+		
 	}
 
 	IEnumerator SheepFollow(PlayerSheepAI playerSheep,int startingIndex, int sheepIndex)
@@ -165,6 +168,7 @@ public class PlayerSheepLift : MonoBehaviour
 				playerSheep.transform.position = Vector3.Lerp(playerSheep.transform.position, RecordedPositions[index], lerpSpeed);
 				index++;
 				lerpSpeed += Time.deltaTime * 2;
+				FMODUnity.RuntimeManager.PlayOneShot(placeSound, playerSheep.transform.position);
 			}
 		}
 

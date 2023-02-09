@@ -37,9 +37,10 @@ public class PlayerSheepAbilities : MonoBehaviour
 
     [Header("Sounds")]
     [SerializeField] FMODUnity.EventReference abilitySound;
-    [SerializeField] FMODUnity.EventReference summonSound;
+	[SerializeField] FMODUnity.EventReference summonSound;
+	[SerializeField] FMODUnity.StudioGlobalParameterTrigger sheepSoundType;
 
-    [Header("Camera Access")]
+	[Header("Camera Access")]
     [SerializeField] PlayerCameraFollow playerCam;
 
     [Header("Goth Mode")]
@@ -157,6 +158,9 @@ public class PlayerSheepAbilities : MonoBehaviour
         currentFlockIndex = (int)currentFlockType;
         gothMode = GetComponent<PlayerGothMode>();
 		spawnParticles = new List<GameObject>();
+		sheepSoundType = GetComponent<FMODUnity.StudioGlobalParameterTrigger>();
+
+
 		//set defend distance of each defence point
 		for (int i = 0; i < defendPoints.Count; i++)
         {
@@ -256,10 +260,13 @@ public class PlayerSheepAbilities : MonoBehaviour
 
 			sheepTypeText.text = "Current Sheep Type: " + currentFlockType;
 			sheepTypeText.color = sheepFlocks[currentFlockIndex].UIColor;
+		
 
             var particleModule = bellParticles.main;
             particleModule.startColor = sheepFlocks[currentFlockIndex].UIColor;
             sheepFlocks[currentFlockIndex].flockChangeParticle.Play(true);
+			sheepSoundType.TriggerParameters();
+			Debug.Log("Parameter actived");
 
 			if (SwapUIAnimator.gameObject.activeSelf)
 			SwapUIAnimator.Play(swapAnimationUI);
@@ -284,6 +291,8 @@ public class PlayerSheepAbilities : MonoBehaviour
                 var particleModule = bellParticles.main;
                 particleModule.startColor = sheepFlocks[currentFlockIndex].UIColor;
                 sheepFlocks[currentFlockIndex].flockChangeParticle.Play(true);
+				sheepSoundType.TriggerParameters();
+
 
 				if (SwapUIAnimator.gameObject.activeSelf)
 				SwapUIAnimator.Play(swapAnimationUI);

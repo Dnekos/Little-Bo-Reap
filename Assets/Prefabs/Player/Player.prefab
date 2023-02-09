@@ -10621,7 +10621,7 @@ Transform:
   - {fileID: 5462111521222099548}
   - {fileID: 6144083390785991266}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &455429352502565040
 GameObject:
@@ -36815,7 +36815,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1658846523036326475}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 798f0740527a7ff4eb1d2a4e879356a7, type: 3}
+  m_Script: {fileID: 11500000, guid: 421cd53e8b8cde242998c98c6625eab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1668941738566693745
@@ -70127,6 +70127,7 @@ MonoBehaviour:
   slerpRate: 10
   zSlideMax: -17
   collisionOffset: 0.01
+  radius: 0.3
   collideLayers:
     serializedVersion: 2
     m_Bits: 64
@@ -70258,6 +70259,7 @@ GameObject:
   - component: {fileID: 7611933122142456365}
   - component: {fileID: 3274229950097917984}
   - component: {fileID: 5528081572093814127}
+  - component: {fileID: 4916403441174374406}
   m_Layer: 7
   m_Name: Player_Body
   m_TagString: Player
@@ -70791,6 +70793,7 @@ MonoBehaviour:
       Data3: 12455818
       Data4: -1874873641
     Path: event:/Bo Peep/Summon
+  sheepSoundType: {fileID: 0}
   playerCam: {fileID: 3870380307944562838}
   gothExplosion: {fileID: 7302312219567745433, guid: 68ec54514ff9e0446a68796f986a0d06,
     type: 3}
@@ -71027,8 +71030,31 @@ MonoBehaviour:
   AllowedSurvivingSheep: 200
   SheepSpacingMod: 1.7
   mainCollider: {fileID: 3870380308813204387}
+  placeSound:
+    Guid:
+      Data1: -1715676877
+      Data2: 1158912244
+      Data3: 260257952
+      Data4: -1284307485
+    Path: event:/Sheep/SheepPlacement
   SheepLerpSpeed: 0.17
   PlatformSize: {x: 2, y: 1, z: 2}
+--- !u!114 &4916403441174374406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3870380308813204390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b0e04e2572f9a940a47465f6f3c2f00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  Parameter: Sheep
+  TriggerEvent: 0
+  Value: 0
 --- !u!1 &3908626412805337848
 GameObject:
   m_ObjectHideFlags: 0
