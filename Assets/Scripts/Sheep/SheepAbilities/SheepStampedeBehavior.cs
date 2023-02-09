@@ -93,4 +93,5 @@ public class SheepStampedeBehavior : SheepBehavior
 			other.GetComponent<BreakableWall>()?.DamageWall();
 		}
 	}
+	public override void End(PlayerSheepAI ps, GameObject obj) { }
 }

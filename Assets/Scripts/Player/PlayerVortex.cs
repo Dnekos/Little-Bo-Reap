@@ -46,7 +46,7 @@ public class PlayerVortex : MonoBehaviour
     {
 		if (isDefending)
 		{
-
+			// TODO, this doesnt mean anything anymore
 			//increase speed over time
 			defendPivotRotateSpeed += defendPivotRotateSpeedGain * Time.deltaTime;
 			defendPointPivot.Rotate(0f, defendPivotRotateSpeed * Time.deltaTime, 0f);
@@ -75,7 +75,7 @@ public class PlayerVortex : MonoBehaviour
 
 	void EndSheepDefend()
 	{
-		if (flocks.GetActiveSheep(SheepTypes.FLUFFY).Count <= 0)
+		if (!isDefending)
 			return;
 
 		Debug.Log("end defend");
@@ -96,7 +96,7 @@ public class PlayerVortex : MonoBehaviour
 		{
 			if (flocks.GetActiveSheep(SheepTypes.FLUFFY)[i].GetSheepState() == SheepStates.VORTEX)
 			{
-				flocks.GetActiveSheep(SheepTypes.FLUFFY)[i]?.EndDefendPlayer(flocks.GetSheepFlock(SheepTypes.FLUFFY).SheepProjectilePrefab);
+				flocks.GetActiveSheep(SheepTypes.FLUFFY)[i]?.EndAbility(flocks.GetSheepFlock(SheepTypes.FLUFFY).SheepProjectilePrefab);
 
 				// delete all active sheep
 				flocks.GetActiveSheep(SheepTypes.FLUFFY)[i].KillSheep();
@@ -118,10 +118,26 @@ public class PlayerVortex : MonoBehaviour
 	}
 	public void OnSheepDefend(InputAction.CallbackContext context)
 	{
-		if (canDefend && context.started)
+		//switching to be only useable by fluffy sheep, keep same architecture in case we change our minds (we probably won't)
+		SheepTypes flockType = flocks.currentFlockType;
+
+		// command sheep and check if we have the right sheep ability
+		List<PlayerSheepAI> sheep = flocks.GetActiveSheep(flockType);
+
+		if (canDefend && context.started && sheep.Count >= 0)
 		{
-			if (!isDefending && flocks.currentFlockType == SheepTypes.FLUFFY)
+			if (!isDefending)
 			{
+				for (int i = 0; i < sheep.Count; i++)
+				{
+					if (sheep[i].IsCommandable() && sheep[i].ability is SheepVortexBehavior)
+					{
+						sheep[i]?.BeginAbility(Vector3.zero);
+					}
+					else if (!(sheep[i].ability is SheepVortexBehavior))
+						return;
+				}
+
 				Debug.Log("start defend");
 
 				isDefending = true;
@@ -131,24 +147,10 @@ public class PlayerVortex : MonoBehaviour
 				//reset speed
 				defendPivotRotateSpeed = defendRotateBaseSpeed;
 
-				//switching to be only useable by fluffy sheep, keep same architecture in case we change our minds (we probably won't)
-				SheepTypes flockType = SheepTypes.FLUFFY;
-
-
 				animator.Play(defendAnimation);
 
 				// SOUND
 				vortexStartEmitter.Play();
-
-				// get all following fluffys to follow player
-				for (int i = 0; i < flocks.GetActiveSheep(SheepTypes.FLUFFY).Count; i++)
-				{
-					if (flocks.GetActiveSheep(SheepTypes.FLUFFY)[i].IsCommandable())
-					{
-						flocks.GetActiveSheep(SheepTypes.FLUFFY)[i]?.BeginDefendPlayer(defendPointPivot);
-					}
-				}
-
 
 				// turn on vfx
 				for (int i = 0; i < defendPoints.Count; i++)

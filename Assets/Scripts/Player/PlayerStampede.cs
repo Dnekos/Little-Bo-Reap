@@ -5,15 +5,21 @@ using UnityEngine.InputSystem;
 
 public class PlayerStampede : MonoBehaviour
 {
-	[Header("Sheep Stampede Variables")]
+	[Header("Charge Point")]
 	[SerializeField] Vector3 chargePointOffset;
 	[SerializeField] GameObject sheepChargePointPrefab;
 	[SerializeField] GameObject sheepChargeConfirmPrefab;
 	[SerializeField] LayerMask chargeTargetLayers;
+
+	[Header("Bo Peep")]
 	[SerializeField] string chargeAnimation;
 	[SerializeField] AbilityIcon chargeIcon;
 	[SerializeField] float chargeCooldown = 1f;
-	[SerializeField] float chargeDistanceToUse;
+
+	[Header("Preparing")]
+	[SerializeField] float distanceToUse = 20;
+	[SerializeField] float recallingStopDist = 5;
+
 	bool canCharge = true;
 	GameObject sheepChargePoint;
 	Vector3 chargePosition;
@@ -60,8 +66,12 @@ public class PlayerStampede : MonoBehaviour
 	#region Sheep Stampede
 	public void OnSheepCharge(InputAction.CallbackContext context)
 	{
-		int flockType = (int)SheepTypes.RAM;
-		if (context.started && canCharge && !attack.isPreparingAttack && !isPreparingCharge && flocks.currentFlockType == SheepTypes.RAM)
+		SheepTypes flockType = flocks.currentFlockType;
+		List<PlayerSheepAI> sheep = flocks.GetActiveSheep(flockType);
+
+		if (context.started && canCharge && !attack.isPreparingAttack && !isPreparingCharge
+			&& sheep.Count > 0
+			&& sheep[0].ability is SheepStampedeBehavior)
 		{
 			//spawn icon
 			var chargePoint = Instantiate(sheepChargePointPrefab, transform.position, Quaternion.identity) as GameObject;
@@ -72,9 +82,10 @@ public class PlayerStampede : MonoBehaviour
 
 			//get the sheep to move to the player
 			//recall current flock!
-			for (int i = 0; i < flocks.GetActiveSheep(flockType).Count; i++)
+			for (int i = 0; i < sheep.Count; i++)
 			{
-				flocks.GetActiveSheep(flockType)[i]?.RecallSheep();
+				sheep[i]?.RecallSheep();
+				//sheep[i].SetStopDist(recallingStopDist);
 			}
 		}
 		else if (context.canceled && isPreparingCharge && flocks.GetSheepFlock(flockType).MaxSize > 0)
@@ -110,8 +121,8 @@ public class PlayerStampede : MonoBehaviour
 			for (int i = 0; i < flocks.GetActiveSheep(flockType).Count; i++)
 			{
 				if (flocks.GetActiveSheep(flockType)[i].IsCommandable() &&
-					Vector3.Distance(transform.position, flocks.GetActiveSheep(flockType)[i].transform.position) <= chargeDistanceToUse)
-					flocks.GetActiveSheep(flockType)[i]?.BeginCharge((hit.point - transform.position).normalized);
+					Vector3.Distance(transform.position, flocks.GetActiveSheep(flockType)[i].transform.position) <= distanceToUse)
+					flocks.GetActiveSheep(flockType)[i]?.BeginAbility((hit.point - transform.position).normalized);
 			}
 
 			Instantiate(sheepChargeConfirmPrefab, hit.point, GetComponent<PlayerMovement>().playerOrientation.transform.rotation);

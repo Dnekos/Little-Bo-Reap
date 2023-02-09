@@ -71,9 +71,8 @@ public class SheepVortexBehavior : SheepBehavior
 		ps.SetSheepState(SheepStates.VORTEX);
 	}
 
-	public void EndDefendPlayer(PlayerSheepAI ps, GameObject fluffyProjectile)
+	public override void End(PlayerSheepAI ps, GameObject fluffyProjectile)
 	{
-
 		PlayerSheepProjectile launchSheep = Instantiate(fluffyProjectile, ps.transform.position, ps.transform.rotation).GetComponent<PlayerSheepProjectile>();
 		if (ps.isBlackSheep)
 			launchSheep.isBlackSheep = true;

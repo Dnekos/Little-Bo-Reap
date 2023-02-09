@@ -77,12 +77,9 @@ public enum SheepStates
     //public float attackDamage = 5f;
     [SerializeField] bool canAttack = true;
 
-	[Header("Charge State Variables")]
-	[SerializeField]  SheepStampedeBehavior stampede;
+	[Header("ActiveAbility")]
+	public SheepBehavior ability;
 	public GameObject chargeParticles;
-
-    [Header("Defend State Variables")]
-	[SerializeField] SheepVortexBehavior vortex;
 
     [Header("Stun State Variables")]
     [SerializeField] float StunTime = 1;
@@ -225,13 +222,9 @@ public enum SheepStates
                     break;
                 }
             case SheepStates.STAMPEDE:
-                {
-					stampede.AbilityUpdate(this);
-                    break;
-                }
             case SheepStates.VORTEX:
                 {
-					vortex.AbilityUpdate(this);
+					ability.AbilityUpdate(this);
                     break;
                 }
             case SheepStates.CONSTRUCT:
@@ -281,13 +274,9 @@ public enum SheepStates
         switch (currentSheepState)
         {
             case SheepStates.STAMPEDE:
-                {
-					stampede.AbilityTriggerEnter(this, other);
-                    break;
-                }
             case SheepStates.VORTEX:
                 {
-					vortex.AbilityTriggerEnter(this, other);
+					ability.AbilityTriggerEnter(this, other);
                     break;
                 }
             case SheepStates.STUN:
@@ -326,8 +315,28 @@ public enum SheepStates
     {
         Instantiate(gibs, transform.position, transform.rotation);
     }
+	public bool IsCommandable()
+	{
+		return currentSheepState == SheepStates.STAMPEDE || currentSheepState == SheepStates.FOLLOW_PLAYER || currentSheepState == SheepStates.WANDER;
+	}
+	float GetRandomSheepBaseSpeed()
+	{
+		float speed = Random.Range(baseSpeedMin, baseSpeedMax);
+		return speed;
+	}
 
-    public void PetSheep()
+	public Animator GetAnimator()
+	{
+		return animator;
+	}
+	public void SetStopDist(float stopDist)
+	{
+		agent.stoppingDistance = stopDist;
+	}
+	#endregion
+
+	#region SheepActions
+	public void PetSheep()
     {
         petSheepParticles.Play();
 		FMODUnity.RuntimeManager.PlayOneShotAttached(petSound, gameObject);
@@ -372,20 +381,7 @@ public enum SheepStates
 			agent.obstacleAvoidanceType = ObstacleAvoidanceType.MedQualityObstacleAvoidance;
 		}
 	}
-    public bool IsCommandable()
-    {
-        return currentSheepState == SheepStates.STAMPEDE || currentSheepState == SheepStates.FOLLOW_PLAYER || currentSheepState == SheepStates.WANDER;
-    }
-    float GetRandomSheepBaseSpeed()
-    {
-        float speed = Random.Range(baseSpeedMin, baseSpeedMax);
-        return speed;
-    }
 
-	public Animator GetAnimator()
-	{
-		return animator;
-	}
     #endregion
 
     #region Health
@@ -645,14 +641,21 @@ public enum SheepStates
         canAttack = true;
     }
 
-    #endregion
+	#endregion
 
-    public void BeginCharge(Vector3 theChargePosition)
+	#region Active Ability
+	// TODO: these two needing specific inputs is the only hangup
+	public void BeginAbility(Vector3 theChargePosition)
     {
-		stampede.Begin(this, theChargePosition);
+		ability.Begin(this, theChargePosition);
     }
+	public void EndAbility(GameObject Projectile)
+	{
+		ability.End(this, Projectile);
+	}
+	#endregion
 
-    #region Sheep Construct / Lift
+	#region Sheep Construct / Lift
 	public void StartLift()
 	{
 		SetSheepState(SheepStates.LIFT);
