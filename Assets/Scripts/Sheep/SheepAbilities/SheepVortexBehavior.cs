@@ -39,11 +39,6 @@ public class SheepVortexBehavior : SheepBehavior
 				+ new Vector3(Mathf.Sin(radAngle + Time.time * inVortexRotSpeed), 0, Mathf.Cos(radAngle + Time.time * inVortexRotSpeed)) * vortexRadius ;
 
 			ps.transform.position = Vector3.Lerp(ps.transform.position, dest, inVortexLerpSpeed * (inVortexLerpUseDt ? Time.deltaTime : 1));
-			//ps.transform.localPosition = Random.insideUnitCircle.normalized * defendRotateDistance;
-
-			//float randPosY = Random.Range(defendMinHeight, defendMaxHeight);
-
-			//ps.transform.localPosition = new Vector3(ps.transform.localPosition.x, randPosY, ps.transform.localPosition.y);
 		}
 		else
 		{

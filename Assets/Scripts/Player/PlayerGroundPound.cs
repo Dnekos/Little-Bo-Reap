@@ -5,14 +5,23 @@ using UnityEngine.InputSystem;
 
 public class PlayerGroundPound : MonoBehaviour
 {
-    [Header("Ground Pound Variables")]
+    [Header("Visuals")]
     [SerializeField] FMODUnity.EventReference explodeSound;
     [SerializeField] string heavyAirAnimation;
+
+    [Header("Timing / Conditions")]
     [SerializeField] float coolDown = 3f;
     [SerializeField] float timeTillSlamDown = 0.25f;
+    [SerializeField] float minHeight;
+    [SerializeField, Tooltip("how far the raycast goes")] float maxHeight = 100;
+    [SerializeField] LayerMask groundMask;
+
+    [Header("Damage")]
     [SerializeField] float baseGroundDamage = 25f;
     [SerializeField] float baseGroundDamageBlack = 50f;
     Vector3 startFallPos;
+
+    [Header("Physics")]
     [SerializeField] float airUpForce;
     [SerializeField] float airDownForce;
     [SerializeField] PlayerCameraFollow playerCam;
@@ -79,9 +88,7 @@ public class PlayerGroundPound : MonoBehaviour
     }
     public void SpawnHeavyParticle()
     {
-        GameObject explode = Instantiate(heavyParticle, particleOrigin.position, particleOrigin.rotation);
-
-        
+        GameObject explode = Instantiate(heavyParticle, particleOrigin.position, particleOrigin.rotation);       
     }
     public void HeavySlamDown()
     {
@@ -95,9 +102,15 @@ public class PlayerGroundPound : MonoBehaviour
     }
     public void OnHeavyAttack(InputAction.CallbackContext context)
     {
-        //if airborne, do a little lift then slam down into the ground!
+        //if airborne, do a little lift then slam down into the ground!0
         if (context.started && canAttack && !playerMovement.isLifting)
         {
+            RaycastHit info;
+            bool didHit = Physics.Raycast(transform.position, Vector3.down, out info, maxHeight, groundMask);
+            Debug.Log("GroundPount dist: " + info.distance);
+            if (!didHit || info.distance < minHeight)
+                return;
+
 			playerMovement.isFalling = true;
 
             canAttack = false;

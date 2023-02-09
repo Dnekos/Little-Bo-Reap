@@ -70955,6 +70955,11 @@ MonoBehaviour:
   heavyAirAnimation: Test_Bo_Slam_Windup
   coolDown: 3
   timeTillSlamDown: 0.35
+  minHeight: 18
+  maxHeight: 100
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 64
   baseGroundDamage: 25
   baseGroundDamageBlack: 50
   airUpForce: 2500
@@ -71184,6 +71189,13 @@ MonoBehaviour:
   AllowedSurvivingSheep: 200
   SheepSpacingMod: 1.7
   mainCollider: {fileID: 3870380308813204387}
+  placeSound:
+    Guid:
+      Data1: -1715676877
+      Data2: 1158912244
+      Data3: 260257952
+      Data4: -1284307485
+    Path: event:/Sheep/SheepPlacement
   SheepLerpSpeed: 0.17
   PlatformSize: {x: 2, y: 1, z: 2}
 --- !u!114 &7822986866785685827

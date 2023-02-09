@@ -121,18 +121,14 @@ public class PlayerVortex : MonoBehaviour
 		// command sheep and check if we have the right sheep ability
 		List<PlayerSheepAI> sheep = flocks.GetActiveSheep(flockType);
 
-		if (canDefend && context.performed && sheep.Count >= 0)
+		if (canDefend && context.performed && sheep.Count > 0 && sheep[0].ability is SheepVortexBehavior)
 		{
 			if (!isDefending)
 			{
 				for (int i = 0; i < sheep.Count; i++)
 				{
 					if (sheep[i].IsCommandable() && sheep[i].ability is SheepVortexBehavior)
-					{
 						sheep[i]?.BeginAbility(Vector3.zero);
-					}
-					else if (!(sheep[i].ability is SheepVortexBehavior))
-						return;
 				}
 
 				Debug.Log("start defend");
