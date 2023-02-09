@@ -80,20 +80,9 @@ public enum SheepStates
 	[Header("Charge State Variables")]
 	[SerializeField]  SheepStampedeBehavior stampede;
 	public GameObject chargeParticles;
-	Vector3 chargeDirection;
-    float chargeCheckCurrent = 0;
-    //bool isCharging;
 
     [Header("Defend State Variables")]
-    [SerializeField] float defendSpeed = 35f;
-    [SerializeField] float defendStopDistance = 0f;
-    [SerializeField] SheepAttack defendAttack;
-    [SerializeField] float defendRotateDistance = 5f;
-    [SerializeField] float defendMinHeight = 0f;
-    [SerializeField] float defendMaxHeight = 2f;
-    [SerializeField] float defendSlerpTime = 5f;
-    Transform defendPoint;
-    bool isMovingToDefend;
+	[SerializeField] SheepVortexBehavior vortex;
 
     [Header("Stun State Variables")]
     [SerializeField] float StunTime = 1;
@@ -105,6 +94,8 @@ public enum SheepStates
 
 	[Header("DEBUG")]
 	public PlayerSheepAI leaderSheep;
+	public int sheepPoolIndex;
+	public List<PlayerSheepAI> activeSheepPool; // pointer to other sheep
 
 	// components
     Transform player;
@@ -161,7 +152,7 @@ public enum SheepStates
         isInvulnerable = false;
     }
 
-    void CheckAnimation()
+    void UpdateAnimation()
     {
         if (agent.velocity.sqrMagnitude > 1) 
 			animator.SetBool("isMoving", true);
@@ -218,7 +209,7 @@ public enum SheepStates
 
     private void Update()
     {
-        CheckAnimation();
+        UpdateAnimation();
 
         //state machine
         switch (currentSheepState)
@@ -240,7 +231,7 @@ public enum SheepStates
                 }
             case SheepStates.VORTEX:
                 {
-                    DoDefendPlayer();
+					vortex.AbilityUpdate(this);
                     break;
                 }
             case SheepStates.CONSTRUCT:
@@ -292,22 +283,11 @@ public enum SheepStates
             case SheepStates.STAMPEDE:
                 {
 					stampede.AbilityTriggerEnter(this, other);
-
-					
                     break;
                 }
             case SheepStates.VORTEX:
                 {
-                    if (other.CompareTag("Enemy"))
-                    {
-                        DealDamage(other, defendAttack, isBlackSheep);
-                        TakeDamage(selfDamage, transform.forward);
-                    }
-                    if(other.CompareTag("Pinwheel"))
-                    {
-                        if (!other.GetComponent<Pinwheel>().isSpinning)
-							StartCoroutine(other.GetComponent<Pinwheel>().SpinPinwheel());
-                    }
+					vortex.AbilityTriggerEnter(this, other);
                     break;
                 }
             case SheepStates.STUN:
@@ -401,6 +381,11 @@ public enum SheepStates
         float speed = Random.Range(baseSpeedMin, baseSpeedMax);
         return speed;
     }
+
+	public Animator GetAnimator()
+	{
+		return animator;
+	}
     #endregion
 
     #region Health
@@ -666,57 +651,6 @@ public enum SheepStates
     {
 		stampede.Begin(this, theChargePosition);
     }
-
-    #region Defend Player
-    void DoDefendPlayer()
-    {
-        if(isMovingToDefend)
-        {
-            Debug.Log("following player");
-            transform.position = Vector3.Lerp(transform.position, player.transform.position, defendSlerpTime * Time.deltaTime);
-
-            if (Vector3.Distance(player.transform.position, transform.position) < defendRotateDistance - 2f)
-            {
-                isMovingToDefend = false;
-
-                transform.parent = defendPoint;
-                transform.localPosition = Random.insideUnitCircle.normalized * defendRotateDistance;
-
-                float randPosY = Random.Range(defendMinHeight, defendMaxHeight);
-
-                transform.localPosition = new Vector3(transform.localPosition.x, randPosY, transform.localPosition.y);
-            }
-        }
-        
-    }
-    public void BeginDefendPlayer(Transform theDefendPoint)
-    {
-        //
-        agent.enabled = false;
-
-        //set defened mode
-        defendPoint = theDefendPoint;
-        isMovingToDefend = true;
-
-        float randAnimSpeed = Random.Range(1f, 3f);
-        animator.speed = randAnimSpeed;
-
-        animator.SetBool("isDefending", true);
-
-        //set speed
-        agent.speed = defendSpeed;
-        agent.stoppingDistance = defendStopDistance;
-		SetSheepState(SheepStates.VORTEX);
-    }
-
-    public void EndDefendPlayer(GameObject fluffyProjectile)
-    {
-        var launchSheep = Instantiate(fluffyProjectile, transform.position, transform.rotation);
-        if (isBlackSheep) launchSheep.GetComponent<PlayerSheepProjectile>().isBlackSheep = true;
-        launchSheep.GetComponent<PlayerSheepProjectile>().LaunchProjectile(transform.position - player.transform.position);
-    }
-
-    #endregion
 
     #region Sheep Construct / Lift
 	public void StartLift()

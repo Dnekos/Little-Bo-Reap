@@ -29,12 +29,17 @@ public class WorldState : MonoBehaviour
 	bool UIOff = false;
 	FMODUnity.StudioEventEmitter music;
 
+	// values other classes may care about
 	int deaths = 0;
+	//public int maxBuilderSheep = 0, maxRamSheep = 0, maxFluffySheep = 0;
 
+	// providing components
 	[HideInInspector]
 	public GameObject player;
 	[HideInInspector]
 	public HUDManager HUD;
+
+
 
 	// Start is called before the first frame update
 	void Awake()
@@ -73,6 +78,7 @@ public class WorldState : MonoBehaviour
 			music.Play();
 	}
 
+	#region Spawning
 	public void SetSpawnPoint(Checkpoint point)
 	{
 		activeSpawnPoint = System.Array.FindIndex<Checkpoint>(SpawnPoints, spawnpoint => spawnpoint == point);
@@ -87,7 +93,6 @@ public class WorldState : MonoBehaviour
 			Respawn.listener.Invoke();
 		}
 	}
-
 
 	void RespawnPlayer()
 	{
@@ -111,5 +116,6 @@ public class WorldState : MonoBehaviour
 		deaths++;
 		currentScore = checkedScore;
 	}
+	#endregion
 
 }

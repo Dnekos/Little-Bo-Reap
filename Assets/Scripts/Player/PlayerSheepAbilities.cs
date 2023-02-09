@@ -43,6 +43,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 
 	[Header("Sheep Flock Variables")]
 	public Flock[] sheepFlocks;
+
 	public SheepTypes currentFlockType;
 	[SerializeField] float maxDistanceToUseAbilities = 30f;
 	int currentFlockIndex;
@@ -416,9 +417,6 @@ public class PlayerSheepAbilities : MonoBehaviour
 
 			sheepFlocks[(int)flockType].spellParticle.Play(true);
 
-			// remove list slots that are null (dead sheep)
-			//GetSheepFlock(flockType).RemoveAll(x => x == null);
-
 			// stop constructs
 			endConstructsEvent.listener.Invoke();
 
@@ -449,7 +447,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 			//summon sheep!
 			for (int i = 0; i < amountToSummon; i++)
 			{
-				StartCoroutine(SummonSheep(flockType));
+				StartCoroutine(SummonSheep(flockType, i));
 			}
 
 			//start cooldown
@@ -576,7 +574,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 		#endregion
 	}
 
-	IEnumerator SummonSheep(SheepTypes theSheepType)
+	IEnumerator SummonSheep(SheepTypes theSheepType, int index)
 	{
 		yield return null;
 
@@ -599,7 +597,6 @@ public class PlayerSheepAbilities : MonoBehaviour
 					{
 						found = path.corners[0] == start.position;
 						found &= path.corners[path.corners.Length - 1] == hit.position;
-
 					}
 				}
 			}
@@ -615,7 +612,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 
 			var soulParticle = Instantiate(summonParticle, transform.position, Quaternion.identity) as GameObject;
 			soulParticle.GetComponent<Sheep_Summon_Particle>().removeFunction = new PlayerSheepAI.callSheep(RemoveSheepFromList);
-			soulParticle.GetComponent<Sheep_Summon_Particle>()?.InitSheepParticle(GetCurrentSheepPrefab(theSheepType), summonParticleLerpSpeed, hit.position, this, theSheepType);
+			soulParticle.GetComponent<Sheep_Summon_Particle>()?.InitSheepParticle(GetCurrentSheepPrefab(theSheepType), summonParticleLerpSpeed, hit.position, this, theSheepType, index);
 			var module = soulParticle.GetComponent<ParticleSystem>().main;
 			module.startColor = sheepFlocks[(int)theSheepType].UIColor;
 			spawnParticles.Add(soulParticle);

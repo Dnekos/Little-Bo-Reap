@@ -67,38 +67,7 @@ public class PlayerVortex : MonoBehaviour
 			{
 				defendPoints[i].gameObject.SetActive(false);
 			}
-			isDefending = false;
-			EndSheepDefend();
-		}
-	}
-
-
-	#region Sheep Defend
-	void CheckDefend()
-	{
-		if (isDefending)
-		{
-
-			//increase speed over time
-			defendPivotRotateSpeed += defendPivotRotateSpeedGain * Time.deltaTime;
-			defendPointPivot.Rotate(0f, defendPivotRotateSpeed * Time.deltaTime, 0f);
-
-			//add to timer
-			currentDefendTime += Time.deltaTime;
-
-			if (currentDefendTime < defendTimeMax)
-			{
-				// check if you have any defending sheep
-				for (int i = flocks.GetActiveSheep(SheepTypes.FLUFFY).Count - 1; i >= 0; i--)
-					if (flocks.GetActiveSheep(SheepTypes.FLUFFY)[i].GetSheepState() == SheepStates.VORTEX)
-						return;
-			}
-
-			//vfx
-			for (int i = 0; i < defendPoints.Count; i++)
-			{
-				defendPoints[i].gameObject.SetActive(false);
-			}
+			Debug.Log("ending?");
 			isDefending = false;
 			EndSheepDefend();
 		}
@@ -106,8 +75,10 @@ public class PlayerVortex : MonoBehaviour
 
 	void EndSheepDefend()
 	{
-		Debug.Log("end defend");
+		if (flocks.GetActiveSheep(SheepTypes.FLUFFY).Count <= 0)
+			return;
 
+		Debug.Log("end defend");
 		isDefending = false;
 
 		//shake camera
@@ -172,7 +143,7 @@ public class PlayerVortex : MonoBehaviour
 				// get all following fluffys to follow player
 				for (int i = 0; i < flocks.GetActiveSheep(SheepTypes.FLUFFY).Count; i++)
 				{
-					if (!flocks.GetActiveSheep(SheepTypes.FLUFFY)[i].IsCommandable())
+					if (flocks.GetActiveSheep(SheepTypes.FLUFFY)[i].IsCommandable())
 					{
 						flocks.GetActiveSheep(SheepTypes.FLUFFY)[i]?.BeginDefendPlayer(defendPointPivot);
 					}
@@ -201,6 +172,5 @@ public class PlayerVortex : MonoBehaviour
 		yield return new WaitForSeconds(defendCooldown);
 		canDefend = true;
 	}
-	#endregion
 
 }

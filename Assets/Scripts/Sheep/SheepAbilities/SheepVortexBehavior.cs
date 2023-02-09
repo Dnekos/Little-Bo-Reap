@@ -5,52 +5,65 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewVortex", menuName = "ScriptableObjects/Vortex")]
 public class SheepVortexBehavior : SheepBehavior
 {
-	[Header("Defend State Variables")]
+	[Header("Vortex Set Up")]
 	[SerializeField] float defendSpeed = 35f;
 	[SerializeField] float defendStopDistance = 0f;
+
+	[Header("Vortex")]
 	[SerializeField] SheepAttack defendAttack;
-	[SerializeField] float defendRotateDistance = 5f;
-	[SerializeField] float defendMinHeight = 0f;
-	[SerializeField] float defendMaxHeight = 2f;
-	[SerializeField] float defendSlerpTime = 5f;
-	Transform defendPoint;
-	bool isMovingToDefend;
+	[SerializeField] float vortexRadius = 8f;
+
+	[Header("Randomness")]
+	[SerializeField] float vortexRandCircle = 5f;
+	[SerializeField] float vortexMinHeight = 0f;
+	[SerializeField] float vortexMaxHeight = 2f;
+
+	[Header("Vortex Speed")]
+	[SerializeField] float inVortexRotSpeed = 5f;
+	[SerializeField] float inVortexLerpSpeed = 0.6f;
+	[SerializeField] bool inVortexLerpUseDt = false;
 
 	public override void AbilityUpdate(PlayerSheepAI ps)
 	{
-		if (isMovingToDefend)
+
+		Transform player = WorldState.instance.player.transform;
+		Debug.Log("following player");
+
+		if (Vector3.Distance(player.transform.position, ps.transform.position) < vortexRadius + 2)//defendRotateDistance - 2f)
 		{
-			Debug.Log("following player");
-			ps.transform.position = Vector3.Lerp(ps.transform.position, ps.player.transform.position, defendSlerpTime * Time.deltaTime);
+			float radAngle = (ps.sheepPoolIndex / (float)ps.activeSheepPool.Count) * Mathf.PI * 2;
+			Vector2 RandomCircle = Random.insideUnitCircle.normalized * vortexRandCircle;
 
-			if (Vector3.Distance(ps.player.transform.position, ps.transform.position) < defendRotateDistance - 2f)
-			{
-				isMovingToDefend = false;
+			Vector3 dest = player.transform.position
+				+ new Vector3(RandomCircle.x, Random.Range(vortexMinHeight, vortexMaxHeight), RandomCircle.y)
+				+ new Vector3(Mathf.Sin(radAngle + Time.time * inVortexRotSpeed), 0, Mathf.Cos(radAngle + Time.time * inVortexRotSpeed)) * vortexRadius ;
 
-				ps.transform.parent = defendPoint;
-				ps.transform.localPosition = Random.insideUnitCircle.normalized * defendRotateDistance;
+			ps.transform.position = Vector3.Lerp(ps.transform.position, dest, inVortexLerpSpeed * (inVortexLerpUseDt ? Time.deltaTime : 1));
+			//ps.transform.localPosition = Random.insideUnitCircle.normalized * defendRotateDistance;
 
-				float randPosY = Random.Range(defendMinHeight, defendMaxHeight);
+			//float randPosY = Random.Range(defendMinHeight, defendMaxHeight);
 
-				ps.transform.localPosition = new Vector3(ps.transform.localPosition.x, randPosY, ps.transform.localPosition.y);
-			}
+			//ps.transform.localPosition = new Vector3(ps.transform.localPosition.x, randPosY, ps.transform.localPosition.y);
 		}
-
+		else
+		{
+			ps.transform.position = Vector3.Lerp(ps.transform.position, player.transform.position, inVortexRotSpeed * Time.deltaTime);
+		}
 	}
 
 	public override void Begin(PlayerSheepAI ps, Vector3 targettedPos)
 	{
+		float radAngle = (ps.sheepPoolIndex / (float)ps.activeSheepPool.Count) * Mathf.PI * 2;
+		Debug.Log("sheep at index: " + ps.sheepPoolIndex + " has angle of " + radAngle);
+
 		//
+		Debug.Log("SO begin");
 		ps.agent.enabled = false;
 
-		//set defened mode
-		defendPoint = theDefendPoint;
-		isMovingToDefend = true;
-
 		float randAnimSpeed = Random.Range(1f, 3f);
-		ps.animator.speed = randAnimSpeed;
+		ps.GetAnimator().speed = randAnimSpeed;
 
-		ps.animator.SetBool("isDefending", true);
+		ps.GetAnimator().SetBool("isDefending", true);
 
 		//set speed
 		ps.agent.speed = defendSpeed;
@@ -58,12 +71,13 @@ public class SheepVortexBehavior : SheepBehavior
 		ps.SetSheepState(SheepStates.VORTEX);
 	}
 
-	public void EndDefendPlayer(GameObject fluffyProjectile)
+	public void EndDefendPlayer(PlayerSheepAI ps, GameObject fluffyProjectile)
 	{
+
 		PlayerSheepProjectile launchSheep = Instantiate(fluffyProjectile, ps.transform.position, ps.transform.rotation).GetComponent<PlayerSheepProjectile>();
 		if (ps.isBlackSheep)
 			launchSheep.isBlackSheep = true;
-		launchSheep.LaunchProjectile(ps.transform.position - ps.player.transform.position);
+		launchSheep.LaunchProjectile(ps.transform.position - WorldState.instance.player.transform.position);
 	}
 	public override void AbilityTriggerEnter(PlayerSheepAI ps, Collider other)
 	{
