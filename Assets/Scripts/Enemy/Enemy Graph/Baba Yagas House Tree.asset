@@ -725,7 +725,10 @@ MonoBehaviour:
       _node: {fileID: -5155592131493968665}
       _typeQualifiedName: XNode.Examples.StateGraph.StateNode+Empty, Project.Enemy,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: exit
+        node: {fileID: 9197588226662332365}
+        reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
@@ -1432,10 +1435,7 @@ MonoBehaviour:
       _node: {fileID: 1287909075633376893}
       _typeQualifiedName: XNode.Examples.StateGraph.StateNode+Empty, Project.Enemy,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      connections:
-      - fieldName: exit
-        node: {fileID: 9197588226662332365}
-        reroutePoints: []
+      connections: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
@@ -2378,7 +2378,7 @@ MonoBehaviour:
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       connections:
       - fieldName: enter
-        node: {fileID: 1287909075633376893}
+        node: {fileID: -5155592131493968665}
         reroutePoints: []
       _direction: 1
       _connectionType: 0

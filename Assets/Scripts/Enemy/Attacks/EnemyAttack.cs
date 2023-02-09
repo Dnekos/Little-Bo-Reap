@@ -16,11 +16,12 @@ public class EnemyAttack : Attack
 	[Tooltip("keep this 4 characters pls")]
 	public string ID;
 
-	public virtual void SpawnObject(Vector3 pos)
+	//	public virtual void SpawnObject(Vector3 pos)
+	public virtual void SpawnObject(Transform t)
 	{
 		if (hitboxPrefab != null)
 		{
-			Instantiate(hitboxPrefab, pos, new Quaternion());
+			Instantiate(hitboxPrefab, t.position, t.rotation);
 		}
 	}
 

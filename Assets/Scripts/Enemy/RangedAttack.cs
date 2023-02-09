@@ -34,6 +34,9 @@ public class RangedAttack : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        //if not damageable
+        //    return;
+
         Vector3 flattenedOtherPos = new Vector3(other.transform.position.x, transform.position.y, other.transform.position.z);
         Damageable targetHealth = other.GetComponent<Damageable>();
 
