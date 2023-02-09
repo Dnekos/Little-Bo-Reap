@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Sounds")]
     [SerializeField] FMODUnity.EventReference jumpSound;
     [SerializeField] FMODUnity.EventReference dashSound;
-	[SerializeField] FMODUnity.StudioEventEmitter walker;
+    [SerializeField] FMODUnity.StudioEventEmitter walker;
 
 	[Header("Movement Variables")]
     [SerializeField] float maxMoveSpeed;
