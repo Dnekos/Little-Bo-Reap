@@ -109,4 +109,15 @@ public class PlayerProgressionHolder : MonoBehaviour
                 break;
         }
     }
+
+    //used to change soul count
+    public void incrementSouls(int value)
+    {
+        soulsCount += value;
+        //clamps player soul count to a positive number.
+        if (soulsCount < 0)
+        {
+            soulsCount = 0;
+        }
+    }
 }
