@@ -60,6 +60,8 @@ public class SheepStampedeBehavior : SheepBehavior
 		ps.transform.LookAt(targettedPos + ps.transform.position);
 		AbilityUpdate(ps);
 
+		ps.agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
+
 		//set sheep state
 		ps.SetSheepState(SheepStates.STAMPEDE);
 	}
@@ -78,9 +80,11 @@ public class SheepStampedeBehavior : SheepBehavior
 
 		ps.SetSheepState(SheepStates.WANDER);
 		ps.chargeParticles.SetActive(false);
-	}
+        ps.agent.obstacleAvoidanceType = ObstacleAvoidanceType.MedQualityObstacleAvoidance;
 
-	public override void AbilityTriggerEnter(PlayerSheepAI ps, Collider other)
+    }
+
+    public override void AbilityTriggerEnter(PlayerSheepAI ps, Collider other)
 	{
 		if (other.CompareTag("Enemy"))
 		{
