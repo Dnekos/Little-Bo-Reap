@@ -14,6 +14,7 @@ public class SheepStampedeBehavior : SheepBehavior
 	[Header("End Condition")]
 	[SerializeField] float chargeCheckTime = 1f;
 	[SerializeField] float chargeCheckSpeed = 2f;
+	float initialSpeed;
 
 	[Header("Attack and Effects")]
 	[SerializeField] SheepAttack chargeAttack;
@@ -59,6 +60,9 @@ public class SheepStampedeBehavior : SheepBehavior
 		//targettedPos.y = ps.transform.position.y;
 		ps.transform.LookAt(targettedPos + ps.transform.position);
 		AbilityUpdate(ps);
+
+		//set charge speed
+		ps.agent.speed = chargeSpeed;
 
 		ps.agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
 
