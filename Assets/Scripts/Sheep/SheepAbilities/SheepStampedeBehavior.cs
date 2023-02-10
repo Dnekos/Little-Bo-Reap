@@ -5,7 +5,7 @@ using UnityEngine.AI;
 [CreateAssetMenu(fileName = "NewStampede", menuName = "ScriptableObjects/Stampede")]
 public class SheepStampedeBehavior : SheepBehavior
 {
-	[Header("Stempeding")]
+	[Header("Stampeding")]
 	[SerializeField] float chargeSpeed = 35f;
 	[SerializeField] float chargePointRadius = 10f;
 	[SerializeField] float chargeStopDistance = 0f;
@@ -14,7 +14,6 @@ public class SheepStampedeBehavior : SheepBehavior
 	[Header("End Condition")]
 	[SerializeField] float chargeCheckTime = 1f;
 	[SerializeField] float chargeCheckSpeed = 2f;
-	float initialSpeed;
 
 	[Header("Attack and Effects")]
 	[SerializeField] SheepAttack chargeAttack;
