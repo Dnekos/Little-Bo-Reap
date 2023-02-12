@@ -15,16 +15,13 @@ public class PlayerBuildWall : MonoBehaviour
 	[Header("Bo Peep")]
 	[SerializeField] string confirmAnimation;
 	[SerializeField] AbilityIcon chargeIcon;
-	[SerializeField] float chargeCooldown = 1f;
+	[SerializeField] float cooldown = 1f;
 
-	[Header("Preparing")]
-	[SerializeField] float distanceToUse = 20;
-	[SerializeField] float recallingStopDist = 5;
-
+	// Preparing
 	bool canCharge = true;
 	GameObject sheepChargePoint;
 	Vector3 chargePosition;
-	[HideInInspector] public bool isPreparing, hasCharged;
+	[HideInInspector] public bool isPreparing;
 
 	[Header("Sound")]
 	[SerializeField] FMODUnity.EventReference abilitySound;
@@ -32,6 +29,7 @@ public class PlayerBuildWall : MonoBehaviour
 	PlayerSheepAbilities flocks;
 	Animator animator;
 	PlayerAttackCommand attack;
+	PlayerMovement player;
 
 	// Start is called before the first frame update
 	void Start()
@@ -39,6 +37,7 @@ public class PlayerBuildWall : MonoBehaviour
 		attack = GetComponent<PlayerAttackCommand>();
 		flocks = GetComponent<PlayerSheepAbilities>();
 		animator = GetComponent<PlayerAnimationController>().playerAnimator;
+		player = GetComponent<PlayerMovement>();
 	}
 
 	// Update is called once per frame
@@ -52,7 +51,7 @@ public class PlayerBuildWall : MonoBehaviour
 			{
 				//draw charge point
 				sheepChargePoint.transform.position = hit.point + prefabSpawnOffset;
-				sheepChargePoint.transform.rotation = GetComponent<PlayerMovement>().playerOrientation.transform.rotation;
+				sheepChargePoint.transform.rotation = player.playerOrientation.transform.rotation;
 
 			}
 			else
@@ -90,10 +89,10 @@ public class PlayerBuildWall : MonoBehaviour
 
 			//get the sheep to move to the player
 			//recall current flock!
+			// TODO: move sheep to wall
 			for (int i = 0; i < sheep.Count; i++)
 			{
 				sheep[i]?.RecallSheep();
-				//sheep[i].SetStopDist(recallingStopDist);
 			}
 		}
 		else if (context.canceled && isPreparing && flocks.GetSheepFlock(flockType).MaxSize > 0)
@@ -104,13 +103,11 @@ public class PlayerBuildWall : MonoBehaviour
 				StartCooldown();
 			}
 			else
-				DoStampede();
+				DoWall();
 		}
 	}
-	void DoStampede()
+	void DoWall()
 	{
-		SheepTypes flockType = SheepTypes.RAM;
-		
 		StartCooldown();
 
 		//play animation
@@ -119,27 +116,12 @@ public class PlayerBuildWall : MonoBehaviour
 		//TEMP SOUND
 		FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound, gameObject);
 
-		//get rid of icon
-		//Destroy(sheepChargePoint);
-		sheepChargePoint.GetComponent<SheepConstruct>().Interact();
+		// Set up sheep
+		sheepChargePoint.GetComponent<Interactable>().Interact();
 
+		// confirm juice
 		flocks.GetSheepFlock(SheepTypes.RAM).spellParticle.Play(true);
-
-		//send sheep to point if valid!
-		RaycastHit hit;
-		if (Physics.Raycast(Camera.main.transform.position + prefabSpawnOffset, Camera.main.transform.forward, out hit, Mathf.Infinity, targetLayers))
-		{
-			for (int i = 0; i < flocks.GetActiveSheep(flockType).Count; i++)
-			{
-				if (flocks.GetActiveSheep(flockType)[i].IsCommandable() &&
-					Vector3.Distance(transform.position, flocks.GetActiveSheep(flockType)[i].transform.position) <= distanceToUse)
-					flocks.GetActiveSheep(flockType)[i]?.BeginAbility((hit.point - transform.position).normalized);
-			}
-
-			Instantiate(confirmPrefab, hit.point, GetComponent<PlayerMovement>().playerOrientation.transform.rotation);
-		}
-
-		//if (sheepFlocks[(int)SheepTypes.RAM].currentSize <= 0) SwapUIAnimator.Play(noSheepAnimUI);
+		Instantiate(confirmPrefab, sheepChargePoint.transform.position - prefabSpawnOffset, player.playerOrientation.transform.rotation);
 	}
 
 	void StartCooldown()
@@ -148,15 +130,14 @@ public class PlayerBuildWall : MonoBehaviour
 		isPreparing = false;
 
 		//has charged
-		hasCharged = true;
 		canCharge = false;
-		chargeIcon.CooldownUIEffect(chargeCooldown);
-		StartCoroutine(ChargeCooldown());
+		chargeIcon.CooldownUIEffect(cooldown);
+		StartCoroutine(AbilityCooldown());
 	}
 
-	IEnumerator ChargeCooldown()
+	IEnumerator AbilityCooldown()
 	{
-		yield return new WaitForSeconds(chargeCooldown);
+		yield return new WaitForSeconds(cooldown);
 		canCharge = true;
 	}
 	#endregion

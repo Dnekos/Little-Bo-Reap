@@ -437,9 +437,14 @@ public enum SheepStates
 	{
 		if (this == null || currentSheepState == SheepStates.VORTEX)
 			return;
+
+		// coroutine
 		if (hitstunCo != null)
 			StopCoroutine(hitstunCo);
 		hitstunCo = StartCoroutine(OnHitStun(SheepStates.WANDER));
+
+		// get out of any constructs
+		EndConstruct();
 	}
 	IEnumerator OnHitStun(SheepStates stateAfterStun)
     {
@@ -691,7 +696,7 @@ public enum SheepStates
 		rb.angularVelocity = Vector3.zero;
 		rb.velocity = Vector3.zero;
 	}
-	public void EndConstruct(bool callRemove = true)
+	public void EndConstruct()
 	{
 		agent.enabled = true;
 		//gameObject.layer = SheepLayer;     
