@@ -69550,9 +69550,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4594036117130293174}
-        m_TargetAssemblyTypeName: PlayerHealth, Assembly-CSharp
-        m_MethodName: RestartLevel
+      - m_Target: {fileID: 249405292075998538}
+        m_TargetAssemblyTypeName: QuitButton, Assembly-CSharp
+        m_MethodName: QuitGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -71356,11 +71356,8 @@ MonoBehaviour:
     m_Bits: 64
   confirmAnimation: Spell Layer.Bo_Peep_Direct
   chargeIcon: {fileID: 5626668146422006359}
-  chargeCooldown: 1
-  distanceToUse: 20
-  recallingStopDist: 5
+  cooldown: 1
   isPreparing: 0
-  hasCharged: 0
   abilitySound:
     Guid:
       Data1: 1214404282
