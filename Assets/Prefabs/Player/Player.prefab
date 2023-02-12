@@ -70798,6 +70798,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 4502468381360255210}
+        m_TargetAssemblyTypeName: PlayerBuildWall, Assembly-CSharp
+        m_MethodName: OnSheepWall
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 05cc96a0-ad38-4dc6-bab2-63718e7b2600
     m_ActionName: PlayerMovement/SheepActiveAbility[/DualSenseGamepadHID/leftTrigger]
   - m_PersistentCalls:
@@ -71333,6 +71345,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0d27a51e60a9cf44a6d0f3cfa0c0eb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  raycastOffset: {x: 0, y: 2, z: 0}
+  prefabSpawnOffset: {x: 0, y: 3.001, z: 0}
+  wallPrefab: {fileID: 3677815942122897683, guid: e77e9bc22dd5e1a4982a66c4172e67e3,
+    type: 3}
+  confirmPrefab: {fileID: 6126763084745668659, guid: 9971aad3802332b4b9abc5e7460cdaeb,
+    type: 3}
+  targetLayers:
+    serializedVersion: 2
+    m_Bits: 64
+  confirmAnimation: Spell Layer.Bo_Peep_Direct
+  chargeIcon: {fileID: 5626668146422006359}
+  chargeCooldown: 1
+  distanceToUse: 20
+  recallingStopDist: 5
+  isPreparing: 0
+  hasCharged: 0
+  abilitySound:
+    Guid:
+      Data1: 1214404282
+      Data2: 1231423630
+      Data3: -523776871
+      Data4: 180147507
+    Path: event:/Bo Peep/AttackConfirm
 --- !u!1 &3908626412805337848
 GameObject:
   m_ObjectHideFlags: 0
