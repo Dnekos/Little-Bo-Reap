@@ -212,7 +212,6 @@ public class SheepBezier : SheepHolder
 			bool Filled = false;
 			for (int i = containedSheep.Count - 1; i >= Mathf.Max(0, containedSheep.Count - sheeptocheck); i--) 
 			{
-
 				SheepChecked++;
 
 				// check the position, using sphere intersections

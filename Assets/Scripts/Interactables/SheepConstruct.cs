@@ -30,16 +30,18 @@ public class SheepConstruct : SheepHolder
 	// component
 	BoxCollider col;
 	NavMeshObstacle obs;
+	MeshRenderer mesh;
 
 	protected override void Start()
 	{
 		base.Start();
 
+		mesh = GetComponent<MeshRenderer>();
 		col = GetComponent<BoxCollider>();
 		obs = GetComponent<NavMeshObstacle>();
 		obs.enabled = false;
 		col.enabled = false;
-		
+
 		containedSheep = new List<Transform>();
 	}
 	protected override void Update()
@@ -91,6 +93,11 @@ public class SheepConstruct : SheepHolder
 	{
 		Debug.Log("adding sheep");
 
+		// set old height settings for later
+		float floor = transform.position.y - transform.localScale.y * 0.5f;
+		// turn off mesh
+		mesh.enabled = false;
+
 		yield return new WaitForSeconds(delay);
 
 
@@ -100,7 +107,9 @@ public class SheepConstruct : SheepHolder
 			SheepRadius = ((SphereCollider)scol).radius * flock[0].transform.localScale.x;
 		else if (scol is CapsuleCollider)
 			SheepRadius = Mathf.Max(((CapsuleCollider)scol).radius, ((CapsuleCollider)scol).height * 0.5f) * flock[0].transform.lossyScale.y;
-		SheepRadius *= SheepRadiusMult;
+
+		float origSR = SheepRadius; // keep track or non-modified for scale adjustment later
+		SheepRadius *= SheepRadiusMult; // mult controls density
 
 		// find out how much that influences
 		adjustedColExt = new Vector3(Mathf.Max(0, 0.5f - SheepRadius / transform.localScale.x),
@@ -127,8 +136,15 @@ public class SheepConstruct : SheepHolder
 			if (CurveT >= 1)
 				break;
 		}
+
+		// set up wall as obstacle
 		obs.enabled = true;
 		col.enabled = true;
+		if (CurveT < 1)// if we didnt have enough sheep, redo the transform so that collider isnt wacky
+		{
+			transform.localScale = new Vector3(transform.localScale.x, containedSheep[containedSheep.Count - 1].position.y - containedSheep[0].position.y + 2.5f * origSR, transform.localScale.z);
+			transform.position = new Vector3(transform.position.x, floor + transform.localScale.y * 0.5f, transform.position.z);
+		}
 
 	}
 
