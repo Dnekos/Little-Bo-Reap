@@ -100,7 +100,7 @@ public class ProgressionParent : MonoBehaviour
                 WorldState.instance.passiveValues.builderCorruptChance = newValue;
                 break;
             case 2:
-                WorldState.instance.passiveValues.builderMaxStackHeight = newValue;
+                WorldState.instance.passiveValues.builderConstructDR = newValue;
                 break;
         }
     }
@@ -110,7 +110,7 @@ public class ProgressionParent : MonoBehaviour
         switch (index)
         {
             case 0:
-                WorldState.instance.passiveValues.ramDamageReduction = newValue;
+                WorldState.instance.passiveValues.ramChargeDR = newValue;
                 break;
             case 1:
                 WorldState.instance.passiveValues.ramDamage = newValue;

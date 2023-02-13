@@ -23,11 +23,12 @@ public class PlayerProgressionHolder : MonoBehaviour
     //used to change soul count
     public void incrementSouls(int value)
     {
-        soulsCount += value;
+        WorldState.instance.passiveValues.soulsCount += value;
+
         //clamps player soul count to a positive number.
-        if (soulsCount < 0)
+        if (WorldState.instance.passiveValues.soulsCount < 0)
         {
-            soulsCount = 0;
+            WorldState.instance.passiveValues.soulsCount = 0;
         }
     }
 }

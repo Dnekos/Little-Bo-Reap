@@ -126,7 +126,7 @@ public class PlayerSheepAI : Damageable
 
         if (sheepType == 2)
         {
-            MaxHealth += WorldState.instance.passiveValues.fluffyHealth;\
+            MaxHealth += WorldState.instance.passiveValues.fluffyHealth;
             Health = MaxHealth;
         }
 

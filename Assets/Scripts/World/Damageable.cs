@@ -34,22 +34,22 @@ public class Damageable : MonoBehaviour
 
 	protected Rigidbody rb;
 
-    // Start is called before the first frame update
-    virtual protected void Start()
-    {
+	// Start is called before the first frame update
+	virtual protected void Start()
+	{
 		Health = MaxHealth;
 		rb = GetComponent<Rigidbody>();
-    }
+	}
 
 	virtual public void TakeDamage(Attack atk, Vector3 attackForward)
 	{
-		if(!isInvulnerable || Health <= 0)
-        {
+		if (!isInvulnerable || Health <= 0)
+		{
 			// deal damage
 			Health -= atk.damage;
 			Vector3 knockbackForce = attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback;
 
-			Debug.Log(gameObject.name + " took " + atk.damage + " damage (force: "+ knockbackForce + ", mag "+ knockbackForce .magnitude+ ")");
+			Debug.Log(gameObject.name + " took " + atk.damage + " damage (force: " + knockbackForce + ", mag " + knockbackForce.magnitude + ")");
 
 			//create damage number
 			var number = Instantiate(damageNumber, transform.position, transform.rotation) as GameObject;
@@ -82,7 +82,7 @@ public class Damageable : MonoBehaviour
 	}
 
 	virtual public void TakeDamage(SheepAttack atk, Vector3 attackForward)
-    {
+	{
 		if (!isInvulnerable)
 		{
 			// deal damage
@@ -164,9 +164,9 @@ public class Damageable : MonoBehaviour
 	}
 
 	virtual public void ForceKill()
-    {
+	{
 		OnDeath();
-    }
+	}
 
 	virtual protected void OnDeath()
 	{
@@ -186,7 +186,7 @@ public class Damageable : MonoBehaviour
 			var soulSpawnOffset = new Vector3(Random.Range(-1, 1), soulSpawnHeight, Random.Range(-1, 1));
 
 			while (soulsToDrop >= 100)
-            {
+			{
 				soulSpawnOffset = new Vector3(Random.Range(-1, 1), soulSpawnHeight, Random.Range(-1, 1));
 				var soulCollectable100 = Instantiate(soulCollectables[4], transform.position + soulSpawnOffset, transform.rotation) as GameObject;
 				soulCollectable100.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-1, 1), 1f, Random.Range(-1, 1)) * soulSpeed;
@@ -195,7 +195,7 @@ public class Damageable : MonoBehaviour
 			}
 
 			while (soulsToDrop >= 50)
-            {
+			{
 				soulSpawnOffset = new Vector3(Random.Range(-1, 1), soulSpawnHeight, Random.Range(-1, 1));
 				var soulCollectable50 = Instantiate(soulCollectables[3], transform.position + soulSpawnOffset, transform.rotation) as GameObject;
 				soulCollectable50.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-1, 1), 1f, Random.Range(-1, 1)) * soulSpeed;
@@ -220,11 +220,11 @@ public class Damageable : MonoBehaviour
 				Debug.Log("SoulDropped");
 				soulsToDrop -= 5;
 			}
-				
-			soulSpawnOffset = new Vector3(Random.Range(-1, 1), soulSpawnHeight, Random.Range(-1, 1));	
-			var soulCollectable = Instantiate(soulCollectables[0], transform.position + soulSpawnOffset, transform.rotation) as GameObject;	
-			soulCollectable.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-1, 1), 1f, Random.Range(-1, 1)) * soulSpeed;	
-			Debug.Log("SoulDropped");	
+
+			soulSpawnOffset = new Vector3(Random.Range(-1, 1), soulSpawnHeight, Random.Range(-1, 1));
+			var soulCollectable = Instantiate(soulCollectables[0], transform.position + soulSpawnOffset, transform.rotation) as GameObject;
+			soulCollectable.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-1, 1), 1f, Random.Range(-1, 1)) * soulSpeed;
+			Debug.Log("SoulDropped");
 			soulsToDrop--;
 		}
 	}
@@ -240,3 +240,4 @@ public class Damageable : MonoBehaviour
 			healthToDrop--;
 		}
 	}
+}
