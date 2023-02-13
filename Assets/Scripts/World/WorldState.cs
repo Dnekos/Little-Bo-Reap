@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 
+[System.Serializable]
 public struct SheepPassives
 {
 	[Header("Soul Count")]
@@ -18,10 +19,10 @@ public struct SheepPassives
 	[Header("Builder Upgrades")]
 	public int builderLaunchDam;
 	public int builderCorruptChance;
-	public int builderMaxStackHeight;
+	public int builderConstructDR;
 
 	[Header("Ram Upgrades")]
-	public int ramDamageReduction;
+	public int ramChargeDR;
 	public int ramDamage;
 	public int ramKnockback;
 
@@ -35,7 +36,9 @@ public class WorldState : MonoBehaviour
 {
 	public static WorldState instance;
 
-	public SheepPassives passiveValues;
+	//TODO unserialize this to make inpsector look clean
+	[SerializeField] public SheepPassives passiveValues;
+	
 	public bool Dead = false;
 
 	[SerializeField]

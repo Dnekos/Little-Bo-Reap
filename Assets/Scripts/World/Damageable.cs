@@ -99,7 +99,68 @@ public class Damageable : MonoBehaviour
 				OnDeath();
 		}
 	}
-	
+
+	virtual public void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp, float knockbackMultiplier)
+	{
+		if (!isInvulnerable || Health <= 0)
+		{
+			// deal damage
+			Health -= atk.damage + damageAmp;
+			Vector3 knockbackForce = (attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback) * knockbackMultiplier;
+
+			Debug.Log(gameObject.name + " took " + atk.damage + " damage (force: " + knockbackForce + ", mag " + knockbackForce.magnitude + ")");
+
+			//create damage number
+			var number = Instantiate(damageNumber, transform.position, transform.rotation) as GameObject;
+			number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)atk.damage).ToString();
+
+			// add knockback if the current knockback is stronger than the current velocity
+			//Vector3 knockbackForce = attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback;
+			// this isnt working, maybe because the object is getting too much knockback in one frame?
+			if (rb.velocity.sqrMagnitude < knockbackForce.sqrMagnitude)
+			// TODO: make this not shit
+			//if (true)
+			{
+				// we want to cancel out the current velocity, so as to knock launch them into the stratosphere
+				//rb.AddForce(-rb.velocity, ForceMode.VelocityChange);
+				rb.velocity = Vector3.zero;
+				Debug.Log("before vel: " + rb.velocity + " " + rb.velocity.magnitude);
+				// TODO: make this force, not impulse, idiot
+				rb.velocity = attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback;
+				Debug.Log("after vel: " + rb.velocity + " " + rb.velocity.magnitude);
+			}
+
+			// invoke death
+			if (Health <= 0)
+				OnDeath();
+			else // don't play hurt sound when dying smh
+				FMODUnity.RuntimeManager.PlayOneShotAttached(hurtSound, gameObject);
+
+		}
+
+	}
+
+	virtual public void TakeDamage(SheepAttack atk, Vector3 attackForward, float damageAmp, float knockbackMultiplier)
+	{
+		if (!isInvulnerable)
+		{
+			// deal damage
+			Health -= atk.damageBlack + damageAmp;
+			Debug.Log(gameObject.name + " took " + atk.damageBlack + " damage (force: " + (attackForward * atk.forwardKnockbackBlack + Vector3.up * atk.upwardKnockbackBlack) + ")");
+
+			//create damage number
+			var number = Instantiate(damageNumberGoth, transform.position, transform.rotation) as GameObject;
+			number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)atk.damageBlack).ToString();
+
+			// add knockback
+			rb.AddForce((attackForward * atk.forwardKnockbackBlack + Vector3.up * atk.upwardKnockbackBlack) * knockbackMultiplier, ForceMode.Impulse);
+
+			// invoke death
+			if (Health <= 0)
+				OnDeath();
+		}
+	}
+
 	virtual public void ForceKill()
     {
 		OnDeath();

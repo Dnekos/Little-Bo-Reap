@@ -8,26 +8,17 @@ public class ProgressionParent : MonoBehaviour
     [SerializeField]
     Button[] upgrades;
 
-    [SerializeField]
-    Button[] abilities;
+    [SerializeField] Button[] abilities;
 
-    [SerializeField]
-    int[] costs = { 10, 25, 30, 40, 50, 80, 90, 124, 200 };
+    [SerializeField] int[] costs = { 10, 25, 30, 40, 50, 80, 90, 124, 200 };
 
-    [SerializeField]
-    SheepTypes thisType;
+    [SerializeField] SheepTypes thisType;
 
-    [SerializeField]
-    int[] upgrade1Values = { 0, 10, 20, 50000 };
-
-    [SerializeField]
-    int[] upgrade2Values = { 0, 10, 20, 50000 };
-
-    [SerializeField]
-    int[] upgrade3Values = { 0, 10, 20, 50000 };
+    [SerializeField] int[] upgrade1Values = { 10, 20, 50000 };
+    [SerializeField] int[] upgrade2Values = { 10, 20, 50000 };
+    [SerializeField] int[] upgrade3Values = { 10, 20, 50000 };
 
     int currentCostIndex;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -43,8 +34,8 @@ public class ProgressionParent : MonoBehaviour
     void Upgrade(int index)
     {
         Debug.Log("upgrading path:" + index);
-        PlayerProgressionHolder playerProgHold = WorldState.instance.player.GetComponent<PlayerProgressionHolder>();
-        if (playerProgHold.soulsCount >= costs[currentCostIndex])
+        
+        if (WorldState.instance.passiveValues.soulsCount >= costs[currentCostIndex])
         {
             //turn on light
             //TODO make this for all uptions
@@ -61,13 +52,13 @@ public class ProgressionParent : MonoBehaviour
             }
             if (upgradeNotch != -1)
             {
-                playerProgHold.soulsCount -= costs[currentCostIndex];
+                WorldState.instance.passiveValues.soulsCount -= costs[currentCostIndex];
                 List<int[]> upgradesAllValues = new List<int[]>();
                 upgradesAllValues.Add(upgrade1Values);
                 upgradesAllValues.Add(upgrade2Values);
                 upgradesAllValues.Add(upgrade3Values);
                 int [] currentUpgradeValues = upgradesAllValues[index];
-                playerProgHold.Upgrade(thisType, index, currentUpgradeValues[upgradeNotch]);
+                Upgrade(thisType, index, currentUpgradeValues[upgradeNotch]);
                 currentCostIndex++;
             }
         }
@@ -79,4 +70,71 @@ public class ProgressionParent : MonoBehaviour
     {
         Debug.Log("turning ability to ability:" + index);
     }
+
+    public void Upgrade(SheepTypes type, int index, int newValue)
+    {
+        switch (type)
+        {
+            case SheepTypes.BUILD:
+                BuilderUpgrade(index, newValue);
+                break;
+            case SheepTypes.RAM:
+                RamUpgrade(index, newValue);
+                break;
+            case SheepTypes.FLUFFY:
+                FluffyUpgrade(index, newValue);
+                break;
+        }
+
+
+    }
+
+    void BuilderUpgrade(int index, int newValue)
+    {
+        switch (index)
+        {
+            case 0:
+                WorldState.instance.passiveValues.builderLaunchDam = newValue;
+                break;
+            case 1:
+                WorldState.instance.passiveValues.builderCorruptChance = newValue;
+                break;
+            case 2:
+                WorldState.instance.passiveValues.builderMaxStackHeight = newValue;
+                break;
+        }
+    }
+
+    void RamUpgrade(int index, int newValue)
+    {
+        switch (index)
+        {
+            case 0:
+                WorldState.instance.passiveValues.ramDamageReduction = newValue;
+                break;
+            case 1:
+                WorldState.instance.passiveValues.ramDamage = newValue;
+                break;
+            case 2:
+                WorldState.instance.passiveValues.ramKnockback = newValue;
+                break;
+        }
+    }
+
+    void FluffyUpgrade(int index, int newValue)
+    {
+        switch (index)
+        {
+            case 0:
+                WorldState.instance.passiveValues.fluffyHealth = newValue;
+                break;
+            case 1:
+                WorldState.instance.passiveValues.fluffyKnockResist = newValue;
+                break;
+            case 2:
+                WorldState.instance.passiveValues.fluffyVortexDuration = newValue;
+                break;
+        }
+    }
+
 }

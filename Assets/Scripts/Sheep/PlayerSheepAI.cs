@@ -109,7 +109,7 @@ public class PlayerSheepAI : Damageable
     bool isGrounded;
 	[HideInInspector] // hold new position so that constructs can query it even if sheep is still lerping to it
 	public Vector3 constructPos;
-
+    
 	[Header("DEBUG")]
 	public PlayerSheepAI leaderSheep;
 
@@ -126,7 +126,8 @@ public class PlayerSheepAI : Damageable
 
         if (sheepType == 2)
         {
-            MaxHealth += WorldState.instance.passiveValues.fluffyHealth;
+            MaxHealth += WorldState.instance.passiveValues.fluffyHealth;\
+            Health = MaxHealth;
         }
 
 
@@ -394,7 +395,6 @@ public class PlayerSheepAI : Damageable
     {
 		if (atk.DealsHitstun)
 			SetHitstun(SheepStates.WANDER);
-
         base.TakeDamage(atk, attackForward);
     }
     #endregion
