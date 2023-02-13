@@ -19,4 +19,15 @@ public class PlayerProgressionHolder : MonoBehaviour
             WorldState.instance.passiveValues.soulsCount += Random.Range(10, 17);
         }
     }
+
+    //used to change soul count
+    public void incrementSouls(int value)
+    {
+        soulsCount += value;
+        //clamps player soul count to a positive number.
+        if (soulsCount < 0)
+        {
+            soulsCount = 0;
+        }
+    }
 }

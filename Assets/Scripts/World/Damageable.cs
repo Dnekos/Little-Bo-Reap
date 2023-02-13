@@ -22,6 +22,8 @@ public class Damageable : MonoBehaviour
 	[Header("Drop Variables")]
 	[Tooltip("Number of souls dropped on death.")]
 	[SerializeField] protected int soulValue;
+	[Tooltip("Number of healthPickups dropped on death.")]
+	[SerializeField] protected int healthValue;
 	[Tooltip("Affects speed at which souls fly out on death.")]
 	[SerializeField] protected float soulSpeed;
 	[Tooltip("Affects the height at which souls spawn from. should be higher for larger enemies.")]
@@ -169,6 +171,7 @@ public class Damageable : MonoBehaviour
 	virtual protected void OnDeath()
 	{
 		SoulDropCalculation(soulValue);
+		HealthDropCalculation(healthValue);
 
 		FMODUnity.RuntimeManager.PlayOneShot(deathSound, transform.position);
 
@@ -180,11 +183,60 @@ public class Damageable : MonoBehaviour
 	{
 		while (soulsToDrop > 0)
 		{
-			var soulSpawnOffset = new Vector3(Random.Range(-1,1),soulSpawnHeight, Random.Range(-1,1));
-			var soulCollectable = Instantiate(soulCollectables[0], transform.position + soulSpawnOffset, transform.rotation) as GameObject;
-			soulCollectable.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-1,1), 1f, Random.Range(-1,1)) * soulSpeed;
-			Debug.Log("SoulDropped");
+			var soulSpawnOffset = new Vector3(Random.Range(-1, 1), soulSpawnHeight, Random.Range(-1, 1));
+
+			while (soulsToDrop >= 100)
+            {
+				soulSpawnOffset = new Vector3(Random.Range(-1, 1), soulSpawnHeight, Random.Range(-1, 1));
+				var soulCollectable100 = Instantiate(soulCollectables[4], transform.position + soulSpawnOffset, transform.rotation) as GameObject;
+				soulCollectable100.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-1, 1), 1f, Random.Range(-1, 1)) * soulSpeed;
+				Debug.Log("SoulDropped");
+				soulsToDrop -= 100;
+			}
+
+			while (soulsToDrop >= 50)
+            {
+				soulSpawnOffset = new Vector3(Random.Range(-1, 1), soulSpawnHeight, Random.Range(-1, 1));
+				var soulCollectable50 = Instantiate(soulCollectables[3], transform.position + soulSpawnOffset, transform.rotation) as GameObject;
+				soulCollectable50.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-1, 1), 1f, Random.Range(-1, 1)) * soulSpeed;
+				Debug.Log("SoulDropped");
+				soulsToDrop -= 50;
+			}
+
+			while (soulsToDrop >= 20)
+			{
+				soulSpawnOffset = new Vector3(Random.Range(-1, 1), soulSpawnHeight, Random.Range(-1, 1));
+				var soulCollectable20 = Instantiate(soulCollectables[2], transform.position + soulSpawnOffset, transform.rotation) as GameObject;
+				soulCollectable20.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-1, 1), 1f, Random.Range(-1, 1)) * soulSpeed;
+				Debug.Log("SoulDropped");
+				soulsToDrop -= 20;
+			}
+
+			while (soulsToDrop >= 5)
+			{
+				soulSpawnOffset = new Vector3(Random.Range(-1, 1), soulSpawnHeight, Random.Range(-1, 1));
+				var soulCollectable5 = Instantiate(soulCollectables[1], transform.position + soulSpawnOffset, transform.rotation) as GameObject;
+				soulCollectable5.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-1, 1), 1f, Random.Range(-1, 1)) * soulSpeed;
+				Debug.Log("SoulDropped");
+				soulsToDrop -= 5;
+			}
+				
+			soulSpawnOffset = new Vector3(Random.Range(-1, 1), soulSpawnHeight, Random.Range(-1, 1));	
+			var soulCollectable = Instantiate(soulCollectables[0], transform.position + soulSpawnOffset, transform.rotation) as GameObject;	
+			soulCollectable.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-1, 1), 1f, Random.Range(-1, 1)) * soulSpeed;	
+			Debug.Log("SoulDropped");	
 			soulsToDrop--;
 		}
 	}
-}
+
+	private void HealthDropCalculation(int healthToDrop)
+	{
+		while (healthToDrop > 0)
+		{
+			var healthSpawnOffset = new Vector3(Random.Range(-1, 1), soulSpawnHeight, Random.Range(-1, 1));
+			var healthPickup = Instantiate(soulCollectables[5], transform.position + healthSpawnOffset, transform.rotation) as GameObject;
+			healthPickup.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-1, 1), 1f, Random.Range(-1, 1)) * soulSpeed;
+			Debug.Log("SoulDropped");
+			healthToDrop--;
+		}
+	}
