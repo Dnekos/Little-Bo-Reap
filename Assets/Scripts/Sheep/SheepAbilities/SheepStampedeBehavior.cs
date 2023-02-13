@@ -66,16 +66,17 @@ public class SheepStampedeBehavior : SheepBehavior
 		ps.agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
 
 		//set sheep state
-		ps.SetSheepState(SheepStates.STAMPEDE);
+		ps.SetSheepState(SheepStates.ABILITY);
 	}
 
 	IEnumerator ChargeTimer(PlayerSheepAI ps)
 	{
 		yield return new WaitForSeconds(chargeCheckTime);
-		if (ps.GetSheepState() == SheepStates.STAMPEDE && ps.agent.velocity.magnitude <= chargeCheckSpeed)
-			EndCharge(ps);
+		if (ps.GetSheepState() == SheepStates.ABILITY && ps.agent.velocity.magnitude <= chargeCheckSpeed)
+			End(ps);
 	}
 
+	
 	void EndCharge(PlayerSheepAI ps)
 	{
 		//if (ps.leaderSheep == ps)
@@ -100,5 +101,10 @@ public class SheepStampedeBehavior : SheepBehavior
 			other.GetComponent<BreakableWall>()?.DamageWall();
 		}
 	}
-	public override void End(PlayerSheepAI ps, GameObject obj) { }
+	public override void End(PlayerSheepAI ps, GameObject obj = null)
+	{
+		ps.SetSheepState(SheepStates.WANDER);
+		ps.chargeParticles.SetActive(false);
+		ps.agent.obstacleAvoidanceType = ObstacleAvoidanceType.MedQualityObstacleAvoidance;
+	}
 }

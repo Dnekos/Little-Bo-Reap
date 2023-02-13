@@ -58,7 +58,7 @@ public class PlayerVortex : MonoBehaviour
 			{
 				// check if you have any defending sheep
 				for (int i = flocks.GetActiveSheep(SheepTypes.FLUFFY).Count - 1; i >= 0; i--)
-					if (flocks.GetActiveSheep(SheepTypes.FLUFFY)[i].GetSheepState() == SheepStates.VORTEX)
+					if (flocks.GetActiveSheep(SheepTypes.FLUFFY)[i].GetSheepState() == SheepStates.ABILITY)
 						return;
 			}
 
@@ -91,7 +91,7 @@ public class PlayerVortex : MonoBehaviour
 
 		for (int i = flocks.GetActiveSheep(SheepTypes.FLUFFY).Count - 1; i >= 0; i--)
 		{
-			if (flocks.GetActiveSheep(SheepTypes.FLUFFY)[i].GetSheepState() == SheepStates.VORTEX)
+			if (flocks.GetActiveSheep(SheepTypes.FLUFFY)[i].GetSheepState() == SheepStates.ABILITY)
 			{
 				flocks.GetActiveSheep(SheepTypes.FLUFFY)[i]?.EndAbility(flocks.GetSheepFlock(SheepTypes.FLUFFY).SheepProjectilePrefab);
 
