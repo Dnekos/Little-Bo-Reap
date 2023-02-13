@@ -334,7 +334,6 @@ public class EnemyAI : Damageable
 		do
 		{
 			yield return new WaitForSeconds(0.01f);
-			Debug.Log(gameObject + " groundchecking");
 			GroundCheck();
 		} while (!isGrounded);
 		//reset if not in execute stage

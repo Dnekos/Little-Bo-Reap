@@ -608,8 +608,6 @@ public class PlayerSheepAbilities : MonoBehaviour
 		//if inside navmesh, spawn sheep!
 		if (found)
 		{
-			Debug.Log(hit.position + " " + path.corners[path.corners.Length - 1]);
-
 			var soulParticle = Instantiate(summonParticle, transform.position, Quaternion.identity) as GameObject;
 			soulParticle.GetComponent<Sheep_Summon_Particle>().removeFunction = new PlayerSheepAI.callSheep(RemoveSheepFromList);
 			soulParticle.GetComponent<Sheep_Summon_Particle>()?.InitSheepParticle(GetCurrentSheepPrefab(theSheepType), summonParticleLerpSpeed, hit.position, this, theSheepType, index);

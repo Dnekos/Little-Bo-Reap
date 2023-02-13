@@ -62,10 +62,10 @@ public class Damageable : MonoBehaviour
 				// we want to cancel out the current velocity, so as to knock launch them into the stratosphere
 				//rb.AddForce(-rb.velocity, ForceMode.VelocityChange);
 				rb.velocity = Vector3.zero;
-				Debug.Log("before vel: " + rb.velocity + " " + rb.velocity.magnitude);
+				//Debug.Log("before vel: " + rb.velocity + " " + rb.velocity.magnitude);
 				// TODO: make this force, not impulse, idiot
 				rb.velocity = attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback;
-				Debug.Log("after vel: " + rb.velocity + " " + rb.velocity.magnitude);
+				//Debug.Log("after vel: " + rb.velocity + " " + rb.velocity.magnitude);
 			}
 
 			// invoke death

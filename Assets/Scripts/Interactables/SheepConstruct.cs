@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.AI;
 
 public class SheepConstruct : SheepHolder
 {
@@ -12,9 +13,7 @@ public class SheepConstruct : SheepHolder
 	[Header("Sounds")]
 	[SerializeField] protected FMODUnity.EventReference placeSound;
 
-	[Header("Math")]
-	[SerializeField] float h;
-	[SerializeField] float w, l;
+	Vector3 adjustedColExt; //adjusted collider extents, used for determining valid place positions
 
 	[Header("Shown for Debug Visibility")]
 	float SheepRadius = 1;
@@ -28,19 +27,31 @@ public class SheepConstruct : SheepHolder
 	[SerializeField, Tooltip("How much of a sheep's radius is the height raised when a layer is filled")]
 	float HeightStep = 0.01f;
 
-	[Header("Collider")]
-
-	[SerializeField] BoxCollider col;
-
-	// components
+	// component
+	BoxCollider col;
+	NavMeshObstacle obs;
+	MeshRenderer mesh;
 
 	protected override void Start()
 	{
 		base.Start();
 
+		mesh = GetComponent<MeshRenderer>();
+		col = GetComponent<BoxCollider>();
+		obs = GetComponent<NavMeshObstacle>();
+		obs.enabled = false;
 		col.enabled = false;
 
 		containedSheep = new List<Transform>();
+	}
+	protected override void Update()
+	{
+		// TODO: messy implementation
+		if (containedSheep.Count == 0 && obs.enabled)
+		{
+			obs.enabled = false;
+			col.enabled = false;
+		}
 	}
 
 	public override void RemoveSheep()
@@ -54,13 +65,13 @@ public class SheepConstruct : SheepHolder
 	{
 		for (int i = containedSheep.Count - 1; i >= 0; i--)
 		{
-			containedSheep[i].GetComponent<PlayerSheepAI>().EndConstruct(false);
+			containedSheep[i].GetComponent<PlayerSheepAI>().EndConstruct();
 		}
 		containedSheep.Clear();
 
 		Debug.Log("calling removeSheep");
 
-		//Destroy(gameObject);
+		Destroy(gameObject);
 	}
 
 	public void RemoveAll(bool StopCoroutine = true)
@@ -82,25 +93,37 @@ public class SheepConstruct : SheepHolder
 	{
 		Debug.Log("adding sheep");
 
-		RemoveAll(false);
-		RemoveAllSheep();
+		// set old height settings for later
+		float floor = transform.position.y - transform.localScale.y * 0.5f;
+		// turn off mesh
+		mesh.enabled = false;
 
 		yield return new WaitForSeconds(delay);
 
+
+		// find out how big a sheep is
+		Collider scol = flock[0].GetComponent<Collider>();
+		if (scol is SphereCollider)
+			SheepRadius = ((SphereCollider)scol).radius * flock[0].transform.localScale.x;
+		else if (scol is CapsuleCollider)
+			SheepRadius = Mathf.Max(((CapsuleCollider)scol).radius, ((CapsuleCollider)scol).height * 0.5f) * flock[0].transform.lossyScale.y;
+
+		float origSR = SheepRadius; // keep track or non-modified for scale adjustment later
+		SheepRadius *= SheepRadiusMult; // mult controls density
+
+		// find out how much that influences
+		adjustedColExt = new Vector3(Mathf.Max(0, 0.5f - SheepRadius / transform.localScale.x),
+									 Mathf.Max(0, 0.5f - SheepRadius / transform.localScale.y),
+									 Mathf.Max(0, 0.5f - SheepRadius / transform.localScale.z));
+
+		// reset height
+		CurveT = 0;
+		layerCount = 0;
+
+
 		for (int i = 0; i < flock.Count; i++)
 		{
-			if (flock[i].GetComponent<SphereCollider>() != null)
-				SheepRadius = flock[i].GetComponent<SphereCollider>().radius * flock[i].transform.lossyScale.x;
-			else if (flock[i].GetComponent<CapsuleCollider>() != null)
-				SheepRadius = flock[i].GetComponent<CapsuleCollider>().radius * flock[i].transform.lossyScale.x;
-
-			// set height if this is the first sheep
-			if (containedSheep.Count == 0)
-			{
-				CurveT = Mathf.InverseLerp(0, col.bounds.extents.y, SheepRadius);// + SheepRadius;
-				FMODUnity.RuntimeManager.StudioSystem.setParameterByName("ConstructCompletion", CurveT);
-				Debug.Log("meh");
-			}
+			FMODUnity.RuntimeManager.StudioSystem.setParameterByName("ConstructCompletion", CurveT);
 
 			// add the little guy
 			AddSheep(flock[i].transform);
@@ -111,11 +134,18 @@ public class SheepConstruct : SheepHolder
 
 			// if the curve is finished, stop counting
 			if (CurveT >= 1)
-			{
 				break;
-			}
-
 		}
+
+		// set up wall as obstacle
+		obs.enabled = true;
+		col.enabled = true;
+		if (CurveT < 1)// if we didnt have enough sheep, redo the transform so that collider isnt wacky
+		{
+			transform.localScale = new Vector3(transform.localScale.x, containedSheep[containedSheep.Count - 1].position.y - containedSheep[0].position.y + 2.5f * origSR, transform.localScale.z);
+			transform.position = new Vector3(transform.position.x, floor + transform.localScale.y * 0.5f, transform.position.z);
+		}
+
 	}
 
 	void AddSheep(Transform newSheep)
@@ -125,7 +155,7 @@ public class SheepConstruct : SheepHolder
 		int SheepChecked = 0;
 
 		// TEMP, FIX LATER, SHOULD BE USING SPHERES IN BOX EQUATION NOW
-		float radius = 0.5f * Mathf.Min(w, l);
+		float radius = 0.5f * Mathf.Max(transform.localScale.x, transform.localScale.z);
 
 		// math estimating the likely amount of sheep needed to check
 		float V_c = Mathf.PI * radius * radius * SheepRadius * 3f;
@@ -134,22 +164,18 @@ public class SheepConstruct : SheepHolder
 
 		while (CurveT <= 1)
 		{
-			// make a guess at a good spot to place sheep, within collider bounds
-			float halfWidth = col.bounds.extents.x, halfLength = col.bounds.extents.z;
-			if (halfWidth > SheepRadius)
-				halfWidth -= SheepRadius;
-			if (halfLength > SheepRadius)
-				halfLength -= SheepRadius;
+			// make a guess at a good spot to place sheep, within -0.5,0.5
+			Vector3 sheepPlacement = new Vector3(Random.Range(-adjustedColExt.x, adjustedColExt.x), 
+				Mathf.Lerp(-adjustedColExt.y, adjustedColExt.y, CurveT), 
+				Random.Range(-adjustedColExt.z, adjustedColExt.z));
 
-			Vector3 sheepPlacement = transform.position + new Vector3(Random.Range(-halfWidth, halfWidth), 
-				Mathf.Lerp(-col.bounds.extents.y, col.bounds.extents.y, CurveT), 
-				Random.Range(-halfLength, halfLength));
+			// apply matrix to bring it to the correct scale and rotation
+			sheepPlacement = transform.localToWorldMatrix.MultiplyPoint3x4(sheepPlacement);
 
 			// check if the spot is filled
 			bool Filled = false;
 			for (int i = containedSheep.Count - 1; i >= Mathf.Max(0, containedSheep.Count - sheeptocheck); i--)
 			{
-
 				SheepChecked++;
 
 				// check the position, using sphere intersections

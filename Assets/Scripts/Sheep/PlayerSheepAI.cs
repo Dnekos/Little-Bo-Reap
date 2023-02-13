@@ -7,8 +7,7 @@ public enum SheepStates
 {
     FOLLOW_PLAYER = 0,
     WANDER = 1,
-    STAMPEDE = 2,
-    VORTEX = 3,
+    ABILITY = 2,
 	CONSTRUCT = 4,
     ATTACK = 5,
 	STUN = 6, // TODO, make this the same as the enemy's
@@ -221,8 +220,7 @@ public enum SheepStates
                     DoWander();
                     break;
                 }
-            case SheepStates.STAMPEDE:
-            case SheepStates.VORTEX:
+            case SheepStates.ABILITY:
                 {
 					ability.AbilityUpdate(this);
                     break;
@@ -273,8 +271,7 @@ public enum SheepStates
     {
         switch (currentSheepState)
         {
-            case SheepStates.STAMPEDE:
-            case SheepStates.VORTEX:
+            case SheepStates.ABILITY:
                 {
 					ability.AbilityTriggerEnter(this, other);
                     break;
@@ -317,7 +314,7 @@ public enum SheepStates
     }
 	public bool IsCommandable()
 	{
-		return currentSheepState == SheepStates.STAMPEDE || currentSheepState == SheepStates.FOLLOW_PLAYER || currentSheepState == SheepStates.WANDER;
+		return currentSheepState == SheepStates.ABILITY || currentSheepState == SheepStates.FOLLOW_PLAYER || currentSheepState == SheepStates.WANDER;
 	}
 	float GetRandomSheepBaseSpeed()
 	{
@@ -347,7 +344,7 @@ public enum SheepStates
     public void RecallSheep()
     {
         // sheep cant be recalled when stunned OR DEFENDING
-        if (currentSheepState == SheepStates.STUN || currentSheepState == SheepStates.VORTEX)
+        if (currentSheepState == SheepStates.ABILITY)
             return;
 
         // if the sheep is too high up, stun it first so that it gets closer to the ground
@@ -371,14 +368,34 @@ public enum SheepStates
 	{
 		if (hitstunCo != null)
 			StopCoroutine(hitstunCo);
+
+		// if they were in an ability, end it, this is messy and gross
+		if (currentSheepState == SheepStates.ABILITY)
+		{
+			currentSheepState = newstate;
+			ability.End(this);
+		}
+
 		currentSheepState = newstate;
 
+
 		// reset speed (notable for stampede)
-		if (currentSheepState == SheepStates.WANDER)
+		switch (currentSheepState)
 		{
-			agent.speed = wanderSpeed;
-			agent.stoppingDistance = wanderStopDistance;
-			agent.obstacleAvoidanceType = ObstacleAvoidanceType.MedQualityObstacleAvoidance;
+			case SheepStates.ATTACK:
+				agent.speed = baseSpeedCurrent;
+				agent.obstacleAvoidanceType = ObstacleAvoidanceType.MedQualityObstacleAvoidance;
+				break;
+			case SheepStates.WANDER:
+				agent.speed = wanderSpeed;
+				agent.stoppingDistance = wanderStopDistance;
+				agent.obstacleAvoidanceType = ObstacleAvoidanceType.MedQualityObstacleAvoidance;
+				break;
+			case SheepStates.FOLLOW_PLAYER:
+				agent.stoppingDistance = attackStopDistance;
+				agent.speed = baseSpeedCurrent;
+				agent.obstacleAvoidanceType = ObstacleAvoidanceType.MedQualityObstacleAvoidance;
+				break;
 		}
 	}
 
@@ -435,11 +452,16 @@ public enum SheepStates
     #region Sheep Stun 
 	public void SetHitstun(SheepStates stateAfterStun)
 	{
-		if (this == null || currentSheepState == SheepStates.VORTEX)
+		if (this == null || currentSheepState == SheepStates.ABILITY)
 			return;
+
+		// coroutine
 		if (hitstunCo != null)
 			StopCoroutine(hitstunCo);
 		hitstunCo = StartCoroutine(OnHitStun(SheepStates.WANDER));
+
+		// get out of any constructs
+		EndConstruct();
 	}
 	IEnumerator OnHitStun(SheepStates stateAfterStun)
     {
@@ -461,14 +483,14 @@ public enum SheepStates
 
         // wait until grounded
         yield return new WaitUntil(() => isGrounded);
-        //yield return new WaitForSeconds(0.1f);
+		//yield return new WaitForSeconds(0.1f);
 
 		// if sheep were attacking, they can resume attacking 
 		// the condition is needed because actions like vortex and construct should not be resumed
-		currentSheepState = (origState == SheepStates.ATTACK) ? origState : SheepStates.WANDER;
+		SetSheepState((origState == SheepStates.ATTACK) ? origState : SheepStates.WANDER);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionStay(Collision collision)
     {
         if (currentSheepState == SheepStates.STUN && collision.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
@@ -615,8 +637,6 @@ public enum SheepStates
 
 		//start attacking!
 		SetSheepState(SheepStates.ATTACK);
-        agent.stoppingDistance = attackStopDistance;
-        agent.speed = baseSpeedCurrent;
     }
 
     //depreciated function, here as a reference now
@@ -691,7 +711,7 @@ public enum SheepStates
 		rb.angularVelocity = Vector3.zero;
 		rb.velocity = Vector3.zero;
 	}
-	public void EndConstruct(bool callRemove = true)
+	public void EndConstruct()
 	{
 		agent.enabled = true;
 		//gameObject.layer = SheepLayer;     

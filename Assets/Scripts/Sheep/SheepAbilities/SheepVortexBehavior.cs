@@ -63,11 +63,14 @@ public class SheepVortexBehavior : SheepBehavior
 		//set speed
 		ps.agent.speed = defendSpeed;
 		ps.agent.stoppingDistance = defendStopDistance;
-		ps.SetSheepState(SheepStates.VORTEX);
+		ps.SetSheepState(SheepStates.ABILITY);
 	}
 
 	public override void End(PlayerSheepAI ps, GameObject fluffyProjectile)
 	{
+		if (fluffyProjectile == null)
+			return;
+
 		PlayerSheepProjectile launchSheep = Instantiate(fluffyProjectile, ps.transform.position, ps.transform.rotation).GetComponent<PlayerSheepProjectile>();
 		if (ps.isBlackSheep)
 			launchSheep.isBlackSheep = true;

@@ -11,6 +11,9 @@ public class SheepHolder : Interactable
 	[SerializeField] protected float CurveT = -1;
 	[SerializeField] GameEvent endConstructEvent;
 
+	[Header("Sheep sizing")]
+	[SerializeField] protected float SheepRadiusMult = 1;
+
 	private void Awake()
 	{
 		endConstructEvent.listener.AddListener(RemoveSheep);

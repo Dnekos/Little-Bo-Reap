@@ -111,7 +111,7 @@ public class SheepBezier : SheepHolder
 	{
 		for (int i = containedSheep.Count - 1; i >= 0; i--)
 		{
-			containedSheep[i].GetComponent<PlayerSheepAI>().EndConstruct(false);
+			containedSheep[i].GetComponent<PlayerSheepAI>().EndConstruct();
 		}
 		containedSheep.Clear();
 	}
@@ -145,10 +145,12 @@ public class SheepBezier : SheepHolder
 		
 		for (int i = 0; i < flock.Count; i++)
 		{
-			if (flock[i].GetComponent<SphereCollider>() != null)
-				SheepRadius = flock[i].GetComponent<SphereCollider>().radius * flock[i].transform.lossyScale.x;
-			else if (flock[i].GetComponent<CapsuleCollider>() != null)
-				SheepRadius = flock[i].GetComponent<CapsuleCollider>().radius * flock[i].transform.lossyScale.x;
+			Collider col = flock[i].GetComponent<Collider>();
+			if (col is SphereCollider)
+				SheepRadius = ((SphereCollider)col).radius * flock[i].transform.lossyScale.x;
+			else if (col is CapsuleCollider)
+				SheepRadius = Mathf.Max(((CapsuleCollider)col).radius, ((CapsuleCollider)col).height * 0.5f) * flock[i].transform.lossyScale.y;
+			SheepRadius *= SheepRadiusMult;
 
 			// set height if this is the first sheep
 			if (containedSheep.Count == 0)
@@ -210,7 +212,6 @@ public class SheepBezier : SheepHolder
 			bool Filled = false;
 			for (int i = containedSheep.Count - 1; i >= Mathf.Max(0, containedSheep.Count - sheeptocheck); i--) 
 			{
-
 				SheepChecked++;
 
 				// check the position, using sphere intersections
