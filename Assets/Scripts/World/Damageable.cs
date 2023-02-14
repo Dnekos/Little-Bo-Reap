@@ -41,19 +41,19 @@ public class Damageable : MonoBehaviour
 		rb = GetComponent<Rigidbody>();
 	}
 
-	virtual public void TakeDamage(Attack atk, Vector3 attackForward)
+	virtual public void TakeDamage(Attack atk, Vector3 attackForward, float multiplier = 1.0f)
 	{
 		if (!isInvulnerable || Health <= 0)
 		{
 			// deal damage
-			Health -= atk.damage;
+			Health -= (atk.damage * multiplier);
 			Vector3 knockbackForce = attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback;
 
-			Debug.Log(gameObject.name + " took " + atk.damage + " damage (force: " + knockbackForce + ", mag " + knockbackForce.magnitude + ")");
+			Debug.Log(gameObject.name + " took " + atk.damage * multiplier + " damage (force: " + knockbackForce + ", mag " + knockbackForce.magnitude + ")");
 
 			//create damage number
 			var number = Instantiate(damageNumber, transform.position, transform.rotation) as GameObject;
-			number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)atk.damage).ToString();
+			number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)atk.damage * multiplier).ToString();
 
 			// add knockback if the current knockback is stronger than the current velocity
 			//Vector3 knockbackForce = attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback;

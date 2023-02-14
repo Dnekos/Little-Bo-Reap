@@ -85,8 +85,6 @@ public class ProgressionParent : MonoBehaviour
                 FluffyUpgrade(index, newValue);
                 break;
         }
-
-
     }
 
     void BuilderUpgrade(int index, int newValue)
@@ -95,6 +93,7 @@ public class ProgressionParent : MonoBehaviour
         {
             case 0:
                 WorldState.instance.passiveValues.builderLaunchDam = newValue;
+                Debug.Log("Set New Value: " + newValue.ToString());
                 break;
             case 1:
                 WorldState.instance.passiveValues.builderCorruptChance = newValue;

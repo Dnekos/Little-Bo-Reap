@@ -41,7 +41,7 @@ public class BigGuyAI : EnemyAI
 			HealthBarCanvas.SetActive(false);
 	}
 
-	public override void TakeDamage(Attack atk, Vector3 attackForward)
+	public override void TakeDamage(Attack atk, Vector3 attackForward, float multiplier = 1.0f)
 	{
 		base.TakeDamage(atk, attackForward);
 

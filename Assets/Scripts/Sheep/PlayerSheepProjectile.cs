@@ -17,6 +17,8 @@ public class PlayerSheepProjectile : MonoBehaviour
     [SerializeField] GameObject blackSheepParticles;
     [SerializeField] GameObject gibs;
     public bool isBlackSheep = false;
+	public bool isBuilderSheep = false;
+	public bool isRamSheep = false;
 
     Rigidbody rb;
 
@@ -65,13 +67,15 @@ public class PlayerSheepProjectile : MonoBehaviour
 
 			if (isBlackSheep)
 			{
-				collision.gameObject?.GetComponent<Damageable>()?.TakeDamage(launchAttack, -forcePoint);
+				if (isBuilderSheep) { collision.gameObject?.GetComponent<Damageable>()?.TakeDamage(launchAttack, -forcePoint, WorldState.instance.passiveValues.builderLaunchDam); }
+				else { collision.gameObject?.GetComponent<Damageable>()?.TakeDamage(launchAttack, -forcePoint, WorldState.instance.passiveValues.builderLaunchDam); }
 				Instantiate(launchAttack.explosionEffect, transform.position, transform.rotation);
 				DestroySheepProjectile();
 			}
 			else
 			{
-				collision.gameObject?.GetComponent<Damageable>()?.TakeDamage((Attack)launchAttack, -forcePoint);
+				if (isBuilderSheep) { collision.gameObject?.GetComponent<Damageable>()?.TakeDamage(launchAttack, -forcePoint, 4.0f); }
+				else { collision.gameObject?.GetComponent<Damageable>()?.TakeDamage(launchAttack, -forcePoint, WorldState.instance.passiveValues.builderLaunchDam); }
 				Invoke("DestroySheepProjectile", lifeTimeAfterAttack);
 			}
 		}
