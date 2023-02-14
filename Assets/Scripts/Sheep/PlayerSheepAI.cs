@@ -635,8 +635,11 @@ public enum SheepStates
 				attackTargets?.Add(enemyDamageable);
         }
 
-		//start attacking!
-		SetSheepState(SheepStates.ATTACK);
+        //set agent stopping speed here for now, where did it go? idk someone removed it so here it is
+        agent.stoppingDistance = attackStopDistance;
+
+        //start attacking!
+        SetSheepState(SheepStates.ATTACK);
     }
 
     //depreciated function, here as a reference now
