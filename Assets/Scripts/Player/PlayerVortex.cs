@@ -22,6 +22,9 @@ public class PlayerVortex : MonoBehaviour
 	bool canDefend = true;
 	bool isDefending = false;
 
+	[Header("Blackhole Variables")]
+	[SerializeField] bool blackHole;
+	[SerializeField] GameObject blackHoleObj;
 	// components
 	PlayerSheepAbilities flocks;
 	Animator animator;
@@ -72,6 +75,11 @@ public class PlayerVortex : MonoBehaviour
 
 	void EndSheepDefend()
 	{
+		if (blackHole)
+		{
+			blackHoleObj.SetActive(false);
+		}
+
 		if (!isDefending)
 			return;
 
@@ -117,7 +125,11 @@ public class PlayerVortex : MonoBehaviour
 	{
 		//switching to be only useable by fluffy sheep, keep same architecture in case we change our minds (we probably won't)
 		SheepTypes flockType = flocks.currentFlockType;
-
+		
+		if(blackHole)
+		{
+			blackHoleObj.SetActive(true);		
+		}
 		// command sheep and check if we have the right sheep ability
 		List<PlayerSheepAI> sheep = flocks.GetActiveSheep(flockType);
 
