@@ -19,8 +19,7 @@ public class BreakableWall : MonoBehaviour
     void BreakWall()
     {
 		FMODUnity.RuntimeManager.PlayOneShot(breakSound, transform.position);
-        GameObject destroyedWall = Instantiate(gibs, transform.position, transform.rotation);
-        destroyedWall.GetComponentInChildren<Rigidbody>().AddExplosionForce(2f, transform.position, 5f);
+        Instantiate(gibs, transform.position, transform.rotation);
         Destroy(gameObject);
     }
 }
