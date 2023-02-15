@@ -2,15 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BreakableWall : MonoBehaviour
+public class Destructible : MonoBehaviour
 {
     [SerializeField] int health = 3;
     [SerializeField] GameObject gibs;
 
-	[Header("Sounds")]
-	[SerializeField] FMODUnity.EventReference breakSound;
+    [Header("Sounds")]
+    [SerializeField] FMODUnity.EventReference breakSound;
 
-	public void DamageWall()
+    public void DamageWall()
     {
         health--;
         if (health <= 0) BreakWall();
@@ -18,9 +18,13 @@ public class BreakableWall : MonoBehaviour
 
     void BreakWall()
     {
-		FMODUnity.RuntimeManager.PlayOneShot(breakSound, transform.position);
+        FMODUnity.RuntimeManager.PlayOneShot(breakSound, transform.position);
         GameObject destroyedWall = Instantiate(gibs, transform.position, transform.rotation);
-        destroyedWall.GetComponentInChildren<Rigidbody>().AddExplosionForce(2f, transform.position, 5f);
+        destroyedWall.GetComponentInChildren<Rigidbody>().AddExplosionForce(20f, transform.position, 5f);
+        
         Destroy(gameObject);
+
     }
+
+
 }
