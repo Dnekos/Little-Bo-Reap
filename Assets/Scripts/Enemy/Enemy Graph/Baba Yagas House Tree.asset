@@ -780,6 +780,48 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   attack: {fileID: 11400000, guid: beb7897d1d5fdce47b982e314b2cbcf9, type: 2}
+--- !u!114 &-3932077211690928105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21d1b2f65c3410d46b1050483bd632a4, type: 3}
+  m_Name: Boss Value
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -1704, y: 712}
+  ports:
+    keys:
+    - desiredValue
+    - result
+    values:
+    - _fieldName: desiredValue
+      _node: {fileID: -3932077211690928105}
+      _typeQualifiedName: XNode.Examples.StateGraph.BossValueNode+BossVariables,
+        Project.Enemy, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: result
+      _node: {fileID: -3932077211690928105}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: lhs
+        node: {fileID: 6807011347692981643}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  desiredValue: 4
+  result: 0
 --- !u!114 &-3475846255793675942
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1027,7 +1069,7 @@ MonoBehaviour:
   m_Name: Num Enemies Check
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -1864, y: 968}
+  position: {x: -1624, y: 968}
   ports:
     keys:
     - lhs
@@ -1142,7 +1184,7 @@ MonoBehaviour:
   m_Name: Move Sequence
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -1832, y: 584}
+  position: {x: -1224, y: 232}
   ports:
     keys:
     - exit
@@ -1275,6 +1317,8 @@ MonoBehaviour:
   - {fileID: -153782737629023434}
   - {fileID: 3677601078482620719}
   - {fileID: 1349842283824802232}
+  - {fileID: -3932077211690928105}
+  - {fileID: 6807011347692981643}
   currentUser: {fileID: 0}
 --- !u!114 &497988340604685361
 MonoBehaviour:
@@ -1560,7 +1604,7 @@ MonoBehaviour:
   m_Name: Value
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -2120, y: 296}
+  position: {x: -1432, y: -40}
   ports:
     keys:
     - desiredValue
@@ -2119,6 +2163,72 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   attack: {fileID: 11400000, guid: ce2d4d1c327ce564ebb6f9e7d2f8fd96, type: 2}
+--- !u!114 &6807011347692981643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 114695cbb7512a446b178110f33bbd40, type: 3}
+  m_Name: Equality
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -1352, y: 664}
+  ports:
+    keys:
+    - lhs
+    - opp
+    - rhs
+    - enter
+    values:
+    - _fieldName: lhs
+      _node: {fileID: 6807011347692981643}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: result
+        node: {fileID: -3932077211690928105}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: opp
+      _node: {fileID: 6807011347692981643}
+      _typeQualifiedName: XNode.Examples.StateGraph.EqualityNode+Operator, Project.Enemy,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: rhs
+      _node: {fileID: 6807011347692981643}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: enter
+      _node: {fileID: 6807011347692981643}
+      _typeQualifiedName: XNode.Examples.StateGraph.StateNode+Empty, Project.Enemy,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: exit
+        node: {fileID: 7844085352538720092}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  lhs: 0
+  opp: 2
+  rhs: 0
 --- !u!114 &7088748201816941871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2132,7 +2242,7 @@ MonoBehaviour:
   m_Name: Boss Value
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -2152, y: 984}
+  position: {x: -1912, y: 984}
   ports:
     keys:
     - desiredValue
@@ -2187,6 +2297,9 @@ MonoBehaviour:
       connections:
       - fieldName: enter
         node: {fileID: -1482007402123089933}
+        reroutePoints: []
+      - fieldName: enter
+        node: {fileID: 6807011347692981643}
         reroutePoints: []
       - fieldName: enter
         node: {fileID: -498133604258610994}
@@ -2272,7 +2385,7 @@ MonoBehaviour:
   m_Name: Enemy Move To
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -1576, y: 584}
+  position: {x: -888, y: 248}
   ports:
     keys:
     - destination
@@ -2316,7 +2429,7 @@ MonoBehaviour:
   m_Name: Random Point In Circle
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -1832, y: 280}
+  position: {x: -1144, y: -56}
   ports:
     keys:
     - point
@@ -2377,7 +2490,7 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   point: {x: 150, y: 13, z: -67}
-  radius: 20
+  radius: 50
   enemyPosition: {x: 0, y: 0, z: 0}
   result: 0
 --- !u!114 &9197588226662332365

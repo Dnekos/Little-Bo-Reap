@@ -13,7 +13,8 @@ namespace XNode.Examples.StateGraph
 			NUM_CURRENT_ENEMIES,
 			CURRENT_HEATH,
 			MAX_HEALTH,
-			ENEMIES_SPAWNED
+			ENEMIES_SPAWNED,
+			IS_MOVING
 		}
 		[Input] public BossVariables desiredValue;
 		[Output] public float result;
@@ -37,7 +38,20 @@ namespace XNode.Examples.StateGraph
 					case BossVariables.ENEMIES_SPAWNED:
 						return user.GetComponent<BabaYagasHouseAI>().getEnemiesSpawned();
 
-
+					case BossVariables.IS_MOVING:
+                    {
+						AnimatorClipInfo[] currentClipInfo = user.GetComponent<Animator>().GetCurrentAnimatorClipInfo(0);
+						string clipName = currentClipInfo[0].clip.name;
+							
+						if(clipName != "Boss_Idle")
+                        {
+							return true;
+                        }
+                        else
+                        {
+							return false;
+                        }
+					}
 				}
 			}
 			return null;
