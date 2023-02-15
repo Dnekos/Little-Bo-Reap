@@ -77,7 +77,7 @@ public class PlayerVortex : MonoBehaviour
 	{
 		if (blackHole)
 		{
-			blackHoleObj.SetActive(false);
+			blackHoleObj.GetComponent<SuckEnemies>().stopSucking();
 		}
 
 		if (!isDefending)
@@ -126,10 +126,6 @@ public class PlayerVortex : MonoBehaviour
 		//switching to be only useable by fluffy sheep, keep same architecture in case we change our minds (we probably won't)
 		SheepTypes flockType = flocks.currentFlockType;
 		
-		if(blackHole)
-		{
-			blackHoleObj.SetActive(true);		
-		}
 		// command sheep and check if we have the right sheep ability
 		List<PlayerSheepAI> sheep = flocks.GetActiveSheep(flockType);
 
@@ -146,6 +142,11 @@ public class PlayerVortex : MonoBehaviour
 				Debug.Log("start defend");
 
 				isDefending = true;
+
+				if (blackHole)
+				{
+					blackHoleObj.SetActive(true);
+				}
 
 				flocks.GetSheepFlock(SheepTypes.FLUFFY).spellParticle.Play(true);
 

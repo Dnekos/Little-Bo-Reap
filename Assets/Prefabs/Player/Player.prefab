@@ -10620,6 +10620,7 @@ Transform:
   - {fileID: 5462111521222099548}
   - {fileID: 6144083390785991266}
   - {fileID: 4946047290265379997}
+  - {fileID: 7386700366853540259}
   m_Father: {fileID: 0}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -70476,10 +70477,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 3578997114556863029}
   - {fileID: 6393257344421966800}
   - {fileID: 3870380308248943667}
   - {fileID: 3870380308655863547}
-  - {fileID: 3578997114556863029}
   - {fileID: 5944150355944522110}
   - {fileID: 7522703441253044385}
   m_Father: {fileID: 6219005127216546937}
@@ -71277,6 +71278,8 @@ MonoBehaviour:
     Path: event:/Sheep/Vortex End
   defendIcon: {fileID: 5727745938368034847}
   defendCooldown: 5
+  blackHole: 0
+  blackHoleObj: {fileID: 0}
 --- !u!114 &3249871464365083299
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -88862,6 +88865,68 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 19
+--- !u!1 &5283067463789025570
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7386700366853540259}
+  - component: {fileID: 2653397696958240276}
+  - component: {fileID: 6295243076123589088}
+  m_Layer: 0
+  m_Name: Player_Blackhole
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &7386700366853540259
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5283067463789025570}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6219005127216546937}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2653397696958240276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5283067463789025570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2afc6c895a581f94aa11a99e28bb530e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  suckDistance: 20
+  suckForce: 0.75
+  spinDistance: 5
+  finishDamage: 0
+--- !u!114 &6295243076123589088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5283067463789025570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c81e303e6f6a69d4788a742117654d4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 3870380308813204389}
 --- !u!1 &5308287387793732065
 GameObject:
   m_ObjectHideFlags: 0

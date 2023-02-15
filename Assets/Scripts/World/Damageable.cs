@@ -48,9 +48,12 @@ public class Damageable : MonoBehaviour
 
 			Debug.Log(gameObject.name + " took " + atk.damage + " damage (force: "+ knockbackForce + ", mag "+ knockbackForce .magnitude+ ")");
 
-			//create damage number
-			var number = Instantiate(damageNumber, transform.position, transform.rotation) as GameObject;
-			number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)atk.damage).ToString();
+			if (atk.ShowNumber)
+			{
+				//create damage number
+				var number = Instantiate(damageNumber, transform.position, transform.rotation) as GameObject;
+				number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)atk.damage).ToString();
+			}
 
 			// add knockback if the current knockback is stronger than the current velocity
 			//Vector3 knockbackForce = attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback;
@@ -86,9 +89,12 @@ public class Damageable : MonoBehaviour
 			Health -= atk.damageBlack;
 			Debug.Log(gameObject.name + " took " + atk.damageBlack + " damage (force: " + (attackForward * atk.forwardKnockbackBlack + Vector3.up * atk.upwardKnockbackBlack) + ")");
 
-			//create damage number
-			var number = Instantiate(damageNumberGoth, transform.position, transform.rotation) as GameObject;
-			number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)atk.damageBlack).ToString();
+			if (atk.ShowNumber)
+			{
+				//create damage number
+				var number = Instantiate(damageNumberGoth, transform.position, transform.rotation) as GameObject;
+				number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)atk.damageBlack).ToString();
+			}
 
 			// add knockback
 			rb.AddForce(attackForward * atk.forwardKnockbackBlack + Vector3.up * atk.upwardKnockbackBlack, ForceMode.Impulse);
