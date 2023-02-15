@@ -9,15 +9,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 79593083825096370}
-  - component: {fileID: 79593083825096369}
   - component: {fileID: 5648590199035960866}
   - component: {fileID: 4448713107197498637}
+  - component: {fileID: 79593083825096369}
   - component: {fileID: 5454941128327753324}
   - component: {fileID: 9080504899387278708}
-  - component: {fileID: 8060755685440172314}
   m_Layer: 19
   m_Name: Test_Breakable_Wall
-  m_TagString: Breakable
+  m_TagString: Destructible
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30,29 +29,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 79593083825096365}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 99.64, y: -0.0000019073486, z: 58.17}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 8339547941936653688}
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &79593083825096369
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 79593083825096365}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 126
-  m_CollisionDetection: 0
 --- !u!33 &5648590199035960866
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -103,6 +87,22 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!54 &79593083825096369
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 79593083825096365}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!114 &5454941128327753324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115,8 +115,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74f146c6309da9a4a8043813a0eea87c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rb: {fileID: 79593083825096369}
   health: 3
-  gibs: {fileID: 7902038051582873645, guid: ad063fb0ac14ab440afce289a6114218, type: 3}
+  brokenObjectPrefab: {fileID: 7902038051582873645, guid: ad063fb0ac14ab440afce289a6114218,
+    type: 3}
+  explosionOrigin: {fileID: 8339547941936653688}
   breakSound:
     Guid:
       Data1: -918862887
@@ -137,24 +140,34 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 18, y: 7.927226, z: 5.56113}
   m_Center: {x: 9, y: 3.948556, z: 2.0430968}
---- !u!114 &8060755685440172314
-MonoBehaviour:
+--- !u!1 &6964108237508008065
+GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 79593083825096365}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7fff4824c1258a14a9490952ad27eb1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 3
-  gibs: {fileID: 7902038051582873645, guid: ad063fb0ac14ab440afce289a6114218, type: 3}
-  breakSound:
-    Guid:
-      Data1: -918862887
-      Data2: 1251074657
-      Data3: -1426504803
-      Data4: 1828683416
-    Path: event:/Finished/RockWallBreak
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8339547941936653688}
+  m_Layer: 19
+  m_Name: ExplosionPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8339547941936653688
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6964108237508008065}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 10, y: 0, z: 8}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 79593083825096370}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -100,6 +100,10 @@ public class SheepStampedeBehavior : SheepBehavior
 		{
 			other.GetComponent<BreakableWall>()?.DamageWall();
 		}
+		if(other.CompareTag("Destructible"))
+        {
+			other.GetComponent<Destructible>()?.Destroy();
+		}
 	}
 	public override void End(PlayerSheepAI ps, GameObject obj = null)
 	{
