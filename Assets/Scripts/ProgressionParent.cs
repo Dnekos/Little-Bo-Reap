@@ -14,9 +14,9 @@ public class ProgressionParent : MonoBehaviour
 
     [SerializeField] SheepTypes thisType;
 
-    [SerializeField] int[] upgrade1Values = { 10, 20, 50000 };
-    [SerializeField] int[] upgrade2Values = { 10, 20, 50000 };
-    [SerializeField] int[] upgrade3Values = { 10, 20, 50000 };
+    [SerializeField] float[] upgrade1Values = { 10f, 20f, 50000f };
+    [SerializeField] float[] upgrade2Values = { 10f, 20f, 50000f };
+    [SerializeField] float[] upgrade3Values = { 10f, 20f, 50000f };
 
     int currentCostIndex;
     // Start is called before the first frame update
@@ -53,11 +53,11 @@ public class ProgressionParent : MonoBehaviour
             if (upgradeNotch != -1)
             {
                 WorldState.instance.passiveValues.soulsCount -= costs[currentCostIndex];
-                List<int[]> upgradesAllValues = new List<int[]>();
+                List<float[]> upgradesAllValues = new List<float[]>();
                 upgradesAllValues.Add(upgrade1Values);
                 upgradesAllValues.Add(upgrade2Values);
                 upgradesAllValues.Add(upgrade3Values);
-                int [] currentUpgradeValues = upgradesAllValues[index];
+                float [] currentUpgradeValues = upgradesAllValues[index];
                 Upgrade(thisType, index, currentUpgradeValues[upgradeNotch]);
                 currentCostIndex++;
             }
@@ -71,7 +71,7 @@ public class ProgressionParent : MonoBehaviour
         Debug.Log("turning ability to ability:" + index);
     }
 
-    public void Upgrade(SheepTypes type, int index, int newValue)
+    public void Upgrade(SheepTypes type, int index, float newValue)
     {
         switch (type)
         {
@@ -87,7 +87,7 @@ public class ProgressionParent : MonoBehaviour
         }
     }
 
-    void BuilderUpgrade(int index, int newValue)
+    void BuilderUpgrade(int index, float newValue)
     {
         switch (index)
         {
@@ -104,7 +104,7 @@ public class ProgressionParent : MonoBehaviour
         }
     }
 
-    void RamUpgrade(int index, int newValue)
+    void RamUpgrade(int index, float newValue)
     {
         switch (index)
         {
@@ -120,7 +120,7 @@ public class ProgressionParent : MonoBehaviour
         }
     }
 
-    void FluffyUpgrade(int index, int newValue)
+    void FluffyUpgrade(int index, float newValue)
     {
         switch (index)
         {

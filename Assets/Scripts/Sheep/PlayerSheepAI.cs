@@ -393,9 +393,28 @@ public class PlayerSheepAI : Damageable
     }
     public override void TakeDamage(Attack atk, Vector3 attackForward, float multiplier = 1.0f)
     {
-		if (atk.DealsHitstun)
-			SetHitstun(SheepStates.WANDER);
-        base.TakeDamage(atk, attackForward);
+        if (atk.DealsHitstun)
+            SetHitstun(SheepStates.WANDER);
+
+        switch (currentSheepState)
+        {
+            case SheepStates.LIFT:  //If you are in a LIFT state, take damage modified by the ConstructDR multiplier
+                Debug.Log("Took Damage in LIFT state.");
+                base.TakeDamage(atk, attackForward, WorldState.instance.passiveValues.builderConstructDR);
+                break;
+            case SheepStates.CONSTRUCT:  //If you are in a CONSTRUCT state, take damage modified by the ConstructDR multiplier
+                Debug.Log("Took Damage in CONSTRUCT state.");
+                base.TakeDamage(atk, attackForward, WorldState.instance.passiveValues.builderConstructDR);
+                break;
+            case SheepStates.STAMPEDE:  //If you are in a STAMPEDE state, take damage modified by the StampedeDR multiplier
+                Debug.Log("Took Damage in STAMPEDE state.");
+                base.TakeDamage(atk, attackForward, WorldState.instance.passiveValues.ramChargeDR);
+                break;
+            default: //Otherwise, take damage as normal.
+                Debug.Log("Took Damage in a " + currentSheepState.ToString() + " State.");
+                base.TakeDamage(atk, attackForward);
+                break;
+        }
     }
     #endregion
 

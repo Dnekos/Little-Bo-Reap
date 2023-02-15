@@ -17,19 +17,19 @@ public struct SheepPassives
 	public string activeFluffyAbility;
 
 	[Header("Builder Upgrades")]
-	public int builderLaunchDam;
-	public int builderCorruptChance;
-	public int builderConstructDR;
+	public float builderLaunchDam;
+	public float builderCorruptChance;
+	public float builderConstructDR;
 
 	[Header("Ram Upgrades")]
-	public int ramChargeDR;
-	public int ramDamage;
-	public int ramKnockback;
+	public float ramChargeDR;
+	public float ramDamage;
+	public float ramKnockback;
 
 	[Header("Fluffy Upgrades")]
-	public int fluffyHealth;
-	public int fluffyKnockResist;
-	public int fluffyVortexDuration;
+	public float fluffyHealth;
+	public float fluffyKnockResist;
+	public float fluffyVortexDuration;
 }
 
 public class WorldState : MonoBehaviour
