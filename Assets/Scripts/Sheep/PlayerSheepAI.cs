@@ -412,7 +412,15 @@ public class PlayerSheepAI : Damageable
                 break;
             default: //Otherwise, take damage as normal.
                 Debug.Log("Took Damage in a " + currentSheepState.ToString() + " State.");
-                base.TakeDamage(atk, attackForward);
+                if (sheepType != 2) //If this is a fluffy sheep, apply the fluffy knockback resistance multiplier
+                {
+                    base.TakeDamage(atk, attackForward);
+                }
+                else
+                {
+                    Debug.Log("Fluffy Took Damage");
+                    base.TakeDamage(atk, attackForward, 0.0f, WorldState.instance.passiveValues.fluffyKnockResist);
+                }
                 break;
         }
     }
