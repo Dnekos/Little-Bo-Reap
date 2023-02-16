@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class HUDManager : MonoBehaviour
 {
+	[SerializeField]
+	PlayerInput inputs;
 	[SerializeField] GameObject HUD;
 
 	[Header("Sheep UI")]
@@ -25,6 +29,9 @@ public class HUDManager : MonoBehaviour
 	[SerializeField] string swapAnimationUI;
 	[SerializeField] string noSheepAnimUI;
 
+	[Header("Progression")]
+	[SerializeField] GameObject ProgressionMenu;
+	[SerializeField] GameObject ProgressionFirstSelected;
 
 
 	public void ToggleHud()
@@ -35,7 +42,39 @@ public class HUDManager : MonoBehaviour
 	{
 		HUD.SetActive(value);
 	}
+	public void ToggleProgressionMenu(bool value)
+	{
+		ProgressionMenu.SetActive(value);
+		if (value)
+		{
+			// set active button
+			EventSystem.current.SetSelectedGameObject(ProgressionFirstSelected);
 
+			// mouse 
+			Cursor.visible = true;
+			Cursor.lockState = CursorLockMode.None;
+
+			// disable HUD and pause
+			ToggleHud(false);
+			WorldState.instance.gameState = WorldState.State.Dialog;
+			inputs.SwitchCurrentActionMap("Dialog");
+			Time.timeScale = 0;
+
+		}
+		else
+		{
+			Time.timeScale = 1;
+
+			// mouse
+			Cursor.visible = false;
+			Cursor.lockState = CursorLockMode.Locked;
+
+			// return to normal gameplay
+			ToggleHud(true);
+			WorldState.instance.gameState = WorldState.State.Play;
+			inputs.SwitchCurrentActionMap("PlayerMovement");
+		}
+	}
 	private void Start()
 	{
 		WorldState.instance.HUD = this;

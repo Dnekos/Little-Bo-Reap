@@ -452,10 +452,24 @@ public enum SheepStates
                 Debug.Log("Took Damage in CONSTRUCT state.");
                 base.TakeDamage(atk, attackForward, WorldState.instance.passiveValues.builderConstructDR);
                 break;
-            case SheepStates.STAMPEDE:  //If you are in a STAMPEDE state, take damage modified by the StampedeDR multiplier
-                Debug.Log("Took Damage in STAMPEDE state.");
-                base.TakeDamage(atk, attackForward, WorldState.instance.passiveValues.ramChargeDR);
-                break;
+            case SheepStates.ABILITY:  //If you are in a STAMPEDE state, take damage modified by the StampedeDR multiplier
+                Debug.Log("Took Damage in ABILITY state.");
+				if (ability is SheepStampedeBehavior)
+					base.TakeDamage(atk, attackForward, WorldState.instance.passiveValues.ramChargeDR);
+				else
+				{
+					if (sheepType != 2) //If this is a fluffy sheep, apply the fluffy knockback resistance multiplier
+					{
+						base.TakeDamage(atk, attackForward);
+					}
+					else
+					{
+						Debug.Log("Fluffy Took Damage");
+						base.TakeDamage(atk, attackForward, 0.0f, WorldState.instance.passiveValues.fluffyKnockResist);
+					}
+				}
+				break;
+
             default: //Otherwise, take damage as normal.
                 Debug.Log("Took Damage in a " + currentSheepState.ToString() + " State.");
                 if (sheepType != 2) //If this is a fluffy sheep, apply the fluffy knockback resistance multiplier
