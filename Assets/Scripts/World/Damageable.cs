@@ -40,20 +40,20 @@ public class Damageable : MonoBehaviour
 		Health = MaxHealth;
 		rb = GetComponent<Rigidbody>();
 	}
-
+	//Non Sheep TakeDamage
 	virtual public void TakeDamage(Attack atk, Vector3 attackForward, float damageMultiplier = 1.0f)
 	{
 		if (!isInvulnerable || Health <= 0)
 		{
 			// deal damage
-			Health -= (atk.damage * damageMultiplier);
+			Health -= atk.damage * ((damageMultiplier <= 0) ? 1 : damageMultiplier);
 			Vector3 knockbackForce = attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback;
 
-			Debug.Log(gameObject.name + " took " + atk.damage * damageMultiplier + " damage (force: " + knockbackForce + ", mag " + knockbackForce.magnitude + ")");
+			Debug.Log(gameObject.name + " took " + atk.damage * ((damageMultiplier <= 0) ? 1 : damageMultiplier) + " damage (force: " + knockbackForce + ", mag " + knockbackForce.magnitude + ")");
 
 			//create damage number
 			var number = Instantiate(damageNumber, transform.position, transform.rotation) as GameObject;
-			number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)atk.damage * damageMultiplier).ToString();
+			number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)atk.damage * ((damageMultiplier <= 0) ? 1 : damageMultiplier)).ToString();
 
 			// add knockback if the current knockback is stronger than the current velocity
 			//Vector3 knockbackForce = attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback;
@@ -80,7 +80,7 @@ public class Damageable : MonoBehaviour
 		}
 
 	}
-
+	//Take Damage Black Sheep w/o Multiplier
 	virtual public void TakeDamage(SheepAttack atk, Vector3 attackForward)
 	{
 		if (!isInvulnerable)
@@ -101,20 +101,20 @@ public class Damageable : MonoBehaviour
 				OnDeath();
 		}
 	}
-
+	//Take Damage with Multiplier
 	virtual public void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp, float knockbackMultiplier)
 	{
 		if (!isInvulnerable || Health <= 0)
 		{
 			// deal damage
-			Health -= atk.damage + damageAmp;
+			Health -= atk.damage * ((damageAmp <= 0) ? 1 : damageAmp );
 			Vector3 knockbackForce = (attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback) * knockbackMultiplier;
 
-			Debug.Log(gameObject.name + " took " + atk.damage + " damage (force: " + knockbackForce + ", mag " + knockbackForce.magnitude + ")");
+			Debug.Log(gameObject.name + " took " + atk.damage * ((damageAmp <= 0) ? 1 : damageAmp) + " damage (force: " + knockbackForce + ", mag " + knockbackForce.magnitude + ")");
 
 			//create damage number
 			var number = Instantiate(damageNumber, transform.position, transform.rotation) as GameObject;
-			number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)atk.damage).ToString();
+			number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)atk.damage * ((damageAmp <= 0) ? 1 : damageAmp)).ToString();
 
 			// add knockback if the current knockback is stronger than the current velocity
 			//Vector3 knockbackForce = attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback;
@@ -141,18 +141,18 @@ public class Damageable : MonoBehaviour
 		}
 
 	}
-
+	//Take Damage Black Sheep with Multiplier
 	virtual public void TakeDamage(SheepAttack atk, Vector3 attackForward, float damageAmp, float knockbackMultiplier)
 	{
 		if (!isInvulnerable)
 		{
 			// deal damage
-			Health -= atk.damageBlack + damageAmp;
-			Debug.Log(gameObject.name + " took " + atk.damageBlack + " damage (force: " + (attackForward * atk.forwardKnockbackBlack + Vector3.up * atk.upwardKnockbackBlack) + ")");
+			Health -= atk.damageBlack * ((damageAmp <= 0) ? 1 : damageAmp);
+			Debug.Log(gameObject.name + " took " + atk.damageBlack * ((damageAmp <= 0) ? 1 : damageAmp) + " damage (force: " + (attackForward * atk.forwardKnockbackBlack + Vector3.up * atk.upwardKnockbackBlack) + ")");
 
 			//create damage number
 			var number = Instantiate(damageNumberGoth, transform.position, transform.rotation) as GameObject;
-			number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)atk.damageBlack).ToString();
+			number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)atk.damageBlack * ((damageAmp <= 0) ? 1 : damageAmp)).ToString();
 
 			// add knockback
 			rb.AddForce((attackForward * atk.forwardKnockbackBlack + Vector3.up * atk.upwardKnockbackBlack) * knockbackMultiplier, ForceMode.Impulse);
