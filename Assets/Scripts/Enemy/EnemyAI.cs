@@ -249,7 +249,7 @@ public class EnemyAI : Damageable
 	#endregion
 	#region Health Override and Hitstun
 	//to apply normal damage, use this overload
-	public override void TakeDamage(Attack atk, Vector3 attackForward, float multiplier = 1.0f)
+	public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
 	{
 		//if they must be executed, return
 		if (mustBeExecuted && Health < executionHealthThreshhold)
@@ -261,7 +261,7 @@ public class EnemyAI : Damageable
 			StartCoroutine("OnHitStun");
 		}
 		// subtract health
-		base.TakeDamage(atk, attackForward, multiplier);
+		base.TakeDamage(atk, attackForward, damageAmp, knockbackMultiplier);
 
 		if (isExecutable && Health <= executionHealthThreshhold)
 		{
@@ -295,7 +295,7 @@ public class EnemyAI : Damageable
 		isExecutable = false;
 		base.ForceKill();
 	}
-	//to apply black sheep damage, use this overload
+	/*//to apply black sheep damage, use this overload
 	public override void TakeDamage(SheepAttack atk, Vector3 attackForward)
 	{
 		//if they must be executed, return
@@ -320,7 +320,7 @@ public class EnemyAI : Damageable
 			currentEnemyState = EnemyStates.EXECUTABLE;
 			executeTrigger.gameObject.SetActive(true);
 		}
-	}
+	}*/
 	IEnumerator OnHitStun()
 	{
 		// save current state and set to Hitstun

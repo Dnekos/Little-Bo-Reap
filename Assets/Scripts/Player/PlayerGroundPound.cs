@@ -74,13 +74,13 @@ public class PlayerGroundPound : MonoBehaviour
 
                     if (GetComponent<PlayerGothMode>().isGothMode)
                     {
-                        groundPoundAttack.damageBlack = baseGroundDamageBlack * damage;
-						enemy.TakeDamage(groundPoundAttack, dir);
+                        groundPoundAttack.BSAttack.damage = baseGroundDamageBlack * damage;
+						enemy.TakeDamage(groundPoundAttack.BSAttack, dir);
                     }
                     else
                     {
                         groundPoundAttack.damage = baseGroundDamage * damage;
-						enemy.TakeDamage((Attack)groundPoundAttack, dir);
+						enemy.TakeDamage(groundPoundAttack, dir);
                     }
                 }
             }
