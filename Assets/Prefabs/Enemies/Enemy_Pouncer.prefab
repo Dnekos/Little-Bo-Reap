@@ -318,7 +318,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Health: 100
   MaxHealth: 100
-  gibs: {fileID: 8393827636954465993, guid: ea9e825e8a7044c4e9974a7bbc512c0d, type: 3}
+  gibs: {fileID: 1095515628264178047, guid: 8b735b699a109b044ad08a09a3c97878, type: 3}
   damageNumber: {fileID: 758784450076825086, guid: 917e1ac09e21f3f499d8aa30f802b69e,
     type: 3}
   damageNumberGoth: {fileID: 758784450076825086, guid: 0a7b484cc73c2c047b45b91fd1f75b6d,
@@ -338,11 +338,17 @@ MonoBehaviour:
       Data3: -1140806494
       Data4: -1177034790
     Path: event:/Big Guy/Death
-  soulValue: 20
-  soulSpeed: 0
-  soulSpawnHeight: 0
-  soulCollectableOne: {fileID: 6060198684946403098, guid: 4b17e9d88b42899429f3f7846d72d21d,
-    type: 3}
+  soulValue: 0
+  healthValue: 3
+  soulSpeed: 4
+  soulSpawnHeight: 4
+  soulCollectables:
+  - {fileID: 1450159934537412182, guid: fd915cf40c047624094e479099915e79, type: 3}
+  - {fileID: 4645614311413259885, guid: 65e6efa8b57965944b8661f42caea478, type: 3}
+  - {fileID: 4645614311413259885, guid: a60042d03826ac94cb621599b2118db9, type: 3}
+  - {fileID: 4645614311413259885, guid: 2ea8437ad6787b049b56c5883a68aae6, type: 3}
+  - {fileID: 4645614311413259885, guid: 484308373c7ce7249b0a2955d5de5e32, type: 3}
+  - {fileID: 6060198684946403098, guid: 4b17e9d88b42899429f3f7846d72d21d, type: 3}
   graph: {fileID: 11400000, guid: fcdf494c27592514395720d5b6c8c8ad, type: 2}
   SpawnParticlePrefab: {fileID: 6246327466764470281, guid: 817debac214ef9f4ba98b6f41baf3376,
     type: 3}

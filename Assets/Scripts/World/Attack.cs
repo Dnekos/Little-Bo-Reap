@@ -10,6 +10,7 @@ public class Attack : ScriptableObject
 	public float airborneLift; // possibly obsolete
 	public string animation;
 	public bool DealsHitstun = true;
+	public bool ShowNumber = true;
 
 	[Header("Knockback")]
 	public float forwardKnockback;

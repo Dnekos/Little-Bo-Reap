@@ -33,6 +33,9 @@ public class PlayerGothMode : MonoBehaviour
 	[SerializeField]
 	GameEvent RespawnEvent;
 
+	// quick math
+	float durationInverse, chargeTimeInverse;
+
 	PlayerSheepAbilities playerSheep;
 
     private void Start()
@@ -48,6 +51,10 @@ public class PlayerGothMode : MonoBehaviour
 		RespawnEvent.listener.AddListener(delegate { ResetGoth(); });
 
 		meshes = materialParent.GetComponentsInChildren<SkinnedMeshRenderer>();
+
+		// save these inverses to save calculations
+		durationInverse = 1 / gothMeterDuration;
+		chargeTimeInverse = 1 / gothMeterChargeTime;
 	}
 
 	void ResetGoth()
@@ -84,7 +91,7 @@ public class PlayerGothMode : MonoBehaviour
         if (isGothMode)
         {
 			//deplete meter
-			GothMeterCount = Mathf.Clamp01(GothMeterCount - (1.0f / gothMeterDuration * Time.unscaledDeltaTime));
+			GothMeterCount = Mathf.Clamp01(GothMeterCount - (durationInverse * Time.deltaTime));
 			gothMeter.ChangeFill(GothMeterCount);
 
 			//deplete saturation over time
@@ -95,7 +102,7 @@ public class PlayerGothMode : MonoBehaviour
         }
         else
         {
-			GothMeterCount = Mathf.Clamp01(GothMeterCount + (1.0f / gothMeterChargeTime * Time.unscaledDeltaTime));
+			GothMeterCount = Mathf.Clamp01(GothMeterCount + (chargeTimeInverse * Time.deltaTime));
 			gothMeter.ChangeFill(GothMeterCount);
 		}
     }
@@ -104,27 +111,14 @@ public class PlayerGothMode : MonoBehaviour
     {
         if (context.started && GothMeterCount == 1f)
         {
-			//TEMP SOUND
-			FMODUnity.RuntimeManager.PlayOneShotAttached(gothSound,gameObject);
+			SetGothVisual();
 
-            Instantiate(explosion, transform.position, transform.rotation);
-
-            gothSaturation.saturation.value = defaultSaturation;
-
-            foreach(SkinnedMeshRenderer mesh in meshes)
-            {
-                mesh.material = gothMat;
-            }
-
-
-            isGothMode = true;
-            gothParticles.SetActive(true);
-            playerSheep.GoGothMode();
+			playerSheep.GoGothMode();
         }
     }
 
 
-    public void ForceGothMode()
+    public void SetGothVisual()
     {
         //TEMP SOUND
         FMODUnity.RuntimeManager.PlayOneShotAttached(gothSound, gameObject);

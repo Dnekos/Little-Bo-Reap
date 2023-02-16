@@ -23,6 +23,7 @@ public enum SheepStates
     [SerializeField] float baseSpeedMin = 15f;
     [SerializeField] float baseSpeedMax = 20f;
     [SerializeField] string jumpAnimation;
+    [SerializeField] string jumpLandAnimation;
     [SerializeField] float jumpSpeed = 8f;
     OffMeshLink link;
     float oldLinkCost;
@@ -87,7 +88,7 @@ public enum SheepStates
     bool isGrounded;
 	[HideInInspector] // hold new position so that constructs can query it even if sheep is still lerping to it
 	public Vector3 constructPos;
-
+    
 	[Header("DEBUG")]
 	public PlayerSheepAI leaderSheep;
 	public int sheepPoolIndex;
@@ -107,7 +108,15 @@ public enum SheepStates
         //make sure off mesh link is null
         link = null;
 
-        walker = GetComponent<FMODUnity.StudioEventEmitter>();
+        
+        if (sheepType == 2)
+        {
+            MaxHealth += WorldState.instance.passiveValues.fluffyHealth;
+            Health = MaxHealth;
+        }
+
+
+		walker = GetComponent<FMODUnity.StudioEventEmitter>();
 
 		animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
@@ -167,6 +176,7 @@ public enum SheepStates
         if (isJumping && !agent.isOnOffMeshLink)
         {
             ReleaseOffmeshLink();
+            animator.Play(jumpLandAnimation);
             agent.speed = storedSpeed;
             isJumping = false;
         }
@@ -261,11 +271,31 @@ public enum SheepStates
 			//subtract 1 from health
 			TakeDamage(selfDamage, transform.forward);
 
-			Instantiate(theAttack.explosionEffect, transform.position, transform.rotation);
-			target?.GetComponent<EnemyAI>().TakeDamage(theAttack, transform.forward);
+            if (sheepType == 1) //if ram, use ram damage/knockback variables
+            {
+                Instantiate(theAttack.explosionEffect, transform.position, transform.rotation);
+                target?.GetComponent<EnemyAI>().TakeDamage(theAttack.BSAttack, transform.forward,
+                    WorldState.instance.passiveValues.ramDamage, WorldState.instance.passiveValues.ramKnockback);
+            }
+            else
+            {
+                Instantiate(theAttack.explosionEffect, transform.position, transform.rotation);
+                target?.GetComponent<EnemyAI>().TakeDamage(theAttack.BSAttack, transform.forward);
+            }
 		}
-		else
-			target?.GetComponent<EnemyAI>().TakeDamage((Attack)theAttack, transform.forward);
+        else
+        {
+            if (sheepType == 1) //if ram, use ram damage/knockback variables
+            {
+                Instantiate(theAttack.explosionEffect, transform.position, transform.rotation);
+                target?.GetComponent<EnemyAI>().TakeDamage(theAttack, transform.forward,
+                    WorldState.instance.passiveValues.ramDamage, WorldState.instance.passiveValues.ramKnockback);
+            }
+            else
+            {
+                target?.GetComponent<EnemyAI>().TakeDamage(theAttack, transform.forward);
+            }
+        }
 	}
     private void OnTriggerEnter(Collider other)
     {
@@ -409,12 +439,50 @@ public enum SheepStates
 		Instantiate(gibs, transform.position, transform.rotation);
         KillSheep();
     }
-    public override void TakeDamage(Attack atk, Vector3 attackForward)
+    public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
     {
-		if (atk.DealsHitstun)
-			SetHitstun(SheepStates.WANDER);
+        if (atk.DealsHitstun)
+            SetHitstun(SheepStates.WANDER);
 
-        base.TakeDamage(atk, attackForward);
+		Debug.Log("Took Damage in a " + currentSheepState.ToString() + " State.");
+
+		switch (currentSheepState)
+        {
+            case SheepStates.LIFT:  //If you are in a LIFT state, take damage modified by the ConstructDR multiplier
+                base.TakeDamage(atk, attackForward, WorldState.instance.passiveValues.builderConstructDR);
+                break;
+            case SheepStates.CONSTRUCT:  //If you are in a CONSTRUCT state, take damage modified by the ConstructDR multiplier
+                base.TakeDamage(atk, attackForward, WorldState.instance.passiveValues.builderConstructDR);
+                break;
+            case SheepStates.ABILITY:  //If you are in a STAMPEDE state, take damage modified by the StampedeDR multiplier
+				if (ability is SheepStampedeBehavior)
+					base.TakeDamage(atk, attackForward, WorldState.instance.passiveValues.ramChargeDR);
+				else
+				{
+					if (sheepType != 2) //If this is a fluffy sheep, apply the fluffy knockback resistance multiplier
+					{
+						base.TakeDamage(atk, attackForward);
+					}
+					else
+					{
+						Debug.Log("Fluffy Took Damage");
+						base.TakeDamage(atk, attackForward, 0.0f, WorldState.instance.passiveValues.fluffyKnockResist);
+					}
+				}
+				break;
+
+            default: //Otherwise, take damage as normal.
+                if (sheepType != 2) //If this is a fluffy sheep, apply the fluffy knockback resistance multiplier
+                {
+                    base.TakeDamage(atk, attackForward);
+                }
+                else
+                {
+                    Debug.Log("Fluffy Took Damage");
+                    base.TakeDamage(atk, attackForward, 0.0f, WorldState.instance.passiveValues.fluffyKnockResist);
+                }
+                break;
+        }
     }
     #endregion
 

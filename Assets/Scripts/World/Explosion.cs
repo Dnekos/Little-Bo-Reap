@@ -19,7 +19,7 @@ public class Explosion : MonoBehaviour
 		if (enemy != null && !enemiesHitThisAttack.Contains(enemy)) // make sure we dont double tap
 		{
 			Vector3 attackVector = enemy.transform.position - transform.position;
-			enemy.TakeDamage(activeAttack, attackVector.normalized);
+			enemy.TakeDamage(activeAttack, attackVector.normalized, 0, 1);
 			enemiesHitThisAttack.Add(enemy);
 		}
 	}
