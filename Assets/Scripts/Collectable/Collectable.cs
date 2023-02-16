@@ -35,7 +35,10 @@ public abstract class Collectable : MonoBehaviour
 
     protected void SpawnCollectParticles()
     {
-        Instantiate(collectParticles, transform.position, transform.rotation);
+        if(collectParticles != null)
+        {
+            Instantiate(collectParticles, transform.position, transform.rotation);
+        }
     }
 
     void Update()
