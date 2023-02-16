@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3730454077743623387}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Spawn Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,8 @@ GameObject:
   - component: {fileID: 5870838572739010380}
   - component: {fileID: 6323528660858874146}
   - component: {fileID: 8339615372791349944}
-  m_Layer: 0
+  - component: {fileID: 5220658151156084738}
+  m_Layer: 15
   m_Name: Checkpoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64,7 +65,7 @@ Transform:
   - {fileID: 5267564096982754374}
   - {fileID: 3730454077743623387}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &6323528660858874146
 BoxCollider:
@@ -100,6 +101,20 @@ MonoBehaviour:
       Data3: 759095449
       Data4: 509091437
     Path: event:/Finished/Checkpoint
+--- !u!114 &5220658151156084738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7319282972424232426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b16de2cb50aac9743a1cdb93fc62ef4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canInteract: 1
+  onlyInteractableOnce: 0
 --- !u!1001 &5661197210226738093
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -163,6 +178,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8513424388201257645, guid: 37b66e5d6e1d1ca429bf091b0eddb46c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: -7609145667655734672, guid: 37b66e5d6e1d1ca429bf091b0eddb46c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957782524123411102, guid: 37b66e5d6e1d1ca429bf091b0eddb46c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: -344004081357383697, guid: 37b66e5d6e1d1ca429bf091b0eddb46c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 592664080621265513, guid: 37b66e5d6e1d1ca429bf091b0eddb46c,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -172,6 +207,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Bell_Checkpoint_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 37b66e5d6e1d1ca429bf091b0eddb46c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1112601408114800703, guid: 37b66e5d6e1d1ca429bf091b0eddb46c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3779745573541866595, guid: 37b66e5d6e1d1ca429bf091b0eddb46c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []

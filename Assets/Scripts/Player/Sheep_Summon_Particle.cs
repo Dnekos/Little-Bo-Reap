@@ -53,9 +53,10 @@ public class Sheep_Summon_Particle : MonoBehaviour
 			sheep.activeSheepPool = player.GetActiveSheep(sheepType);
 			sheep.sheepPoolIndex = index;
 
-			//determine if it's a black sheep
-			float rand = Random.Range(0f, 100f);
-            if (rand <= player.summonBlackSheepPercent || player.gothMode.isGothMode) 
+
+            //determine if it's a black sheep
+            float rand = Random.Range(0f, 100f);
+            if (rand <= player.summonBlackSheepPercent || (sheepType == SheepTypes.BUILD && rand <= player.summonBlackSheepPercent + WorldState.instance.passiveValues.builderCorruptChance) || player.gothMode.isGothMode) 
 				sheep.isBlackSheep = true;
         }
     }

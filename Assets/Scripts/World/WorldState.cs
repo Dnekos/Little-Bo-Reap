@@ -2,6 +2,34 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
+[System.Serializable]
+public struct SheepPassives
+{
+	[Header("Soul Count")]
+	public int soulsCount;
+	public int bossSoulsCount;
+
+	[Header("Active Abilities")]
+	public string activeBuilderAbility;
+	public string activeRamAbility;
+	public string activeFluffyAbility;
+
+	[Header("Builder Upgrades")]
+	public float builderLaunchDam;
+	public float builderCorruptChance;
+	public float builderConstructDR;
+
+	[Header("Ram Upgrades")]
+	public float ramChargeDR;
+	public float ramDamage;
+	public float ramKnockback;
+
+	[Header("Fluffy Upgrades")]
+	public float fluffyHealth;
+	public float fluffyKnockResist;
+	public float fluffyVortexDuration;
+}
+
 public class WorldState : MonoBehaviour
 {
 	public static WorldState instance;
@@ -14,6 +42,10 @@ public class WorldState : MonoBehaviour
 	}
 
 	public State gameState = State.Play;
+	
+	//TODO unserialize this to make inpsector look clean
+	[SerializeField] public SheepPassives passiveValues;
+	
 
 	[SerializeField]
 	Checkpoint[] SpawnPoints;

@@ -249,7 +249,7 @@ public class EnemyAI : Damageable
 	#endregion
 	#region Health Override and Hitstun
 	//to apply normal damage, use this overload
-	public override void TakeDamage(Attack atk, Vector3 attackForward)
+	public override void TakeDamage(Attack atk, Vector3 attackForward, float multiplier = 1.0f)
 	{
 		//if they must be executed, return
 		if (mustBeExecuted && Health < executionHealthThreshhold)
@@ -261,7 +261,8 @@ public class EnemyAI : Damageable
 			StartCoroutine("OnHitStun");
 		}
 		// subtract health
-		base.TakeDamage(atk, attackForward);
+		base.TakeDamage(atk, attackForward, multiplier);
+
 		if (isExecutable && Health <= executionHealthThreshhold)
 		{
 			rb.mass = 100f;
@@ -273,6 +274,7 @@ public class EnemyAI : Damageable
 			executeTrigger.SetActive(true);
 		}
 	}
+
 	protected override void OnDeath()
 	{
 		if (isExecutable)
