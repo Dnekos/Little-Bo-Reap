@@ -5,7 +5,7 @@ using UnityEngine.AI;
 [CreateAssetMenu(fileName = "NewStampede", menuName = "ScriptableObjects/Stampede")]
 public class SheepStampedeBehavior : SheepBehavior
 {
-	[Header("Stempeding")]
+	[Header("Stampeding")]
 	[SerializeField] float chargeSpeed = 35f;
 	[SerializeField] float chargePointRadius = 10f;
 	[SerializeField] float chargeStopDistance = 0f;
@@ -60,19 +60,23 @@ public class SheepStampedeBehavior : SheepBehavior
 		ps.transform.LookAt(targettedPos + ps.transform.position);
 		AbilityUpdate(ps);
 
+		//set charge speed
+		ps.agent.speed = chargeSpeed;
+
 		ps.agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
 
 		//set sheep state
-		ps.SetSheepState(SheepStates.STAMPEDE);
+		ps.SetSheepState(SheepStates.ABILITY);
 	}
 
 	IEnumerator ChargeTimer(PlayerSheepAI ps)
 	{
 		yield return new WaitForSeconds(chargeCheckTime);
-		if (ps.GetSheepState() == SheepStates.STAMPEDE && ps.agent.velocity.magnitude <= chargeCheckSpeed)
-			EndCharge(ps);
+		if (ps.GetSheepState() == SheepStates.ABILITY && ps.agent.velocity.magnitude <= chargeCheckSpeed)
+			End(ps);
 	}
 
+	
 	void EndCharge(PlayerSheepAI ps)
 	{
 		//if (ps.leaderSheep == ps)
@@ -96,6 +100,15 @@ public class SheepStampedeBehavior : SheepBehavior
 		{
 			other.GetComponent<BreakableWall>()?.DamageWall();
 		}
+		if(other.CompareTag("Destructible"))
+        {
+			other.GetComponent<Destructible>()?.Destroy();
+		}
 	}
-	public override void End(PlayerSheepAI ps, GameObject obj) { }
+	public override void End(PlayerSheepAI ps, GameObject obj = null)
+	{
+		ps.SetSheepState(SheepStates.WANDER);
+		ps.chargeParticles.SetActive(false);
+		ps.agent.obstacleAvoidanceType = ObstacleAvoidanceType.MedQualityObstacleAvoidance;
+	}
 }

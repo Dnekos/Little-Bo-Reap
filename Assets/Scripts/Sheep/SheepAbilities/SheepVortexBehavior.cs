@@ -39,11 +39,6 @@ public class SheepVortexBehavior : SheepBehavior
 				+ new Vector3(Mathf.Sin(radAngle + Time.time * inVortexRotSpeed), 0, Mathf.Cos(radAngle + Time.time * inVortexRotSpeed)) * vortexRadius ;
 
 			ps.transform.position = Vector3.Lerp(ps.transform.position, dest, inVortexLerpSpeed * (inVortexLerpUseDt ? Time.deltaTime : 1));
-			//ps.transform.localPosition = Random.insideUnitCircle.normalized * defendRotateDistance;
-
-			//float randPosY = Random.Range(defendMinHeight, defendMaxHeight);
-
-			//ps.transform.localPosition = new Vector3(ps.transform.localPosition.x, randPosY, ps.transform.localPosition.y);
 		}
 		else
 		{
@@ -68,11 +63,14 @@ public class SheepVortexBehavior : SheepBehavior
 		//set speed
 		ps.agent.speed = defendSpeed;
 		ps.agent.stoppingDistance = defendStopDistance;
-		ps.SetSheepState(SheepStates.VORTEX);
+		ps.SetSheepState(SheepStates.ABILITY);
 	}
 
 	public override void End(PlayerSheepAI ps, GameObject fluffyProjectile)
 	{
+		if (fluffyProjectile == null)
+			return;
+
 		PlayerSheepProjectile launchSheep = Instantiate(fluffyProjectile, ps.transform.position, ps.transform.rotation).GetComponent<PlayerSheepProjectile>();
 		if (ps.isBlackSheep)
 			launchSheep.isBlackSheep = true;

@@ -14800,8 +14800,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7642856465436953986}
-  - component: {fileID: 7642856465436953987}
-  - component: {fileID: 7642856465436953984}
   - component: {fileID: 7642856465436953985}
   - component: {fileID: -2200354341938741082}
   - component: {fileID: 7642856465436953990}
@@ -14838,56 +14836,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &7642856465436953987
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7642856465436953991}
-  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &7642856465436953984
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7642856465436953991}
-  m_Enabled: 0
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 6e823b613f7441c45a1ef60d7590b3ad, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!136 &7642856465436953985
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -15021,16 +14969,8 @@ MonoBehaviour:
   attackStopDistance: 2
   attackBase: {fileID: 11400000, guid: 5b7bc4a289976064eb0d5f52a958ccf8, type: 2}
   canAttack: 1
-  stampede: {fileID: 11400000, guid: 67e05d93f015fbe4abbbfc8395b7fb99, type: 2}
+  ability: {fileID: 0}
   chargeParticles: {fileID: 7161172381600653379}
-  vortex: {fileID: 11400000, guid: 7834b1bec8a3b574e997c6688650cc10, type: 2}
-  defendSpeed: 55
-  defendStopDistance: 0
-  defendAttack: {fileID: 11400000, guid: a7aa48275e7e2214fbc5ce7dac1c1b12, type: 2}
-  defendRotateDistance: 8
-  defendMinHeight: 0
-  defendMaxHeight: 2
-  defendSlerpTime: 1
   StunTime: 1
   fallRate: 50
   constructPos: {x: 0, y: 0, z: 0}

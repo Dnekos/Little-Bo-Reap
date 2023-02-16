@@ -384,7 +384,7 @@ MonoBehaviour:
   m_Name: Equality
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 88, y: 744}
+  position: {x: 72, y: 744}
   ports:
     keys:
     - lhs
@@ -491,7 +491,7 @@ MonoBehaviour:
   m_Name: Value
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -440, y: 648}
+  position: {x: -440, y: 696}
   ports:
     keys:
     - desiredValue
@@ -917,10 +917,10 @@ MonoBehaviour:
       - fieldName: enter
         node: {fileID: -5836268909582168705}
         reroutePoints: []
-      - fieldName: enter
+      - fieldName: lhs
         node: {fileID: -4007612527441401544}
         reroutePoints: []
-      - fieldName: lhs
+      - fieldName: enter
         node: {fileID: -4007612527441401544}
         reroutePoints: []
       - fieldName: enter
@@ -1047,7 +1047,7 @@ MonoBehaviour:
   m_Name: Value
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -440, y: 760}
+  position: {x: -440, y: 808}
   ports:
     keys:
     - desiredValue
@@ -1089,7 +1089,7 @@ MonoBehaviour:
   m_Name: Vector Arithmatic
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -200, y: 680}
+  position: {x: -200, y: 728}
   ports:
     keys:
     - num1

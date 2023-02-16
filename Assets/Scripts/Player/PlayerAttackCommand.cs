@@ -55,32 +55,32 @@ public class PlayerAttackCommand : MonoBehaviour
 
 	#region Sheep Attack
 	public void OnSheepAttack(InputAction.CallbackContext context)
-	{
+	{			
+		SheepTypes flockType = flocks.currentFlockType;
+		//if (flocks.GetActiveSheep(flockType).Count <= 0)
+		//	return;
+
 		if (context.started)
 		{
 			stampede.hasCharged = false;
-		}
+		
+			// no sheep?
+			if (flocks.GetActiveSheep(flockType).Count <= 0)
+			{
+				WorldState.instance.HUD.SheepErrorAnimation();
+				return;
+			}
 
-		//CHARGE
-		/*
-        if(context.started && isPreparingCharge && sheepFlocks[(int)SheepTypes.RAM].MaxSize > 0)
-        {
-			// shortened for brevity
-			DoStampede();
-
-			// dont bother looking at the next if
-			return;
         }
-		*/
-		if (canAttack && !stampede.isPreparingCharge && !stampede.hasCharged)
-		{
-			SheepTypes flockType = flocks.currentFlockType;
 
-			if (context.canceled)//(context.ReadValue<float>() == 0)
+        if (canAttack && !stampede.isPreparingCharge && !stampede.hasCharged)
+		{
+
+			if (context.canceled && flocks.GetActiveSheep(flockType).Count > 0)
 			{
 				DoAttack();
 			}
-			else if (context.started && sheepAttackPoint == null)//context.ReadValue<float>() == 1)
+			else if (context.started && sheepAttackPoint == null)
 			{
 				//spawn icon
 				var attackPoint = Instantiate(flocks.GetSheepFlock(flockType).reticleSustainPrefab, transform.position, Quaternion.identity) as GameObject;
@@ -141,10 +141,6 @@ public class PlayerAttackCommand : MonoBehaviour
 		}
 		//start cooldown
 		canAttack = false;
-
-		//no sheep?
-		if (flocks.GetActiveSheep(flockType).Count <= 0)
-			WorldState.instance.HUD.SheepErrorAnimation();
 
 		StartCoroutine(AttackCooldown());
 	}

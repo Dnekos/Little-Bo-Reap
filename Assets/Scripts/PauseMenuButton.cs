@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PauseMenuButton : MonoBehaviour
 {
     [SerializeField] PlayerPauseMenu pp; //hehe
     [SerializeField] GameObject panel;
+	[SerializeField] GameObject FirstSelected;
 	[Header("Sounds")]
 	[SerializeField] FMODUnity.EventReference clickSound;
 
@@ -31,5 +33,9 @@ public class PauseMenuButton : MonoBehaviour
 			panel.SetActive(true);
 		}
 
+	}
+	private void OnEnable()
+	{
+		EventSystem.current.SetSelectedGameObject(FirstSelected);
 	}
 }

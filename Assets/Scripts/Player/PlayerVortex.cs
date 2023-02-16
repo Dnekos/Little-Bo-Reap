@@ -58,7 +58,7 @@ public class PlayerVortex : MonoBehaviour
 			{
 				// check if you have any defending sheep
 				for (int i = flocks.GetActiveSheep(SheepTypes.FLUFFY).Count - 1; i >= 0; i--)
-					if (flocks.GetActiveSheep(SheepTypes.FLUFFY)[i].GetSheepState() == SheepStates.VORTEX)
+					if (flocks.GetActiveSheep(SheepTypes.FLUFFY)[i].GetSheepState() == SheepStates.ABILITY)
 						return;
 			}
 
@@ -91,7 +91,7 @@ public class PlayerVortex : MonoBehaviour
 
 		for (int i = flocks.GetActiveSheep(SheepTypes.FLUFFY).Count - 1; i >= 0; i--)
 		{
-			if (flocks.GetActiveSheep(SheepTypes.FLUFFY)[i].GetSheepState() == SheepStates.VORTEX)
+			if (flocks.GetActiveSheep(SheepTypes.FLUFFY)[i].GetSheepState() == SheepStates.ABILITY)
 			{
 				flocks.GetActiveSheep(SheepTypes.FLUFFY)[i]?.EndAbility(flocks.GetSheepFlock(SheepTypes.FLUFFY).SheepProjectilePrefab);
 
@@ -121,18 +121,14 @@ public class PlayerVortex : MonoBehaviour
 		// command sheep and check if we have the right sheep ability
 		List<PlayerSheepAI> sheep = flocks.GetActiveSheep(flockType);
 
-		if (canDefend && context.performed && sheep.Count >= 0)
+		if (canDefend && context.performed && sheep.Count > 0 && sheep[0].ability is SheepVortexBehavior)
 		{
 			if (!isDefending)
 			{
 				for (int i = 0; i < sheep.Count; i++)
 				{
 					if (sheep[i].IsCommandable() && sheep[i].ability is SheepVortexBehavior)
-					{
 						sheep[i]?.BeginAbility(Vector3.zero);
-					}
-					else if (!(sheep[i].ability is SheepVortexBehavior))
-						return;
 				}
 
 				Debug.Log("start defend");
