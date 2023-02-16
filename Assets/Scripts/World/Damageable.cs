@@ -57,7 +57,7 @@ public class Damageable : MonoBehaviour
 			{
 				//create damage number
 				var number = Instantiate(damageNumber, transform.position, transform.rotation) as GameObject;
-				number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)atk.damage).ToString();
+				number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)atk.damage * ((damageMultiplier <= 0) ? 1 : damageMultiplier)).ToString();
 			}
 
 			// add knockback if the current knockback is stronger than the current velocity
