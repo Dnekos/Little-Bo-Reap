@@ -148,6 +148,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "PauseMenu",
+                    "type": "Button",
+                    "id": "f8511625-e0a9-4636-a07b-742a7b1aec96",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -612,6 +621,28 @@
                     "action": "PetSheep",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "84c35878-5769-4aef-a737-4d885ff72cbf",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PauseMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5d78babf-0be3-4ce2-bc79-1b80b3c991ac",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PauseMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -619,15 +650,6 @@
             "name": "PlayerMenu",
             "id": "f42f6a86-4223-4a9c-89ad-1979079c41ff",
             "actions": [
-                {
-                    "name": "PauseMenu",
-                    "type": "Button",
-                    "id": "4dfd2a40-9301-4cfb-93b9-9991e2e4a4ab",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
                 {
                     "name": "DEBUG_Quit_Game",
                     "type": "Button",
@@ -657,28 +679,6 @@
                 }
             ],
             "bindings": [
-                {
-                    "name": "",
-                    "id": "c9e1fa2b-9d99-4c69-bc94-aa40d91338d4",
-                    "path": "<Keyboard>/escape",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "PauseMenu",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "23981c88-e1d8-4f87-9d11-4f923bf0524b",
-                    "path": "<Gamepad>/start",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "PauseMenu",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
                 {
                     "name": "",
                     "id": "e0731ee0-cfa8-4a0b-9096-73b1c8f043ed",

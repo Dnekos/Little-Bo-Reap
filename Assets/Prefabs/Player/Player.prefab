@@ -10622,7 +10622,7 @@ Transform:
   - {fileID: 4946047290265379997}
   - {fileID: 7386700366853540259}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &455429352502565040
 GameObject:
@@ -70730,10 +70730,6 @@ MonoBehaviour:
     m_ActionName: PlayerMovement/SheepAttack[/Keyboard/1]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 4dfd2a40-9301-4cfb-93b9-9991e2e4a4ab
-    m_ActionName: PlayerMenu/PauseMenu[/Keyboard/escape]
-  - m_PersistentCalls:
-      m_Calls: []
     m_ActionId: 69cc146f-1176-465e-8891-58ba71261dc3
     m_ActionName: PlayerMenu/DEBUG_Quit_Game[/Keyboard/equals]
   - m_PersistentCalls:
@@ -70852,6 +70848,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 56b0c570-cf82-4458-acdd-3c305d71e1d8
     m_ActionName: PlayerMovement/PetSheep[/DualSenseGamepadHID/rightStickPress]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7611933122142456365}
+        m_TargetAssemblyTypeName: PlayerPauseMenu, Project.Player
+        m_MethodName: OnPauseMenu
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: f8511625-e0a9-4636-a07b-742a7b1aec96
+    m_ActionName: PlayerMovement/PauseMenu[/Keyboard/escape]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerMovement
@@ -87116,7 +87128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 029a303440b26a04d99a05112a3731c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UIPiece: {fileID: 0}
+  UIPiece: {fileID: 2341797955454001526}
 --- !u!1 &4672456749405306658
 GameObject:
   m_ObjectHideFlags: 0
