@@ -14,7 +14,7 @@ public class BouncyMushroom : MonoBehaviour
         if(canBounce && other.CompareTag("Player") && other.GetComponent<Rigidbody>() != null)
         {
             other.GetComponent<Rigidbody>().velocity = Vector3.zero;
-            other.GetComponent<Rigidbody>().AddForce(transform.up * bounceForce);
+            other.GetComponent<Rigidbody>().AddForce(this.transform.up * bounceForce);
             StartCoroutine(BounceCooldown());
         }
     }
