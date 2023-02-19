@@ -29,6 +29,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3442010759657920985}
+  - {fileID: 5162916645674686729}
+  - {fileID: 8773899699277438939}
   m_Father: {fileID: 7642856465436953986}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5073,7 +5075,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3903509060347745927}
-  m_Father: {fileID: 7642856465436953986}
+  m_Father: {fileID: 7736017012913245128}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &3278913021527698109
@@ -14828,8 +14830,6 @@ Transform:
   m_Children:
   - {fileID: 7736017012913245128}
   - {fileID: 7546946168203093237}
-  - {fileID: 5162916645674686729}
-  - {fileID: 8773899699277438939}
   - {fileID: 8255241773936414357}
   - {fileID: 7161172381600653436}
   - {fileID: 7367267366295603141}
@@ -14919,14 +14919,16 @@ MonoBehaviour:
       Data4: 427792418
     Path: event:/Sheep/SheepBaa
   soulValue: 0
+  healthValue: 0
   soulSpeed: 0
   soulSpawnHeight: 0
-  soulCollectableOne: {fileID: 0}
+  soulCollectables: []
   sheepType: 0
   currentSheepState: 0
   baseSpeedMin: 25
   baseSpeedMax: 35
   jumpAnimation: Test_Sheep_Jump
+  jumpLandAnimation: Test_Sheep_Jump_Land
   jumpSpeed: 16
   invulnTimeOnSpawn: 1.5
   avoidPlayerDistance: 2.5
@@ -15132,7 +15134,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 2
-    m_TransformParent: {fileID: 7642856465436953986}
+    m_TransformParent: {fileID: 7736017012913245128}
     m_Modifications:
     - target: {fileID: 2990200743560462240, guid: a95aa12d41c6a964c8e3bbd8d3547c20,
         type: 3}
@@ -15147,7 +15149,7 @@ PrefabInstance:
     - target: {fileID: 2990200743560462241, guid: a95aa12d41c6a964c8e3bbd8d3547c20,
         type: 3}
       propertyPath: m_RootOrder
-      value: 14
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 2990200743560462241, guid: a95aa12d41c6a964c8e3bbd8d3547c20,
         type: 3}

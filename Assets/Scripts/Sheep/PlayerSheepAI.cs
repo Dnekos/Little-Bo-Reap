@@ -23,6 +23,7 @@ public enum SheepStates
     [SerializeField] float baseSpeedMin = 15f;
     [SerializeField] float baseSpeedMax = 20f;
     [SerializeField] string jumpAnimation;
+    [SerializeField] string jumpLandAnimation;
     [SerializeField] float jumpSpeed = 8f;
     OffMeshLink link;
     float oldLinkCost;
@@ -175,6 +176,7 @@ public enum SheepStates
         if (isJumping && !agent.isOnOffMeshLink)
         {
             ReleaseOffmeshLink();
+            animator.Play(jumpLandAnimation);
             agent.speed = storedSpeed;
             isJumping = false;
         }
