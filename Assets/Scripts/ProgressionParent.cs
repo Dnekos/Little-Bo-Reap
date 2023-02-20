@@ -14,8 +14,13 @@ public class ProgressionParent : MonoBehaviour
 
     [SerializeField] SheepTypes thisType;
 
+    //Launch Dam, Charge DR, Fluffy Health
     [SerializeField] float[] upgrade1Values = { 10f, 20f, 50000f };
+
+    //Black Sheep Chance, Ram Damage, Fluffy Knock Resist
     [SerializeField] float[] upgrade2Values = { 10f, 20f, 50000f };
+
+    //Sheep Construct DR, Ram Knockback, Fluffy Vortex Duration
     [SerializeField] float[] upgrade3Values = { 10f, 20f, 50000f };
 
     int currentCostIndex;
