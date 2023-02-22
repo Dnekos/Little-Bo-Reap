@@ -78,25 +78,54 @@ public class Damageable : MonoBehaviour
 	/// <param name="f_mag">magnitude of forward</param>
 	/// <param name="u_mag">magnitude of force in direction of world up</param>
 	/// <param name="mult">overall multiplier of knockback</param>
+
+	//------------------------------------------------------------------
+	//old Knockback implementation(eliminated extreme knockback
+	//void DealKnockback(Vector3 forward, float f_mag, float u_mag, float mult = 1)
+	//{
+	//	Vector3 knockbackForce = (forward * f_mag + Vector3.up * u_mag) * mult;
+
+
+	//	// add knockback if the current knockback is stronger than the current velocity
+	//	//Vector3 knockbackForce = attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback;
+	//	// this isnt working, maybe because the object is getting too much knockback in one frame?
+	//	if (rb.velocity.sqrMagnitude < knockbackForce.sqrMagnitude)
+	//	// TODO: make this not shit
+	//	//if (true)
+	//	{
+	//		// we want to cancel out the current velocity, so as to knock launch them into the stratosphere
+	//		//rb.AddForce(-rb.velocity, ForceMode.VelocityChange);
+	//		rb.velocity = Vector3.zero;
+	//		Debug.Log("before vel: " + rb.velocity + " " + rb.velocity.magnitude);
+	//		// TODO: make this force, not impulse, idiot
+	//		rb.velocity = forward * f_mag + Vector3.up * u_mag;
+	//		Debug.Log("after vel: " + rb.velocity + " " + rb.velocity.magnitude);
+	//	}
+	//}
+	//------------------------------------------------------------------
+
 	void DealKnockback(Vector3 forward, float f_mag, float u_mag, float mult = 1)
 	{
 		Vector3 knockbackForce = (forward * f_mag + Vector3.up * u_mag) * mult;
 
-
 		// add knockback if the current knockback is stronger than the current velocity
-		//Vector3 knockbackForce = attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback;
-		// this isnt working, maybe because the object is getting too much knockback in one frame?
 		if (rb.velocity.sqrMagnitude < knockbackForce.sqrMagnitude)
-		// TODO: make this not shit
-		//if (true)
 		{
+			//float knockbackMult = knockbackForce.magnitude - rb.velocity.magnitude;
 			// we want to cancel out the current velocity, so as to knock launch them into the stratosphere
-			//rb.AddForce(-rb.velocity, ForceMode.VelocityChange);
-			rb.velocity = Vector3.zero;
+			//rb.AddForce((knockbackForce - rb.velocity) * knockbackMult, ForceMode.Impulse
+			//rb.AddForce((knockbackForce.normalized * knockbackForce.magnitude), ForceMode.Impulse);
+
+			rb.AddForce(knockbackForce - rb.velocity, ForceMode.VelocityChange);
+			//this worked the best
+
 			Debug.Log("before vel: " + rb.velocity + " " + rb.velocity.magnitude);
-			// TODO: make this force, not impulse, idiot
-			rb.velocity = forward * f_mag + Vector3.up * u_mag;
-			Debug.Log("after vel: " + rb.velocity + " " + rb.velocity.magnitude);
+		}
+		if (rb.velocity.sqrMagnitude > knockbackForce.sqrMagnitude)
+		{
+			rb.AddForce(- rb.velocity, ForceMode.Impulse);
+			//this only works Using impulse, changing it to velocity change bugs it out
+			Debug.Log("MAX VEL: " + rb.velocity.sqrMagnitude);
 		}
 	}
 
