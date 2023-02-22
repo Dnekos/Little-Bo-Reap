@@ -106,7 +106,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1449617172533561974}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 2.8249998, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -228,7 +228,7 @@ Transform:
   m_GameObject: {fileID: 2224562196609393314}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 145.63829, y: 13.255, z: -42.3284}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8319564841509316920}
@@ -277,7 +277,10 @@ MonoBehaviour:
   soulCollectables: []
   flowerBody: {fileID: 8319564841509316920}
   flowerHead: {fileID: 6062941014471635450}
+  projectile: {fileID: 3078710823658538088, guid: 19929a99ce716bd44a659dfac4d50ea1,
+    type: 3}
   attackPoint: {fileID: 3710546935040339102}
+  animator: {fileID: 1749385111438576580}
   attackSound:
     Guid:
       Data1: -1516851570
