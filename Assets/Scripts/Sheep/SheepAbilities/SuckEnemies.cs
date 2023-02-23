@@ -7,7 +7,7 @@ public class SuckEnemies : MonoBehaviour
     [Header("Suck Variables")]
     [SerializeField] float suckDistance;
     [SerializeField] float suckForce;
-    
+
     [Header("Spin Randomness")]
     [SerializeField] float spinDistance;
     [SerializeField] float vortexRandCircle = 5f;
@@ -24,12 +24,12 @@ public class SuckEnemies : MonoBehaviour
     [SerializeField] float upKnock;
     [SerializeField] float forwardKnock;
 
-
+    List<GameObject> enemiesStuck = new List<GameObject>();
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        GetComponent<SphereCollider>().radius = suckDistance;
     }
 
     // Update is called once per frame
@@ -46,9 +46,12 @@ public class SuckEnemies : MonoBehaviour
 
     public void Suck()
     {
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        foreach (GameObject enemy in enemies)
+        foreach (GameObject enemy in enemiesStuck)
         {
+            if (enemy == null)
+            {
+                continue;
+            }
             float dist = Vector3.Distance(enemy.transform.position, this.transform.position);
             if (dist <= suckDistance && dist >= spinDistance)
             {
@@ -71,40 +74,39 @@ public class SuckEnemies : MonoBehaviour
     {
         Transform player = WorldState.instance.player.transform;
         Debug.Log("following player");
-        GameObject[] enemTemp = GameObject.FindGameObjectsWithTag("Enemy");
-        List<GameObject> enemies = new List<GameObject>();
-        foreach (GameObject tmpEnemy in enemTemp)
+
+        for (int i = 0; i < enemiesStuck.Count; i++)
         {
-            if (Vector3.Distance(player.transform.position, tmpEnemy.transform.position) <= spinDistance)
+            if (enemiesStuck[i] == null)
             {
-                enemies.Add(tmpEnemy);
+                continue;
             }
-        }
-        for(int i = 0; i < enemies.Count; i++)
-        {
-            if (Vector3.Distance(player.transform.position, enemies[i].transform.position) < spinDistance + 2)//defendRotateDistance - 2f)
+            if (Vector3.Distance(player.transform.position, enemiesStuck[i].transform.position) < spinDistance + 2)//defendRotateDistance - 2f)
             {
-                float radAngle = (i / (float)enemies.Count) * Mathf.PI * 2;
+                float radAngle = (i / (float)enemiesStuck.Count) * Mathf.PI * 2;
                 Vector2 RandomCircle = Random.insideUnitCircle.normalized * vortexRandCircle;
 
                 Vector3 dest = player.transform.position
                     + new Vector3(RandomCircle.x, Random.Range(vortexMinHeight, vortexMaxHeight), RandomCircle.y)
                     + new Vector3(Mathf.Sin(radAngle + Time.time * inVortexRotSpeed), 0, Mathf.Cos(radAngle + Time.time * inVortexRotSpeed)) * spinDistance;
 
-                enemies[i].transform.position = Vector3.Lerp(enemies[i].transform.position, dest, inVortexLerpSpeed * (inVortexLerpUseDt ? Time.deltaTime : 1));
+                enemiesStuck[i].transform.position = Vector3.Lerp(enemiesStuck[i].transform.position, dest, inVortexLerpSpeed * (inVortexLerpUseDt ? Time.deltaTime : 1));
             }
             else
             {
-                enemies[i].transform.position = Vector3.Lerp(enemies[i].transform.position, player.transform.position, inVortexRotSpeed * Time.deltaTime);
+                enemiesStuck[i].transform.position = Vector3.Lerp(enemiesStuck[i].transform.position, player.transform.position, inVortexRotSpeed * Time.deltaTime);
             }
-        }        
+        }
     }
 
     public void stopSucking()
     {
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        foreach (GameObject enemy in enemies)
+        foreach (GameObject enemy in enemiesStuck)
         {
+            if (enemy == null)
+            {
+                continue;
+            }
             if (Vector3.Distance(enemy.transform.position, this.transform.position) <= suckDistance)
             {
                 Attack finishAttack = new Attack();
@@ -117,6 +119,29 @@ public class SuckEnemies : MonoBehaviour
                 enemy.GetComponent<EnemyAI>().TakeDamage(finishAttack, knockDir);
             }
         }
+        enemiesStuck.Clear();
         this.gameObject.SetActive(false);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.transform.tag == "Enemy")
+        {
+            if (!enemiesStuck.Contains(other.gameObject))
+            {
+                enemiesStuck.Add(other.gameObject);
+            }
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.transform.tag == "Enemy")
+        {
+            if (!enemiesStuck.Contains(other.gameObject))
+            {
+                enemiesStuck.Add(other.gameObject);
+            }
+        }
     }
 }
