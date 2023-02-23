@@ -49,7 +49,7 @@ public class FlowerProjectile : MonoBehaviour
 
     private void FireProjectile()
     {
-        this.GetComponent<Rigidbody>().AddForce(this.transform.forward * 2000f);
+        this.GetComponentInChildren<Rigidbody>().AddForce(this.transform.forward * 2000f);
     }
 
 }

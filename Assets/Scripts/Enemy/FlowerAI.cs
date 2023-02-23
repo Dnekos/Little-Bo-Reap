@@ -64,4 +64,11 @@ public class FlowerAI : Damageable
         atk.PerformAttack(anim);
         activeAttack = atk;
     }
+
+    public void SpawnProjectile()
+    {
+        if (activeAttack != null)
+            activeAttack.SpawnObject(attackPoint);
+    }
+
 }
