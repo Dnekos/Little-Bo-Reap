@@ -33,27 +33,28 @@ public class FlowerAI : Damageable
     void Update()
     {
         //adjust this
-        animator.Play("Flower_Idle.anim");
+        //animator.Play("Flower_Idle.anim");
+        //create a new attack scriptable for projectile
+        //call it here, look at the enemy AI script for reference
 
         if ((player.position - this.transform.position).magnitude < 100f)
         {
-            animator.Play("Flower_Attack.anim");
             FlowerRotate();
         }
     }
 
     void FlowerRotate()
     {
-        Quaternion bodyAdjust = new Quaternion(0, transform.rotation.y, 0,0);
-        Quaternion headAdjust = new Quaternion(transform.rotation.x, 0,0,0);
+        //Quaternion bodyAdjust = new Quaternion(0, transform.rotation.y, 0,0);
+        //Quaternion headAdjust = new Quaternion(transform.rotation.x, 0,0,0);
 
         Quaternion lookRotation = Quaternion.LookRotation(player.position - transform.position);
         //have body and head turn towards player(y-axis for body, x-axis for head)
         
-        flowerBody.localRotation = new Quaternion(0f, lookRotation.y, 0f, 0f);//I dont know why its not rotating
+        flowerBody.localRotation = Quaternion.Euler(0f, lookRotation.y, 0f);
         //flowerBody.localRotation = Quaternion.LookRotation(player.position - transform.position) * bodyAdjust;
 
-        flowerHead.localRotation = new Quaternion(lookRotation.x, 0f, 0f, 0f);
+        flowerHead.localRotation = Quaternion.Euler(lookRotation.x, 0f, 0f);
         //flowerHead.eulerAngles = new Vector3(0, flowerHead.eulerAngles.y);
 
     }
