@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class FlowerAI : Damageable
 {
+    Dictionary<int, float> Cooldowns;
 
     [SerializeField] Transform flowerBody;
     [SerializeField] Transform flowerHead;
@@ -11,7 +12,8 @@ public class FlowerAI : Damageable
     [SerializeField] Transform projectile;
     [SerializeField] Transform attackPoint;
 
-    [SerializeField] Animator animator;
+    [SerializeField] protected EnemyAttack activeAttack;
+    [SerializeField] Animator anim;
 
     [Header("Sounds")]
     [SerializeField] FMODUnity.EventReference attackSound;
@@ -24,7 +26,7 @@ public class FlowerAI : Damageable
     void Start()
     {
         base.Start();
-
+        Cooldowns = new Dictionary<int, float>();
         player = WorldState.instance.player.transform;
 
     }
@@ -32,6 +34,7 @@ public class FlowerAI : Damageable
     // Update is called once per frame
     void Update()
     {
+
         //adjust this
         //animator.Play("Flower_Idle.anim");
         //create a new attack scriptable for projectile
@@ -40,30 +43,25 @@ public class FlowerAI : Damageable
         if ((player.position - this.transform.position).magnitude < 100f)
         {
             FlowerRotate();
+            RunAttack(activeAttack);
         }
     }
 
     void FlowerRotate()
     {
-        //Quaternion bodyAdjust = new Quaternion(0, transform.rotation.y, 0,0);
-        //Quaternion headAdjust = new Quaternion(transform.rotation.x, 0,0,0);
+        Quaternion bodyLookRotation = Quaternion.LookRotation(player.position - flowerBody.position, transform.localEulerAngles);
+        Quaternion headLookRotation = Quaternion.LookRotation(player.position - flowerHead.position, transform.localEulerAngles);
 
-        Quaternion lookRotation = Quaternion.LookRotation(player.position - transform.position);
         //have body and head turn towards player(y-axis for body, x-axis for head)
-        
-        flowerBody.localRotation = Quaternion.Euler(0f, lookRotation.y, 0f);
-        //flowerBody.localRotation = Quaternion.LookRotation(player.position - transform.position) * bodyAdjust;
+        flowerBody.localEulerAngles = Quaternion.Euler(0f, bodyLookRotation.eulerAngles.y, 0f).eulerAngles;
 
-        flowerHead.localRotation = Quaternion.Euler(lookRotation.x, 0f, 0f);
-        //flowerHead.eulerAngles = new Vector3(0, flowerHead.eulerAngles.y);
+        flowerHead.localEulerAngles = flowerBody.localEulerAngles + Quaternion.Euler(headLookRotation.eulerAngles.x, 0f, 0f).eulerAngles;
 
     }
 
-    void FlowerAttack()
+    public void RunAttack(EnemyAttack atk)
     {
-        Transform newProjectile = Instantiate(projectile, flowerHead.position, flowerHead.rotation);
-
-        newProjectile.GetChild(0).GetComponent<Rigidbody>().AddForce(transform.forward * 20f, ForceMode.Impulse);
-
+        atk.PerformAttack(anim);
+        activeAttack = atk;
     }
 }

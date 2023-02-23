@@ -231,8 +231,8 @@ Transform:
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8319564841509316920}
   - {fileID: 6062941014471635450}
+  - {fileID: 8319564841509316920}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -280,7 +280,8 @@ MonoBehaviour:
   projectile: {fileID: 3078710823658538088, guid: 19929a99ce716bd44a659dfac4d50ea1,
     type: 3}
   attackPoint: {fileID: 3710546935040339102}
-  animator: {fileID: 1749385111438576580}
+  activeAttack: {fileID: 11400000, guid: 126e11f85732c5b40a62955f7c980fb2, type: 2}
+  anim: {fileID: 1749385111438576580}
   attackSound:
     Guid:
       Data1: -1516851570
