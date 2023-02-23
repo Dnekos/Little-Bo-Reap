@@ -32,6 +32,10 @@ public class BattleArena : MonoBehaviour
 	[SerializeField] float slowTimeAtEnd = 1f;
 	[SerializeField] GameObject slowTimeVolume;
 
+	//soul spawning variables - might make this a struct later but it's only 2 varibles so it could be unnecessary.
+	[SerializeField] Transform SoulSpawnPoint;
+	[SerializeField] GameObject SoulReward;
+
 	[Header("Resetting"), SerializeField]
 	GameEvent RespawnPlayer;
 
@@ -72,6 +76,7 @@ public class BattleArena : MonoBehaviour
 		{
 			// if all waves done,
 			DoorsFolder.SetActive(false); // open doors
+			Instantiate(SoulReward, SoulSpawnPoint.position, SoulSpawnPoint.rotation, SpawnedEnemiesFolder); //spawn soul reward
 			StartCoroutine(EndBattleSlow());
 		}
 		else

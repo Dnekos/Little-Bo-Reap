@@ -10622,7 +10622,7 @@ Transform:
   - {fileID: 4946047290265379997}
   - {fileID: 7386700366853540259}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &455429352502565040
 GameObject:
@@ -132520,8 +132520,43 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2405627059612040501, guid: 3919446d108d40c42b13068f8fa37be5,
         type: 3}
+      propertyPath: costs.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2405627059612040501, guid: 3919446d108d40c42b13068f8fa37be5,
+        type: 3}
+      propertyPath: costs.Array.data[0]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2405627059612040501, guid: 3919446d108d40c42b13068f8fa37be5,
+        type: 3}
+      propertyPath: costs.Array.data[1]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2405627059612040501, guid: 3919446d108d40c42b13068f8fa37be5,
+        type: 3}
+      propertyPath: costs.Array.data[2]
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2405627059612040501, guid: 3919446d108d40c42b13068f8fa37be5,
+        type: 3}
+      propertyPath: upgrade1Values.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2405627059612040501, guid: 3919446d108d40c42b13068f8fa37be5,
+        type: 3}
+      propertyPath: upgrade2Values.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2405627059612040501, guid: 3919446d108d40c42b13068f8fa37be5,
+        type: 3}
+      propertyPath: upgrade3Values.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2405627059612040501, guid: 3919446d108d40c42b13068f8fa37be5,
+        type: 3}
       propertyPath: upgrade1Values.Array.data[0]
-      value: 1.5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2405627059612040501, guid: 3919446d108d40c42b13068f8fa37be5,
         type: 3}
@@ -132532,6 +132567,11 @@ PrefabInstance:
         type: 3}
       propertyPath: upgrade1Values.Array.data[2]
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2405627059612040501, guid: 3919446d108d40c42b13068f8fa37be5,
+        type: 3}
+      propertyPath: upgrade2Values.Array.data[0]
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 2405627059612040501, guid: 3919446d108d40c42b13068f8fa37be5,
         type: 3}
@@ -132546,7 +132586,7 @@ PrefabInstance:
     - target: {fileID: 2405627059612040501, guid: 3919446d108d40c42b13068f8fa37be5,
         type: 3}
       propertyPath: upgrade3Values.Array.data[0]
-      value: 0.75
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2405627059612040501, guid: 3919446d108d40c42b13068f8fa37be5,
         type: 3}
@@ -132560,8 +132600,43 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2405627060289316952, guid: 3919446d108d40c42b13068f8fa37be5,
         type: 3}
+      propertyPath: costs.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2405627060289316952, guid: 3919446d108d40c42b13068f8fa37be5,
+        type: 3}
+      propertyPath: costs.Array.data[0]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2405627060289316952, guid: 3919446d108d40c42b13068f8fa37be5,
+        type: 3}
+      propertyPath: costs.Array.data[1]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2405627060289316952, guid: 3919446d108d40c42b13068f8fa37be5,
+        type: 3}
+      propertyPath: costs.Array.data[2]
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2405627060289316952, guid: 3919446d108d40c42b13068f8fa37be5,
+        type: 3}
+      propertyPath: upgrade1Values.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2405627060289316952, guid: 3919446d108d40c42b13068f8fa37be5,
+        type: 3}
+      propertyPath: upgrade2Values.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2405627060289316952, guid: 3919446d108d40c42b13068f8fa37be5,
+        type: 3}
+      propertyPath: upgrade3Values.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2405627060289316952, guid: 3919446d108d40c42b13068f8fa37be5,
+        type: 3}
       propertyPath: upgrade1Values.Array.data[0]
-      value: 1.5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2405627060289316952, guid: 3919446d108d40c42b13068f8fa37be5,
         type: 3}
@@ -132576,7 +132651,7 @@ PrefabInstance:
     - target: {fileID: 2405627060289316952, guid: 3919446d108d40c42b13068f8fa37be5,
         type: 3}
       propertyPath: upgrade2Values.Array.data[0]
-      value: 0.5
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 2405627060289316952, guid: 3919446d108d40c42b13068f8fa37be5,
         type: 3}
@@ -132591,7 +132666,7 @@ PrefabInstance:
     - target: {fileID: 2405627060289316952, guid: 3919446d108d40c42b13068f8fa37be5,
         type: 3}
       propertyPath: upgrade3Values.Array.data[0]
-      value: 1.5
+      value: 1.75
       objectReference: {fileID: 0}
     - target: {fileID: 2405627060289316952, guid: 3919446d108d40c42b13068f8fa37be5,
         type: 3}
@@ -132726,8 +132801,43 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2425937893366300044, guid: 3919446d108d40c42b13068f8fa37be5,
         type: 3}
+      propertyPath: costs.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2425937893366300044, guid: 3919446d108d40c42b13068f8fa37be5,
+        type: 3}
+      propertyPath: costs.Array.data[0]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2425937893366300044, guid: 3919446d108d40c42b13068f8fa37be5,
+        type: 3}
+      propertyPath: costs.Array.data[1]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2425937893366300044, guid: 3919446d108d40c42b13068f8fa37be5,
+        type: 3}
+      propertyPath: costs.Array.data[2]
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2425937893366300044, guid: 3919446d108d40c42b13068f8fa37be5,
+        type: 3}
+      propertyPath: upgrade1Values.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2425937893366300044, guid: 3919446d108d40c42b13068f8fa37be5,
+        type: 3}
+      propertyPath: upgrade2Values.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2425937893366300044, guid: 3919446d108d40c42b13068f8fa37be5,
+        type: 3}
+      propertyPath: upgrade3Values.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2425937893366300044, guid: 3919446d108d40c42b13068f8fa37be5,
+        type: 3}
       propertyPath: upgrade1Values.Array.data[0]
-      value: 0.8
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2425937893366300044, guid: 3919446d108d40c42b13068f8fa37be5,
         type: 3}
@@ -132742,7 +132852,7 @@ PrefabInstance:
     - target: {fileID: 2425937893366300044, guid: 3919446d108d40c42b13068f8fa37be5,
         type: 3}
       propertyPath: upgrade2Values.Array.data[0]
-      value: 1.25
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 2425937893366300044, guid: 3919446d108d40c42b13068f8fa37be5,
         type: 3}
@@ -132757,7 +132867,7 @@ PrefabInstance:
     - target: {fileID: 2425937893366300044, guid: 3919446d108d40c42b13068f8fa37be5,
         type: 3}
       propertyPath: upgrade3Values.Array.data[0]
-      value: 1.5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2425937893366300044, guid: 3919446d108d40c42b13068f8fa37be5,
         type: 3}

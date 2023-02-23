@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 using XNode.Examples.StateGraph;
+
 public enum EnemyStates
 {
 	WANDER = 0,
@@ -151,6 +152,7 @@ public class EnemyAI : Damageable
 		base.OnDeath();
 	}
 	#endregion
+
 	#region Attacking
 	Vector3 ClosestGuy()
 	{
@@ -181,7 +183,13 @@ public class EnemyAI : Damageable
 		}
 		return false;
 	}
+
+	public void PlaySound(string path)
+	{
+		FMODUnity.RuntimeManager.PlayOneShotAttached(path, gameObject);
+	}
 	#endregion
+
 	#region Collisions
 	private void OnCollisionEnter(Collision collision)
 	{
@@ -214,6 +222,7 @@ public class EnemyAI : Damageable
 		}
 	}
 	#endregion
+
 	int convert4(string key)
 	{
 		// https://stackoverflow.com/questions/3858908/convert-a-4-char-string-into-int32
@@ -247,6 +256,7 @@ public class EnemyAI : Damageable
 		}
 	}
 	#endregion
+
 	#region Health Override and Hitstun
 	//to apply normal damage, use this overload
 	public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
