@@ -9,6 +9,7 @@ public class PlayerBuildWall : MonoBehaviour
 	[SerializeField] Vector3 raycastOffset;
 	[SerializeField] Vector3 prefabSpawnOffset;
 	[SerializeField] GameObject wallPrefab;
+	[SerializeField] GameObject bellPrefab;
 	[SerializeField] GameObject confirmPrefab;
 	[SerializeField] LayerMask targetLayers;
 
@@ -80,8 +81,18 @@ public class PlayerBuildWall : MonoBehaviour
 				Debug.Log("whoops");
 				Destroy(sheepChargePoint);
 			}
+			GameObject constructPrefab;
 			// spawn wall
-			var chargePoint = Instantiate(wallPrefab, transform.position, Quaternion.identity) as GameObject;
+			if(WorldState.instance.passiveValues.activeBuilderAbility == "Ability 1")
+			{
+				constructPrefab = bellPrefab;
+			}
+			else
+			{
+				constructPrefab = wallPrefab;
+			}
+
+			var chargePoint = Instantiate(constructPrefab, transform.position, Quaternion.identity) as GameObject;
 			sheepChargePoint = chargePoint;
 
 			//prepare to charge
