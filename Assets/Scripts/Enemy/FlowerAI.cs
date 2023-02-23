@@ -36,10 +36,6 @@ public class FlowerAI : Damageable
     {
 
         //adjust this
-        //animator.Play("Flower_Idle.anim");
-        //create a new attack scriptable for projectile
-        //call it here, look at the enemy AI script for reference
-
         if ((player.position - this.transform.position).magnitude < 100f)
         {
             FlowerRotate();
