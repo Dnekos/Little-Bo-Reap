@@ -75,7 +75,8 @@ public class PlayerVortex : MonoBehaviour
 
 	void EndSheepDefend()
 	{
-		if (blackHole)
+		//if (blackHole)
+		if(WorldState.instance.passiveValues.activeFluffyAbility == "Ability 1")
 		{
 			blackHoleObj.GetComponent<SuckEnemies>().stopSucking();
 		}
@@ -143,7 +144,8 @@ public class PlayerVortex : MonoBehaviour
 
 				isDefending = true;
 
-				if (blackHole)
+				//if (blackHole)
+				if (WorldState.instance.passiveValues.activeFluffyAbility == "Ability 1")
 				{
 					blackHoleObj.SetActive(true);
 				}

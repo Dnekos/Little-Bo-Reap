@@ -41,39 +41,35 @@ public class Damageable : MonoBehaviour
 		rb = GetComponent<Rigidbody>();
 	}
 	//Non Sheep TakeDamage
-	virtual public void TakeDamage(Attack atk, Vector3 attackForward, float damageMultiplier = 1.0f)
+	virtual public void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
 	{
 		if (!isInvulnerable || Health <= 0)
 		{
 			// deal damage
-			Health -= atk.damage * ((damageMultiplier <= 0) ? 1 : damageMultiplier);
-			Vector3 knockbackForce = attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback;
+			Health -= atk.damage * ((damageAmp <= 0) ? 1 : damageAmp);
 
-			Debug.Log(gameObject.name + " took " + atk.damage * ((damageMultiplier <= 0) ? 1 : damageMultiplier) + " damage (force: " + knockbackForce + ", mag " + knockbackForce.magnitude + ")");
-
-			Debug.Log(gameObject.name + " took " + atk.damage + " damage (force: "+ knockbackForce + ", mag "+ knockbackForce .magnitude+ ")");
+			// knockback
+			DealKnockback(attackForward, atk.forwardKnockback, atk.upwardKnockback, knockbackMultiplier);
+			
+			//Debug.Log(gameObject.name + " took " + atk.damage * ((damageAmp <= 0) ? 1 : damageAmp) + " damage (force: " + knockbackForce + ", mag " + knockbackForce.magnitude + ")");
+			//Debug.Log(gameObject.name + " took " + atk.damage + " damage (force: " + knockbackForce + ", mag " + knockbackForce.magnitude + ")");
 
 			if (atk.ShowNumber)
 			{
-				//create damage number
-				var number = Instantiate(damageNumber, transform.position, transform.rotation) as GameObject;
-				number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)atk.damage).ToString();
-			}
+				if(atk is SheepAttack)
+                {
+					//create damage number
+					GameObject number = Instantiate(damageNumber, transform.position, transform.rotation);
+					number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)atk.damage).ToString();
+				}
+				else
+                {
+					//create damage number
+					GameObject number = Instantiate(damageNumberGoth, transform.position, transform.rotation);
+					number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)atk.damage).ToString();
+				}
 
-			// add knockback if the current knockback is stronger than the current velocity
-			//Vector3 knockbackForce = attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback;
-			// this isnt working, maybe because the object is getting too much knockback in one frame?
-			if (rb.velocity.sqrMagnitude < knockbackForce.sqrMagnitude)
-			// TODO: make this not shit
-			//if (true)
-			{
-				// we want to cancel out the current velocity, so as to knock launch them into the stratosphere
-				//rb.AddForce(-rb.velocity, ForceMode.VelocityChange);
-				rb.velocity = Vector3.zero;
-				//Debug.Log("before vel: " + rb.velocity + " " + rb.velocity.magnitude);
-				// TODO: make this force, not impulse, idiot
-				rb.velocity = attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback;
-				//Debug.Log("after vel: " + rb.velocity + " " + rb.velocity.magnitude);
+				
 			}
 
 			// invoke death
@@ -83,91 +79,64 @@ public class Damageable : MonoBehaviour
 				FMODUnity.RuntimeManager.PlayOneShotAttached(hurtSound, gameObject);
 
 		}
-
 	}
-	//Take Damage Black Sheep w/o Multiplier
-	virtual public void TakeDamage(SheepAttack atk, Vector3 attackForward)
+
+	// TODO: Mitko fix this function 
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="forward">direction f_mag points in</param>
+	/// <param name="f_mag">magnitude of forward</param>
+	/// <param name="u_mag">magnitude of force in direction of world up</param>
+	/// <param name="mult">overall multiplier of knockback</param>
+
+	//------------------------------------------------------------------
+	//old Knockback implementation(eliminated extreme knockback
+	//void DealKnockback(Vector3 forward, float f_mag, float u_mag, float mult = 1)
+	//{
+	//	Vector3 knockbackForce = (forward * f_mag + Vector3.up * u_mag) * mult;
+
+
+	//	// add knockback if the current knockback is stronger than the current velocity
+	//	//Vector3 knockbackForce = attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback;
+	//	// this isnt working, maybe because the object is getting too much knockback in one frame?
+	//	if (rb.velocity.sqrMagnitude < knockbackForce.sqrMagnitude)
+	//	// TODO: make this not shit
+	//	//if (true)
+	//	{
+	//		// we want to cancel out the current velocity, so as to knock launch them into the stratosphere
+	//		//rb.AddForce(-rb.velocity, ForceMode.VelocityChange);
+	//		rb.velocity = Vector3.zero;
+	//		Debug.Log("before vel: " + rb.velocity + " " + rb.velocity.magnitude);
+	//		// TODO: make this force, not impulse, idiot
+	//		rb.velocity = forward * f_mag + Vector3.up * u_mag;
+	//		Debug.Log("after vel: " + rb.velocity + " " + rb.velocity.magnitude);
+	//	}
+	//}
+	//------------------------------------------------------------------
+
+	void DealKnockback(Vector3 forward, float f_mag, float u_mag, float mult = 1)
 	{
-		if (!isInvulnerable)
+		Vector3 knockbackForce = (forward * f_mag + Vector3.up * u_mag) * mult;
+
+		// add knockback if the current knockback is stronger than the current velocity
+		if (rb.velocity.sqrMagnitude < knockbackForce.sqrMagnitude)
 		{
-			// deal damage
-			Health -= atk.damageBlack;
-			Debug.Log(gameObject.name + " took " + atk.damageBlack + " damage (force: " + (attackForward * atk.forwardKnockbackBlack + Vector3.up * atk.upwardKnockbackBlack) + ")");
+			//float knockbackMult = knockbackForce.magnitude - rb.velocity.magnitude;
+			// we want to cancel out the current velocity, so as to knock launch them into the stratosphere
+			//rb.AddForce((knockbackForce - rb.velocity) * knockbackMult, ForceMode.Impulse
+			//rb.AddForce((knockbackForce.normalized * knockbackForce.magnitude), ForceMode.Impulse);
 
-			if (atk.ShowNumber)
-			{
-				//create damage number
-				var number = Instantiate(damageNumberGoth, transform.position, transform.rotation) as GameObject;
-				number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)atk.damageBlack).ToString();
-			}
+			rb.AddForce(knockbackForce - rb.velocity, ForceMode.VelocityChange);
+			//this worked the best
 
-			// add knockback
-			rb.AddForce(attackForward * atk.forwardKnockbackBlack + Vector3.up * atk.upwardKnockbackBlack, ForceMode.Impulse);
-
-			// invoke death
-			if (Health <= 0)
-				OnDeath();
+			Debug.Log("before vel: " + rb.velocity + " " + rb.velocity.magnitude);
 		}
-	}
-	//Take Damage with Multiplier
-	virtual public void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp, float knockbackMultiplier)
-	{
-		if (!isInvulnerable || Health <= 0)
+		if (rb.velocity.sqrMagnitude > knockbackForce.sqrMagnitude)
 		{
-			// deal damage
-			Health -= atk.damage * ((damageAmp <= 0) ? 1 : damageAmp );
-			Vector3 knockbackForce = (attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback) * knockbackMultiplier;
-
-			Debug.Log(gameObject.name + " took " + atk.damage * ((damageAmp <= 0) ? 1 : damageAmp) + " damage (force: " + knockbackForce + ", mag " + knockbackForce.magnitude + ")");
-
-			//create damage number
-			var number = Instantiate(damageNumber, transform.position, transform.rotation) as GameObject;
-			number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)atk.damage * ((damageAmp <= 0) ? 1 : damageAmp)).ToString();
-
-			// add knockback if the current knockback is stronger than the current velocity
-			//Vector3 knockbackForce = attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback;
-			// this isnt working, maybe because the object is getting too much knockback in one frame?
-			if (rb.velocity.sqrMagnitude < knockbackForce.sqrMagnitude)
-			// TODO: make this not shit
-			//if (true)
-			{
-				// we want to cancel out the current velocity, so as to knock launch them into the stratosphere
-				//rb.AddForce(-rb.velocity, ForceMode.VelocityChange);
-				rb.velocity = Vector3.zero;
-				Debug.Log("before vel: " + rb.velocity + " " + rb.velocity.magnitude);
-				// TODO: make this force, not impulse, idiot
-				rb.velocity = attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback;
-				Debug.Log("after vel: " + rb.velocity + " " + rb.velocity.magnitude);
-			}
-
-			// invoke death
-			if (Health <= 0)
-				OnDeath();
-			else // don't play hurt sound when dying smh
-				FMODUnity.RuntimeManager.PlayOneShotAttached(hurtSound, gameObject);
-
-		}
-
-	}
-	//Take Damage Black Sheep with Multiplier
-	virtual public void TakeDamage(SheepAttack atk, Vector3 attackForward, float damageAmp, float knockbackMultiplier)
-	{
-		if (!isInvulnerable)
-		{
-			// deal damage
-			Health -= atk.damageBlack * ((damageAmp <= 0) ? 1 : damageAmp);
-			Debug.Log(gameObject.name + " took " + atk.damageBlack * ((damageAmp <= 0) ? 1 : damageAmp) + " damage (force: " + (attackForward * atk.forwardKnockbackBlack + Vector3.up * atk.upwardKnockbackBlack) + ")");
-
-			//create damage number
-			var number = Instantiate(damageNumberGoth, transform.position, transform.rotation) as GameObject;
-			number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)atk.damageBlack * ((damageAmp <= 0) ? 1 : damageAmp)).ToString();
-
-			// add knockback
-			rb.AddForce((attackForward * atk.forwardKnockbackBlack + Vector3.up * atk.upwardKnockbackBlack) * knockbackMultiplier, ForceMode.Impulse);
-
-			// invoke death
-			if (Health <= 0)
-				OnDeath();
+			rb.AddForce(- rb.velocity, ForceMode.Impulse);
+			//this only works Using impulse, changing it to velocity change bugs it out
+			Debug.Log("MAX VEL: " + rb.velocity.sqrMagnitude);
 		}
 	}
 

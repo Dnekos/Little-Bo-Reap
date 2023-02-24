@@ -31,6 +31,11 @@ public class BattleArena : MonoBehaviour
 	[SerializeField] float slowTimeScale = 0.3f;
 	[SerializeField] float slowTimeAtEnd = 1f;
 	[SerializeField] GameObject slowTimeVolume;
+	[SerializeField] GameObject colliderMesh;
+
+	//soul spawning variables - might make this a struct later but it's only 2 varibles so it could be unnecessary.
+	[SerializeField] Transform SoulSpawnPoint;
+	[SerializeField] GameObject SoulReward;
 
 	[Header("Resetting"), SerializeField]
 	GameEvent RespawnPlayer;
@@ -41,6 +46,7 @@ public class BattleArena : MonoBehaviour
 		SpawnedEnemiesFolder = transform.GetChild(1);
 		DoorsFolder = transform.GetChild(2).gameObject;
 		DoorsFolder.SetActive(false); // keep doors open
+		colliderMesh.GetComponent<MeshRenderer>().enabled = false;
 
 		RespawnPlayer?.listener.AddListener(delegate { ResetArena(); });
 	}
@@ -72,6 +78,7 @@ public class BattleArena : MonoBehaviour
 		{
 			// if all waves done,
 			DoorsFolder.SetActive(false); // open doors
+			Instantiate(SoulReward, SoulSpawnPoint.position, SoulSpawnPoint.rotation, SpawnedEnemiesFolder); //spawn soul reward
 			StartCoroutine(EndBattleSlow());
 		}
 		else

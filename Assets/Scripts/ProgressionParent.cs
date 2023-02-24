@@ -14,8 +14,13 @@ public class ProgressionParent : MonoBehaviour
 
     [SerializeField] SheepTypes thisType;
 
+    //Launch Dam, Charge DR, Fluffy Health
     [SerializeField] float[] upgrade1Values = { 10f, 20f, 50000f };
+
+    //Black Sheep Chance, Ram Damage, Fluffy Knock Resist
     [SerializeField] float[] upgrade2Values = { 10f, 20f, 50000f };
+
+    //Sheep Construct DR, Ram Knockback, Fluffy Vortex Duration
     [SerializeField] float[] upgrade3Values = { 10f, 20f, 50000f };
 
     int currentCostIndex;
@@ -28,7 +33,6 @@ public class ProgressionParent : MonoBehaviour
         
         abilities[0].onClick.AddListener(delegate { AbilityChange(0); });
         abilities[1].onClick.AddListener(delegate { AbilityChange(1); });
-        abilities[2].onClick.AddListener(delegate { AbilityChange(2); });
     }
 
     void Upgrade(int index)
@@ -68,7 +72,19 @@ public class ProgressionParent : MonoBehaviour
 
     void AbilityChange(int index)
     {
-        Debug.Log("turning ability to ability:" + index);
+        switch (thisType)
+        {
+            case SheepTypes.BUILD:
+                WorldState.instance.passiveValues.activeBuilderAbility = "Ability " + index;
+                break;
+            case SheepTypes.RAM:
+                WorldState.instance.passiveValues.activeRamAbility = "Ability " + index;
+                break;
+            case SheepTypes.FLUFFY:
+                WorldState.instance.passiveValues.activeFluffyAbility = "Ability " + index;
+                break;
+        }
+        
     }
 
     public void Upgrade(SheepTypes type, int index, float newValue)
