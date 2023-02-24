@@ -29,8 +29,13 @@ public class EnemyFlightPath : MonoBehaviour
 	}
 
 	[SerializeField] Transform[] points;
-	[SerializeField] int resolution = 10;
+	[Min(3), SerializeField] int resolution = 10;
 	private CatmullRomPoint[] splinePoints; //Generated spline points
+
+	private void Start()
+	{
+		SetSpline();
+	}
 
 	public CatmullRomPoint[] GetPoints()
 	{

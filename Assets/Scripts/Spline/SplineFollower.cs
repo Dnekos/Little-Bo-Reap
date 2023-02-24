@@ -16,6 +16,8 @@ public class SplineFollower : MonoBehaviour
 	}
 	void UpdatePosition()
     {
+		// 000.000
+		// index.lerp t
 		SplinePosition = (SplinePosition + Time.deltaTime * SplineSpeed) % path.GetPoints().Length;
 		transform.position = path.GetLerpPosition(SplinePosition);
 		transform.forward = path.GetLerpTangent(SplinePosition);
