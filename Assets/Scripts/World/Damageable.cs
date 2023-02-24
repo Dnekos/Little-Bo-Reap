@@ -56,9 +56,20 @@ public class Damageable : MonoBehaviour
 
 			if (atk.ShowNumber)
 			{
-				//create damage number
-				GameObject number = Instantiate(damageNumber, transform.position, transform.rotation);
-				number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)atk.damage).ToString();
+				if(atk is SheepAttack)
+                {
+					//create damage number
+					GameObject number = Instantiate(damageNumber, transform.position, transform.rotation);
+					number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)atk.damage).ToString();
+				}
+				else
+                {
+					//create damage number
+					GameObject number = Instantiate(damageNumberGoth, transform.position, transform.rotation);
+					number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)atk.damage).ToString();
+				}
+
+				
 			}
 
 			// invoke death
