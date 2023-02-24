@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Value
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 376, y: 520}
+  position: {x: 648, y: 488}
   ports:
     keys:
     - desiredValue
@@ -55,7 +55,7 @@ MonoBehaviour:
   m_Name: Value
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 120, y: 792}
+  position: {x: 392, y: 760}
   ports:
     keys:
     - desiredValue
@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Name: Enemy Distracted
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 376, y: 1000}
+  position: {x: 648, y: 968}
   ports:
     keys:
     - not
@@ -118,13 +118,13 @@ MonoBehaviour:
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       connections:
       - fieldName: exit
-        node: {fileID: -6102037142849351650}
+        node: {fileID: -2069943466348816847}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-  not: 1
+  not: 0
 --- !u!114 &-7478212554675153415
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -138,7 +138,7 @@ MonoBehaviour:
   m_Name: Sequence
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 376, y: 616}
+  position: {x: 648, y: 584}
   ports:
     keys:
     - exit
@@ -184,7 +184,7 @@ MonoBehaviour:
   m_Name: Vector Arithmatic
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -360, y: -8}
+  position: {x: -88, y: -40}
   ports:
     keys:
     - num1
@@ -254,7 +254,7 @@ MonoBehaviour:
   m_Name: Value
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 376, y: 744}
+  position: {x: 648, y: 712}
   ports:
     keys:
     - desiredValue
@@ -283,52 +283,6 @@ MonoBehaviour:
       _dynamic: 0
   desiredValue: 1
   result: 2
---- !u!114 &-6102037142849351650
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e210305f2fc2c34d9e924f98d4b672e, type: 3}
-  m_Name: Selector
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  position: {x: 120, y: 904}
-  ports:
-    keys:
-    - exit
-    - enter
-    values:
-    - _fieldName: exit
-      _node: {fileID: -6102037142849351650}
-      _typeQualifiedName: XNode.Examples.StateGraph.StateNode+Empty, Project.Enemy,
-        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      connections:
-      - fieldName: enter
-        node: {fileID: -8382916367802734914}
-        reroutePoints: []
-      - fieldName: enter
-        node: {fileID: 6574290474978339319}
-        reroutePoints: []
-      _direction: 1
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: enter
-      _node: {fileID: -6102037142849351650}
-      _typeQualifiedName: XNode.Examples.StateGraph.StateNode+Empty, Project.Enemy,
-        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      connections:
-      - fieldName: exit
-        node: {fileID: 2769681369106552012}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
 --- !u!114 &-5846963012246684460
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -342,7 +296,7 @@ MonoBehaviour:
   m_Name: Value
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -600, y: -56}
+  position: {x: -328, y: -88}
   ports:
     keys:
     - desiredValue
@@ -384,7 +338,7 @@ MonoBehaviour:
   m_Name: Executable
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 120, y: 1032}
+  position: {x: 120, y: 1016}
   ports:
     keys:
     - not
@@ -425,7 +379,7 @@ MonoBehaviour:
   m_Name: Value
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 88, y: 440}
+  position: {x: 360, y: 408}
   ports:
     keys:
     - desiredValue
@@ -467,7 +421,7 @@ MonoBehaviour:
   m_Name: Selector
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 88, y: 536}
+  position: {x: 360, y: 504}
   ports:
     keys:
     - exit
@@ -494,7 +448,7 @@ MonoBehaviour:
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       connections:
       - fieldName: exit
-        node: {fileID: 2769681369106552012}
+        node: {fileID: 740644210368054077}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
@@ -541,6 +495,52 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   not: 1
+--- !u!114 &-2069943466348816847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57fd476a74daa17468ac553b92955c20, type: 3}
+  m_Name: Sequence
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 248, y: 888}
+  ports:
+    keys:
+    - exit
+    - enter
+    values:
+    - _fieldName: exit
+      _node: {fileID: -2069943466348816847}
+      _typeQualifiedName: XNode.Examples.StateGraph.StateNode+Empty, Project.Enemy,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: enter
+        node: {fileID: -8382916367802734914}
+        reroutePoints: []
+      - fieldName: enter
+        node: {fileID: 6574290474978339319}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: enter
+      _node: {fileID: -2069943466348816847}
+      _typeQualifiedName: XNode.Examples.StateGraph.StateNode+Empty, Project.Enemy,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: exit
+        node: {fileID: 1122155319912757339}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
 --- !u!114 &-1803708998616160469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -554,7 +554,7 @@ MonoBehaviour:
   m_Name: Has Nearby
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 632, y: 664}
+  position: {x: 904, y: 632}
   ports:
     keys:
     - rhs
@@ -620,7 +620,7 @@ MonoBehaviour:
   m_Name: Has Nearby
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 104, y: 216}
+  position: {x: 376, y: 184}
   ports:
     keys:
     - rhs
@@ -664,7 +664,7 @@ MonoBehaviour:
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       connections:
       - fieldName: exit
-        node: {fileID: 2769681369106552012}
+        node: {fileID: 740644210368054077}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
@@ -708,8 +708,10 @@ MonoBehaviour:
   - {fileID: -5836268909582168705}
   - {fileID: -8382916367802734914}
   - {fileID: 6574290474978339319}
-  - {fileID: -6102037142849351650}
   - {fileID: -8766917112907816590}
+  - {fileID: 1122155319912757339}
+  - {fileID: 740644210368054077}
+  - {fileID: -2069943466348816847}
   currentUser: {fileID: 0}
 --- !u!114 &735015450114438443
 MonoBehaviour:
@@ -724,7 +726,7 @@ MonoBehaviour:
   m_Name: Value
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -360, y: -104}
+  position: {x: -88, y: -136}
   ports:
     keys:
     - desiredValue
@@ -753,6 +755,58 @@ MonoBehaviour:
       _dynamic: 0
   desiredValue: 3
   result: 0
+--- !u!114 &740644210368054077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57fd476a74daa17468ac553b92955c20, type: 3}
+  m_Name: Sequence
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 56, y: 328}
+  ports:
+    keys:
+    - exit
+    - enter
+    values:
+    - _fieldName: exit
+      _node: {fileID: 740644210368054077}
+      _typeQualifiedName: XNode.Examples.StateGraph.StateNode+Empty, Project.Enemy,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: enter
+        node: {fileID: -5491330496827090157}
+        reroutePoints: []
+      - fieldName: enter
+        node: {fileID: -146168830594426719}
+        reroutePoints: []
+      - fieldName: enter
+        node: {fileID: 7841114964004977113}
+        reroutePoints: []
+      - fieldName: enter
+        node: {fileID: 2024010398546143260}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: enter
+      _node: {fileID: 740644210368054077}
+      _typeQualifiedName: XNode.Examples.StateGraph.StateNode+Empty, Project.Enemy,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: exit
+        node: {fileID: 1122155319912757339}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
 --- !u!114 &1001110681598145077
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -766,7 +820,7 @@ MonoBehaviour:
   m_Name: Vector Arithmatic
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -136, y: 24}
+  position: {x: 136, y: -8}
   ports:
     keys:
     - num1
@@ -823,6 +877,52 @@ MonoBehaviour:
   opp: 2
   num2: {x: 0, y: 0, z: 0}
   result: 0
+--- !u!114 &1122155319912757339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e210305f2fc2c34d9e924f98d4b672e, type: 3}
+  m_Name: Selector
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -200, y: 376}
+  ports:
+    keys:
+    - exit
+    - enter
+    values:
+    - _fieldName: exit
+      _node: {fileID: 1122155319912757339}
+      _typeQualifiedName: XNode.Examples.StateGraph.StateNode+Empty, Project.Enemy,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: enter
+        node: {fileID: -2069943466348816847}
+        reroutePoints: []
+      - fieldName: enter
+        node: {fileID: 740644210368054077}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: enter
+      _node: {fileID: 1122155319912757339}
+      _typeQualifiedName: XNode.Examples.StateGraph.StateNode+Empty, Project.Enemy,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: exit
+        node: {fileID: 2769681369106552012}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
 --- !u!114 &2020777014005987931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -836,7 +936,7 @@ MonoBehaviour:
   m_Name: Enemy Move To
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 632, y: 520}
+  position: {x: 904, y: 488}
   ports:
     keys:
     - destination
@@ -880,7 +980,7 @@ MonoBehaviour:
   m_Name: Execute Attack
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 104, y: -88}
+  position: {x: 376, y: -120}
   ports:
     keys:
     - attack
@@ -901,7 +1001,7 @@ MonoBehaviour:
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       connections:
       - fieldName: exit
-        node: {fileID: 2769681369106552012}
+        node: {fileID: 740644210368054077}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
@@ -939,19 +1039,7 @@ MonoBehaviour:
         node: {fileID: -5836268909582168705}
         reroutePoints: []
       - fieldName: enter
-        node: {fileID: -5491330496827090157}
-        reroutePoints: []
-      - fieldName: enter
-        node: {fileID: -146168830594426719}
-        reroutePoints: []
-      - fieldName: enter
-        node: {fileID: 7841114964004977113}
-        reroutePoints: []
-      - fieldName: enter
-        node: {fileID: 2024010398546143260}
-        reroutePoints: []
-      - fieldName: enter
-        node: {fileID: -6102037142849351650}
+        node: {fileID: 1122155319912757339}
         reroutePoints: []
       _direction: 1
       _connectionType: 0
@@ -979,7 +1067,7 @@ MonoBehaviour:
   m_Name: Enemy Move To
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 376, y: 360}
+  position: {x: 648, y: 328}
   ports:
     keys:
     - destination
@@ -1023,7 +1111,7 @@ MonoBehaviour:
   m_Name: Value
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -600, y: 40}
+  position: {x: -328, y: 8}
   ports:
     keys:
     - desiredValue
@@ -1065,7 +1153,7 @@ MonoBehaviour:
   m_Name: Enemy Move To
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 376, y: 872}
+  position: {x: 648, y: 840}
   ports:
     keys:
     - destination
@@ -1089,7 +1177,7 @@ MonoBehaviour:
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       connections:
       - fieldName: exit
-        node: {fileID: -6102037142849351650}
+        node: {fileID: -2069943466348816847}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
@@ -1109,7 +1197,7 @@ MonoBehaviour:
   m_Name: Value
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -168, y: 328}
+  position: {x: 8, y: 232}
   ports:
     keys:
     - desiredValue
@@ -1151,7 +1239,7 @@ MonoBehaviour:
   m_Name: Sword Check
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 104, y: 40}
+  position: {x: 376, y: 8}
   ports:
     keys:
     - rhs
@@ -1195,7 +1283,7 @@ MonoBehaviour:
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       connections:
       - fieldName: exit
-        node: {fileID: 2769681369106552012}
+        node: {fileID: 740644210368054077}
         reroutePoints: []
       _direction: 0
       _connectionType: 0

@@ -11,7 +11,7 @@ namespace XNode.Examples.StateGraph
 
 		public override bool Evaluate()
 		{
-			return ((graph as StateGraph).currentUser.distracted == true) != not;
+			return ((graph as StateGraph).currentUser.distracted) != not;
 		}
 	}
 }
