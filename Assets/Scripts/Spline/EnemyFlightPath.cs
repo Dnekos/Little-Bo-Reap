@@ -2,6 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*  
+	Catmull-Rom splines are Hermite curves with special tangent values.
+	Hermite curve formula:
+	(2t^3 - 3t^2 + 1) * p0 + (t^3 - 2t^2 + t) * m0 + (-2t^3 + 3t^2) * p1 + (t^3 - t^2) * m1
+	For points p0 and p1 passing through points m0 and m1 interpolated over t = [0, 1]
+	Tangent M[k] = (P[k+1] - P[k-1]) / 2
+	algorithm provided by https://github.com/JPBotelho/Catmull-Rom-Splines
+*/
 public class EnemyFlightPath : MonoBehaviour
 {
 	//Struct to keep position, normal and tangent of a spline point
@@ -20,10 +28,9 @@ public class EnemyFlightPath : MonoBehaviour
 		}
 	}
 
-	CatmullRom catmullRom;
 	[SerializeField] Transform[] points;
-	public int resolution = 10;
-	[SerializeField] private CatmullRomPoint[] splinePoints; //Generated spline points
+	[SerializeField] int resolution = 10;
+	private CatmullRomPoint[] splinePoints; //Generated spline points
 
 	public CatmullRomPoint[] GetPoints()
 	{

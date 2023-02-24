@@ -59,18 +59,19 @@ public class SheepBezier : SheepHolder
 		newTriangles = new List<int>();
 	}
 
-	protected override void Update()
+	private void OnDrawGizmos()
 	{
-		base.Update();
-
-		for (float i = 0; i < 1; i+=0.01f)
+		for (float i = 0; i < 1; i += 0.01f)
 		{
 			Vector3 point = CalcCurvePoint(i);
-			Debug.DrawLine(point, point + Differentiate(i), Color.red, 0.1f);
-			Debug.DrawLine(point, point +  DoubleDerivative(i), Color.blue, 0.1f);
-			Debug.DrawLine(point, point + Vector3.Cross(Differentiate(i), DoubleDerivative(i)), Color.cyan, 0.1f);
-
-			Debug.DrawLine(point,  CalcCurvePoint(i+0.01f), Color.green, 0.1f);
+			Gizmos.color = Color.red;
+			Gizmos.DrawLine(point, point + Differentiate(i));
+			Gizmos.color = Color.blue;
+			Gizmos.DrawLine(point, point + DoubleDerivative(i));
+			Gizmos.color = Color.cyan;
+			Gizmos.DrawLine(point, point + Vector3.Cross(Differentiate(i), DoubleDerivative(i)));
+			Gizmos.color = Color.green;
+			Gizmos.DrawLine(point, CalcCurvePoint(i + 0.01f));
 		}
 	}
 
