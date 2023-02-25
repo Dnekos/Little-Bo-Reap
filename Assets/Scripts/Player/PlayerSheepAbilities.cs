@@ -158,6 +158,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 			var particleModule = bellParticles.main;
 			particleModule.startColor = sheepFlocks[currentFlockIndex].UIColor;
 			sheepFlocks[currentFlockIndex].flockChangeParticle.Play(true);
+			FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Sheep", currentFlockIndex);
 
 			WorldState.instance.HUD.SwapAnimation();
 
@@ -177,10 +178,11 @@ public class PlayerSheepAbilities : MonoBehaviour
 			while (sheepFlocks[currentFlockIndex].MaxSize <= 0 && originalIndex != currentFlockIndex);
 
 			currentFlockType = (SheepTypes)currentFlockIndex;
-
+			
 			var particleModule = bellParticles.main;
 			particleModule.startColor = sheepFlocks[currentFlockIndex].UIColor;
 			sheepFlocks[currentFlockIndex].flockChangeParticle.Play(true);
+			FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Sheep", currentFlockIndex);
 
 			WorldState.instance.HUD.SwapAnimation();
 
