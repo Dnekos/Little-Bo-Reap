@@ -35,7 +35,7 @@ public class FlowerAI : Damageable
     void Update()
     {
 
-        //adjust this
+        //adjust this(make it its own function)
         if ((player.position - this.transform.position).magnitude < 100f)
         {
             FlowerRotate();
