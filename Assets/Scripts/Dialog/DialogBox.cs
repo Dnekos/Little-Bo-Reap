@@ -28,15 +28,17 @@ public class DialogBox : MonoBehaviour
 	[SerializeField]
 	bool AdvancingText = false;
 
+	[Header("Looking"), SerializeField]
+	CameraOffsetAdjuster player;
+
 	[Header("Components")]
 	[SerializeField]
 	GameObject DialoguePanel;
-
 	[SerializeField]
 	TextMeshProUGUI TextBody;
-
 	[SerializeField]
 	PlayerInput inputs;
+
 
 	private void Awake()
 	{
@@ -85,6 +87,9 @@ public class DialogBox : MonoBehaviour
 		WorldState.instance.gameState = WorldState.State.Dialog;
 		inputs.SwitchCurrentActionMap("Dialog");
 
+		// player look
+		if (player != null)
+			player.LookTarget = active_conversation.transform;
 
 		ReadNextLine();
 		//ResetText();
@@ -167,6 +172,11 @@ public class DialogBox : MonoBehaviour
 		WorldState.instance.HUD.ToggleHud(true);
 		WorldState.instance.gameState = WorldState.State.Play;
 		inputs.SwitchCurrentActionMap("PlayerMovement");
+
+		// player look
+		if (player != null)
+			player.LookTarget = null;
+
 
 		// reset back to last state
 		WorldState.instance.gameState = WorldState.State.Play; // switch to whatever state it was before dialogue started
