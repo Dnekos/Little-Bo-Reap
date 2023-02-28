@@ -9,20 +9,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da72bbdbfd5f7c7489d15681d71a22fb, type: 3}
-  m_Name: Flying_Enemy_Attack
+  m_Script: {fileID: 11500000, guid: 6643f54b0a665ed41bbf904033ace10b, type: 3}
+  m_Name: Bomb_Explosion
   m_EditorClassIdentifier: 
   damage: 10
   airborneLift: 0
-  animation: Flying_Enemy_Attack
+  animation: Bomb_Explosion
   DealsHitstun: 1
   ShowNumber: 1
-  forwardKnockback: 15
-  upwardKnockback: 15
-  hitboxPrefab: {fileID: 1414240558353351011, guid: ead6a457f74bd5141aa6eb93e313ef66,
+  forwardKnockback: 30
+  upwardKnockback: 30
+  hitboxPrefab: {fileID: 3825271835072028399, guid: f705343c7c7775f4b9a6339c61af28ca,
     type: 3}
-  MaxCooldown: 5
-  ID: 
+  MaxCooldown: 3
+  ID: SLAM
   attackStartSound:
     Guid:
       Data1: 0
@@ -30,3 +30,4 @@ MonoBehaviour:
       Data3: 0
       Data4: 0
     Path: 
+  PercentOfSheep: 0.5

@@ -9,6 +9,7 @@ public class FlyingEnemyAI : Damageable
     [SerializeField] Transform frogPrefab;
     [SerializeField] Transform attackPoint;
     [SerializeField] float attackRadius;
+    [SerializeField] float attackDamage;
 
     [SerializeField] protected EnemyAttack activeAttack;
     [SerializeField] Animator anim;
@@ -83,18 +84,21 @@ public class FlyingEnemyAI : Damageable
 
     public void SpawnFrog()
     {
-        Vector3 SpawnPoint = attackPoint.position;
-        StartCoroutine(SpawnEnemy(frogPrefab.gameObject, frogPrefab.GetComponent<EnemyAI>().SpawnParticlePrefab, SpawnPoint));
+        if (activeAttack != null)
+        {
+            activeAttack.SpawnObject(attackPoint);
+            activeAttack.damage = attackDamage;
+        }
     }
 
-    protected IEnumerator SpawnEnemy(GameObject enemy, GameObject particle, Vector3 pos)
-    {
+    //protected IEnumerator SpawnEnemy(GameObject enemy, GameObject particle, Vector3 pos)
+    //{
 
-        Instantiate(particle, pos, transform.rotation, transform);
-        yield return new WaitForSeconds(enemy.GetComponent<EnemyAI>().SpawnWaitTime);
-        GameObject newFrog = Instantiate(enemy, pos, transform.rotation, transform);
-        newFrog.GetComponent<EnemyAI>().ToChase();
-        //newFrog.transform.localScale = new Vector3(0.33f, 0.33f, 0.33f);//temporary
-    }
+    //    Instantiate(particle, pos, transform.rotation, transform);
+    //    yield return new WaitForSeconds(enemy.GetComponent<EnemyAI>().SpawnWaitTime);
+    //    GameObject newFrog = Instantiate(enemy, pos, transform.rotation, transform);
+    //    newFrog.GetComponent<EnemyAI>().ToChase();
+    //    //newFrog.transform.localScale = new Vector3(0.33f, 0.33f, 0.33f);//temporary
+    //}
 
 }

@@ -13,6 +13,11 @@ public class FlyingEnemyProjectile : MonoBehaviour
     [SerializeField] float maxTimeAlive = 2.5f;
     float currentTimeAlive = 0;
 
+    [SerializeField] Transform ExplosionSpawnPoint;
+    [SerializeField] float ExplosionDamage;
+    [SerializeField] protected EnemyAttack activeAttack;
+    [SerializeField] Animator anim;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,8 +38,10 @@ public class FlyingEnemyProjectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //if not damageable
-        //    return;
+        if(other.gameObject.layer == 6)//ground
+        {
+            RunAttack(activeAttack);
+        }
 
         Vector3 flattenedOtherPos = new Vector3(other.transform.position.x, transform.position.y, other.transform.position.z);
         Damageable targetHealth = other.GetComponent<Damageable>();
@@ -43,7 +50,28 @@ public class FlyingEnemyProjectile : MonoBehaviour
         hitTargets.Add(targetHealth);
         Debug.Log(other.gameObject.name + "hit by Flying Enemy Projectile Attack");
         targetHealth.TakeDamage(FlyingEnemyProjectileAttack, (flattenedOtherPos - origPos).normalized);
+        
+        RunAttack(activeAttack);
+
     }
+
+    public void RunAttack(EnemyAttack atk)
+    {
+        atk.PerformAttack(anim);
+        activeAttack = atk;
+    }
+
+    public void SpawnShockwave()
+    {
+        if (activeAttack != null)
+        {
+            activeAttack.SpawnObject(ExplosionSpawnPoint);
+            activeAttack.damage = ExplosionDamage;
+            Destroy(gameObject);
+        }
+    }
+
+
 
 
 }
