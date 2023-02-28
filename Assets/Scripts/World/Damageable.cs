@@ -17,6 +17,7 @@ public class Damageable : MonoBehaviour
 	[Header("Sounds")]
 	[SerializeField] protected FMODUnity.EventReference hurtSound;
 	[SerializeField] protected FMODUnity.EventReference deathSound;
+	WorldState world;
 
 
 	[Header("Drop Variables")]

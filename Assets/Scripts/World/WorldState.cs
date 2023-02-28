@@ -28,12 +28,13 @@ public struct SheepPassives
 	public float fluffyHealth;
 	public float fluffyKnockResist;
 	public float fluffyVortexDuration;
+
+	
 }
 
 public class WorldState : MonoBehaviour
 {
 	public static WorldState instance;
-
 	public enum State
 	{
 		Play,
@@ -60,6 +61,8 @@ public class WorldState : MonoBehaviour
 	[Header("Cinematic"), SerializeField] GameEvent MusicToggle;
 	bool UIOff = false;
 	FMODUnity.StudioEventEmitter music;
+	public int currentWorldTheme;
+
 
 	// values other classes may care about
 	int deaths = 0;
@@ -87,6 +90,8 @@ public class WorldState : MonoBehaviour
 
 			MusicToggle.listener.AddListener(Toggle);
 			music = GetComponent<FMODUnity.StudioEventEmitter>();
+			ChangeMusic(0);
+			currentWorldTheme = 0;
 
 			// default settings
 			PlayerCameraFollow cam = FindObjectOfType<PlayerCameraFollow>();
@@ -100,7 +105,11 @@ public class WorldState : MonoBehaviour
 			myBus.setVolume(PlayerPrefs.GetFloat("music", 1));
 		}
 	}
-
+	public void ChangeMusic(int music)
+    {
+		FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Music", music);
+		Debug.Log("current theme: "+music);
+	}
 	void Toggle()
 	{
 		UIOff = !UIOff;

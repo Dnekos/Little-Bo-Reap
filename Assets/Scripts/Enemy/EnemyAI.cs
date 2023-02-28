@@ -53,7 +53,7 @@ public class EnemyAI : Damageable
 	[SerializeField] float fallRate = 50;
 
 	[Header("Sounds")]
-	[SerializeField] FMODUnity.EventReference swingSound;
+	[SerializeField]  FMODUnity.EventReference swingSound;
 	[SerializeField] FMODUnity.EventReference clubHitSound;
 
 	[HideInInspector]
@@ -177,6 +177,7 @@ public class EnemyAI : Damageable
 		if (Cooldowns[index] < 0)
 		{
 			atk.PerformAttack(anim);
+			FMODUnity.RuntimeManager.PlayOneShotAttached(swingSound, gameObject);
 			Cooldowns[index] = atk.MaxCooldown;
 			activeAttack = atk;
 			return true;

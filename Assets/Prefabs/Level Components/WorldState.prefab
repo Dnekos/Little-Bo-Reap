@@ -46,13 +46,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bae2a13a94739c34e93405df70fa285e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Dead: 0
+  gameState: 0
+  passiveValues:
+    soulsCount: 0
+    bossSoulsCount: 0
+    activeBuilderAbility: 
+    activeRamAbility: 
+    activeFluffyAbility: 
+    builderLaunchDam: 0
+    builderCorruptChance: 0
+    builderConstructDR: 0
+    ramChargeDR: 0
+    ramDamage: 0
+    ramKnockback: 0
+    fluffyHealth: 0
+    fluffyKnockResist: 0
+    fluffyVortexDuration: 0
   SpawnPoints: []
   activeSpawnPoint: -1
   Respawn: {fileID: 11400000, guid: 19937298da8f18b41b1d2572d7bb5bcb, type: 2}
   currentScore: 0
   MusicToggle: {fileID: 11400000, guid: 9bd00c9cd9464204d8a6799a3e7142d3, type: 2}
   player: {fileID: 0}
+  HUD: {fileID: 0}
 --- !u!114 &4016259675076083572
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68,11 +84,11 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: 1637806147
-      Data2: 1330873044
-      Data3: 2050376077
-      Data4: 1122967596
-    Path: event:/Music/World Music
+      Data1: -1270416703
+      Data2: 1313078803
+      Data3: -1246434936
+      Data4: -1463915353
+    Path: event:/Music/Music_Controls
   Event: 
   PlayEvent: 1
   StopEvent: 2
@@ -163,10 +179,6 @@ MonoBehaviour:
     m_ActionName: PlayerMovement/Execute[/Keyboard/e]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 4dfd2a40-9301-4cfb-93b9-9991e2e4a4ab
-    m_ActionName: PlayerMenu/PauseMenu[/Keyboard/escape]
-  - m_PersistentCalls:
-      m_Calls: []
     m_ActionId: 69cc146f-1176-465e-8891-58ba71261dc3
     m_ActionName: PlayerMenu/DEBUG_Quit_Game[/Keyboard/equals]
   - m_PersistentCalls:
@@ -205,6 +217,26 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: c91e9761-51bb-4a02-b792-3aeeb97af856
     m_ActionName: CinematicCameras/JumpCheckpoint[/Keyboard/o]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d62e9d4b-30db-4c4b-9c78-0c3283829267
+    m_ActionName: PlayerMovement/SetFlock
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 05cc96a0-ad38-4dc6-bab2-63718e7b2600
+    m_ActionName: PlayerMovement/SheepActiveAbility[/Keyboard/1,/Keyboard/2]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 56b0c570-cf82-4458-acdd-3c305d71e1d8
+    m_ActionName: PlayerMovement/PetSheep
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f8511625-e0a9-4636-a07b-742a7b1aec96
+    m_ActionName: PlayerMovement/PauseMenu[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f98c3e5d-013f-49eb-a479-09fc6060d8d5
+    m_ActionName: Dialog/AdvanceText[/Mouse/leftButton,/Keyboard/space,/Keyboard/e]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: CinematicCameras

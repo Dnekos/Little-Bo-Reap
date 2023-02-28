@@ -76,6 +76,7 @@ public class PlayerHealth : Damageable
 		WorldState.instance.gameState = WorldState.State.Dead;
 
 		FMODUnity.RuntimeManager.PlayOneShot(deathSound, transform.position);
+		WorldState.instance.ChangeMusic(WorldState.instance.currentWorldTheme);
 
 		// stop collisions
 		rb.isKinematic = true;
