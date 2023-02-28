@@ -20,7 +20,7 @@ public class FrogAI : EnemyAI
 	{
 		if (activeAttack != null)
 		{
-			activeAttack.SpawnObject(ExplosionSpawnPoint);
+			activeAttack.SpawnObject(ExplosionSpawnPoint.position, Quaternion.identity);
 			activeAttack.damage = ExplosionDamage;
 		}
 

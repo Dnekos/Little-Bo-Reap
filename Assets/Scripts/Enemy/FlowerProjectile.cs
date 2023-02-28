@@ -39,11 +39,13 @@ public class FlowerProjectile : MonoBehaviour
 
         Vector3 flattenedOtherPos = new Vector3(other.transform.position.x, transform.position.y, other.transform.position.z);
         Damageable targetHealth = other.GetComponent<Damageable>();
-
-        //hit target takes damage
-        hitTargets.Add(targetHealth);
-        Debug.Log(other.gameObject.name + "hit by Flower Projectile Attack");
-        targetHealth.TakeDamage(FlowerProjectileAttack, (flattenedOtherPos - origPos).normalized);
+		if (targetHealth != null)
+		{
+			//hit target takes damage
+			hitTargets.Add(targetHealth);
+			Debug.Log(other.gameObject.name + "hit by Flower Projectile Attack");
+			targetHealth.TakeDamage(FlowerProjectileAttack, (flattenedOtherPos - origPos).normalized);
+		}
     }
 
 

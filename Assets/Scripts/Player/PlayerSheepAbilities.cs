@@ -92,7 +92,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 		gothMode = GetComponent<PlayerGothMode>();
 		spawnParticles = new List<GameObject>();
 
-		UpdateFlockUI();
+		Invoke("UpdateFlockUI", Time.deltaTime); // slow but prevents this being called before HUD is set up
 	}
 	private void Update()
 	{
