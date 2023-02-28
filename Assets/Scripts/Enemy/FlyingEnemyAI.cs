@@ -6,7 +6,7 @@ public class FlyingEnemyAI : Damageable
 {
     Dictionary<int, float> Cooldowns;
 
-    [SerializeField] Transform projectile;
+    [SerializeField] Transform frogPrefab;
     [SerializeField] Transform attackPoint;
     [SerializeField] float attackRadius;
 
@@ -18,6 +18,8 @@ public class FlyingEnemyAI : Damageable
 
     [HideInInspector]public Transform player;
     [HideInInspector]public bool attacking;//checks animator to see if we are attacking
+
+ 
 
 
     // Start is called before the first frame update
@@ -41,11 +43,6 @@ public class FlyingEnemyAI : Damageable
         activeAttack = atk;
     }
 
-    public void SpawnProjectile()
-    {
-        if (activeAttack != null)
-            activeAttack.SpawnObject(attackPoint);
-    }
 
     public void CheckForAttack()
     {
@@ -83,4 +80,21 @@ public class FlyingEnemyAI : Damageable
         }
 
     }
+
+    public void SpawnFrog()
+    {
+        Vector3 SpawnPoint = attackPoint.position;
+        StartCoroutine(SpawnEnemy(frogPrefab.gameObject, frogPrefab.GetComponent<EnemyAI>().SpawnParticlePrefab, SpawnPoint));
+    }
+
+    protected IEnumerator SpawnEnemy(GameObject enemy, GameObject particle, Vector3 pos)
+    {
+
+        Instantiate(particle, pos, transform.rotation, transform);
+        yield return new WaitForSeconds(enemy.GetComponent<EnemyAI>().SpawnWaitTime);
+        GameObject newFrog = Instantiate(enemy, pos, transform.rotation, transform);
+        newFrog.GetComponent<EnemyAI>().ToChase();
+        //newFrog.transform.localScale = new Vector3(0.33f, 0.33f, 0.33f);//temporary
+    }
+
 }
