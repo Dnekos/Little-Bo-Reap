@@ -35,7 +35,7 @@ public class BabaYagasHouseAI : EnemyAI
 	{
 		if (activeAttack != null)
 		{
-			activeAttack.SpawnObject(StompSpawnPoint);
+			activeAttack.SpawnObject(StompSpawnPoint.position, StompSpawnPoint.rotation);
 			activeAttack.damage = StompDamage;
 		}
 
@@ -59,7 +59,7 @@ public class BabaYagasHouseAI : EnemyAI
 	{
 		if (activeAttack != null)
 		{
-			activeAttack.SpawnObject(enemySpawnPoint);
+			activeAttack.SpawnObject(enemySpawnPoint.position, enemySpawnPoint.rotation);
 		}
 
 	}
@@ -67,7 +67,7 @@ public class BabaYagasHouseAI : EnemyAI
     {
 		if (activeAttack != null)
 		{
-			activeAttack.SpawnObject(fireBreathSpawnPoint);
+			activeAttack.SpawnObject(fireBreathSpawnPoint.position, fireBreathSpawnPoint.rotation);
 			activeAttack.damage = fireBreathDamage;
 		}
 	}
@@ -76,7 +76,7 @@ public class BabaYagasHouseAI : EnemyAI
     {
 		if (activeAttack != null)
 		{
-			activeAttack.SpawnObject(rangedAttackSpawnPoint);
+			activeAttack.SpawnObject(rangedAttackSpawnPoint.position, rangedAttackSpawnPoint.rotation);
 			activeAttack.damage = rangedAttackDamage;
 		}
 

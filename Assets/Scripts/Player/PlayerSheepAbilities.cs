@@ -92,7 +92,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 		gothMode = GetComponent<PlayerGothMode>();
 		spawnParticles = new List<GameObject>();
 
-		UpdateFlockUI();
+		Invoke("UpdateFlockUI", Time.deltaTime); // slow but prevents this being called before HUD is set up
 	}
 	private void Update()
 	{
@@ -450,6 +450,11 @@ public class PlayerSheepAbilities : MonoBehaviour
 			for (int i = 0; i < amountToSummon; i++)
 			{
 				StartCoroutine(SummonSheep(flockType, i));
+			}
+
+			while( WorldState.instance.SheepPool[currentFlockIndex].Count < amountToSummon)
+			{
+				WorldState.instance.SheepPool[currentFlockIndex].Add(null);
 			}
 
 			//start cooldown

@@ -159,7 +159,7 @@ public class PlayerSheepLift : MonoBehaviour
 		float lerpSpeed = SheepLerpSpeed;
 
 
-		while (player.isLifting && playerSheep != null)
+		while (player.isLifting && playerSheep != null && playerSheep.gameObject.activeInHierarchy)
 		{
 			yield return new WaitForEndOfFrame();
 
@@ -176,11 +176,11 @@ public class PlayerSheepLift : MonoBehaviour
 		playerSheep.transform.position = RecordedPositions[Mathf.Clamp(index, 0, RecordedPositions.Count - 1)];
 
 		// keep them in the tower till something knocks them over or they die
-		yield return new WaitUntil(() => shouldCollapseTower || playerSheep == null || playerSheep.GetSheepState() != SheepStates.LIFT);
+		yield return new WaitUntil(() => shouldCollapseTower || playerSheep == null || !playerSheep.gameObject.activeInHierarchy || playerSheep.GetSheepState() != SheepStates.LIFT);
 
 		CollapseTower();
 
-		if (playerSheep?.GetSheepState() == SheepStates.LIFT)
+		if (playerSheep?.GetSheepState() == SheepStates.LIFT && playerSheep.gameObject.activeInHierarchy)
 			playerSheep.EndLift(sheepIndex > AllowedSurvivingSheep);
 	}
 	#endregion

@@ -21,11 +21,11 @@ public class EnemyAttack : Attack
 
 
 	//	public virtual void SpawnObject(Vector3 pos)
-	public virtual void SpawnObject(Transform t)
+	public virtual void SpawnObject(Vector3 pos, Quaternion rot)
 	{
 		if (hitboxPrefab != null)
 		{
-			Instantiate(hitboxPrefab, t.position, t.rotation);
+			Instantiate(hitboxPrefab, pos, rot);
 		}
 	}
 
