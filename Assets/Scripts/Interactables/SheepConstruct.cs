@@ -253,5 +253,10 @@ public class SheepConstruct : SheepHolder
 	{
 		return Vector3.Distance(checkingPos, newSheepPos) < (SheepRadius + SheepRadius);
 	}
+
+	public float GetSheepCount()
+	{
+		return containedSheep.Count;
+	}
 	#endregion
 }
