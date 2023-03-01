@@ -15060,18 +15060,18 @@ MonoBehaviour:
   isInvulnerable: 0
   hurtSound:
     Guid:
-      Data1: 1297534728
-      Data2: 1206757212
-      Data3: 1269083289
-      Data4: -1220700625
-    Path: event:/Little Guy/Hurt
+      Data1: 1722210201
+      Data2: 1301176795
+      Data3: 1261979305
+      Data4: 65572920
+    Path: event:/Frog/FrogExplosion
   deathSound:
     Guid:
-      Data1: 1322370008
-      Data2: 1106456852
-      Data3: 855789978
-      Data4: 2067519149
-    Path: event:/Little Guy/Death
+      Data1: 1722210201
+      Data2: 1301176795
+      Data3: 1261979305
+      Data4: 65572920
+    Path: event:/Frog/FrogExplosion
   soulValue: 5
   healthValue: 0
   soulSpeed: 4
@@ -15106,21 +15106,35 @@ MonoBehaviour:
   fallRate: 50
   swingSound:
     Guid:
-      Data1: -1516851570
-      Data2: 1275689125
-      Data3: -706628987
-      Data4: 1488203871
-    Path: event:/Big Guy/Club Swing
+      Data1: -1233874543
+      Data2: 1119270074
+      Data3: 547923859
+      Data4: 171712848
+    Path: event:/Frog/Scream
   clubHitSound:
     Guid:
-      Data1: 721644945
-      Data2: 1288483985
-      Data3: 1148032658
-      Data4: 922800040
-    Path: event:/Big Guy/Club Hit
+      Data1: 1722210201
+      Data2: 1301176795
+      Data3: 1261979305
+      Data4: 65572920
+    Path: event:/Frog/FrogExplosion
   player: {fileID: 0}
   ExplosionSpawnPoint: {fileID: 2730368931945197822}
   ExplosionDamage: 20
+  bouncingSound:
+    Guid:
+      Data1: -1513504774
+      Data2: 1150331363
+      Data3: 239429291
+      Data4: 1554385933
+    Path: event:/Frog/Ribbit
+  explosionSound:
+    Guid:
+      Data1: 1722210201
+      Data2: 1301176795
+      Data3: 1261979305
+      Data4: 65572920
+    Path: event:/Frog/FrogExplosion
 --- !u!54 &7282202646638689959
 Rigidbody:
   m_ObjectHideFlags: 0
