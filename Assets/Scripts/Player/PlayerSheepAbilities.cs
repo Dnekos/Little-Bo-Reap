@@ -92,7 +92,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 		gothMode = GetComponent<PlayerGothMode>();
 		spawnParticles = new List<GameObject>();
 
-		UpdateFlockUI();
+		Invoke("UpdateFlockUI", Time.deltaTime); // slow but prevents this being called before HUD is set up
 	}
 	private void Update()
 	{
@@ -158,6 +158,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 			var particleModule = bellParticles.main;
 			particleModule.startColor = sheepFlocks[currentFlockIndex].UIColor;
 			sheepFlocks[currentFlockIndex].flockChangeParticle.Play(true);
+			FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Sheep", currentFlockIndex);
 
 			WorldState.instance.HUD.SwapAnimation();
 
@@ -177,10 +178,11 @@ public class PlayerSheepAbilities : MonoBehaviour
 			while (sheepFlocks[currentFlockIndex].MaxSize <= 0 && originalIndex != currentFlockIndex);
 
 			currentFlockType = (SheepTypes)currentFlockIndex;
-
+			
 			var particleModule = bellParticles.main;
 			particleModule.startColor = sheepFlocks[currentFlockIndex].UIColor;
 			sheepFlocks[currentFlockIndex].flockChangeParticle.Play(true);
+			FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Sheep", currentFlockIndex);
 
 			WorldState.instance.HUD.SwapAnimation();
 
@@ -448,6 +450,11 @@ public class PlayerSheepAbilities : MonoBehaviour
 			for (int i = 0; i < amountToSummon; i++)
 			{
 				StartCoroutine(SummonSheep(flockType, i));
+			}
+
+			while( WorldState.instance.SheepPool[currentFlockIndex].Count < amountToSummon)
+			{
+				WorldState.instance.SheepPool[currentFlockIndex].Add(null);
 			}
 
 			//start cooldown

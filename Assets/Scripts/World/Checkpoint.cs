@@ -13,6 +13,10 @@ public class Checkpoint : MonoBehaviour
 
 	bool hasEntered = false; // prevents the same checkpoint from being triggered twice
 
+	[Header("CheckpointSkip")]
+	public bool addsSheep;
+	public GameObject debugSheepAdder;	
+
 	private void OnTriggerEnter(Collider other)
 	{
 		if (other.tag == "Player" && !hasEntered)

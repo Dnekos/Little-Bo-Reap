@@ -105,16 +105,10 @@ public enum SheepStates
     {
         base.Start();
 
-        //make sure off mesh link is null
-        link = null;
-
-        
         if (sheepType == 2)
         {
             MaxHealth += WorldState.instance.passiveValues.fluffyHealth;
-            Health = MaxHealth;
         }
-
 
 		walker = GetComponent<FMODUnity.StudioEventEmitter>();
 
@@ -124,30 +118,45 @@ public enum SheepStates
 
         player = WorldState.instance.player.transform;
 
-        //get random follow stopping distance
-        //this prevents sheep from clumping up and getting jittery when in a flock behind player
-        agentStoppingDistance = Random.Range(followStoppingDistanceMin, followStoppingDistanceMax);
+		Initialize();
 
-        isInvulnerable = true;
-        Invoke("DisableSpawnInvuln", invulnTimeOnSpawn);
+	}
 
-        //check black sheep stuff
-        if (isBlackSheep)
-			blackSheepParticles.SetActive(true);
+	/// <summary>
+	/// everything needed when the sheep is reenabled from the pool
+	/// </summary>
+	public void Initialize()
+	{
+		agent.enabled = true;
 
-        //if default state is wander, go wandering
-        if (currentSheepState == SheepStates.WANDER)
-        {
+		Health = MaxHealth;
+
+		//make sure off mesh link is null
+		link = null;
+
+		//get random follow stopping distance
+		//this prevents sheep from clumping up and getting jittery when in a flock behind player
+		agentStoppingDistance = Random.Range(followStoppingDistanceMin, followStoppingDistanceMax);
+
+		isInvulnerable = true;
+		Invoke("DisableSpawnInvuln", invulnTimeOnSpawn);
+
+		//check black sheep stuff
+		blackSheepParticles.SetActive(isBlackSheep);
+
+		//if default state is wander, go wandering
+		if (currentSheepState == SheepStates.WANDER)
+		{
 			SheepSetDestination(transform.position);
-            agent.speed = wanderSpeed;
-            agent.stoppingDistance = wanderStopDistance;
+			agent.speed = wanderSpeed;
+			agent.stoppingDistance = wanderStopDistance;
 			SetSheepState(SheepStates.WANDER);
 
-            GoWandering();
-        }
-    }
+			GoWandering();
+		}
+	}
 
-    private void OnDestroy()
+	private void OnDestroy()
     {
         ReleaseOffmeshLink();
     }
@@ -323,8 +332,13 @@ public enum SheepStates
 		walker.Stop();
 
 		RemoveSheep(sheepType, this);
-		Destroy(gameObject);
-    }
+		gameObject.SetActive(false);
+		//CancelLift();
+
+		ReleaseOffmeshLink();
+
+		//Destroy(gameObject);
+	}
 
 	void SheepSetDestination(Vector3 dest)
 	{

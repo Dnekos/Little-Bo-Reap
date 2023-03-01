@@ -45,13 +45,30 @@ public class Sheep_Summon_Particle : MonoBehaviour
 				Instantiate(crackAndPoof, spawnPoint, Quaternion.identity);
 
 			//spawn sheep
-			var sheep = Instantiate(sheepToSpawn, spawnPoint, Quaternion.identity).GetComponent<PlayerSheepAI>() as PlayerSheepAI;
+			PlayerSheepAI sheep;
+			if (WorldState.instance.SheepPool[(int)sheepType][index]  == null)
+			{
+				sheep = Instantiate(sheepToSpawn, spawnPoint, Quaternion.identity, WorldState.instance.transform).GetComponent<PlayerSheepAI>();
+				WorldState.instance.SheepPool[(int)sheepType][index] = sheep.gameObject;
+			}
+			else
+			{
+				sheep = WorldState.instance.SheepPool[(int)sheepType][index].GetComponent<PlayerSheepAI>();
+				sheep.transform.position = spawnPoint;
+				sheep.transform.rotation = Quaternion.identity;
+				sheep.gameObject.SetActive(true);
+				sheep.Initialize();
+				sheep.SetSheepState(SheepStates.FOLLOW_PLAYER);
+			}
+
+
             player.GetActiveSheep(sheepType).Add(sheep);
             player.UpdateFlockUI();
 
 			sheep.RemoveSheep = new PlayerSheepAI.callSheep(removeFunction);
 			sheep.activeSheepPool = player.GetActiveSheep(sheepType);
 			sheep.sheepPoolIndex = index;
+			sheep.gameObject.name = sheepType + " " + index;
 
 
             //determine if it's a black sheep

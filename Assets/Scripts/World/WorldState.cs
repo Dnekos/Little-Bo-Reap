@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
@@ -63,7 +64,7 @@ public class WorldState : MonoBehaviour
 
 	// values other classes may care about
 	int deaths = 0;
-	//public int maxBuilderSheep = 0, maxRamSheep = 0, maxFluffySheep = 0;
+	public List<GameObject>[] SheepPool;
 
 	// providing components
 	[HideInInspector]
@@ -98,7 +99,16 @@ public class WorldState : MonoBehaviour
 			myBus.setVolume(PlayerPrefs.GetFloat("sfx", 1));
 			myBus = FMODUnity.RuntimeManager.GetBus("bus:/Music");
 			myBus.setVolume(PlayerPrefs.GetFloat("music", 1));
+
+			SheepPool = new List<GameObject>[3];
+			SheepPool[0] = new List<GameObject>();
+			SheepPool[1] = new List<GameObject>();
+			SheepPool[2] = new List<GameObject>();
 		}
+		else if (instance != this)
+			Destroy(gameObject);
+
+
 	}
 
 	void Toggle()
@@ -122,6 +132,12 @@ public class WorldState : MonoBehaviour
 		if (context.performed)
 		{
 			activeSpawnPoint = Mathf.Min(activeSpawnPoint + 1, SpawnPoints.Length - 1);
+
+            if (SpawnPoints[activeSpawnPoint].addsSheep)
+            {
+				SpawnPoints[activeSpawnPoint].debugSheepAdder.SetActive(true);
+			}
+
 			Respawn.listener.Invoke();
 		}
 	}
