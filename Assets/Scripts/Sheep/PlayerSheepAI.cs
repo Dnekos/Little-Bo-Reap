@@ -127,6 +127,10 @@ public enum SheepStates
 	/// </summary>
 	public void Initialize()
 	{
+		animator.Rebind();
+
+		animator.Play("Test_Sheep_Summon", -1, 0);
+
 		agent.enabled = true;
 
 		Health = MaxHealth;
