@@ -452,6 +452,11 @@ public class PlayerSheepAbilities : MonoBehaviour
 				StartCoroutine(SummonSheep(flockType, i));
 			}
 
+			while( WorldState.instance.SheepPool[currentFlockIndex].Count < amountToSummon)
+			{
+				WorldState.instance.SheepPool[currentFlockIndex].Add(null);
+			}
+
 			//start cooldown
 			StartCoroutine(SummonSheepCooldown());
 
