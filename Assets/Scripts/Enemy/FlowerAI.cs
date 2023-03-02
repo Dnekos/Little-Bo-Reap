@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FlowerAI : Damageable
+public class FlowerAI : EnemyBase
 {
     Dictionary<int, float> Cooldowns;
 

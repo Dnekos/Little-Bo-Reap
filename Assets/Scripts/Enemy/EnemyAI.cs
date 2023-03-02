@@ -13,15 +13,16 @@ public enum EnemyStates
 	IDLE = 3,
 	EXECUTABLE = 4
 }
-public class EnemyAI : Damageable
+public class EnemyAI : EnemyBase
 {
 	[Header("AI"), SerializeField]
 	StateGraph graph;
 	Dictionary<int, float> Cooldowns;
 
-	[Header("Spawning")]
-	public GameObject SpawnParticlePrefab;
-	public float SpawnWaitTime = 2;
+	//This info is now in EnemyBase
+	//[Header("Spawning")]
+	//public GameObject SpawnParticlePrefab;
+	//public float SpawnWaitTime = 2;
 
 	[Header("Enemy State")]
 	[SerializeField] protected EnemyStates currentEnemyState;

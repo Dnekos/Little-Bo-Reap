@@ -89,7 +89,7 @@ public class BattleArena : MonoBehaviour
 				{
 					Vector3 SpawnPoint = (enemy.SpawnPoint == null) ? enemy.AlternateSpawn : enemy.SpawnPoint.position;
 					SpawnPoint = SpawnPoint + new Vector3(Random.Range(-enemy.RandomRadius, enemy.RandomRadius), 0, Random.Range(-enemy.RandomRadius, enemy.RandomRadius));
-					StartCoroutine(SpawnEnemy(enemy.EnemyPrefab, enemy.EnemyPrefab.GetComponent<EnemyAI>().SpawnParticlePrefab, SpawnPoint));
+					StartCoroutine(SpawnEnemy(enemy.EnemyPrefab, enemy.EnemyPrefab.GetComponent<EnemyBase>().SpawnParticlePrefab, SpawnPoint));
 
 				}
 			}
@@ -101,11 +101,14 @@ public class BattleArena : MonoBehaviour
 	{
 
 		Instantiate(particle, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder);
-		yield return new WaitForSeconds(enemy.GetComponent<EnemyAI>().SpawnWaitTime);
-		Instantiate(enemy, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder).GetComponent<EnemyAI>().ToChase();
-	}
+		yield return new WaitForSeconds(enemy.GetComponent<EnemyBase>().SpawnWaitTime);
+        //Instantiate(enemy, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder).GetComponent<EnemyAI>().ToChase();
+				//I see "ToChase()" is just an empty function so I commented it out
+        Instantiate(enemy, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder);
 
-	private void OnTriggerEnter(Collider other)
+    }
+
+    private void OnTriggerEnter(Collider other)
 	{
 		if (CurrentWave == -1 && other.gameObject.CompareTag("Player")) // untriggered
 		{

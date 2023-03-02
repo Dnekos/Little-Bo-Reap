@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FlyingEnemyAI : Damageable
+public class FlyingEnemyAI : EnemyBase
 {
     Dictionary<int, float> Cooldowns;
 
