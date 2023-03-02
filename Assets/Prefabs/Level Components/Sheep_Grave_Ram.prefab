@@ -14,6 +14,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -6869584063510064943, guid: e0458793e98043545974bde97604d87e,
         type: 3}
+    - target: {fileID: 2801632935450516346, guid: 3e9675ac1509200489d756cca300a063,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 31b3dd843f196e541a543ecf029f7b19, type: 2}
     - target: {fileID: 3239054127239934197, guid: 3e9675ac1509200489d756cca300a063,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -37,12 +42,12 @@ PrefabInstance:
     - target: {fileID: 4266211841605159610, guid: 3e9675ac1509200489d756cca300a063,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.b
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4266211841605159610, guid: 3e9675ac1509200489d756cca300a063,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.g
-      value: 0.9104993
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4266211841605159610, guid: 3e9675ac1509200489d756cca300a063,
         type: 3}
@@ -105,15 +110,20 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 2.42
       objectReference: {fileID: 0}
+    - target: {fileID: 5656156270693600708, guid: 3e9675ac1509200489d756cca300a063,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 31b3dd843f196e541a543ecf029f7b19, type: 2}
     - target: {fileID: 5656156270693600709, guid: 3e9675ac1509200489d756cca300a063,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.b
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5656156270693600709, guid: 3e9675ac1509200489d756cca300a063,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.g
-      value: 0.9600028
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5656156270693600709, guid: 3e9675ac1509200489d756cca300a063,
         type: 3}
@@ -143,7 +153,7 @@ PrefabInstance:
     - target: {fileID: 5656156271694720177, guid: 3e9675ac1509200489d756cca300a063,
         type: 3}
       propertyPath: m_RootOrder
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5656156271694720177, guid: 3e9675ac1509200489d756cca300a063,
         type: 3}
