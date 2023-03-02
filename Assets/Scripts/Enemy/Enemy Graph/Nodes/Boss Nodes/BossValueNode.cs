@@ -27,9 +27,8 @@ namespace XNode.Examples.StateGraph
 				switch (desiredValue)
 				{
 					case BossVariables.NUM_CURRENT_ENEMIES:
-						int x = GameObject.FindGameObjectsWithTag("Enemy").Length;
-						Debug.Log(desiredValue +" " + x);
-						return x;
+						Debug.Log(user.transform.parent.childCount);
+						return user.transform.parent.childCount;
 
 					case BossVariables.CURRENT_HEATH:
 						return ((BabaYagasHouseAI)user).GetHeath();//is this the best way to do this?

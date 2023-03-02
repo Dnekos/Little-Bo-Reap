@@ -65,7 +65,7 @@ public class FlyingEnemyProjectile : MonoBehaviour
     {
         if (activeAttack != null)
         {
-            activeAttack.SpawnObject(ExplosionSpawnPoint);
+            activeAttack.SpawnObject(ExplosionSpawnPoint.position, Quaternion.identity);
             activeAttack.damage = ExplosionDamage;
             Destroy(gameObject);
         }

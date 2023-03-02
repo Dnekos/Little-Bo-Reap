@@ -87,7 +87,7 @@ public class FlyingEnemyAI : EnemyBase
     {
         if (activeAttack != null)
         {
-            activeAttack.SpawnObject(attackPoint);
+            activeAttack.SpawnObject(attackPoint.position, attackPoint.rotation);
             activeAttack.damage = attackDamage;
         }
     }

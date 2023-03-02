@@ -57,6 +57,7 @@ public class EnemyAI : EnemyBase
 	[SerializeField] FMODUnity.EventReference swingSound;
 	[SerializeField] FMODUnity.EventReference clubHitSound;
 
+
 	[HideInInspector]
 	public Transform player;
 	NavMeshAgent agent;
