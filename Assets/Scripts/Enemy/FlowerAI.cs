@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FlowerAI : Damageable
+public class FlowerAI : EnemyBase
 {
     Dictionary<int, float> Cooldowns;
 
@@ -35,11 +35,7 @@ public class FlowerAI : Damageable
     void Update()
     {
 
-        //adjust this
-        //animator.Play("Flower_Idle.anim");
-        //create a new attack scriptable for projectile
-        //call it here, look at the enemy AI script for reference
-
+        //adjust this(make it its own function)
         if ((player.position - this.transform.position).magnitude < 100f)
         {
             FlowerRotate();

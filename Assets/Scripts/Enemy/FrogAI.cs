@@ -22,17 +22,12 @@ public class FrogAI : EnemyAI
 		{
 			activeAttack.SpawnObject(ExplosionSpawnPoint.position, Quaternion.identity);
 			activeAttack.damage = ExplosionDamage;
+			OnDeath();//kills enemy
 		}
 
 		/*
 		We still need to add explosion animation
 		*/
 
-		OnDeath();//kills enemy
 	}
-
-	//IEnumerator tempExplode()
-	//{
-
-	//}
 }
