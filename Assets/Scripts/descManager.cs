@@ -7,6 +7,7 @@ using TMPro;
 public class descManager : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI descTextBox;
+    [SerializeField] GameObject panel;
 
     [SerializeField] string desc;
     // Start is called before the first frame update
@@ -14,12 +15,14 @@ public class descManager : MonoBehaviour
     public void MouseOver()
     {
         descTextBox.gameObject.SetActive(true);
+        panel.SetActive(true);
         descTextBox.text = desc;
     }
 
     public void MouseExit()
     {
         descTextBox.gameObject.SetActive(false);
+        panel.SetActive(false);
         descTextBox.text = "";
     }
 }
