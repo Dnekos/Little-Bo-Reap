@@ -68,7 +68,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 	public float summonBlackSheepPercent = 10f;
 	[SerializeField] string summonAnimation, racallAnimation;
 	[SerializeField] ParticleSystem RecallVFX;
-	[SerializeField] GameObject summonParticle;
+	[SerializeField] List<GameObject> summonParticle;
 	[SerializeField] float summonParticleLerpSpeed = 5f;
 	[SerializeField] GameEvent endConstructsEvent;
 	List<GameObject> spawnParticles;
@@ -630,11 +630,11 @@ public class PlayerSheepAbilities : MonoBehaviour
 		//if inside navmesh, spawn sheep!
 		if (found)
 		{
-			var soulParticle = Instantiate(summonParticle, transform.position, Quaternion.identity) as GameObject;
+			var soulParticle = Instantiate(summonParticle[currentFlockIndex], transform.position, Quaternion.identity) as GameObject;
 			soulParticle.GetComponent<Sheep_Summon_Particle>().removeFunction = new PlayerSheepAI.callSheep(RemoveSheepFromList);
 			soulParticle.GetComponent<Sheep_Summon_Particle>()?.InitSheepParticle(GetCurrentSheepPrefab(theSheepType), summonParticleLerpSpeed, hit.position, this, theSheepType, index);
-			var module = soulParticle.GetComponent<ParticleSystem>().main;
-			module.startColor = sheepFlocks[(int)theSheepType].UIColor;
+			//var module = soulParticle.GetComponent<ParticleSystem>().main;
+			//module.startColor = sheepFlocks[(int)theSheepType].UIColor;
 			spawnParticles.Add(soulParticle);
 
 		}
