@@ -6,6 +6,7 @@ public class FlyingEnemyAI : EnemyBase
 {
     Dictionary<int, float> Cooldowns;
 
+    [SerializeField] public int flightPathIndex = 0;
     [SerializeField] Transform frogPrefab;
     [SerializeField] Transform attackPoint;
     [SerializeField] float attackRadius;
