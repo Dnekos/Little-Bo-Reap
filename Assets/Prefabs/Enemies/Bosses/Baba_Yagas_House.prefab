@@ -413,8 +413,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 397dd83476cc93048a466ed125150dee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Health: 50000
-  MaxHealth: 50000
+  Health: 100
+  MaxHealth: 100
   gibs: {fileID: 8630169064506601255, guid: 4957a3768fc0dc74ab3a45202acc48fc, type: 3}
   damageNumber: {fileID: 758784450076825086, guid: 917e1ac09e21f3f499d8aa30f802b69e,
     type: 3}
@@ -446,10 +446,10 @@ MonoBehaviour:
   - {fileID: 4645614311413259885, guid: 2ea8437ad6787b049b56c5883a68aae6, type: 3}
   - {fileID: 4645614311413259885, guid: 484308373c7ce7249b0a2955d5de5e32, type: 3}
   - {fileID: 2352351105218156812, guid: f0ab457f7a491a545b15c7b71b0e7ff7, type: 3}
-  graph: {fileID: 11400000, guid: 442bfc3177149354b8a25f6e1f06aaad, type: 2}
   SpawnParticlePrefab: {fileID: 5225625775041053419, guid: 0d79b936ef2eed546926c5bad3a31652,
     type: 3}
   SpawnWaitTime: 2
+  graph: {fileID: 11400000, guid: 442bfc3177149354b8a25f6e1f06aaad, type: 2}
   currentEnemyState: 3
   StunTime: 0
   playerLayer:
@@ -497,6 +497,8 @@ MonoBehaviour:
   fireBreathSpawnPoint: {fileID: 5779326986050035076}
   rangedAttackDamage: 20
   rangedAttackSpawnPoint: {fileID: 4790186272744044975}
+  endGameObject: {fileID: 601021469018455316, guid: 696793d2437e520458a1eb3a5b40db43,
+    type: 3}
 --- !u!54 &6442876334591913545
 Rigidbody:
   m_ObjectHideFlags: 0
