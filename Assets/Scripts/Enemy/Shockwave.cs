@@ -20,11 +20,17 @@ public class Shockwave : MonoBehaviour
 
 	float currTimeAlive = 0;
 
+	[Header("Sound")]
+	[SerializeField] FMODUnity.EventReference shockwaveSound;
+
 	private void Start()
 	{
 		hitTargets = new List<Damageable>();
 
-		origPos = transform.position; 
+		origPos = transform.position;
+
+		FMODUnity.RuntimeManager.PlayOneShot(shockwaveSound, origPos);
+
 	}
 	// Update is called once per frame
 	void Update()

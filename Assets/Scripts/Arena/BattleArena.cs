@@ -42,6 +42,9 @@ public class BattleArena : MonoBehaviour
 	[Header("Resetting"), SerializeField]
 	GameEvent RespawnPlayer;
 
+	[Header("Music")]
+	[SerializeField] int afterMusic;
+
 	// Start is called before the first frame update
 	void Start()
 	{
@@ -82,7 +85,11 @@ public class BattleArena : MonoBehaviour
 		{
 			// if all waves done,
 			DoorsFolder.SetActive(false); // open doors
+			WorldState.instance.ChangeMusic(afterMusic);
+			WorldState.instance.currentWorldTheme = afterMusic;
 			Instantiate(SoulReward, SoulSpawnPoint.position, SoulSpawnPoint.rotation, SpawnedEnemiesFolder); //spawn soul reward
+
+		
 			StartCoroutine(EndBattleSlow());
 		}
 		else
@@ -129,6 +136,8 @@ public class BattleArena : MonoBehaviour
 		{
 			DoorsFolder.SetActive(true);
 			AdvanceWave();
+			WorldState.instance.ChangeMusic(1);
+
 		}
 	}
 
@@ -143,5 +152,6 @@ public class BattleArena : MonoBehaviour
 		slowTimeVolume.SetActive(false);
 		Time.timeScale = 1f;
 		Time.fixedDeltaTime = 0.02F * Time.timeScale;
+		
 	}
 }
