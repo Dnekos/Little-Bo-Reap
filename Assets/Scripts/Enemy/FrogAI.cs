@@ -25,6 +25,7 @@ public class FrogAI : EnemyAI
 		{
 			activeAttack.SpawnObject(ExplosionSpawnPoint.position, Quaternion.identity);
 			activeAttack.damage = ExplosionDamage;
+			PlayExposion();
 			OnDeath();//kills enemy
 		}
 
