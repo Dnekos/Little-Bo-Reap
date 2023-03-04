@@ -48,7 +48,7 @@ public class Shockwave : MonoBehaviour
 		if (currTimeAlive >= maxTimeAlive)
 			Destroy(gameObject);
 	}
-	private void OnTriggerEnter(Collider other)
+	private void OnTriggerStay(Collider other)
 	{
 		Vector3 flattenedOtherPos = new Vector3(other.transform.position.x, transform.position.y, other.transform.position.z);
 		Damageable targetHealth = other.GetComponent<Damageable>();
