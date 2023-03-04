@@ -22,6 +22,9 @@ public class BabaYagasHouseAI : EnemyAI
 	[Header("Ranged Attack")]
 	[SerializeField] float rangedAttackDamage;
     [SerializeField] Transform rangedAttackSpawnPoint;
+
+	[Header("Game End Stuff")]
+	[SerializeField] GameObject endGameObject;
  
 
 	// Start is called before the first frame update
@@ -30,8 +33,16 @@ public class BabaYagasHouseAI : EnemyAI
 		base.Start();
 	}
 
-	// for animation trigger
-	public void SpawnShockwave()//this will be the Slam attack
+    protected override void OnDeath()
+    {
+		//spawn the end house! :D
+		Instantiate(endGameObject, transform.position, Quaternion.Euler(Vector3.zero));
+
+        base.OnDeath();
+    }
+
+    // for animation trigger
+    public void SpawnShockwave()//this will be the Slam attack
 	{
 		if (activeAttack != null)
 		{

@@ -254,7 +254,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0, g: 0.52470756, b: 1, a: 1}
+      maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -4852,7 +4852,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9d8b7e29152376f47996b17b63a0e49c, type: 2}
+  - {fileID: 2100000, guid: 45dacd3f05926ef45b0402ff2f3a18c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9802,8 +9802,8 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5656156270443709191}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.2989248, y: 1.2999641, z: 1.2989248}
+  m_LocalPosition: {x: 0, y: 0, z: -0.488}
+  m_LocalScale: {x: 0.633044, y: 0.63355047, z: 0.633044}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5656156270570844856}
@@ -9811,7 +9811,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.19}
+  m_AnchoredPosition: {x: 0, y: 2.01}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5656156270443709194
@@ -9890,7 +9890,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0.02, y: 2.6787}
+  m_AnchoredPosition: {x: 0.02, y: 2.32}
   m_SizeDelta: {x: 4.657, y: 3.8987}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &5656156270570844859
@@ -9999,7 +9999,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 12, y: 14, z: 4}
+  m_Size: {x: 10.03, y: 14, z: 6.6}
   m_Center: {x: 0, y: 5, z: 0}
 --- !u!1 &5656156270693600706
 GameObject:
@@ -10224,7 +10224,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0, g: 0.6127057, b: 1, a: 1}
+      maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -14764,7 +14764,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9d8b7e29152376f47996b17b63a0e49c, type: 2}
+  - {fileID: 2100000, guid: 45dacd3f05926ef45b0402ff2f3a18c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -14967,7 +14967,7 @@ Transform:
   - {fileID: 9011307317795934634}
   - {fileID: 4864243750246051808}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 150, z: 0}
 --- !u!65 &5656156271694720178
 BoxCollider:
@@ -15117,13 +15117,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0a89cb58669212f49a823ba72a0c21dc,
         type: 3}
+      propertyPath: m_LocalScale.x
+      value: 96
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0a89cb58669212f49a823ba72a0c21dc,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 96
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0a89cb58669212f49a823ba72a0c21dc,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 96
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0a89cb58669212f49a823ba72a0c21dc,
+        type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.049999997
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0a89cb58669212f49a823ba72a0c21dc,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.004999998
+      value: -0.97
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0a89cb58669212f49a823ba72a0c21dc,
         type: 3}
@@ -15165,6 +15180,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0a89cb58669212f49a823ba72a0c21dc,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -5754084199372789682, guid: 0a89cb58669212f49a823ba72a0c21dc,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -7078217268075030804, guid: 7dd2dceff4f5fb34fb3f1cf40da13c8c,
+        type: 3}
     - target: {fileID: 919132149155446097, guid: 0a89cb58669212f49a823ba72a0c21dc,
         type: 3}
       propertyPath: m_Name

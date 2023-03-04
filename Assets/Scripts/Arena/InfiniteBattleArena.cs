@@ -11,7 +11,6 @@ public class InfiniteBattleArena : BattleArena
 		// spawn each enemy
 		foreach (EnemySpawn enemy in waves[CurrentWave].Enemies)
 		{
-			Debug.Log(enemy.NumEnemies);
 			for (int i = 0; i < enemy.NumEnemies; i++)
 			{
 				Vector3 SpawnPoint = (enemy.SpawnPoint == null) ? enemy.AlternateSpawn : enemy.SpawnPoint.position;

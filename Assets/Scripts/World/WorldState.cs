@@ -141,6 +141,12 @@ public class WorldState : MonoBehaviour
 		if (context.performed)
 		{
 			activeSpawnPoint = Mathf.Min(activeSpawnPoint + 1, SpawnPoints.Length - 1);
+
+            if (SpawnPoints[activeSpawnPoint].addsSheep)
+            {
+				SpawnPoints[activeSpawnPoint].debugSheepAdder.SetActive(true);
+			}
+
 			Respawn.listener.Invoke();
 		}
 	}

@@ -13,15 +13,16 @@ public enum EnemyStates
 	IDLE = 3,
 	EXECUTABLE = 4
 }
-public class EnemyAI : Damageable
+public class EnemyAI : EnemyBase
 {
 	[Header("AI"), SerializeField]
 	StateGraph graph;
 	Dictionary<int, float> Cooldowns;
 
-	[Header("Spawning")]
-	public GameObject SpawnParticlePrefab;
-	public float SpawnWaitTime = 2;
+	//This info is now in EnemyBase
+	//[Header("Spawning")]
+	//public GameObject SpawnParticlePrefab;
+	//public float SpawnWaitTime = 2;
 
 	[Header("Enemy State")]
 	[SerializeField] protected EnemyStates currentEnemyState;
@@ -56,6 +57,7 @@ public class EnemyAI : Damageable
 	[SerializeField]  FMODUnity.EventReference swingSound;
 	[SerializeField] FMODUnity.EventReference clubHitSound;
 
+
 	[HideInInspector]
 	public Transform player;
 	NavMeshAgent agent;
@@ -78,8 +80,8 @@ public class EnemyAI : Damageable
 	// Update is called once per frame
 	protected virtual void Update()
 	{
-		if (GetComponent<Animator>() != null)
-			GetComponent<Animator>().SetBool("isMoving", agent.velocity.magnitude > 1);
+		if (anim != null)
+			anim.SetBool("isMoving", agent.velocity.magnitude > 1);
 
 		if (agent.desiredVelocity.sqrMagnitude > 0.8f)
 		{

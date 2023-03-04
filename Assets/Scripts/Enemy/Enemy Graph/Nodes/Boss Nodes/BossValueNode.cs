@@ -27,16 +27,17 @@ namespace XNode.Examples.StateGraph
 				switch (desiredValue)
 				{
 					case BossVariables.NUM_CURRENT_ENEMIES:
-						return GameObject.FindGameObjectsWithTag("Enemy").Length;
+						Debug.Log(user.transform.parent.childCount);
+						return user.transform.parent.childCount;
 
 					case BossVariables.CURRENT_HEATH:
-						return user.GetComponent<BabaYagasHouseAI>().GetHeath();//is this the best way to do this?
+						return ((BabaYagasHouseAI)user).GetHeath();//is this the best way to do this?
 
 					case BossVariables.MAX_HEALTH:
-						return user.GetComponent<BabaYagasHouseAI>().GetMaxHeath();
+						return ((BabaYagasHouseAI)user).GetMaxHeath();
 
 					case BossVariables.ENEMIES_SPAWNED:
-						return user.GetComponent<BabaYagasHouseAI>().getEnemiesSpawned();
+						return ((BabaYagasHouseAI)user).getEnemiesSpawned();
 
 					case BossVariables.IS_MOVING:
                     {
