@@ -123,7 +123,7 @@ public class EnemyAI : EnemyBase
 		else
 		{
 			agent.SetDestination(dest);
-			if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 5, 1))
+			if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 5, 1) || agent.isOnOffMeshLink)
 			{
 				transform.position = hit.position;
 			}
