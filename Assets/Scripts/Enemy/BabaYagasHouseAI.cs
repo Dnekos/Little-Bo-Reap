@@ -25,15 +25,28 @@ public class BabaYagasHouseAI : EnemyAI
 
 	[Header("Game End Stuff")]
 	[SerializeField] GameObject endGameObject;
+
+
+
+	float bossFallRate = 2000;
  
 
 	// Start is called before the first frame update
 	override protected void Start()
 	{
 		base.Start();
+
+
 	}
 
-    protected override void OnDeath()
+	private void FixedUpdate()
+    {
+		rb.AddForce(Vector3.down * bossFallRate);
+	}
+
+
+
+	protected override void OnDeath()
     {
 		//spawn the end house! :D
 		Instantiate(endGameObject, transform.position, Quaternion.Euler(Vector3.zero));
@@ -71,6 +84,7 @@ public class BabaYagasHouseAI : EnemyAI
 		if (activeAttack != null)
 		{
 			activeAttack.SpawnObject(enemySpawnPoint.position, enemySpawnPoint.rotation);
+			enemiesSpawned = true;
 		}
 
 	}
@@ -92,5 +106,10 @@ public class BabaYagasHouseAI : EnemyAI
 		}
 
 	}
+
+    public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
+    {
+        base.TakeDamage(atk, attackForward, damageAmp, 0.0f);//no knockback
+    }
 
 }
