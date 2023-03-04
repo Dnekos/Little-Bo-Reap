@@ -16,6 +16,8 @@ public class EnemyAttack : Attack
 	[Tooltip("keep this 4 characters pls")]
 	public string ID;
 
+	[Header("Animation"), SerializeField]
+	bool TransitionIn = false;
 	[Header("Sounds")]
 	[SerializeField] FMODUnity.EventReference attackStartSound;
 
@@ -36,7 +38,10 @@ public class EnemyAttack : Attack
 	public virtual void PerformAttack(Animator anim)
 	{
 		FMODUnity.RuntimeManager.PlayOneShotAttached(attackStartSound, anim.gameObject);
-		anim.Play(animation);
+		if (TransitionIn)
+			anim.SetTrigger(animation);
+		else
+			anim.Play(animation);
 	}
 
 }

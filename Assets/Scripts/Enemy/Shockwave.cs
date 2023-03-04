@@ -9,6 +9,7 @@ public class Shockwave : MonoBehaviour
 
 	[Header("Transform Properties"), SerializeField]
 	float maxTimeAlive = 2;
+	[SerializeField,Tooltip("how many seconds in which being in the donut hole still deals damage (for really close range attacks)")] float FilledHoleTime = 0.1f;
 	[SerializeField]
 	Vector3 maxScale;
 	[Header("Holy SHIT do not touch"), SerializeField, Tooltip("HIGHLY dependant on torus shape and scale, dont touch this or torus shape :)")]
@@ -55,7 +56,7 @@ public class Shockwave : MonoBehaviour
 		//Debug.Log(Vector3.Distance(flattenedOtherPos, transform.position) + " < " + (InnerDiameter * transform.localScale.x * 0.5f));
 		
 		// distance check to see if the player is in the hitbox or inside the inner radius (as triggers have to be convex)
-		if (Vector3.Distance(flattenedOtherPos, origPos) < InnerDiameter * transform.localScale.x * 0.5f)
+		if (Vector3.Distance(flattenedOtherPos, origPos) < InnerDiameter * transform.localScale.x * 0.5f && FilledHoleTime < currTimeAlive)
 		{
 			Debug.Log(other.gameObject.name + " safe inside shockwave");
 		}

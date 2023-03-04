@@ -80,8 +80,8 @@ public class EnemyAI : EnemyBase
 	// Update is called once per frame
 	protected virtual void Update()
 	{
-		if (GetComponent<Animator>() != null)
-			GetComponent<Animator>().SetBool("isMoving", agent.velocity.magnitude > 1);
+		if (anim != null)
+			anim.SetBool("isMoving", agent.velocity.magnitude > 1);
 
 		if (agent.desiredVelocity.sqrMagnitude > 0.8f)
 		{

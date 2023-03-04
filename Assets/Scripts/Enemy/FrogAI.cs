@@ -20,6 +20,7 @@ public class FrogAI : EnemyAI
 	// for animation trigger
 	public void SpawnShockwave()
 	{
+		Debug.Log(activeAttack);
 		if (activeAttack != null)
 		{
 			activeAttack.SpawnObject(ExplosionSpawnPoint.position, Quaternion.identity);
