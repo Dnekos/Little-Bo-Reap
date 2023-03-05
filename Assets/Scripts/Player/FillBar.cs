@@ -42,5 +42,4 @@ public class FillBar : MonoBehaviour
 
 		FillingImage.fillAmount = ratio;
 	}
-
 }

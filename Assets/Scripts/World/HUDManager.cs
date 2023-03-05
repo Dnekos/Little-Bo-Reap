@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System;
 
 [System.Serializable]
 public struct SheepIcons
@@ -28,12 +29,12 @@ public class HUDManager : MonoBehaviour
 	[SerializeField] GameObject[] spritePositions;
 	[SerializeField] SheepIcons[] sheepIcons;
 
-
 	[Header("Swap Animation Variables")]
 	[SerializeField] Animator SwapUIAnimator;
 	[SerializeField] string swapAnimationUI;
 	[SerializeField] string noSheepAnimUI;
 
+	public event Action<GameObject> activePanelChange;
 
 
 	public void ToggleHud()
@@ -70,8 +71,14 @@ public class HUDManager : MonoBehaviour
 			{
 				currentPosition = sheepIcons.Length + currentPosition;
 			}
+			else if(currentPosition == 0)
+			{
+				activePanelChange.Invoke(sheepIcons[currentFlock].Marker);
+			}
 
-			MoveToPosition(spritePositions[currentPosition].transform, sheepIcons[i].Marker.transform);
+			//You can either use the instant move or the lower one which lerps between the points
+			//MoveToPosition(spritePositions[currentPosition].transform, sheepIcons[i].Marker.transform);
+			LerpUIObject(spritePositions[currentPosition].transform, sheepIcons[i].Marker.transform);
 		}
 	}
 
@@ -82,53 +89,34 @@ public class HUDManager : MonoBehaviour
 		Icon.localScale = Vector3.one;
 	}
 
-	[SerializeField] float lerpSpeed = 0.5f;
+	[SerializeField] float lerpSpeed = 0.05f;
 
-	private void LerpObject(Transform inputTransform, Transform outputTransform, bool usePosition = true, bool useRotation = true, bool useScale = true)
+	private IEnumerator LerpingCoroutine(Transform endPosition, Transform uiObject)
 	{
-		StartCoroutine(LerpObjectCoroutine(inputTransform, outputTransform, usePosition, useRotation, useScale));
-	}
+		uiObject.SetParent(endPosition);
 
-	IEnumerator LerpObjectCoroutine(Transform inputTransform, Transform outputTransform, bool usePosition, bool useRotation, bool useScale)
-	{
-		bool isLerping = true;
+		Vector3 startPosition;
+		startPosition = uiObject.localPosition;
 
-		Vector3 startPosition = inputTransform.position;
-		Vector3 startRotation = inputTransform.rotation.eulerAngles;
-		Vector3 startScale = inputTransform.localScale;
-
-		Vector3 endPosition = outputTransform.position;
-		Vector3 endRotation = outputTransform.rotation.eulerAngles;
-		Vector3 endScale = outputTransform.localScale;
+		Vector3 startScale = uiObject.localScale;
 
 		float elapsedTime = 0f;
-
-		while (isLerping)
+		while (elapsedTime < lerpSpeed)
 		{
-			if (usePosition)
-			{
-				transform.position = Vector3.Lerp(startPosition, endPosition, elapsedTime / lerpSpeed);
-			}
-
-			if (useRotation)
-			{
-				transform.rotation = Quaternion.Euler(Vector3.Lerp(startRotation, endRotation, elapsedTime / lerpSpeed));
-			}
-
-			if (useScale)
-			{
-				transform.localScale = Vector3.Lerp(startScale, endScale, elapsedTime / lerpSpeed);
-			}
-
+			float t = elapsedTime / lerpSpeed;
+			uiObject.localPosition = Vector3.Lerp(startPosition, Vector3.zero, t);
+			uiObject.localScale = Vector3.Lerp(startScale, Vector3.one, t);
 			elapsedTime += Time.deltaTime;
-
-			if (elapsedTime >= lerpSpeed)
-			{
-				isLerping = false;
-			}
-
 			yield return null;
 		}
+
+		uiObject.localPosition = Vector3.zero;
+		uiObject.localScale = Vector3.one;
+	}
+
+	private void LerpUIObject(Transform endPosition, Transform uiObject)
+	{
+		StartCoroutine(LerpingCoroutine(endPosition, uiObject));
 	}
 
 
@@ -160,5 +148,4 @@ public class HUDManager : MonoBehaviour
 		if (SwapUIAnimator.gameObject.activeSelf)
 			SwapUIAnimator.Play(noSheepAnimUI);
 	}
-
 }
