@@ -95,8 +95,7 @@ public class HUDManager : MonoBehaviour
 	{
 		uiObject.SetParent(endPosition);
 
-		Vector3 startPosition;
-		startPosition = uiObject.localPosition;
+		Vector3 startPosition = uiObject.localPosition;
 
 		Vector3 startScale = uiObject.localScale;
 
@@ -118,7 +117,6 @@ public class HUDManager : MonoBehaviour
 	{
 		StartCoroutine(LerpingCoroutine(endPosition, uiObject));
 	}
-
 
 	public void UpdateFlockWheelText(int index, int active, int max)
 	{
