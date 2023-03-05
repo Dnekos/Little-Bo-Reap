@@ -106,7 +106,7 @@ public class EnemyAI : EnemyBase
 	{
 		return currentEnemyState;
 	}
-	public bool SetDestination(Vector3 dest)
+	public virtual bool SetDestination(Vector3 dest)
 	{
 		// dont pathfind bad destinations
 		if (dest == null || float.IsNaN(dest.x))
