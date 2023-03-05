@@ -14,6 +14,7 @@ namespace XNode.Examples.StateGraph
 			CURRENT_HEATH,
 			MAX_HEALTH,
 			ENEMIES_SPAWNED,
+			IS_IDLE,
 			IS_MOVING
 		}
 		[Input] public BossVariables desiredValue;
@@ -27,8 +28,10 @@ namespace XNode.Examples.StateGraph
 				switch (desiredValue)
 				{
 					case BossVariables.NUM_CURRENT_ENEMIES:
+                    {
 						Debug.Log(user.transform.parent.childCount);
 						return user.transform.parent.childCount;
+					}
 
 					case BossVariables.CURRENT_HEATH:
 						return ((BabaYagasHouseAI)user).GetHeath();//is this the best way to do this?
@@ -39,7 +42,7 @@ namespace XNode.Examples.StateGraph
 					case BossVariables.ENEMIES_SPAWNED:
 						return ((BabaYagasHouseAI)user).getEnemiesSpawned();
 
-					case BossVariables.IS_MOVING:
+					case BossVariables.IS_IDLE:
                     {
 						AnimatorClipInfo[] currentClipInfo = user.GetComponent<Animator>().GetCurrentAnimatorClipInfo(0);
 						string clipName = currentClipInfo[0].clip.name;
@@ -53,6 +56,22 @@ namespace XNode.Examples.StateGraph
 							return false;
                         }
 					}
+
+					case BossVariables.IS_MOVING:
+					{
+						AnimatorClipInfo[] currentClipInfo = user.GetComponent<Animator>().GetCurrentAnimatorClipInfo(0);
+						string clipName = currentClipInfo[0].clip.name;
+
+						if (clipName != "Baba_Yagas_House_Move")
+						{
+							return true;
+						}
+						else
+						{
+							return false;
+						}
+					}
+
 				}
 			}
 			return null;

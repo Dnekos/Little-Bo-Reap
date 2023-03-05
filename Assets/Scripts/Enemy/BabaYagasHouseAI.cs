@@ -25,15 +25,28 @@ public class BabaYagasHouseAI : EnemyAI
 
 	[Header("Game End Stuff")]
 	[SerializeField] GameObject endGameObject;
+
+	bool isSuspended = false;
+
+	float bossFallRate = 2000;
  
 
 	// Start is called before the first frame update
 	override protected void Start()
 	{
 		base.Start();
+
+
 	}
 
-    protected override void OnDeath()
+	private void FixedUpdate()
+    {
+		rb.AddForce(Vector3.down * bossFallRate);
+	}
+
+
+
+	protected override void OnDeath()
     {
 		//spawn the end house! :D
 		Instantiate(endGameObject, transform.position, Quaternion.Euler(Vector3.zero));
@@ -71,6 +84,7 @@ public class BabaYagasHouseAI : EnemyAI
 		if (activeAttack != null)
 		{
 			activeAttack.SpawnObject(enemySpawnPoint.position, enemySpawnPoint.rotation);
+			enemiesSpawned = true;
 		}
 
 	}
@@ -93,4 +107,49 @@ public class BabaYagasHouseAI : EnemyAI
 
 	}
 
+    public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
+    {
+        base.TakeDamage(atk, attackForward, damageAmp, 0.0f);//no knockback
+    }
+
+	public override bool SetDestination(Vector3 dest)
+    {
+		// dont pathfind bad destinations
+		if (dest == null || float.IsNaN(dest.x))
+		{
+			Debug.LogWarning("tried giving " + gameObject + " invalid destination");
+			return false;
+		}
+		if (!GetAgent().isOnNavMesh && !GetAgent().isOnOffMeshLink)
+		{
+			print(gameObject + " failed to find a destination");
+			//base.OnDeath();
+			return false;
+		}
+		else
+		{
+			GetAgent().SetDestination(dest);
+			if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 5, 1) || GetAgent().isOnOffMeshLink)
+			{
+				transform.position = hit.position;
+			}
+			else
+			{
+				print(gameObject + " tried finding a destination while not on a valid point");
+				//base.OnDeath();
+				return false;
+			}
+		}
+		
+		//StartCoroutine(PauseMovement());
+		return true;
+	}
+	
+	IEnumerator PauseMovement()
+    {
+		isSuspended = true;
+		yield return new WaitForSeconds(5);
+		isSuspended = false;
+    }
+	
 }

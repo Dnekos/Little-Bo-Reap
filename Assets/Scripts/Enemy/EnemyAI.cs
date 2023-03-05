@@ -106,7 +106,7 @@ public class EnemyAI : EnemyBase
 	{
 		return currentEnemyState;
 	}
-	public bool SetDestination(Vector3 dest)
+	public virtual bool SetDestination(Vector3 dest)
 	{
 		// dont pathfind bad destinations
 		if (dest == null || float.IsNaN(dest.x))
@@ -123,7 +123,7 @@ public class EnemyAI : EnemyBase
 		else
 		{
 			agent.SetDestination(dest);
-			if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 5, 1))
+			if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 5, 1) || agent.isOnOffMeshLink)
 			{
 				transform.position = hit.position;
 			}
