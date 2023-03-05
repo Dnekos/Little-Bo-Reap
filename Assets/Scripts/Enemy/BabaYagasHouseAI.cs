@@ -29,6 +29,8 @@ public class BabaYagasHouseAI : EnemyAI
 	bool isSuspended = false;
 
 	float bossFallRate = 2000;
+
+	Vector3 spawnPoint;
  
 
 	// Start is called before the first frame update
@@ -36,7 +38,7 @@ public class BabaYagasHouseAI : EnemyAI
 	{
 		base.Start();
 
-
+		spawnPoint = transform.position;
 	}
 
 	private void FixedUpdate()
@@ -61,6 +63,7 @@ public class BabaYagasHouseAI : EnemyAI
 		{
 			activeAttack.SpawnObject(StompSpawnPoint.position, StompSpawnPoint.rotation);
 			activeAttack.damage = StompDamage;
+			StartCoroutine(DelayMovement());
 		}
 
 	}
@@ -94,6 +97,7 @@ public class BabaYagasHouseAI : EnemyAI
 		{
 			activeAttack.SpawnObject(fireBreathSpawnPoint.position, fireBreathSpawnPoint.rotation);
 			activeAttack.damage = fireBreathDamage;
+			StartCoroutine(DelayMovement());
 		}
 	}
 
@@ -103,6 +107,7 @@ public class BabaYagasHouseAI : EnemyAI
 		{
 			activeAttack.SpawnObject(rangedAttackSpawnPoint.position, rangedAttackSpawnPoint.rotation);
 			activeAttack.damage = rangedAttackDamage;
+			StartCoroutine(DelayMovement());
 		}
 
 	}
@@ -141,15 +146,38 @@ public class BabaYagasHouseAI : EnemyAI
 			}
 		}
 		
-		//StartCoroutine(PauseMovement());
+		//StartCoroutine(DelayMovement());
 		return true;
 	}
 	
-	IEnumerator PauseMovement()
+	IEnumerator DelayMovement()
     {
-		isSuspended = true;
-		yield return new WaitForSeconds(5);
-		isSuspended = false;
+		//MoveBoss();
+		yield return new WaitForSeconds(1);
+		MoveBoss();
+		yield return new WaitForSeconds(1);
+
+	}
+
+	public void MoveBoss()
+    {
+		//for now, a predetermined vector
+		Vector3 moveToPos = RandomPointInCircle(spawnPoint, 50f);
+
+		SetDestination(moveToPos);
+
     }
-	
+
+	Vector3 RandomPointInCircle(Vector3 center, float radius)
+    {
+		Vector3 randomPosition = UnityEngine.Random.insideUnitSphere * radius;
+		Vector3 destinationPosition = new Vector3(randomPosition.x + center.x, center.y, randomPosition.z + center.z);
+
+		Vector3 result = destinationPosition;
+		//calculate
+		//Debug.Log(result);
+
+		return result;
+
+	}
 }
