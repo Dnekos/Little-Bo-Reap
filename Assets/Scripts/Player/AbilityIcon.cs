@@ -33,7 +33,7 @@ public class AbilityIcon : MonoBehaviour
         }
     }
 
-    public void IsEnabled()
+    public void UIIsEnabled()
 	{
         image.fillAmount = 1;
 	}

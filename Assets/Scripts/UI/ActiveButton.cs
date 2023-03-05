@@ -26,10 +26,10 @@ public class ActiveButton : MonoBehaviour
 		AbilityIcon newIcon = obj.GetComponentInChildren<AbilityIcon>();
 		newIcon.fillableChanged += activeFillable;
 
-		if (newIcon.Image.fillAmount == 0)
-		{
-			newIcon.Image.fillAmount = 1;
-		}
+		//if (newIcon.Image.fillAmount == 0)
+		//{
+		//	newIcon.UIIsEnabled();
+		//}
 
 		icon = newIcon;
 	}
