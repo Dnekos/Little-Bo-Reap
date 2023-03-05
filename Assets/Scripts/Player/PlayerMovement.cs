@@ -366,7 +366,7 @@ public class PlayerMovement : MonoBehaviour
 
             dashCharging = true;
 
-            dashIcon.CooldownUIEffect(dashTimeToRefillCharges);
+            //dashIcon.CooldownUIEffect(dashTimeToRefillCharges);
             StartCoroutine(DashCooldown());
         }
     }

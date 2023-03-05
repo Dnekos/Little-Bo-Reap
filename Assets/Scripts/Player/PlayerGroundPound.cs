@@ -116,7 +116,7 @@ public class PlayerGroundPound : MonoBehaviour
             canAttack = false;
             StartCoroutine(GroundPoundCooldown());
 
-            groundPoundIcon.CooldownUIEffect(coolDown);
+            //groundPoundIcon.CooldownUIEffect(coolDown);
 
             animator.Play(heavyAirAnimation);
 
