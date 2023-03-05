@@ -18,6 +18,9 @@ public class PlayerGothMode : MonoBehaviour
     [SerializeField] float gothMeterDuration;
     public bool isGothMode = false;
 
+	[Header("Hammer")]
+	[SerializeField] Interactable sheepHammer;
+
     [Header("Postprocess")]
     [SerializeField] float defaultSaturation = -100f;
     [SerializeField] float saturationIncreaseOverTime = 10f;
@@ -85,7 +88,10 @@ public class PlayerGothMode : MonoBehaviour
 
             isGothMode = false;
             gothParticles.SetActive(false);
-        }
+
+			// turn off hammer
+			sheepHammer.Interact();
+		}
 
 
         if (isGothMode)
@@ -114,8 +120,10 @@ public class PlayerGothMode : MonoBehaviour
 			SetGothVisual();
 
 			playerSheep.GoGothMode();
-        }
-    }
+
+			sheepHammer.Interact();
+		}
+	}
 
 
     public void SetGothVisual()

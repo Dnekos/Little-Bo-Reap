@@ -10743,7 +10743,7 @@ Transform:
   - {fileID: 4946047290265379997}
   - {fileID: 7386700366853540259}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &455429352502565040
 GameObject:
@@ -75832,6 +75832,7 @@ Transform:
   - {fileID: 3870380308655863547}
   - {fileID: 5944150355944522110}
   - {fileID: 7522703441253044385}
+  - {fileID: 9053794885203878624}
   m_Father: {fileID: 6219005127216546937}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -76531,6 +76532,7 @@ MonoBehaviour:
   gothMeterChargeTime: 20
   gothMeterDuration: 7
   isGothMode: 0
+  sheepHammer: {fileID: 463064645815664512}
   defaultSaturation: -100
   saturationIncreaseOverTime: 14.29
   materialParent: {fileID: 8266972903759878792}
@@ -101380,6 +101382,103 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &6172666542081337084
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9053794885203878624}
+  - component: {fileID: 4468160629058625915}
+  - component: {fileID: 309523547670523732}
+  - component: {fileID: 463064645815664512}
+  m_Layer: 10
+  m_Name: Hammer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9053794885203878624
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6172666542081337084}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3870380308813204389}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &4468160629058625915
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6172666542081337084}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.5, y: 8, z: 0.5}
+  m_Center: {x: 0, y: 5, z: 0}
+--- !u!65 &309523547670523732
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6172666542081337084}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3, y: 3, z: 6}
+  m_Center: {x: 0, y: 7, z: 0}
+--- !u!114 &463064645815664512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6172666542081337084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03b8184ab7ecf184da853cc533981947, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canInteract: 1
+  onlyInteractableOnce: 0
+  inputIcon: {fileID: 0}
+  containedSheep: []
+  SheepLayer: 10
+  GroundLayer: 6
+  CurveT: 0
+  endConstructEvent: {fileID: 11400000, guid: 317c263135cb10e4fb6b742e1b2c4763, type: 2}
+  SheepRadiusMult: 1
+  SheepBars: 2
+  lerpSpeed: 10
+  placeSound:
+    Guid:
+      Data1: -1715676877
+      Data2: 1158912244
+      Data3: 260257952
+      Data4: -1284307485
+    Path: event:/Sheep/SheepPlacement
+  layerCount: 0
+  delay: 0.1
+  PlacementGuesses: 40
+  HeightStep: 0.01
+  cols:
+  - {fileID: 4468160629058625915}
+  - {fileID: 309523547670523732}
 --- !u!1 &6314407702951648851
 GameObject:
   m_ObjectHideFlags: 0
@@ -101945,10 +102044,6 @@ MonoBehaviour:
     m_ActionName: PlayerMovement/Execute[/Keyboard/e]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 4dfd2a40-9301-4cfb-93b9-9991e2e4a4ab
-    m_ActionName: PlayerMenu/PauseMenu[/Keyboard/escape]
-  - m_PersistentCalls:
-      m_Calls: []
     m_ActionId: 69cc146f-1176-465e-8891-58ba71261dc3
     m_ActionName: PlayerMenu/DEBUG_Quit_Game[/Keyboard/equals]
   - m_PersistentCalls:
@@ -102027,6 +102122,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: f98c3e5d-013f-49eb-a479-09fc6060d8d5
     m_ActionName: Dialog/AdvanceText[/Mouse/leftButton,/Keyboard/space,/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f8511625-e0a9-4636-a07b-742a7b1aec96
+    m_ActionName: PlayerMovement/PauseMenu[/Keyboard/escape]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: CinematicCameras

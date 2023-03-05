@@ -120,6 +120,7 @@ public enum SheepStates
 
 		Initialize();
 
+		constructPos = Vector3.negativeInfinity;
 	}
 
 	/// <summary>

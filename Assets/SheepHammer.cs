@@ -31,13 +31,11 @@ public class SheepHammer : SheepHolder
 	// component
 	[Header("Components"), SerializeField]
 	BoxCollider[] cols;
-	MeshRenderer mesh;
 
 	protected override void Start()
 	{
 		base.Start();
 
-		mesh = GetComponent<MeshRenderer>();
 		//cols = GetComponent<BoxCollider>();
 
 		for (int i = 0; i < cols.Length; i++)
@@ -63,9 +61,10 @@ public class SheepHammer : SheepHolder
 		}
 		containedSheep.Clear();
 
-		Debug.Log("calling removeSheep");
+		for (int i = 0; i < cols.Length; i++)
+			cols[i].enabled = false;
 
-		Destroy(gameObject);
+		Debug.Log("calling removeSheep");
 	}
 
 	public void RemoveAll(bool StopCoroutine = true)
@@ -80,72 +79,85 @@ public class SheepHammer : SheepHolder
 	public override void Interact()
 	{
 		base.Interact();
-		StopAllCoroutines();
-		StartCoroutine(AddAllSheep(WorldState.instance.player.GetComponent<PlayerSheepAbilities>().sheepFlocks[(int)SheepTypes.BUILD].activeSheep, delay));
+			StopAllCoroutines();
+		// starting hammer
+		if (containedSheep.Count <= 0)
+			StartCoroutine(AddAllSheep(WorldState.instance.player.GetComponent<PlayerSheepAbilities>().sheepFlocks, delay));
+		else // ending hammer
+			RemoveAllSheep();
 	}
-	IEnumerator AddAllSheep(List<PlayerSheepAI> flock, float delay)
+	IEnumerator AddAllSheep(Flock[] flocks, float delay)
 	{
-		Debug.Log("adding sheep");
+		Debug.Log("creating hammer");
 
-		// set old height settings for later
-		float floor = transform.position.y - transform.localScale.y * 0.5f;
-		// turn off mesh
-		mesh.enabled = false;
 
 		yield return new WaitForSeconds(delay);
 
+			// reset height
+			CurveT = 0;
+			layerCount = 0;
 
-		// find out how big a sheep is
-		Collider scol = flock[0].GetComponent<Collider>();
-		if (scol is SphereCollider)
-			SheepRadius = ((SphereCollider)scol).radius * flock[0].transform.localScale.x;
-		else if (scol is CapsuleCollider)
-			SheepRadius = Mathf.Max(((CapsuleCollider)scol).radius, ((CapsuleCollider)scol).height * 0.5f) * flock[0].transform.lossyScale.y;
+			currentCollider = 0;
 
-		float origSR = SheepRadius; // keep track or non-modified for scale adjustment later
-		SheepRadius *= SheepRadiusMult; // mult controls density
-
-
-		currentCollider = 0;
-
-		// find out how much that influences
-		adjustedColExt = new Vector3(Mathf.Max(0, 0.5f - SheepRadius / cols[0].size.x),
-									 Mathf.Max(0, 0.5f - SheepRadius / cols[0].size.y),
-									 Mathf.Max(0, 0.5f - SheepRadius / cols[0].size.z));
-
-		// reset height
-		CurveT = 0;
-		layerCount = 0;
-
-
-		for (int i = 0; i < flock.Count; i++)
+		for (int j = 0; j < 3; j++)
 		{
-			FMODUnity.RuntimeManager.StudioSystem.setParameterByName("ConstructCompletion", CurveT);
+			List<PlayerSheepAI> curFlock = flocks[j].activeSheep;
 
-			// add the little guy
-			AddSheep(flock[i].transform);
+			// if no sheep in this flock, move on
+			if (curFlock.Count <= 0)
+				continue;
 
-			// delay if the sheep increment is right (if bars is two it does sheep 2 at a time)
-			if (i % SheepBars == 0 && delay > 0)
-				yield return new WaitForSeconds(delay);
+			// find out how big a sheep is
+			Collider scol = curFlock[0].GetComponent<Collider>();
+			if (scol is SphereCollider)
+				SheepRadius = ((SphereCollider)scol).radius * curFlock[0].transform.localScale.x;
+			else if (scol is CapsuleCollider)
+				SheepRadius = Mathf.Max(((CapsuleCollider)scol).radius, ((CapsuleCollider)scol).height * 0.5f) * curFlock[0].transform.lossyScale.y;
 
-			// if the curve is finished, stop counting
-			if (CurveT >= 1)
+			float origSR = SheepRadius; // keep track or non-modified for scale adjustment later
+			SheepRadius *= SheepRadiusMult; // mult controls density
+
+
+
+			// find out how much that influences
+			adjustedColExt = new Vector3(Mathf.Max(0, 0.5f - SheepRadius / cols[0].size.x),
+										 Mathf.Max(0, 0.5f - SheepRadius / cols[0].size.y),
+										 Mathf.Max(0, 0.5f - SheepRadius / cols[0].size.z));
+
+			Debug.Log("Col Ext: "+adjustedColExt);
+
+			// add sheep from 
+			for (int i = 0; i < curFlock.Count; i++)
 			{
-			//	if (currentCollider >= )
-			break;
+				FMODUnity.RuntimeManager.StudioSystem.setParameterByName("ConstructCompletion", CurveT);
+
+				// add the little guy
+				AddSheep(curFlock[i].transform);
+
+				// delay if the sheep increment is right (if bars is two it does sheep 2 at a time)
+				if (i % SheepBars == 0 && delay > 0)
+					yield return new WaitForSeconds(delay);
+
+				Debug.Log(CurveT + " " + currentCollider + " " + cols.Length);
+
+				// if the collider is finished, check if there are other colliders
+				if (CurveT >= 1)
+				{
+					CurveT = 0;
+					// if we are at the biggest collder, break out
+					if (++currentCollider >= cols.Length)
+						break;
+				}
 			}
+
+			// break out again
+			if (currentCollider >= cols.Length)
+				break;
 		}
 
 		// set up wall as obstacle
 		for (int i = 0; i < cols.Length; i++)
 			cols[i].enabled = true;
-		/*
-		if (CurveT < 1)// if we didnt have enough sheep, redo the transform so that collider isnt wacky
-		{
-			transform.localScale = new Vector3(transform.localScale.x, containedSheep[containedSheep.Count - 1].position.y - containedSheep[0].position.y + 2.5f * origSR, transform.localScale.z);
-			transform.position = new Vector3(transform.position.x, floor + transform.localScale.y * 0.5f, transform.position.z);
-		}*/
 
 	}
 
@@ -184,8 +196,13 @@ public class SheepHammer : SheepHolder
 
 				// stop checking if we found a filled spot
 				if (Filled)
+				{
 					break;
+				}
+					
 			}
+
+			Debug.Log("fill? " + Filled);
 			if (!Filled) // if empty, place sheep there
 			{
 				containedSheep.Add(newSheep);
@@ -205,7 +222,7 @@ public class SheepHammer : SheepHolder
 			{
 				// if done as many checks as allowed, increase height
 				RandomCount = 0;
-				CurveT += HeightStep * SheepRadius;
+				CurveT += HeightStep;// * SheepRadius;
 				layerCount++;
 
 				FMODUnity.RuntimeManager.StudioSystem.setParameterByName("ConstructCompletion", CurveT);
@@ -218,6 +235,8 @@ public class SheepHammer : SheepHolder
 	IEnumerator LerpSheep(Transform newSheep, Vector3 SheepPlacement)
 	{
 		Vector3 oldpos = newSheep.position, localplacement;
+
+		Debug.Log("lerping " + newSheep.gameObject.name + " to " + SheepPlacement);
 
 		float t = 0;
 		do
