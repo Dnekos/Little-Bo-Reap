@@ -75333,6 +75333,8 @@ MonoBehaviour:
   prefabSpawnOffset: {x: 0, y: 3.001, z: 0}
   wallPrefab: {fileID: 3677815942122897683, guid: e77e9bc22dd5e1a4982a66c4172e67e3,
     type: 3}
+  bellPrefab: {fileID: 5823414533874670124, guid: bdfd222f91873d74f8fa910808e34107,
+    type: 3}
   confirmPrefab: {fileID: 6126763084745668659, guid: 9971aad3802332b4b9abc5e7460cdaeb,
     type: 3}
   targetLayers:
@@ -92437,6 +92439,7 @@ GameObject:
   - component: {fileID: 7386700366853540259}
   - component: {fileID: 2653397696958240276}
   - component: {fileID: 6295243076123589088}
+  - component: {fileID: 6125768211895610490}
   m_Layer: 0
   m_Name: Player_Blackhole
   m_TagString: Untagged
@@ -92496,6 +92499,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 3870380308813204389}
+--- !u!135 &6125768211895610490
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5283067463789025570}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 20
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5308287387793732065
 GameObject:
   m_ObjectHideFlags: 0

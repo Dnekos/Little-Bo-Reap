@@ -11,7 +11,7 @@ public enum EnemyStates
 	CHASE_PLAYER = 1,
 	HITSTUN = 2,
 	IDLE = 3,
-	EXECUTABLE = 4
+	EXECUTABLE = 4,
 }
 public class EnemyAI : EnemyBase
 {
@@ -35,6 +35,10 @@ public class EnemyAI : EnemyBase
 	[SerializeField, Tooltip("how frequently the enemy checks their behavior tree")] float delayBetweenAttacks = 1;
 	[SerializeField] Collider StickCollider;
 	[SerializeField] Animator anim;
+
+	[Header("Bell")]
+	public bool distracted;
+	public Vector3 bellLoc;
 
 	[Header("Execution Variables")]
 	public bool isExecutable;
