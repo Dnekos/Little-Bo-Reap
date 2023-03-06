@@ -42,7 +42,7 @@ public class SheepConstruct : SheepHolder
 		obs.enabled = false;
 		col.enabled = false;
 
-		containedSheep = new List<Transform>();
+		containedSheep = new List<PlayerSheepAI>();
 	}
 	protected override void Update()
 	{
@@ -126,7 +126,7 @@ public class SheepConstruct : SheepHolder
 			FMODUnity.RuntimeManager.StudioSystem.setParameterByName("ConstructCompletion", CurveT);
 
 			// add the little guy
-			AddSheep(flock[i].transform);
+			AddSheep(flock[i]);
 
 			// delay if the sheep increment is right (if bars is two it does sheep 2 at a time)
 			if (i % SheepBars == 0 && delay > 0)
@@ -142,13 +142,13 @@ public class SheepConstruct : SheepHolder
 		col.enabled = true;
 		if (CurveT < 1)// if we didnt have enough sheep, redo the transform so that collider isnt wacky
 		{
-			transform.localScale = new Vector3(transform.localScale.x, containedSheep[containedSheep.Count - 1].position.y - containedSheep[0].position.y + 2.5f * origSR, transform.localScale.z);
+			transform.localScale = new Vector3(transform.localScale.x, containedSheep[containedSheep.Count - 1].transform.position.y - containedSheep[0].transform.position.y + 2.5f * origSR, transform.localScale.z);
 			transform.position = new Vector3(transform.position.x, floor + transform.localScale.y * 0.5f, transform.position.z);
 		}
 
 	}
 
-	void AddSheep(Transform newSheep)
+	void AddSheep(PlayerSheepAI newSheep)
 	{
 		float RandomCount = 0;
 
@@ -191,9 +191,9 @@ public class SheepConstruct : SheepHolder
 				Debug.Log("Sheep " + containedSheep.Count + " took " + RandomCount + " tries and checked " + SheepChecked + " sheep");
 
 				// set state of AI
-				newSheep.GetComponent<PlayerSheepAI>()?.DoConstruct(sheepPlacement);
+				newSheep?.DoConstruct(sheepPlacement);
 
-				StartCoroutine(LerpSheep(newSheep, sheepPlacement));
+				StartCoroutine(LerpSheep(newSheep.transform, sheepPlacement));
 
 				return;
 			}

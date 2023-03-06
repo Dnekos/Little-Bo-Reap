@@ -31,7 +31,7 @@ public class SheepCurve : SheepHolder
 
 	private void Start()
 	{
-		containedSheep = new List<Transform>();
+		containedSheep = new List<PlayerSheepAI>();
 	}
 
 	private void Update()
@@ -78,7 +78,7 @@ public class SheepCurve : SheepHolder
 	#endregion
 
 	#region Adding Sheep
-	private void OnTriggerEnter(Collider other)
+	override protected void OnTriggerEnter(Collider other)
 	{
 		// only add charging sheep
 		if (other.GetComponent<PlayerSheepAI>() == null || other.GetComponent<PlayerSheepAI>().GetSheepState() != SheepStates.ABILITY)
@@ -100,10 +100,10 @@ public class SheepCurve : SheepHolder
 			CurveT = limits.x;// + SheepRadius;
 
 		// add the little guy
-		AddSheep(other.transform);
+		AddSheep(other.GetComponent<PlayerSheepAI>());
 	}
 
-	void AddSheep(Transform newSheep)
+	void AddSheep(PlayerSheepAI newSheep)
 	{
 		float RandomCount = 0;
 		// don't add sheep if the box is filled
@@ -136,7 +136,7 @@ public class SheepCurve : SheepHolder
 
 				// check the position, left/right/front/back and below the position.
 				//float displacement = Vector3.Distance(sheep.position, slice.ClosestPointOnPlane(sheep.position));
-				Filled = Filled || SheepIntersection(containedSheep[i], sheepPlacement);
+				Filled = Filled || SheepIntersection(containedSheep[i].transform, sheepPlacement);
 
 				// stop checking if we found a filled spot
 				if (Filled)
@@ -145,7 +145,7 @@ public class SheepCurve : SheepHolder
 			if (!Filled)
 			{
 				// if empty, place sheep there
-				newSheep.position = sheepPlacement;
+				newSheep.transform.position = sheepPlacement;
 				newSheep.gameObject.layer = GroundLayer;
 				containedSheep.Add(newSheep);
 				Debug.Log("Sheep " + containedSheep.Count +" took " + RandomCount + " tries and checked "+ SheepChecked+" sheep");

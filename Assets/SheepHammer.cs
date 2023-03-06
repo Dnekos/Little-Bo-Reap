@@ -41,7 +41,7 @@ public class SheepHammer : SheepHolder
 		for (int i = 0; i < cols.Length; i++)
 			cols[i].enabled = false;
 
-		containedSheep = new List<Transform>();
+		containedSheep = new List<PlayerSheepAI>();
 	}
 
 	public override void RemoveSheep()
@@ -57,7 +57,7 @@ public class SheepHammer : SheepHolder
 	{
 		for (int i = containedSheep.Count - 1; i >= 0; i--)
 		{
-			containedSheep[i].GetComponent<PlayerSheepAI>().EndConstruct();
+			containedSheep[i].EndConstruct();
 		}
 		containedSheep.Clear();
 
@@ -93,11 +93,15 @@ public class SheepHammer : SheepHolder
 
 		yield return new WaitForSeconds(delay);
 
-			// reset height
-			CurveT = 0;
-			layerCount = 0;
+		// reset height
+		CurveT = 0;
+		layerCount = 0;
 
-			currentCollider = 0;
+		// reset collider
+		currentCollider = 0;
+		// find out how much that influences
+		adjustedColExt = GetAdjustedColliderExtants(0);
+
 
 		for (int j = 0; j < 3; j++)
 		{
@@ -108,23 +112,12 @@ public class SheepHammer : SheepHolder
 				continue;
 
 			// find out how big a sheep is
-			Collider scol = curFlock[0].GetComponent<Collider>();
-			if (scol is SphereCollider)
-				SheepRadius = ((SphereCollider)scol).radius * curFlock[0].transform.localScale.x;
-			else if (scol is CapsuleCollider)
-				SheepRadius = Mathf.Max(((CapsuleCollider)scol).radius, ((CapsuleCollider)scol).height * 0.5f) * curFlock[0].transform.lossyScale.y;
+
 
 			float origSR = SheepRadius; // keep track or non-modified for scale adjustment later
 			SheepRadius *= SheepRadiusMult; // mult controls density
 
-
-
-			// find out how much that influences
-			adjustedColExt = new Vector3(Mathf.Max(0, 0.5f - SheepRadius / cols[0].size.x),
-										 Mathf.Max(0, 0.5f - SheepRadius / cols[0].size.y),
-										 Mathf.Max(0, 0.5f - SheepRadius / cols[0].size.z));
-
-			Debug.Log("Col Ext: "+adjustedColExt);
+			Debug.Log("Col Ext: " + adjustedColExt);
 
 			// add sheep from 
 			for (int i = 0; i < curFlock.Count; i++)
@@ -132,7 +125,7 @@ public class SheepHammer : SheepHolder
 				FMODUnity.RuntimeManager.StudioSystem.setParameterByName("ConstructCompletion", CurveT);
 
 				// add the little guy
-				AddSheep(curFlock[i].transform);
+				AddSheep(curFlock[i]);
 
 				// delay if the sheep increment is right (if bars is two it does sheep 2 at a time)
 				if (i % SheepBars == 0 && delay > 0)
@@ -144,9 +137,15 @@ public class SheepHammer : SheepHolder
 				if (CurveT >= 1)
 				{
 					CurveT = 0;
+					++currentCollider;
+
 					// if we are at the biggest collder, break out
-					if (++currentCollider >= cols.Length)
+					if (currentCollider >= cols.Length)
 						break;
+
+					// find out how much that influences
+					adjustedColExt = GetAdjustedColliderExtants(currentCollider);
+
 				}
 			}
 
@@ -160,8 +159,16 @@ public class SheepHammer : SheepHolder
 			cols[i].enabled = true;
 
 	}
+	Vector3 GetAdjustedColliderExtants(int colIndex)
+	{
+		// find out how much that influences
+		return new Vector3(Mathf.Max(0, (cols[colIndex].size.x - SheepRadius) * 0.5f),
+						   Mathf.Max(0, (cols[colIndex].size.y - SheepRadius) * 0.5f),
+						   Mathf.Max(0, (cols[colIndex].size.z - SheepRadius) * 0.5f));
 
-	void AddSheep(Transform newSheep)
+	}
+
+	void AddSheep(PlayerSheepAI newSheep)
 	{
 		float RandomCount = 0;
 
@@ -178,9 +185,9 @@ public class SheepHammer : SheepHolder
 		while (CurveT <= 1)
 		{
 			// make a guess at a good spot to place sheep, within -0.5,0.5
-			Vector3 sheepPlacement = new Vector3(Random.Range(-adjustedColExt.x, adjustedColExt.x) + cols[0].center.x,
-				Mathf.Lerp(-adjustedColExt.y, adjustedColExt.y, CurveT) + cols[0].center.y,
-				Random.Range(-adjustedColExt.z, adjustedColExt.z) + cols[0].center.z);
+			Vector3 sheepPlacement = new Vector3(Random.Range(-adjustedColExt.x, adjustedColExt.x) + cols[currentCollider].center.x,
+				Mathf.Lerp(-adjustedColExt.y, adjustedColExt.y, CurveT) + cols[currentCollider].center.y,
+				Random.Range(-adjustedColExt.z, adjustedColExt.z) + cols[currentCollider].center.z);
 
 			// apply matrix to bring it to the correct scale and rotation
 			sheepPlacement = transform.localToWorldMatrix.MultiplyPoint3x4(sheepPlacement);
@@ -192,7 +199,7 @@ public class SheepHammer : SheepHolder
 				SheepChecked++;
 
 				// check the position, using sphere intersections
-				Filled = Filled || SheepIntersection(containedSheep[i].GetComponent<PlayerSheepAI>().constructPos, sheepPlacement);
+				Filled = Filled || SheepIntersection(containedSheep[i].constructPos, sheepPlacement, newSheep.Radius, containedSheep[i].Radius);
 
 				// stop checking if we found a filled spot
 				if (Filled)
@@ -202,16 +209,15 @@ public class SheepHammer : SheepHolder
 					
 			}
 
-			Debug.Log("fill? " + Filled);
 			if (!Filled) // if empty, place sheep there
 			{
 				containedSheep.Add(newSheep);
 				Debug.Log("Sheep " + containedSheep.Count + " took " + RandomCount + " tries and checked " + SheepChecked + " sheep");
 
 				// set state of AI
-				newSheep.GetComponent<PlayerSheepAI>()?.DoConstruct(sheepPlacement);
+				newSheep?.DoConstruct(sheepPlacement);
 
-				StartCoroutine(LerpSheep(newSheep, sheepPlacement));
+				StartCoroutine(LerpSheep(newSheep.transform, sheepPlacement));
 
 				return;
 			}
@@ -234,22 +240,19 @@ public class SheepHammer : SheepHolder
 
 	IEnumerator LerpSheep(Transform newSheep, Vector3 SheepPlacement)
 	{
-		Vector3 oldpos = newSheep.position, localplacement;
+		Vector3 oldpos = newSheep.position, localplacement = newSheep.position;
 
-		Debug.Log("lerping " + newSheep.gameObject.name + " to " + SheepPlacement);
-
-		float t = 0;
-		do
+		// keep going, incrementing t, while the sheep exists
+		for (float t = 0; newSheep != null; t += Time.deltaTime * lerpSpeed)
 		{
 			if (newSheep == null)
 				yield break;
 
-			t += Time.deltaTime * lerpSpeed;
 			localplacement = transform.localToWorldMatrix.MultiplyPoint3x4(SheepPlacement);
 			newSheep.position = Vector3.Lerp(oldpos, localplacement, t);
 			yield return new WaitForEndOfFrame();
 
-		} while (newSheep != null);
+		} 
 
 		if (newSheep != null)
 		{
@@ -261,18 +264,9 @@ public class SheepHammer : SheepHolder
 
 	}
 
-	// TODO: if collider on final sheep ends up being a capsule, will need new math for calculating displacement
-	bool ContainsSheep(Transform sheep, Vector3 pos, float centerDisplacement)
+	bool SheepIntersection(Vector3 checkingPos, Vector3 newSheepPos, float selfRad, float targetRad)
 	{
-		float radius = (centerDisplacement == SheepRadius) ?
-			SheepRadius : // if the checking sheep is at the same height, dont do the math (else it gives NaN)
-			Mathf.Sqrt((SheepRadius * SheepRadius) - (centerDisplacement * centerDisplacement)); // Pythagorean, gets radius of circle in a sphere's slice
-		return Mathf.Pow(pos.x - sheep.position.x, 2) + Mathf.Pow(pos.z - sheep.position.z, 2) < radius * radius; // equation to see if point is in circle
-	}
-
-	bool SheepIntersection(Vector3 checkingPos, Vector3 newSheepPos)
-	{
-		return Vector3.Distance(checkingPos, newSheepPos) < (SheepRadius + SheepRadius);
+		return Vector3.Distance(checkingPos, newSheepPos) < (selfRad + targetRad) * SheepRadiusMult;
 	}
 	#endregion
 }
