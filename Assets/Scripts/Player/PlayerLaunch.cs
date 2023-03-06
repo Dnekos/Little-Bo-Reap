@@ -12,7 +12,6 @@ public class PlayerLaunch : MonoBehaviour
 	[SerializeField] Transform launchOrigin;
 	[SerializeField] float minDistanceToLaunch = 10f;
 	[SerializeField] string launchAnimation;
-	[SerializeField] AbilityIcon launchIcon;
 	[SerializeField] float launchCooldown = 1f;
 	int flockIndex;
 	int sheepIndex;
@@ -109,7 +108,6 @@ public class PlayerLaunch : MonoBehaviour
 
 			//start cooldown
 			canLaunch = false;
-			//launchIcon.CooldownUIEffect(launchCooldown);
 			StartCoroutine(SheepLaunchCooldown());
 		}
 	}

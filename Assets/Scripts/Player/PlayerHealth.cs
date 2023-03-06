@@ -22,8 +22,6 @@ public class PlayerHealth : Damageable
 	[Header("Respawning")]
 	[SerializeField]
 	GameEvent RespawnEvent;
-	[SerializeField]
-	GameObject HUD, DeathUI;
 
 	[SerializeField]
 	PlayerInput[] inputs;
@@ -61,8 +59,8 @@ public class PlayerHealth : Damageable
 		// resume collisions
 		rb.isKinematic = false;
 
-		HUD.SetActive(true);
-		DeathUI.SetActive(false);
+		WorldState.instance.HUD.CloseDeathMenu();
+
 		foreach (PlayerInput input in inputs)
 			input.enabled = true;
 
@@ -81,8 +79,8 @@ public class PlayerHealth : Damageable
 		// stop collisions
 		rb.isKinematic = true;
 
-		HUD.SetActive(false);
-		DeathUI.SetActive(true);
+		WorldState.instance.HUD.OpenDeathMenu();
+			
 		foreach (PlayerInput input in inputs)
 			input.enabled = false;
 

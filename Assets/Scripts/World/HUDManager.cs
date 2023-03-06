@@ -42,6 +42,9 @@ public class HUDManager : MonoBehaviour
 	[SerializeField] GameObject ProgressionFirstSelected;
 	public event Action<GameObject> activePanelChange;
 
+	[Header("Death")]
+	[SerializeField] GameObject deathUI;
+
 
 	public void ToggleHud()
 	{
@@ -51,6 +54,18 @@ public class HUDManager : MonoBehaviour
 	{
 		HUD.SetActive(value);
 	}
+
+	public void OpenDeathMenu()
+	{
+		HUD.SetActive(false);
+		deathUI.SetActive(true);
+	}
+	public void CloseDeathMenu()
+	{
+		HUD.SetActive(true);
+		deathUI.SetActive(false);
+	}
+
 	public void ToggleProgressionMenu(bool value)
 	{
 		ProgressionMenu.SetActive(value);
