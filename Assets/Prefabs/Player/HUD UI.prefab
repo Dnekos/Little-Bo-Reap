@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7020906545737182930}
   - component: {fileID: 2338155259098904143}
   - component: {fileID: 7679753148468414466}
+  - component: {fileID: 5362029429938391127}
   m_Layer: 5
   m_Name: NumberImage Place Holder
   m_TagString: Untagged
@@ -79,6 +80,26 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 8.5
+--- !u!95 &5362029429938391127
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 64836991220289054}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 58e911b1dd1caf74d830f6855aaab0a7, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &141999965222969963
 GameObject:
   m_ObjectHideFlags: 0
@@ -2221,7 +2242,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 2989
+    rgba: 4278194431
   m_fontColor: {r: 0.6784314, g: 0.044174988, b: 0, a: 0}
   m_enableVertexGradient: 0
   m_colorMode: 3

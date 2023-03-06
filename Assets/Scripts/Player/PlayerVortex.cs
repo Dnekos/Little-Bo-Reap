@@ -126,7 +126,15 @@ public class PlayerVortex : MonoBehaviour
 	{
 		//switching to be only useable by fluffy sheep, keep same architecture in case we change our minds (we probably won't)
 		SheepTypes flockType = flocks.currentFlockType;
+
 		
+		// no sheep?
+		if (context.started && flocks.GetActiveSheep(flockType).Count <= 0)
+		{
+			WorldState.instance.HUD.SheepErrorAnimation();
+			return;
+		}
+
 		// command sheep and check if we have the right sheep ability
 		List<PlayerSheepAI> sheep = flocks.GetActiveSheep(flockType);
 
@@ -175,6 +183,8 @@ public class PlayerVortex : MonoBehaviour
 			}
 
 		}
+
+	
 	}
 
 	IEnumerator DefendCooldown()

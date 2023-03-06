@@ -70,6 +70,14 @@ public class PlayerBuildWall : MonoBehaviour
 		SheepTypes flockType = flocks.currentFlockType;
 		List<PlayerSheepAI> sheep = flocks.GetActiveSheep(flockType);
 
+		// no sheep?
+		if (flocks.GetActiveSheep(flockType).Count <= 0)
+		{
+			WorldState.instance.HUD.SheepErrorAnimation();
+			return;
+		}
+
+
 		if (context.started && canCharge && !attack.isPreparingAttack && !isPreparing
 			&& sheep.Count > 0
 			&& !(sheep[0].ability is SheepStampedeBehavior || sheep[0].ability is SheepVortexBehavior))

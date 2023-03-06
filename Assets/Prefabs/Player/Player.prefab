@@ -75315,6 +75315,8 @@ MonoBehaviour:
       Data3: -523776871
       Data4: 180147507
     Path: event:/Bo Peep/AttackConfirm
+  hudAnimator: {fileID: 0}
+  noSheepAnimation: 
 --- !u!114 &4502468381360255210
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93203,9 +93205,9 @@ MonoBehaviour:
     IconFill: {fileID: 7092024983649186345}
   - Marker: {fileID: 6179885655055843221}
     IconFill: {fileID: 7967729492236344640}
-  SwapUIAnimator: {fileID: 905275825759944393}
+  SwapUIAnimator: {fileID: 3898344231597565755}
   swapAnimationUI: Sheep_Type_Panel_Switch
-  noSheepAnimUI: Sheep_Type_Panel_Empty
+  noSheepAnimUI: HUD_Number_NoSheep
   ProgressionMenu: {fileID: 7798155488062768131}
   ProgressionFirstSelected: {fileID: 9213761764328399644}
   deathUI: {fileID: 4649148858243024330}
@@ -139596,6 +139598,11 @@ PrefabInstance:
       propertyPath: m_hudManager
       value: 
       objectReference: {fileID: 3556894225921714261}
+    - target: {fileID: 3208206162438747623, guid: 556a14a661257274d935b357dfceb2b0,
+        type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 2989
+      objectReference: {fileID: 0}
     - target: {fileID: 6451000922562457958, guid: 556a14a661257274d935b357dfceb2b0,
         type: 3}
       propertyPath: m_Name
@@ -139732,12 +139739,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 8966792442237677420}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &905275825759944393 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 8133603898403361189, guid: 556a14a661257274d935b357dfceb2b0,
-    type: 3}
-  m_PrefabInstance: {fileID: 8966792442237677420}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1026734890748856992 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8237017501602293196, guid: 556a14a661257274d935b357dfceb2b0,
@@ -139780,6 +139781,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed17ab2ca42e90b4b9fc859199f58130, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &3898344231597565755 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5362029429938391127, guid: 556a14a661257274d935b357dfceb2b0,
+    type: 3}
+  m_PrefabInstance: {fileID: 8966792442237677420}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &4547825214736545525 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4858659248757037465, guid: 556a14a661257274d935b357dfceb2b0,
