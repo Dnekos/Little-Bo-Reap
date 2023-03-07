@@ -185,12 +185,9 @@ public class SheepHammer : SheepHolder
 		while (CurveT <= 1)
 		{
 			// make a guess at a good spot to place sheep, within -0.5,0.5
-			Vector3 sheepPlacement = new Vector3(Random.Range(-adjustedColExt.x, adjustedColExt.x) + cols[currentCollider].center.x,
+			Vector3 localPlacement = new Vector3(Random.Range(-adjustedColExt.x, adjustedColExt.x) + cols[currentCollider].center.x,
 				Mathf.Lerp(-adjustedColExt.y, adjustedColExt.y, CurveT) + cols[currentCollider].center.y,
 				Random.Range(-adjustedColExt.z, adjustedColExt.z) + cols[currentCollider].center.z);
-
-			// apply matrix to bring it to the correct scale and rotation
-			sheepPlacement = transform.localToWorldMatrix.MultiplyPoint3x4(sheepPlacement);
 
 			// check if the spot is filled
 			bool Filled = false;
@@ -199,7 +196,7 @@ public class SheepHammer : SheepHolder
 				SheepChecked++;
 
 				// check the position, using sphere intersections
-				Filled = Filled || SheepIntersection(containedSheep[i].constructPos, sheepPlacement, newSheep.Radius, containedSheep[i].Radius);
+				Filled = Filled || SheepIntersection(containedSheep[i].constructPos, localPlacement, newSheep.Radius, containedSheep[i].Radius);
 
 				// stop checking if we found a filled spot
 				if (Filled)
@@ -215,9 +212,9 @@ public class SheepHammer : SheepHolder
 				Debug.Log("Sheep " + containedSheep.Count + " took " + RandomCount + " tries and checked " + SheepChecked + " sheep");
 
 				// set state of AI
-				newSheep?.DoConstruct(sheepPlacement);
+				newSheep?.DoConstruct(localPlacement);
 
-				StartCoroutine(LerpSheep(newSheep.transform, sheepPlacement));
+				StartCoroutine(LerpSheep(newSheep.transform, localPlacement));
 
 				return;
 			}
