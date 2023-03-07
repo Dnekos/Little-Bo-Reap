@@ -8,6 +8,8 @@ public class FillBar : MonoBehaviour
 	[SerializeField] Image FillingImage;
 	[SerializeField] RectTransform GlowPos;
 	[SerializeField] bool ReverseGlimmer = false;
+	[Header("Filled Effect")]
+	[SerializeField] GameObject DisplayedObject;
 
 	bool vertical;
 	float original_y;
@@ -41,5 +43,8 @@ public class FillBar : MonoBehaviour
 		GlowPos.gameObject.SetActive(ratio == 1);
 
 		FillingImage.fillAmount = ratio;
+
+		if (DisplayedObject != null)
+			DisplayedObject.SetActive(ratio == 1);
 	}
 }
