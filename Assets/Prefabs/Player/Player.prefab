@@ -10455,7 +10455,7 @@ Transform:
   - {fileID: 4946047290265379997}
   - {fileID: 7386700366853540259}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &484996587109507467
 GameObject:
@@ -74854,6 +74854,7 @@ MonoBehaviour:
   hurtVignette: {fileID: 3886254852671676809}
   vignetteStrength: 1
   vignetteTime: 0.2
+  hurtCooldown: 0.1
   RespawnEvent: {fileID: 11400000, guid: 19937298da8f18b41b1d2572d7bb5bcb, type: 2}
   inputs:
   - {fileID: 3870380308813204384}
@@ -74952,7 +74953,7 @@ MonoBehaviour:
       Data4: 649441840
     Path: event:/Temp/Explosion
   heavyAirAnimation: Test_Bo_Slam_Windup
-  coolDown: 3
+  coolDown: 7.5
   timeTillSlamDown: 0.35
   minHeight: 5
   maxHeight: 2000
@@ -75089,7 +75090,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxBlood: 100
   currentBlood: 100
-  bloodMeterRechargePerSec: 5
+  bloodMeterRechargePerSec: 3
   bar: {fileID: 4547825214736545525}
   RespawnEvent: {fileID: 11400000, guid: 19937298da8f18b41b1d2572d7bb5bcb, type: 2}
 --- !u!114 &5246693488989062278
@@ -75118,7 +75119,7 @@ MonoBehaviour:
   gothMeter: {fileID: 8801372002924580616}
   GothMeterCount: 0
   gothMeterChargeTime: 20
-  gothMeterDuration: 7
+  gothMeterDuration: 10
   isGothMode: 0
   defaultSaturation: -100
   saturationIncreaseOverTime: 14.29
@@ -75258,7 +75259,7 @@ MonoBehaviour:
     m_Bits: 524352
   chargeAnimation: Spell Layer.Bo_Peep_Direct
   chargeIcon: {fileID: 1026734890748856992}
-  chargeCooldown: 3.5
+  chargeCooldown: 3
   distanceToUse: 20
   recallingStopDist: 5
   isPreparingCharge: 0
