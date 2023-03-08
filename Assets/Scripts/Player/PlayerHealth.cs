@@ -17,6 +17,8 @@ public class PlayerHealth : Damageable
 	[Header("Hurt Vignette")]
 	[SerializeField] Volume hurtVignette;
 	[SerializeField] float vignetteStrength = 1, vignetteTime = 0.2f;
+	[SerializeField] float hurtCooldown = 0.1f;
+	bool isHurt = false;
 
 
 	[Header("Respawning")]
@@ -99,23 +101,35 @@ public class PlayerHealth : Damageable
 
 	public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
 	{
-		StopCoroutine("HitVignette");
-		StartCoroutine("HitVignette");
+		if(!isHurt)
+        {
+			StartCoroutine(HurtCooldown());
 
-		Debug.Log("getting attacked lmao");
+			StopCoroutine("HitVignette");
+			StartCoroutine("HitVignette");
 
-		// stop moving, to hopefully prevent too wacky knockback
-		rb.AddForce(-rb.velocity, ForceMode.VelocityChange);
+			Debug.Log("getting attacked lmao");
 
-		base.TakeDamage(atk, attackForward);
-		healthBar.ChangeFill(Health / MaxHealth);
+			// stop moving, to hopefully prevent too wacky knockback
+			rb.AddForce(-rb.velocity, ForceMode.VelocityChange);
 
-		if (atk.DealsHitstun)
-		{
-			StopCoroutine("HitstunTracker");
-			StartCoroutine("HitstunTracker");
+			base.TakeDamage(atk, attackForward);
+			healthBar.ChangeFill(Health / MaxHealth);
+
+			if (atk.DealsHitstun)
+			{
+				StopCoroutine("HitstunTracker");
+				StartCoroutine("HitstunTracker");
+			}
 		}
 	}
+
+	IEnumerator HurtCooldown()
+    {
+		isHurt = true;
+		yield return new WaitForSeconds(hurtCooldown);
+		isHurt = false;
+    }
 
 	IEnumerator HitVignette()
     {
