@@ -7,6 +7,13 @@ using UnityEngine.Rendering;
 
 public class PlayerGothMode : MonoBehaviour
 {
+    public enum GothState
+    {
+        Normal = 0,
+        Hammer,
+        Goth
+    }
+
     [Header("Goth Mode")]
     [SerializeField] GameObject gothParticles;
     [SerializeField] VolumeProfile gothVolume;
@@ -16,10 +23,12 @@ public class PlayerGothMode : MonoBehaviour
 	[SerializeField] float GothMeterCount = 0;
     [SerializeField] float gothMeterChargeTime;
     [SerializeField] float gothMeterDuration;
-    public bool isGothMode = false;
+    public GothState gothMode = GothState.Normal;
 
 	[Header("Hammer")]
 	[SerializeField] Interactable sheepHammer;
+    [SerializeField] string hammerAnimation = "Po_Peep_Hammer";
+    Animator anim;
 
     [Header("Postprocess")]
     [SerializeField] float defaultSaturation = -100f;
@@ -58,11 +67,14 @@ public class PlayerGothMode : MonoBehaviour
 		// save these inverses to save calculations
 		durationInverse = 1 / gothMeterDuration;
 		chargeTimeInverse = 1 / gothMeterChargeTime;
-	}
+
+        anim = GetComponent<PlayerAnimationController>().playerAnimator;
+
+    }
 
 	void ResetGoth()
 	{
-		isGothMode = false;
+        gothMode = GothState.Normal;
 		gothParticles.SetActive(false);
 
 		GothMeterCount = 0;
@@ -78,7 +90,7 @@ public class PlayerGothMode : MonoBehaviour
 	//update bar image
 	void Update()
     {
-        if (isGothMode && GothMeterCount <= 0)
+        if (gothMode == GothState.Goth && GothMeterCount <= 0)
         {
             foreach (SkinnedMeshRenderer mesh in meshes)
             {
@@ -86,16 +98,21 @@ public class PlayerGothMode : MonoBehaviour
             }
             Instantiate(explosion, transform.position, transform.rotation);
 
-            isGothMode = false;
+            gothMode = GothState.Normal;
             gothParticles.SetActive(false);
 
 			// turn off hammer
 			sheepHammer.Interact();
 		}
-
-
-        if (isGothMode)
+        else if (gothMode == GothState.Hammer && !anim.GetCurrentAnimatorStateInfo(0).IsName(hammerAnimation))
         {
+            SetGothVisual();
+
+            playerSheep.GoGothMode();
+        }
+        else if (gothMode == GothState.Goth)
+        {
+
 			//deplete meter
 			GothMeterCount = Mathf.Clamp01(GothMeterCount - (durationInverse * Time.deltaTime));
 			gothMeter.ChangeFill(GothMeterCount);
@@ -117,11 +134,11 @@ public class PlayerGothMode : MonoBehaviour
     {
         if (context.started && GothMeterCount == 1f)
         {
-			SetGothVisual();
+            anim.Play(hammerAnimation);
 
-			playerSheep.GoGothMode();
+            gothMode = GothState.Hammer;
 
-			sheepHammer.Interact();
+            sheepHammer.Interact();
 		}
 	}
 
@@ -142,7 +159,7 @@ public class PlayerGothMode : MonoBehaviour
         }
 
 
-        isGothMode = true;
+        gothMode = GothState.Goth;
         gothParticles.SetActive(true);
     }
 }
