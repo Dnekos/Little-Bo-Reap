@@ -38,8 +38,10 @@ public class ProgressionParent : MonoBehaviour
     void Upgrade(int index)
     {
         Debug.Log("upgrading path:" + index);
-        
-        if (WorldState.instance.passiveValues.soulsCount >= costs[currentCostIndex])
+
+        //if (WorldState.instance.passiveValues.soulsCount >= costs[currentCostIndex])
+
+        if (SheepPassives.soulsCount >= costs[currentCostIndex])
         {
             //turn on light
             //TODO make this for all uptions
@@ -56,7 +58,8 @@ public class ProgressionParent : MonoBehaviour
             }
             if (upgradeNotch != -1)
             {
-                WorldState.instance.passiveValues.soulsCount -= costs[currentCostIndex];
+                //WorldState.instance.passiveValues.soulsCount -= costs[currentCostIndex];
+                SheepPassives.soulsCount -= costs[currentCostIndex];
                 List<float[]> upgradesAllValues = new List<float[]>();
                 upgradesAllValues.Add(upgrade1Values);
                 upgradesAllValues.Add(upgrade2Values);

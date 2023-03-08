@@ -16,6 +16,7 @@ public class SoulCountUI : MonoBehaviour
     void Update()
     {
         //TODO fix this to not be in update
-        this.GetComponent<TextMeshProUGUI>().text = "Soul Count: " + WorldState.instance.passiveValues.soulsCount;
+        //this.GetComponent<TextMeshProUGUI>().text = "Soul Count: " + WorldState.instance.passiveValues.soulsCount;
+        this.GetComponent<TextMeshProUGUI>().text = "Soul Count: " + SheepPassives.soulsCount;
     }
 }
