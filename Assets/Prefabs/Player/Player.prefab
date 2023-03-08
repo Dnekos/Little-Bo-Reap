@@ -74398,6 +74398,8 @@ GameObject:
   - component: {fileID: 4775500475753401295}
   - component: {fileID: 412837391465133713}
   - component: {fileID: 4502468381360255210}
+  - component: {fileID: 5544833725620109778}
+  - component: {fileID: 9014355886342926602}
   m_Layer: 7
   m_Name: Player_Body
   m_TagString: Player
@@ -75351,6 +75353,49 @@ MonoBehaviour:
       Data3: -523776871
       Data4: 180147507
     Path: event:/Bo Peep/AttackConfirm
+--- !u!195 &5544833725620109778
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3870380308813204390}
+  m_Enabled: 0
+  m_AgentTypeID: 0
+  m_Radius: 0.75
+  m_Speed: 100
+  m_Acceleration: 200
+  avoidancePriority: 50
+  m_AngularSpeed: 720
+  m_StoppingDistance: 5
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 1
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &9014355886342926602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3870380308813204390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a403a546d0dbd2d459ab77903049720c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chargeSpeed: 100
+  chargePointRadius: 10
+  chargeStopDistance: 0
+  destinationDist: 45
+  chargeCheckTime: 1
+  chargeCheckSpeed: 2
+  agent: {fileID: 5544833725620109778}
+  rb: {fileID: 3870380308813204388}
+  charging: 0
 --- !u!1 &3908626412805337848
 GameObject:
   m_ObjectHideFlags: 0
