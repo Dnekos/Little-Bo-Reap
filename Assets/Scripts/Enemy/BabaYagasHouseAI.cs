@@ -23,6 +23,10 @@ public class BabaYagasHouseAI : EnemyAI
 	[SerializeField] float rangedAttackDamage;
     [SerializeField] Transform rangedAttackSpawnPoint;
 
+	[Header("Healthbar")]
+	[SerializeField] GameObject HealthBarCanvas;
+	[SerializeField] Transform HealthBar;
+
 	[Header("Game End Stuff")]
 	[SerializeField] GameObject endGameObject;
 
@@ -39,6 +43,11 @@ public class BabaYagasHouseAI : EnemyAI
 		base.Start();
 
 		spawnPoint = transform.position;
+
+		HealthBarCanvas.SetActive(true);
+
+		float armorBarScale = (Health / MaxHealth);
+		HealthBar.localScale = new Vector3(armorBarScale * -1, 1, 1);
 	}
 
 	private void FixedUpdate()
@@ -115,7 +124,17 @@ public class BabaYagasHouseAI : EnemyAI
     public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
     {
         base.TakeDamage(atk, attackForward, damageAmp, 0.0f);//no knockback
-    }
+
+		if (Health != MaxHealth && Health > executionHealthThreshhold)
+		{
+			HealthBarCanvas.SetActive(true);
+			float healthbarScale = (Health / MaxHealth);
+			HealthBar.localScale = new Vector3(healthbarScale * -1, 1, 1);
+		}
+		else
+			HealthBarCanvas.SetActive(false);
+
+	}
 
 	public override bool SetDestination(Vector3 dest)
     {
