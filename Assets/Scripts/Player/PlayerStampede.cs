@@ -132,7 +132,10 @@ public class PlayerStampede : MonoBehaviour
 					Vector3.Distance(transform.position, flocks.GetActiveSheep(flockType)[i].transform.position) <= distanceToUse)
 					flocks.GetActiveSheep(flockType)[i]?.BeginAbility((hit.point - transform.position).normalized);
 			}
-
+			if(WorldState.instance.passiveValues.activeRamAbility == "Ability 1")
+			{
+				this.GetComponent<BoPeepCharge>().Begin((hit.point - transform.position).normalized);
+			}
 			Instantiate(sheepChargeConfirmPrefab, hit.point, GetComponent<PlayerMovement>().playerOrientation.transform.rotation);
 		}
 
