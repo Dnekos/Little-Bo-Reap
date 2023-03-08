@@ -24,6 +24,6 @@ public class CloudScript : MonoBehaviour
         timePassed += Time.deltaTime;
         //float x = amplitudeX * Mathf.Cos(xVal * timePassed);
         float y = Mathf.Abs(amplitudeY * Mathf.Sin(frequencyY * timePassed));
-        transform.localPosition = new Vector3(xPos, yPos+y, zPos);
+        transform.position = new Vector3(xPos, yPos+y, zPos);
     }
 }
