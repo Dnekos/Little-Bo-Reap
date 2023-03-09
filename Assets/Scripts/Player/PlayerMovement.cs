@@ -22,7 +22,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float currentRunTime = 0f;
     bool isMoving;
     Vector3 moveDirection;
-    Vector2 moveValue; // input value
+    public Vector2 moveValue; // input value
     Rigidbody rb;
 
     // slope crap I hate slopes
@@ -270,6 +270,20 @@ public class PlayerMovement : MonoBehaviour
 			rb.AddForce(Vector3.down * fallRate);
     }
 
+    public void SetMovementVector(Vector2 newMoveVector)
+    {
+        moveValue = newMoveVector;
+    }
+
+    public float GetMaxMoveSpeed()
+    {
+        return maxMoveSpeed;
+    }
+    public void SetMaxMoveSpeed(float speed)
+    {
+        maxMoveSpeed = speed;
+    }
+
 
     #region Inputs
     public void OnMove(InputAction.CallbackContext context)
@@ -324,6 +338,8 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(superJumpPreventionTimer);
         canJump = true;
     }
+
+ 
 
     public void OnDash(InputAction.CallbackContext context)
     {
