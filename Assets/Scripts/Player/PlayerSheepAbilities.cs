@@ -108,6 +108,11 @@ public class PlayerSheepAbilities : MonoBehaviour
 	{
 		playerCam.ShakeCamera(true);
 	}
+	public int GetTotalSheepCount()
+	{
+		return sheepFlocks[0].activeSheep.Count + sheepFlocks[1].activeSheep.Count + sheepFlocks[2].activeSheep.Count;
+	}
+
 	#endregion
 
 	#region Sheep Flock Functions

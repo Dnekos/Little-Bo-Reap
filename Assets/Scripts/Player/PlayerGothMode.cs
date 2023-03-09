@@ -26,8 +26,9 @@ public class PlayerGothMode : MonoBehaviour
     public GothState gothMode = GothState.Normal;
 
 	[Header("Hammer")]
+	[SerializeField,Tooltip("minimum amount of active sheep to make hammer, if less go straight to goth")] float MinSheep;
 	[SerializeField] Interactable sheepHammer;
-    [SerializeField] string hammerAnimation = "Po_Peep_Hammer";
+    [SerializeField] string hammerAnimation = "Bo_Peep_Hammer";
     Animator anim;
 	PlayerInput input;
 
@@ -139,16 +140,25 @@ public class PlayerGothMode : MonoBehaviour
 
     public void OnGothMode(InputAction.CallbackContext context)
     {
-        if (context.started && GothMeterCount == 1f && gothMode == GothState.Normal)
-        {
-			Debug.LogWarning("GothInput");
-			input.SwitchCurrentActionMap("Disabled");
+		if (context.started && GothMeterCount == 1f && gothMode == GothState.Normal)
+		{
+			if (playerSheep.GetTotalSheepCount() < MinSheep)
+			{
+				playerSheep.GoGothMode();
+				SetGothVisual();
 
-            anim.Play(hammerAnimation);
+			}
+			else
+			{
+				input.SwitchCurrentActionMap("Disabled");
 
-            gothMode = GothState.Hammer;
+				anim.Play(hammerAnimation);
 
-            sheepHammer.Interact();
+				gothMode = GothState.Hammer;
+
+				sheepHammer.Interact();
+			}
+
 		}
 	}
 
