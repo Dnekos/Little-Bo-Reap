@@ -22,6 +22,8 @@ public enum SheepStates
     [SerializeField] SheepStates currentSheepState;
     [SerializeField] float baseSpeedMin = 15f;
     [SerializeField] float baseSpeedMax = 20f;
+
+	[Header("Jumping")]
     [SerializeField] string jumpAnimation;
     [SerializeField] string jumpLandAnimation;
     [SerializeField] float jumpSpeed = 8f;
@@ -77,7 +79,7 @@ public enum SheepStates
     //public float attackDamage = 5f;
     [SerializeField] bool canAttack = true;
 
-	[Header("ActiveAbility")]
+	[Header("Active Ability")]
 	public SheepBehavior ability;
 	public GameObject chargeParticles;
 
@@ -86,9 +88,13 @@ public enum SheepStates
     [SerializeField] float fallRate = 50;
 	Coroutine hitstunCo;
     bool isGrounded;
+
+	// Construct values
 	[HideInInspector] // hold new position so that constructs can query it even if sheep is still lerping to it
 	public Vector3 constructPos;
-    
+	[HideInInspector]
+	public float Radius;
+
 	[Header("DEBUG")]
 	public PlayerSheepAI leaderSheep;
 	public int sheepPoolIndex;
@@ -118,8 +124,11 @@ public enum SheepStates
 
         player = WorldState.instance.player.transform;
 
+		Radius = GetRadius();
+
 		Initialize();
 
+		constructPos = Vector3.negativeInfinity;
 	}
 
 	/// <summary>
@@ -158,6 +167,18 @@ public enum SheepStates
 
 			GoWandering();
 		}
+	}
+
+	float GetRadius()
+	{
+		// find out how big a sheep is
+		Collider scol = GetComponent<Collider>();
+		if (scol is SphereCollider)
+			return ((SphereCollider)scol).radius * transform.localScale.x;
+		else if (scol is CapsuleCollider)
+			return Mathf.Max(((CapsuleCollider)scol).radius, ((CapsuleCollider)scol).height * 0.5f) * transform.lossyScale.y;
+		else
+			return scol.bounds.size.y * 0.5f;
 	}
 
 	private void OnDestroy()
