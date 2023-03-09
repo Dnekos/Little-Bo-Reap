@@ -211,7 +211,7 @@ public class EnemyAI : EnemyBase
 	private void OnTriggerEnter(Collider other)
 	{
 		Damageable target = other.GetComponent<Damageable>();
-		if (target != null && !(target is EnemyAI) && !NearbyGuys.Contains(other.transform))
+		if (target != null && !(target is EnemyAI) && !NearbyGuys.Contains(other.transform) && !other.isTrigger)
 		{
 			NearbyGuys.Add(other.transform);
 		}
@@ -219,7 +219,7 @@ public class EnemyAI : EnemyBase
 	private void OnTriggerExit(Collider other)
 	{
 		Damageable target = other.GetComponent<Damageable>();
-		if (target != null && !(target is EnemyAI) && NearbyGuys.Contains(other.transform))
+		if (target != null && !(target is EnemyAI) && NearbyGuys.Contains(other.transform) && !other.isTrigger)
 		{
 			NearbyGuys.Remove(other.transform);
 		}

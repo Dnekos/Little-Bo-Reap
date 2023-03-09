@@ -89,7 +89,7 @@ public class PlayerGothMode : MonoBehaviour
     }
 
 	//update bar image
-	void Update()
+	void LateUpdate()
     {
         if (gothMode == GothState.Goth && GothMeterCount <= 0)
         {
@@ -103,8 +103,6 @@ public class PlayerGothMode : MonoBehaviour
             gothParticles.SetActive(false);
 
 
-			// turn off hammer
-			sheepHammer.Interact();
 		}
         else if (gothMode == GothState.Hammer && !anim.GetCurrentAnimatorStateInfo(0).IsName(hammerAnimation))
         {
@@ -112,6 +110,10 @@ public class PlayerGothMode : MonoBehaviour
 
 			// reenable controls
 			input.SwitchCurrentActionMap("PlayerMovement");
+
+			// turn off hammer
+			sheepHammer.Interact();
+
 
 			playerSheep.GoGothMode();
         }
@@ -137,8 +139,9 @@ public class PlayerGothMode : MonoBehaviour
 
     public void OnGothMode(InputAction.CallbackContext context)
     {
-        if (context.started && GothMeterCount == 1f)
+        if (context.started && GothMeterCount == 1f && gothMode == GothState.Normal)
         {
+			Debug.LogWarning("GothInput");
 			input.SwitchCurrentActionMap("Disabled");
 
             anim.Play(hammerAnimation);

@@ -76213,6 +76213,10 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: f8511625-e0a9-4636-a07b-742a7b1aec96
     m_ActionName: PlayerMovement/PauseMenu[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 43ed07ad-43a1-44be-9ed5-4ed0a6c64db4
+    m_ActionName: Disabled/New action
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerMovement
@@ -101382,117 +101386,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1 &6172666542081337084
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 9053794885203878624}
-  - component: {fileID: 4468160629058625915}
-  - component: {fileID: 309523547670523732}
-  - component: {fileID: 463064645815664512}
-  - component: {fileID: 5756145751699839446}
-  m_Layer: 10
-  m_Name: Hammer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &9053794885203878624
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6172666542081337084}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3578997114556863029}
-  m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &4468160629058625915
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6172666542081337084}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Size: {x: 0.5, y: 8, z: 0.5}
-  m_Center: {x: 0, y: 5, z: 0}
---- !u!65 &309523547670523732
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6172666542081337084}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Size: {x: 3, y: 3, z: 6}
-  m_Center: {x: 0, y: 7, z: 0}
---- !u!114 &463064645815664512
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6172666542081337084}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03b8184ab7ecf184da853cc533981947, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  canInteract: 1
-  onlyInteractableOnce: 0
-  inputIcon: {fileID: 0}
-  containedSheep: []
-  SheepLayer: 10
-  GroundLayer: 6
-  CurveT: 0
-  endConstructEvent: {fileID: 11400000, guid: 317c263135cb10e4fb6b742e1b2c4763, type: 2}
-  SheepRadiusMult: 1
-  SheepBars: 2
-  lerpSpeed: 10
-  placeSound:
-    Guid:
-      Data1: -1715676877
-      Data2: 1158912244
-      Data3: 260257952
-      Data4: -1284307485
-    Path: event:/Sheep/SheepPlacement
-  layerCount: 0
-  delay: 0.1
-  PlacementGuesses: 40
-  HeightStep: 0.01
-  cols:
-  - {fileID: 4468160629058625915}
-  - {fileID: 309523547670523732}
---- !u!135 &5756145751699839446
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6172666542081337084}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6314407702951648851
 GameObject:
   m_ObjectHideFlags: 0
@@ -136762,6 +136655,95 @@ ParticleSystem:
     type: 3}
   m_PrefabInstance: {fileID: 880305501833993219}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2649335212905977324
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 2
+    m_TransformParent: {fileID: 3578997114556863029}
+    m_Modifications:
+    - target: {fileID: 6440673223781824268, guid: cf423036d1335cf4299867c3f3f90556,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6440673223781824268, guid: cf423036d1335cf4299867c3f3f90556,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6440673223781824268, guid: cf423036d1335cf4299867c3f3f90556,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6440673223781824268, guid: cf423036d1335cf4299867c3f3f90556,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6440673223781824268, guid: cf423036d1335cf4299867c3f3f90556,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6440673223781824268, guid: cf423036d1335cf4299867c3f3f90556,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6440673223781824268, guid: cf423036d1335cf4299867c3f3f90556,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6440673223781824268, guid: cf423036d1335cf4299867c3f3f90556,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6440673223781824268, guid: cf423036d1335cf4299867c3f3f90556,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6440673223781824268, guid: cf423036d1335cf4299867c3f3f90556,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6440673223781824268, guid: cf423036d1335cf4299867c3f3f90556,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8173439393814786832, guid: cf423036d1335cf4299867c3f3f90556,
+        type: 3}
+      propertyPath: m_Name
+      value: Hammer
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_AddedGameObjects: []
+  m_SourcePrefab: {fileID: 100100000, guid: cf423036d1335cf4299867c3f3f90556, type: 3}
+--- !u!114 &463064645815664512 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2497657766551988844, guid: cf423036d1335cf4299867c3f3f90556,
+    type: 3}
+  m_PrefabInstance: {fileID: 2649335212905977324}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03b8184ab7ecf184da853cc533981947, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &9053794885203878624 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6440673223781824268, guid: cf423036d1335cf4299867c3f3f90556,
+    type: 3}
+  m_PrefabInstance: {fileID: 2649335212905977324}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3579177911459881746
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -138731,6 +138713,21 @@ MonoBehaviour:
   constraint: 50
   inSpeed: 2
   outSpeed: 4
+  events:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 463064645815664512}
+        m_TargetAssemblyTypeName: SheepHammer, Assembly-CSharp
+        m_MethodName: SpawnExplosion
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &4696850063880800426 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -644278993854333580, guid: 491ec6d47386f9c489310f2bb85ffeb9,

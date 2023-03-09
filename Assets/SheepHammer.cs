@@ -20,6 +20,15 @@ public class SheepHammer : SheepHolder
 	[SerializeField] int layerCount = 0;
 	int currentCollider = 0;
 
+	[Header("Hammer Attack")]
+	[SerializeField] Attack hammeratk;
+	[SerializeField] Transform hammerPoint;
+	[SerializeField] float damageRadius;
+	[SerializeField] LayerMask enemyLayer;
+	[SerializeField] GameObject ExplosionPrefab;
+
+
+
 	[Header("Settings")]
 	[SerializeField]
 	float delay = 0.2f;
@@ -44,6 +53,30 @@ public class SheepHammer : SheepHolder
 		containedSheep = new List<PlayerSheepAI>();
 	}
 
+	#region Hammer Attack
+	public void SpawnExplosion()
+	{
+		float inverseradius = 1 / damageRadius;
+
+		//TODO: probabluy change this
+		Collider[] enemies = Physics.OverlapSphere(hammerPoint.position, damageRadius, enemyLayer);
+		foreach (Collider hit in enemies)
+		{
+			Damageable enemy = hit.GetComponent<Damageable>();
+
+			if (enemy != null && !hit.isTrigger)
+			{
+				Vector3 dir = -(hammerPoint.position - hit.transform.position).normalized;
+				float knockbackscale = Mathf.Max(0, 1 - (Vector3.Distance(hammerPoint.position, hit.transform.position) * inverseradius));
+				enemy.TakeDamage(hammeratk, dir, 1, knockbackscale);
+			}
+		}
+		// explosion effect
+		Instantiate(ExplosionPrefab, hammerPoint.position, Quaternion.identity);
+	}
+	#endregion
+
+	#region Removing Sheep
 	public override void RemoveSheep()
 	{
 		StopAllCoroutines();
@@ -74,12 +107,14 @@ public class SheepHammer : SheepHolder
 		if (StopCoroutine)
 			StopAllCoroutines();
 	}
+	#endregion
 
 	#region Adding Sheep
 	public override void Interact()
 	{
 		base.Interact();
-			StopAllCoroutines();
+		StopAllCoroutines();
+
 		// starting hammer
 		if (containedSheep.Count <= 0)
 			StartCoroutine(AddAllSheep(WorldState.instance.player.GetComponent<PlayerSheepAbilities>().sheepFlocks, delay));
