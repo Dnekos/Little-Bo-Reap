@@ -74398,7 +74398,6 @@ GameObject:
   - component: {fileID: 4775500475753401295}
   - component: {fileID: 412837391465133713}
   - component: {fileID: 4502468381360255210}
-  - component: {fileID: 5544833725620109778}
   - component: {fileID: 9014355886342926602}
   m_Layer: 7
   m_Name: Player_Body
@@ -74806,6 +74805,38 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: f8511625-e0a9-4636-a07b-742a7b1aec96
     m_ActionName: PlayerMovement/PauseMenu[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7611933122142456365}
+        m_TargetAssemblyTypeName: PlayerPauseMenu, Project.Player
+        m_MethodName: OnPauseMenu
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: ea74ad52-c969-4048-8f0a-0d381f8ce4e5
+    m_ActionName: RamCharge/PauseMenu[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 9014355886342926602}
+        m_TargetAssemblyTypeName: BoPeepCharge, Project.Player
+        m_MethodName: OnStopCharge
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: edf51ad9-0a69-4032-882d-34963427bd32
+    m_ActionName: RamCharge/StopCharge[/Keyboard/space]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerMovement
@@ -74893,6 +74924,7 @@ MonoBehaviour:
   runParticles: {fileID: 2870547173014470154}
   timeBetweenRunParticles: 0.05
   currentRunTime: 0
+  moveValue: {x: 0, y: 0}
   jumpForce: 1250
   fallRate: 50
   jumpParticles: {fileID: 4261654204498698349}
@@ -75353,28 +75385,6 @@ MonoBehaviour:
       Data3: -523776871
       Data4: 180147507
     Path: event:/Bo Peep/AttackConfirm
---- !u!195 &5544833725620109778
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3870380308813204390}
-  m_Enabled: 0
-  m_AgentTypeID: 0
-  m_Radius: 0.75
-  m_Speed: 100
-  m_Acceleration: 200
-  avoidancePriority: 50
-  m_AngularSpeed: 720
-  m_StoppingDistance: 5
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: 1
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
 --- !u!114 &9014355886342926602
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75388,14 +75398,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chargeSpeed: 100
-  chargePointRadius: 10
-  chargeStopDistance: 0
-  destinationDist: 45
-  chargeCheckTime: 1
-  chargeCheckSpeed: 2
-  agent: {fileID: 5544833725620109778}
-  rb: {fileID: 3870380308813204388}
-  charging: 0
+  chargeDuration: 1.5
+  moveController: {fileID: 3870380308813204399}
 --- !u!1 &3908626412805337848
 GameObject:
   m_ObjectHideFlags: 0

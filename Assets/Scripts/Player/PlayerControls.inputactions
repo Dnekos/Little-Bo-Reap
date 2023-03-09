@@ -994,6 +994,76 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "RamCharge",
+            "id": "a0a3e0f8-df9d-4eff-af3c-47a37b8fdfc4",
+            "actions": [
+                {
+                    "name": "PauseMenu",
+                    "type": "Button",
+                    "id": "ea74ad52-c969-4048-8f0a-0d381f8ce4e5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "StopCharge",
+                    "type": "Button",
+                    "id": "edf51ad9-0a69-4032-882d-34963427bd32",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "b3bc699f-7630-477d-b522-f3f02cc30ef9",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PauseMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "810d7c74-8517-488b-aae7-801ed4619d84",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PauseMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fb3ef137-1408-4fe2-b03c-d3a9df1a7cbb",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "StopCharge",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0178bb34-0ee0-4de3-8216-92436c8499a3",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "StopCharge",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []
