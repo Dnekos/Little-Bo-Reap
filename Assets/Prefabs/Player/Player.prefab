@@ -75222,6 +75222,7 @@ GameObject:
   - component: {fileID: 4775500475753401295}
   - component: {fileID: 412837391465133713}
   - component: {fileID: 4502468381360255210}
+  - component: {fileID: 5527759415328798097}
   m_Layer: 7
   m_Name: Player_Body
   m_TagString: Player
@@ -75629,9 +75630,37 @@ MonoBehaviour:
     m_ActionId: f8511625-e0a9-4636-a07b-742a7b1aec96
     m_ActionName: PlayerMovement/PauseMenu[/Keyboard/escape]
   - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 43ed07ad-43a1-44be-9ed5-4ed0a6c64db4
-    m_ActionName: Disabled/New action
+      m_Calls:
+      - m_Target: {fileID: 7611933122142456365}
+        m_TargetAssemblyTypeName: PlayerPauseMenu, Project.Player
+        m_MethodName: OnPauseMenu
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: ea74ad52-c969-4048-8f0a-0d381f8ce4e5
+    m_ActionName: RamCharge/PauseMenu[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: BoPeepCharge, Project.Player
+        m_MethodName: OnStopCharge
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: edf51ad9-0a69-4032-882d-34963427bd32
+    m_ActionName: RamCharge/StopCharge[/Keyboard/space]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerMovement
@@ -75720,6 +75749,7 @@ MonoBehaviour:
   runParticles: {fileID: 2870547173014470154}
   timeBetweenRunParticles: 0.05
   currentRunTime: 0
+  moveValue: {x: 0, y: 0}
   jumpForce: 1250
   fallRate: 50
   jumpParticles: {fileID: 4261654204498698349}
@@ -76183,6 +76213,21 @@ MonoBehaviour:
       Data3: -523776871
       Data4: 180147507
     Path: event:/Bo Peep/AttackConfirm
+--- !u!114 &5527759415328798097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3870380308813204390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a403a546d0dbd2d459ab77903049720c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chargeSpeed: 120
+  chargeDuration: 1.5
+  moveController: {fileID: 3870380308813204399}
 --- !u!1 &3952427852673299259
 GameObject:
   m_ObjectHideFlags: 0
