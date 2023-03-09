@@ -29,12 +29,12 @@ public class SheepCurve : SheepHolder
 
 	// components
 
-	private void Start()
+	override protected void Start()
 	{
 		containedSheep = new List<PlayerSheepAI>();
 	}
 
-	private void Update()
+	override protected void Update()
 	{
 		for (float i = limits.x; i < limits.y; i+=0.5f)
 		{

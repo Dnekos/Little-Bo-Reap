@@ -76530,9 +76530,9 @@ MonoBehaviour:
   GothMeterCount: 0
   gothMeterChargeTime: 20
   gothMeterDuration: 7
-  isGothMode: 0
+  gothMode: 0
   sheepHammer: {fileID: 463064645815664512}
-  hammerAnimation: 
+  hammerAnimation: Bo_Peep_Hammer
   defaultSaturation: -100
   saturationIncreaseOverTime: 14.29
   materialParent: {fileID: 8266972903759878792}
@@ -101394,6 +101394,7 @@ GameObject:
   - component: {fileID: 4468160629058625915}
   - component: {fileID: 309523547670523732}
   - component: {fileID: 463064645815664512}
+  - component: {fileID: 5756145751699839446}
   m_Layer: 10
   m_Name: Hammer
   m_TagString: Untagged
@@ -101425,7 +101426,7 @@ BoxCollider:
   m_GameObject: {fileID: 6172666542081337084}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.5, y: 8, z: 0.5}
   m_Center: {x: 0, y: 5, z: 0}
@@ -101438,7 +101439,7 @@ BoxCollider:
   m_GameObject: {fileID: 6172666542081337084}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 3, y: 3, z: 6}
   m_Center: {x: 0, y: 7, z: 0}
@@ -101479,6 +101480,19 @@ MonoBehaviour:
   cols:
   - {fileID: 4468160629058625915}
   - {fileID: 309523547670523732}
+--- !u!135 &5756145751699839446
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6172666542081337084}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6314407702951648851
 GameObject:
   m_ObjectHideFlags: 0

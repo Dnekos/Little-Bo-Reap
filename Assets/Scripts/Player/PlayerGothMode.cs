@@ -29,6 +29,7 @@ public class PlayerGothMode : MonoBehaviour
 	[SerializeField] Interactable sheepHammer;
     [SerializeField] string hammerAnimation = "Po_Peep_Hammer";
     Animator anim;
+	PlayerInput input;
 
     [Header("Postprocess")]
     [SerializeField] float defaultSaturation = -100f;
@@ -69,7 +70,7 @@ public class PlayerGothMode : MonoBehaviour
 		chargeTimeInverse = 1 / gothMeterChargeTime;
 
         anim = GetComponent<PlayerAnimationController>().playerAnimator;
-
+		input = GetComponent<PlayerInput>();
     }
 
 	void ResetGoth()
@@ -101,6 +102,7 @@ public class PlayerGothMode : MonoBehaviour
             gothMode = GothState.Normal;
             gothParticles.SetActive(false);
 
+
 			// turn off hammer
 			sheepHammer.Interact();
 		}
@@ -108,7 +110,10 @@ public class PlayerGothMode : MonoBehaviour
         {
             SetGothVisual();
 
-            playerSheep.GoGothMode();
+			// reenable controls
+			input.SwitchCurrentActionMap("PlayerMovement");
+
+			playerSheep.GoGothMode();
         }
         else if (gothMode == GothState.Goth)
         {
@@ -134,6 +139,8 @@ public class PlayerGothMode : MonoBehaviour
     {
         if (context.started && GothMeterCount == 1f)
         {
+			input.SwitchCurrentActionMap("Disabled");
+
             anim.Play(hammerAnimation);
 
             gothMode = GothState.Hammer;

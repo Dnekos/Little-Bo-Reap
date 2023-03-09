@@ -72,7 +72,7 @@ public class PlayerGroundPound : MonoBehaviour
 					float damage = Mathf.Max(0, startFallPos.y - transform.position.y) * DamageMultiplier;
 					var dir = -(transform.position - hit.transform.position).normalized;
 
-                    if (GetComponent<PlayerGothMode>().gothMode)
+                    if (GetComponent<PlayerGothMode>().gothMode == PlayerGothMode.GothState.Goth)
                     {
                         groundPoundAttack.BSAttack.damage = baseGroundDamageBlack * damage;
 						enemy.TakeDamage(groundPoundAttack.BSAttack, dir);
