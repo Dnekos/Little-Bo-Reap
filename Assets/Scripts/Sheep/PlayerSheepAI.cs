@@ -829,6 +829,8 @@ public enum SheepStates
 		// if not already changed, make sure its not on CONSTRUCT
 		if (currentSheepState == SheepStates.CONSTRUCT)
 			SetHitstun(SheepStates.FOLLOW_PLAYER);
+		if (ability is SheepVortexBehavior)
+			ability.End(this);
 	}
 	#endregion
 }
