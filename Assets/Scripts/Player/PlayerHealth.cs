@@ -24,7 +24,10 @@ public class PlayerHealth : Damageable
 	[Header("Respawning")]
 	[SerializeField]
 	GameEvent RespawnEvent;
+	[SerializeField, Tooltip("If the player y position is under this, kill the player")]
+	float minAltitude = -50;
 
+	[Header("Components")]
 	[SerializeField]
 	PlayerInput[] inputs;
 	PlayerMovement playermove;
@@ -37,6 +40,15 @@ public class PlayerHealth : Damageable
 		healthBar.ChangeFill(Health / MaxHealth);
 
 		RespawnEvent.listener.AddListener(delegate { ResetHealth(); });
+	}
+
+	private void Update()
+	{
+		if (transform.position.y < minAltitude)
+		{
+			Health = 0;
+			OnDeath();
+		}
 	}
 
 	#region Respawn UI buttons
