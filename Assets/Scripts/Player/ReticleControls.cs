@@ -5,12 +5,19 @@ using UnityEngine.UI;
 
 public class ReticleControls : MonoBehaviour
 {
+    public List<Sprite> reticles;
+
     [SerializeField] GameObject reticle;
     Color baseColor;
     [SerializeField] float fadeTimeInSec;
     float duration;
 
 	Image im;
+
+    public void SetReticule(SheepTypes sheepType)
+    {
+        im.sprite = reticles[(int)sheepType];
+    }
 
     // Start is called before the first frame update
     void Start()

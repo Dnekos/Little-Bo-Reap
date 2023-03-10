@@ -55,6 +55,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 	[Header("Sheep Swap Variables")]
 	[SerializeField] List<ParticleSystem> bellParticles;
 	[SerializeField] ParticleSystem bellParticleBurst;
+    [SerializeField] ReticleControls reticleControls;
 
 	Vector2 WheelOpenMousePos;
 	bool isInFlockMenu = false;
@@ -325,6 +326,8 @@ public class PlayerSheepAbilities : MonoBehaviour
 		hud.UpdateActiveFlockUI(currentFlockIndex,
 			sheepFlocks[currentFlockIndex].activeSheep.Count + "/" + sheepFlocks[currentFlockIndex].MaxSize,
 			sheepFlocks[currentFlockIndex].UIColor);
+
+		reticleControls.SetReticule(currentFlockType);
 	}
 
 	bool CheckIfCloseToLeader(SheepTypes theSheepType)

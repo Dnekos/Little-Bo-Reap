@@ -75921,6 +75921,7 @@ MonoBehaviour:
   - {fileID: 3991922755468796332}
   - {fileID: 8808150670191662060}
   bellParticleBurst: {fileID: 7593981264142179448}
+  reticleControls: {fileID: 183008879123945295}
   summonBloodCost: 35
   summonRadius: 20
   summonCooldown: 0.5
@@ -142999,9 +143000,44 @@ PrefabInstance:
       propertyPath: fadeTimeInSec
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 9149730788665145379, guid: 556a14a661257274d935b357dfceb2b0,
+        type: 3}
+      propertyPath: reticules.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9149730788665145379, guid: 556a14a661257274d935b357dfceb2b0,
+        type: 3}
+      propertyPath: reticules.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300050, guid: 0f970087e679960468886ed0c3df91a0,
+        type: 3}
+    - target: {fileID: 9149730788665145379, guid: 556a14a661257274d935b357dfceb2b0,
+        type: 3}
+      propertyPath: reticules.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 401f5a28cf2a5774982637eb0a48f5cf,
+        type: 3}
+    - target: {fileID: 9149730788665145379, guid: 556a14a661257274d935b357dfceb2b0,
+        type: 3}
+      propertyPath: reticules.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: defc8cedb684b4b45a0e163c87df2fa2,
+        type: 3}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 556a14a661257274d935b357dfceb2b0, type: 3}
+--- !u!114 &183008879123945295 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9149730788665145379, guid: 556a14a661257274d935b357dfceb2b0,
+    type: 3}
+  m_PrefabInstance: {fileID: 8966792442237677420}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6719308265416775347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2200f90216dbcad4fac232052e56d806, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &252474696571149034 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 9219020521178281350, guid: 556a14a661257274d935b357dfceb2b0,
