@@ -68,8 +68,14 @@ public class SheepVortexBehavior : SheepBehavior
 
 	public override void End(PlayerSheepAI ps, GameObject fluffyProjectile)
 	{
-		if (fluffyProjectile == null)
+		// ending early, such as in hammer
+		if (fluffyProjectile == null) 
+		{
+			// reset animation
+			ps.GetAnimator().speed = 1;
+			ps.GetAnimator().SetBool("isDefending", false);
 			return;
+		}
 
 		PlayerSheepProjectile launchSheep = Instantiate(fluffyProjectile, ps.transform.position, ps.transform.rotation).GetComponent<PlayerSheepProjectile>();
 		if (ps.isBlackSheep)

@@ -136,8 +136,8 @@ public enum SheepStates
 	/// </summary>
 	public void Initialize()
 	{
+		// prevent them from getting stuck in the summon animation might be unneeded
 		animator.Rebind();
-
 		animator.Play("Test_Sheep_Summon", -1, 0);
 
 		agent.enabled = true;
@@ -154,8 +154,8 @@ public enum SheepStates
 		isInvulnerable = true;
 		Invoke("DisableSpawnInvuln", invulnTimeOnSpawn);
 
-		//check black sheep stuff
-		blackSheepParticles.SetActive(isBlackSheep);
+		//defualt to not black sheep
+		isBlackSheep = false;
 
 		//if default state is wander, go wandering
 		if (currentSheepState == SheepStates.WANDER)
@@ -828,7 +828,9 @@ public enum SheepStates
 
 		// if not already changed, make sure its not on CONSTRUCT
 		if (currentSheepState == SheepStates.CONSTRUCT)
-			SetHitstun(SheepStates.WANDER);
+			SetHitstun(SheepStates.FOLLOW_PLAYER);
+		if (ability is SheepVortexBehavior)
+			ability.End(this);
 	}
 	#endregion
 }
