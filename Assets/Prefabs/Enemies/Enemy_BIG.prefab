@@ -6545,10 +6545,10 @@ MonoBehaviour:
   - {fileID: 4645614311413259885, guid: 2ea8437ad6787b049b56c5883a68aae6, type: 3}
   - {fileID: 4645614311413259885, guid: 484308373c7ce7249b0a2955d5de5e32, type: 3}
   - {fileID: 6060198684946403098, guid: 4b17e9d88b42899429f3f7846d72d21d, type: 3}
-  graph: {fileID: 11400000, guid: a40848473892c744bb962b91c461f4ea, type: 2}
   SpawnParticlePrefab: {fileID: 6246327466764470281, guid: 817debac214ef9f4ba98b6f41baf3376,
     type: 3}
   SpawnWaitTime: 2
+  graph: {fileID: 11400000, guid: a40848473892c744bb962b91c461f4ea, type: 2}
   currentEnemyState: 3
   StunTime: 0.3
   playerLayer:
@@ -6558,6 +6558,8 @@ MonoBehaviour:
   delayBetweenAttacks: 0.5
   StickCollider: {fileID: 6809579797127332416}
   anim: {fileID: 1903166476982111845}
+  distracted: 0
+  bellLoc: {x: 0, y: 0, z: 0}
   isExecutable: 1
   mustBeExecuted: 1
   executionHealthThreshhold: 60
@@ -6571,7 +6573,7 @@ MonoBehaviour:
   groundCheckOriginBack: {fileID: 8888413981286509339}
   groundCheckDistance: 0.5
   isGrounded: 0
-  fallRate: 50
+  fallRate: 100
   swingSound:
     Guid:
       Data1: -1516851570

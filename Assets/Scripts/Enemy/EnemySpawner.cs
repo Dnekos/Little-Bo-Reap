@@ -55,7 +55,7 @@ public class EnemySpawner : MonoBehaviour
 	{
 		Instantiate(particle, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder);
 		yield return new WaitForSeconds(enemy.GetComponent<EnemyAI>().SpawnWaitTime);
-		Instantiate(enemy, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder).GetComponent<EnemyAI>().ToChase();
+		Instantiate(enemy, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder);
 	}
 
 }

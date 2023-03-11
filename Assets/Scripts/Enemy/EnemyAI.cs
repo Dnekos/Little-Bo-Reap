@@ -98,7 +98,7 @@ public class EnemyAI : EnemyBase
 	private void FixedUpdate()
 	{
 		//apply gravity if falling
-		if (currentEnemyState == EnemyStates.HITSTUN)
+		if (currentEnemyState == EnemyStates.HITSTUN || currentEnemyState == EnemyStates.EXECUTABLE)
 			rb.AddForce(Vector3.down * fallRate);
 	}
 	#region UtilityFunctions
@@ -143,15 +143,7 @@ public class EnemyAI : EnemyBase
 		return true;
 	}
 	#endregion
-	void DoIdle()
-	{
-		//debug idle state TODO: maybe make this not every frame?
-		if (Vector3.Distance(transform.position, player.position) <= 20)
-			currentEnemyState = EnemyStates.CHASE_PLAYER;
-	}
-	public void ToChase()
-	{
-	}
+
 	#region Execution 
 	public void Execute()
 	{
@@ -281,32 +273,28 @@ public class EnemyAI : EnemyBase
 		base.TakeDamage(atk, attackForward, damageAmp, knockbackMultiplier);
 
 		if (isExecutable && Health <= executionHealthThreshhold)
-		{
-			rb.mass = 100f;
-			rb.velocity = Vector3.zero;
-			agent.enabled = false;
-			gameObject.layer = LayerMask.NameToLayer("EnemyExecute");
-			rb.constraints = RigidbodyConstraints.FreezeAll;
-			currentEnemyState = EnemyStates.EXECUTABLE;
-			executeTrigger.SetActive(true);
-		}
+			ToExecutionState();
 	}
 
 	protected override void OnDeath()
 	{
 		if (isExecutable)
-		{
-			rb.mass = 100f;
-			rb.velocity = Vector3.zero;
-			agent.enabled = false;
-			gameObject.layer = LayerMask.NameToLayer("EnemyExecute");
-			rb.constraints = RigidbodyConstraints.FreezeAll;
-			currentEnemyState = EnemyStates.EXECUTABLE;
-			executeTrigger.SetActive(true);
-		}
+			ToExecutionState();
 		else
 			base.OnDeath();
 	}
+
+	void ToExecutionState()
+	{
+		rb.mass = 100f;
+		rb.velocity = Vector3.zero;
+		agent.enabled = false;
+		gameObject.layer = LayerMask.NameToLayer("EnemyExecute");
+		rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+		currentEnemyState = EnemyStates.EXECUTABLE;
+		executeTrigger.SetActive(true);
+	}
+
 	public override void ForceKill()
 	{
 		isExecutable = false;

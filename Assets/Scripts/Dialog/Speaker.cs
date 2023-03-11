@@ -18,7 +18,6 @@ public class Speaker : Interactable
 
 	[Header("Repeating Dialog"), SerializeField, Tooltip("If filled, the repeating dialog will play instead of the normal script anytime after the first that the player interacts with it.")]
 	Conversation repeatingScript;
-	bool hasSpoken = false;
 
 	Animator anim;
 
