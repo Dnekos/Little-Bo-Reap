@@ -20,6 +20,10 @@ public class PlayerAttackCommand : MonoBehaviour
 	[Header("Sounds")]
 	[SerializeField] FMODUnity.EventReference abilitySound;
 
+	[Header("Unity Animator")]
+	[SerializeField] Animator hudAnimator;
+	[SerializeField] string noSheepAnimation;
+
 	// components
 	PlayerSheepAbilities flocks;
 	Animator animator;

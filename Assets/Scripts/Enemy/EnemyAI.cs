@@ -11,7 +11,7 @@ public enum EnemyStates
 	CHASE_PLAYER = 1,
 	HITSTUN = 2,
 	IDLE = 3,
-	EXECUTABLE = 4
+	EXECUTABLE = 4,
 }
 public class EnemyAI : EnemyBase
 {
@@ -35,6 +35,10 @@ public class EnemyAI : EnemyBase
 	[SerializeField, Tooltip("how frequently the enemy checks their behavior tree")] float delayBetweenAttacks = 1;
 	[SerializeField] Collider StickCollider;
 	[SerializeField] Animator anim;
+
+	[Header("Bell")]
+	public bool distracted;
+	public Vector3 bellLoc;
 
 	[Header("Execution Variables")]
 	public bool isExecutable;
@@ -94,7 +98,7 @@ public class EnemyAI : EnemyBase
 	private void FixedUpdate()
 	{
 		//apply gravity if falling
-		if (currentEnemyState == EnemyStates.HITSTUN)
+		if (currentEnemyState == EnemyStates.HITSTUN || currentEnemyState == EnemyStates.EXECUTABLE)
 			rb.AddForce(Vector3.down * fallRate);
 	}
 	#region UtilityFunctions
@@ -106,7 +110,7 @@ public class EnemyAI : EnemyBase
 	{
 		return currentEnemyState;
 	}
-	public bool SetDestination(Vector3 dest)
+	public virtual bool SetDestination(Vector3 dest)
 	{
 		// dont pathfind bad destinations
 		if (dest == null || float.IsNaN(dest.x))
@@ -123,7 +127,7 @@ public class EnemyAI : EnemyBase
 		else
 		{
 			agent.SetDestination(dest);
-			if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 5, 1))
+			if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 5, 1) || agent.isOnOffMeshLink)
 			{
 				transform.position = hit.position;
 			}
@@ -139,15 +143,7 @@ public class EnemyAI : EnemyBase
 		return true;
 	}
 	#endregion
-	void DoIdle()
-	{
-		//debug idle state TODO: maybe make this not every frame?
-		if (Vector3.Distance(transform.position, player.position) <= 20)
-			currentEnemyState = EnemyStates.CHASE_PLAYER;
-	}
-	public void ToChase()
-	{
-	}
+
 	#region Execution 
 	public void Execute()
 	{
@@ -211,7 +207,7 @@ public class EnemyAI : EnemyBase
 	private void OnTriggerEnter(Collider other)
 	{
 		Damageable target = other.GetComponent<Damageable>();
-		if (target != null && !(target is EnemyAI) && !NearbyGuys.Contains(other.transform))
+		if (target != null && !(target is EnemyAI) && !NearbyGuys.Contains(other.transform) && !other.isTrigger)
 		{
 			NearbyGuys.Add(other.transform);
 		}
@@ -219,7 +215,7 @@ public class EnemyAI : EnemyBase
 	private void OnTriggerExit(Collider other)
 	{
 		Damageable target = other.GetComponent<Damageable>();
-		if (target != null && !(target is EnemyAI) && NearbyGuys.Contains(other.transform))
+		if (target != null && !(target is EnemyAI) && NearbyGuys.Contains(other.transform) && !other.isTrigger)
 		{
 			NearbyGuys.Remove(other.transform);
 		}
@@ -277,32 +273,28 @@ public class EnemyAI : EnemyBase
 		base.TakeDamage(atk, attackForward, damageAmp, knockbackMultiplier);
 
 		if (isExecutable && Health <= executionHealthThreshhold)
-		{
-			rb.mass = 100f;
-			rb.velocity = Vector3.zero;
-			agent.enabled = false;
-			gameObject.layer = LayerMask.NameToLayer("EnemyExecute");
-			rb.constraints = RigidbodyConstraints.FreezeAll;
-			currentEnemyState = EnemyStates.EXECUTABLE;
-			executeTrigger.SetActive(true);
-		}
+			ToExecutionState();
 	}
 
 	protected override void OnDeath()
 	{
 		if (isExecutable)
-		{
-			rb.mass = 100f;
-			rb.velocity = Vector3.zero;
-			agent.enabled = false;
-			gameObject.layer = LayerMask.NameToLayer("EnemyExecute");
-			rb.constraints = RigidbodyConstraints.FreezeAll;
-			currentEnemyState = EnemyStates.EXECUTABLE;
-			executeTrigger.SetActive(true);
-		}
+			ToExecutionState();
 		else
 			base.OnDeath();
 	}
+
+	void ToExecutionState()
+	{
+		rb.mass = 100f;
+		rb.velocity = Vector3.zero;
+		agent.enabled = false;
+		gameObject.layer = LayerMask.NameToLayer("EnemyExecute");
+		rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+		currentEnemyState = EnemyStates.EXECUTABLE;
+		executeTrigger.SetActive(true);
+	}
+
 	public override void ForceKill()
 	{
 		isExecutable = false;

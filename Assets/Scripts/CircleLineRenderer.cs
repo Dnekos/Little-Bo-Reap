@@ -14,7 +14,7 @@ public class CircleLineRenderer : MonoBehaviour
     {
         line = gameObject.GetComponent<LineRenderer>();
 
-        line.SetVertexCount(segments + 1);
+        line.positionCount = segments + 1;
         line.useWorldSpace = false;
         CreatePoints();
     }

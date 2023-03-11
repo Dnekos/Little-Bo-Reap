@@ -60,7 +60,7 @@ public class Shockwave : MonoBehaviour
 		{
 			Debug.Log(other.gameObject.name + " safe inside shockwave");
 		}
-		else if (targetHealth != null && !hitTargets.Contains(targetHealth))
+		else if (targetHealth != null && !hitTargets.Contains(targetHealth) && !other.isTrigger)
 		{
 			hitTargets.Add(targetHealth);
 			Debug.Log(other.gameObject.name + " hit by shockwave");

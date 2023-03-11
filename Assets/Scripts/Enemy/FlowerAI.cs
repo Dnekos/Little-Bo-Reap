@@ -45,13 +45,13 @@ public class FlowerAI : EnemyBase
 
     void FlowerRotate()
     {
-        Quaternion bodyLookRotation = Quaternion.LookRotation(player.position - flowerBody.position, transform.localEulerAngles);
-        Quaternion headLookRotation = Quaternion.LookRotation(player.position - flowerHead.position, transform.localEulerAngles);
+        Quaternion bodyLookRotation = Quaternion.LookRotation(player.position - flowerBody.position, transform.eulerAngles);
+        Quaternion headLookRotation = Quaternion.LookRotation(player.position - flowerHead.position, transform.eulerAngles);
 
         //have body and head turn towards player(y-axis for body, x-axis for head)
-        flowerBody.localEulerAngles = Quaternion.Euler(0f, bodyLookRotation.eulerAngles.y, 0f).eulerAngles;
+        flowerBody.eulerAngles = Quaternion.Euler(0f, bodyLookRotation.eulerAngles.y, 0f).eulerAngles;
 
-        flowerHead.localEulerAngles = flowerBody.localEulerAngles + Quaternion.Euler(headLookRotation.eulerAngles.x, 0f, 0f).eulerAngles;
+        flowerHead.eulerAngles = flowerBody.eulerAngles + Quaternion.Euler(headLookRotation.eulerAngles.x, 0f, 0f).eulerAngles;
 
     }
 

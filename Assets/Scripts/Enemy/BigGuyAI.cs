@@ -6,8 +6,8 @@ using UnityEngine.AI;
 public class BigGuyAI : EnemyAI
 {
 	[Header("HealthBar")]
-	[SerializeField] GameObject HealthBarCanvas;
-	[SerializeField] Transform[] HPBars;
+	[SerializeField] public GameObject HealthBarCanvas;
+	[SerializeField] public Transform[] HPBars;
 
 	[Header("Shockwave")]
 	[SerializeField] Transform ShockwaveSpawnPoint;

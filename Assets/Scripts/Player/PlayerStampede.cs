@@ -69,6 +69,14 @@ public class PlayerStampede : MonoBehaviour
 		SheepTypes flockType = flocks.currentFlockType;
 		List<PlayerSheepAI> sheep = flocks.GetActiveSheep(flockType);
 
+		// no sheep?
+		if (flocks.GetActiveSheep(flockType).Count <= 0)
+		{
+			WorldState.instance.HUD.SheepErrorAnimation();
+			return;
+		}
+
+
 		if (context.started && canCharge && !attack.isPreparingAttack && !isPreparingCharge
 			&& sheep.Count > 0
 			&& sheep[0].ability is SheepStampedeBehavior)
@@ -124,7 +132,10 @@ public class PlayerStampede : MonoBehaviour
 					Vector3.Distance(transform.position, flocks.GetActiveSheep(flockType)[i].transform.position) <= distanceToUse)
 					flocks.GetActiveSheep(flockType)[i]?.BeginAbility((hit.point - transform.position).normalized);
 			}
-
+			if(WorldState.instance.passiveValues.activeRamAbility == "Ability 1")
+			{
+				this.GetComponent<BoPeepCharge>().Begin((hit.point - transform.position).normalized);
+			}
 			Instantiate(sheepChargeConfirmPrefab, hit.point, GetComponent<PlayerMovement>().playerOrientation.transform.rotation);
 		}
 

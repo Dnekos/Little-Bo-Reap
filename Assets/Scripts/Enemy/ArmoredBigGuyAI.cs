@@ -26,11 +26,22 @@ public class ArmoredBigGuyAI : BigGuyAI
     {
         if(armorBroken == true)
         {
-            base.TakeDamage(atk, attackForward, damageAmp, knockbackMultiplier);
+            base.TakeDamage(atk, attackForward);
+
+            if (Health != MaxHealth || Health > executionHealthThreshhold)
+            {
+                HealthBarCanvas.SetActive(true);
+                float healthbarScale = (Health / MaxHealth);
+                HPBars[0].localScale = new Vector3(healthbarScale, 1, 1);
+                HPBars[1].localScale = new Vector3(healthbarScale * -1, 1, 1);
+            }
+            else
+                HealthBarCanvas.SetActive(false);
         }
-        if(atk.name == "Ram_Attack_Charge" && armorBroken == false)
+        if (atk.name == "Ram_Attack_Charge" && armorBroken == false)
         {
             ArmorBarCanvas.SetActive(false);
+            HealthBarCanvas.SetActive(true);
             armorBroken = true;
         }
     }

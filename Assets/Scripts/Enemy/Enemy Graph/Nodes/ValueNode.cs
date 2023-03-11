@@ -15,8 +15,8 @@ namespace XNode.Examples.StateGraph {
 			ENEMY_FORWARD,
 			ACTIVE_SHEEP_COUNT,
 			ACTIVE_SHEEP_AVE_POS,
-			PLAYER_POS
-
+			PLAYER_POS,
+			BELL_LOC
 		}
 		[Input] public Variable desiredValue;
 		[Output] public float result;
@@ -62,6 +62,8 @@ namespace XNode.Examples.StateGraph {
 
 					case Variable.PLAYER_POS:
 						return (graph as StateGraph).currentUser.player.position;
+					case Variable.BELL_LOC:
+						return (graph as StateGraph).currentUser.bellLoc;
 				}
 			}
 			return null;

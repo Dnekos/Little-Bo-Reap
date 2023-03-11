@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public struct SheepPassives
 {
 	[Header("Soul Count")]
-	public int soulsCount;
+	public static int soulsCount;
 	public int bossSoulsCount;
 
 	[Header("Active Abilities")]

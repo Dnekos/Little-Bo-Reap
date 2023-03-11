@@ -22,6 +22,8 @@ public enum SheepStates
     [SerializeField] SheepStates currentSheepState;
     [SerializeField] float baseSpeedMin = 15f;
     [SerializeField] float baseSpeedMax = 20f;
+
+	[Header("Jumping")]
     [SerializeField] string jumpAnimation;
     [SerializeField] string jumpLandAnimation;
     [SerializeField] float jumpSpeed = 8f;
@@ -77,7 +79,7 @@ public enum SheepStates
     //public float attackDamage = 5f;
     [SerializeField] bool canAttack = true;
 
-	[Header("ActiveAbility")]
+	[Header("Active Ability")]
 	public SheepBehavior ability;
 	public GameObject chargeParticles;
 
@@ -86,9 +88,13 @@ public enum SheepStates
     [SerializeField] float fallRate = 50;
 	Coroutine hitstunCo;
     bool isGrounded;
+
+	// Construct values
 	[HideInInspector] // hold new position so that constructs can query it even if sheep is still lerping to it
 	public Vector3 constructPos;
-    
+	[HideInInspector]
+	public float Radius;
+
 	[Header("DEBUG")]
 	public PlayerSheepAI leaderSheep;
 	public int sheepPoolIndex;
@@ -118,8 +124,11 @@ public enum SheepStates
 
         player = WorldState.instance.player.transform;
 
+		Radius = GetRadius();
+
 		Initialize();
 
+		constructPos = Vector3.negativeInfinity;
 	}
 
 	/// <summary>
@@ -127,8 +136,8 @@ public enum SheepStates
 	/// </summary>
 	public void Initialize()
 	{
+		// prevent them from getting stuck in the summon animation might be unneeded
 		animator.Rebind();
-
 		animator.Play("Test_Sheep_Summon", -1, 0);
 
 		agent.enabled = true;
@@ -145,8 +154,8 @@ public enum SheepStates
 		isInvulnerable = true;
 		Invoke("DisableSpawnInvuln", invulnTimeOnSpawn);
 
-		//check black sheep stuff
-		blackSheepParticles.SetActive(isBlackSheep);
+		//defualt to not black sheep
+		isBlackSheep = false;
 
 		//if default state is wander, go wandering
 		if (currentSheepState == SheepStates.WANDER)
@@ -158,6 +167,18 @@ public enum SheepStates
 
 			GoWandering();
 		}
+	}
+
+	float GetRadius()
+	{
+		// find out how big a sheep is
+		Collider scol = GetComponent<Collider>();
+		if (scol is SphereCollider)
+			return ((SphereCollider)scol).radius * transform.localScale.x;
+		else if (scol is CapsuleCollider)
+			return Mathf.Max(((CapsuleCollider)scol).radius, ((CapsuleCollider)scol).height * 0.5f) * transform.lossyScale.y;
+		else
+			return scol.bounds.size.y * 0.5f;
 	}
 
 	private void OnDestroy()
@@ -807,7 +828,9 @@ public enum SheepStates
 
 		// if not already changed, make sure its not on CONSTRUCT
 		if (currentSheepState == SheepStates.CONSTRUCT)
-			SetHitstun(SheepStates.WANDER);
+			SetHitstun(SheepStates.FOLLOW_PLAYER);
+		if (ability is SheepVortexBehavior)
+			ability.End(this);
 	}
 	#endregion
 }

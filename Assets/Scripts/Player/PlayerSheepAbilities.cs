@@ -55,6 +55,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 	[Header("Sheep Swap Variables")]
 	[SerializeField] List<ParticleSystem> bellParticles;
 	[SerializeField] ParticleSystem bellParticleBurst;
+    [SerializeField] ReticleControls reticleControls;
 
 	Vector2 WheelOpenMousePos;
 	bool isInFlockMenu = false;
@@ -108,6 +109,11 @@ public class PlayerSheepAbilities : MonoBehaviour
 	{
 		playerCam.ShakeCamera(true);
 	}
+	public int GetTotalSheepCount()
+	{
+		return sheepFlocks[0].activeSheep.Count + sheepFlocks[1].activeSheep.Count + sheepFlocks[2].activeSheep.Count;
+	}
+
 	#endregion
 
 	#region Sheep Flock Functions
@@ -317,9 +323,11 @@ public class PlayerSheepAbilities : MonoBehaviour
 		for (int i = 0; i < sheepFlocks.Length; i++)
 			hud.UpdateFlockWheelText(i, sheepFlocks[i].activeSheep.Count, sheepFlocks[i].MaxSize);
 
-		hud.UpdateActiveFlockUI(sheepFlocks[currentFlockIndex].sheepIcon,
+		hud.UpdateActiveFlockUI(currentFlockIndex,
 			sheepFlocks[currentFlockIndex].activeSheep.Count + "/" + sheepFlocks[currentFlockIndex].MaxSize,
 			sheepFlocks[currentFlockIndex].UIColor);
+
+		reticleControls.SetReticule(currentFlockType);
 	}
 
 	bool CheckIfCloseToLeader(SheepTypes theSheepType)
@@ -477,6 +485,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 
 			//TEMP SOUND
 			FMODUnity.RuntimeManager.PlayOneShotAttached(summonSound, gameObject);
+			//Debug.Log("summon sound play");
 
 			//in case we summon all at once
 			#region old stuff
