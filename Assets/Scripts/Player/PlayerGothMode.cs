@@ -76,9 +76,16 @@ public class PlayerGothMode : MonoBehaviour
 
 	void ResetGoth()
 	{
-        gothMode = GothState.Normal;
+		// reset mesh material		
+		if (gothMode != GothState.Normal)
+			foreach (SkinnedMeshRenderer mesh in meshes)
+				mesh.material = defaultMat;
+
+		// turn effects off
+		gothMode = GothState.Normal;
 		gothParticles.SetActive(false);
 
+		// zero out fill
 		GothMeterCount = 0;
 		gothMeter.ChangeFill(GothMeterCount);
 	}
