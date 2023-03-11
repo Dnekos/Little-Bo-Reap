@@ -78,6 +78,9 @@ public class DialogBox : MonoBehaviour
 		// disable HUD
 		WorldState.instance.HUD.ToggleHud(false);
 
+		// stop player
+		WorldState.instance.player.GetComponent<PlayerMovement>().HaltPlayer();
+
 		// set up speaker vars
 		currentspeaker = active_conversation;
 		DialoguePanel.SetActive(true);
