@@ -12,6 +12,8 @@ public class PlayerBuildWall : MonoBehaviour
 	[SerializeField] GameObject bellPrefab;
 	[SerializeField] GameObject confirmPrefab;
 	[SerializeField] LayerMask targetLayers;
+	[SerializeField, Tooltip("likely depricated, rotates raycast around x axix")] float xAngleOffset = 0;
+	[SerializeField, Tooltip("how steep the wall can be built")] float maxSlope = 30;
 
 	[Header("Bo Peep")]
 	[SerializeField] string confirmAnimation;
@@ -48,7 +50,8 @@ public class PlayerBuildWall : MonoBehaviour
 		{
 			//draw ray from camera forward to point
 			RaycastHit hit;
-			if (Physics.Raycast(Camera.main.transform.position + prefabSpawnOffset, Camera.main.transform.forward, out hit, Mathf.Infinity, targetLayers))
+			if (Physics.Raycast(Camera.main.transform.position + raycastOffset, Quaternion.AngleAxis(xAngleOffset,Camera.main.transform.right)  * Camera.main.transform.forward , out hit, Mathf.Infinity, targetLayers) 
+				&& Vector3.Angle(hit.normal,Vector3.up) < maxSlope)
 			{
 				//draw charge point
 				sheepChargePoint.transform.position = hit.point + prefabSpawnOffset;
@@ -119,7 +122,9 @@ public class PlayerBuildWall : MonoBehaviour
 			if (sheepChargePoint.transform.position == new Vector3(0f, -1000f, 0f))
 			{
 				Destroy(sheepChargePoint);
-				StartCooldown();
+				isPreparing = false;
+
+				//StartCooldown(); // seems too much to do cooldown on a bad input
 			}
 			else
 				DoWall();
