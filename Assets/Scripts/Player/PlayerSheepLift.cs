@@ -10,6 +10,7 @@ public class PlayerSheepLift : MonoBehaviour
 	float sheepHeight;
 
 	[SerializeField] FMODUnity.EventReference placeSound;
+	[SerializeField] FMODUnity.EventReference fail;
 
 	[SerializeField] float SheepLerpSpeed = 0.5f;
 
@@ -66,10 +67,13 @@ public class PlayerSheepLift : MonoBehaviour
 
 		Debug.DrawLine(transform.position, info.point, Color.red, 3);
 		Debug.Log("sheep lift attempt at height "+ (info.distance * SheepSpacingMod) +", estimated sheep height is "+ (sheepHeight * flocks.GetActiveSheep(SheepTypes.BUILD).Count));
-		
+
 		// not enough sheep to make the ladder
 		if (!hitGround || info.distance * SheepSpacingMod > sheepHeight * flocks.GetActiveSheep(SheepTypes.BUILD).Count || info.collider.CompareTag("Sheep") || info.collider.gameObject == platform)
+		{
+			//FMODUnity.RuntimeManager.PlayOneShot(fail, player.transform.position); //sound plays when sheep fail to stack, needs VFX in order to make sense.
 			return false;
+		}
 
 
 		shouldCollapseTower = false;
