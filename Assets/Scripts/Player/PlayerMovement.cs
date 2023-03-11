@@ -129,7 +129,6 @@ public class PlayerMovement : MonoBehaviour
 		liftcontroller = GetComponent<PlayerSheepLift>();
 		groundPound = GetComponent<PlayerGroundPound>();
 
-
         dashChargesCurrent = dashChargesMax;
 	}
 
@@ -271,7 +270,20 @@ public class PlayerMovement : MonoBehaviour
 			rb.AddForce(Vector3.down * fallRate);
     }
 
-    public void SetMovementVector(Vector2 newMoveVector)
+	#region Getters/Setters
+	public void HaltPlayer()
+	{
+		// stop dashing
+		StopAllCoroutines();
+		dashTrail.Stop();
+		canDash = true;
+
+		// stop moving
+		moveValue = Vector3.zero;
+		//rb.AddForce(-rb.velocity, ForceMode.VelocityChange);
+	}
+
+	public void SetMovementVector(Vector2 newMoveVector)
     {
         moveValue = newMoveVector;
     }
@@ -284,10 +296,10 @@ public class PlayerMovement : MonoBehaviour
     {
         maxMoveSpeed = speed;
     }
+	#endregion
 
-
-    #region Inputs
-    public void OnMove(InputAction.CallbackContext context)
+	#region Inputs
+	public void OnMove(InputAction.CallbackContext context)
     {
         moveValue = context.ReadValue<Vector2>();
     }

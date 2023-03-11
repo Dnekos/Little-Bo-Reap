@@ -10,6 +10,7 @@ public class PlayerStampede : MonoBehaviour
 	[SerializeField] GameObject sheepChargePointPrefab;
 	[SerializeField] GameObject sheepChargeConfirmPrefab;
 	[SerializeField] LayerMask chargeTargetLayers;
+	[SerializeField, Tooltip("how steep the point can be placed")] float maxSlope = 30;
 
 	[Header("Bo Peep")]
 	[SerializeField] string chargeAnimation;
@@ -49,6 +50,13 @@ public class PlayerStampede : MonoBehaviour
 			RaycastHit hit;
 			if (Physics.Raycast(Camera.main.transform.position + chargePointOffset, Camera.main.transform.forward, out hit, Mathf.Infinity, chargeTargetLayers))
 			{
+				// if it hits a wall, try going through it
+				if (Vector3.Angle(hit.normal, Vector3.up) > maxSlope && !Physics.Raycast(Camera.main.transform.position + Camera.main.transform.forward * hit.distance * 1.1f, Camera.main.transform.forward, out hit, Mathf.Infinity, chargeTargetLayers))
+				{   //draw it way the fuck down so it isnt seen
+					sheepChargePoint.transform.position = new Vector3(0f, -1000f, 0f);
+					return;
+				}
+
 				//draw charge point
 				sheepChargePoint.transform.position = hit.point;
 				sheepChargePoint.transform.rotation = GetComponent<PlayerMovement>().playerOrientation.transform.rotation;
