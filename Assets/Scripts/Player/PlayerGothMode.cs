@@ -51,6 +51,7 @@ public class PlayerGothMode : MonoBehaviour
 	float durationInverse, chargeTimeInverse;
 
 	PlayerSheepAbilities playerSheep;
+	PlayerMovement movement;
 
     private void Start()
     {
@@ -59,7 +60,6 @@ public class PlayerGothMode : MonoBehaviour
 			throw new System.NullReferenceException(nameof(gothSaturation));
         gothSaturation.saturation.value = defaultSaturation;
 
-        playerSheep = GetComponent<PlayerSheepAbilities>();
 		gothMeter.ChangeFill(GothMeterCount);
 
 		RespawnEvent.listener.AddListener(delegate { ResetGoth(); });
@@ -70,9 +70,13 @@ public class PlayerGothMode : MonoBehaviour
 		durationInverse = 1 / gothMeterDuration;
 		chargeTimeInverse = 1 / gothMeterChargeTime;
 
+		// set components
+        playerSheep = GetComponent<PlayerSheepAbilities>();
         anim = GetComponent<PlayerAnimationController>().playerAnimator;
 		input = GetComponent<PlayerInput>();
-    }
+		movement = GetComponent<PlayerMovement>();
+
+	}
 
 	void ResetGoth()
 	{
@@ -157,12 +161,13 @@ public class PlayerGothMode : MonoBehaviour
 			}
 			else
 			{
+				// stop player
 				input.SwitchCurrentActionMap("Disabled");
+				movement.HaltPlayer();
 
+				// start up hammer
 				anim.Play(hammerAnimation);
-
 				gothMode = GothState.Hammer;
-
 				sheepHammer.Interact();
 			}
 
