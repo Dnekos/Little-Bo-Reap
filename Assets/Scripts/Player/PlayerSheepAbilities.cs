@@ -56,6 +56,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 	[SerializeField] List<ParticleSystem> bellParticles;
 	[SerializeField] ParticleSystem bellParticleBurst;
     [SerializeField] ReticleControls reticleControls;
+	[SerializeField] List<ParticleSystem> failSummonParticles;
 
 	Vector2 WheelOpenMousePos;
 	bool isInFlockMenu = false;
@@ -521,7 +522,10 @@ public class PlayerSheepAbilities : MonoBehaviour
             summonIcon.CooldownUIEffect(summonCooldown);
 			*/
 		}
-
+		else if(context.started && canSummonSheep && sheepFlocks[currentFlockIndex].MaxSize > 0 && summonResource.GetCurrentBlood() <= summonBloodCost)
+        {
+			failSummonParticles[(int)currentFlockType].Play(true);
+        }
 
 
 		//KEEP THIS IN CASE WE GO BACK LATER

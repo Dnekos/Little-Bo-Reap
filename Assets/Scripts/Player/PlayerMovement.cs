@@ -53,6 +53,7 @@ public class PlayerMovement : MonoBehaviour
 	public float LiftSpeed = 5;
 	public bool isLifting = false;
 	[HideInInspector] public bool CanLift = true;
+    [SerializeField] ParticleSystem liftFailParticle;
 
     [Header("Dash Variables")]
     [SerializeField] float dashForce;
@@ -292,44 +293,44 @@ public class PlayerMovement : MonoBehaviour
     }
     public void OnJump(InputAction.CallbackContext context)
     {
-		if (CoyoteTimer > 0f && context.started && canJump && !isLifting)
-		{
+        if (CoyoteTimer > 0f && context.started && canJump && !isLifting)
+        {
             //prevent super jumps
             StartCoroutine(SuperJumpPrevention());
 
-			// SOUND
-			FMODUnity.RuntimeManager.PlayOneShotAttached(jumpSound, gameObject);
+            // SOUND
+            FMODUnity.RuntimeManager.PlayOneShotAttached(jumpSound, gameObject);
 
-			// play particles
-			jumpParticles.Play();
+            // play particles
+            jumpParticles.Play();
 
-			animator.Play(jumpAnimation);
+            animator.Play(jumpAnimation);
 
-			// stop current momentum, then jump
-			if (!canDash) // for jess, it doesnt do this during dashes so that dash jump glitch works still
-				rb.AddForce(Vector3.down * rb.velocity.y, ForceMode.VelocityChange);
-			rb.AddForce(Vector3.up * jumpForce);
-		}
-		else if (context.started && CanLift && !isFalling)
-		{
-			if (liftcontroller.StartLifting())
-			{
+            // stop current momentum, then jump
+            if (!canDash) // for jess, it doesnt do this during dashes so that dash jump glitch works still
+                rb.AddForce(Vector3.down * rb.velocity.y, ForceMode.VelocityChange);
+            rb.AddForce(Vector3.up * jumpForce);
+        }
+        else if (context.started && CanLift && !isFalling)
+        {
+            if (liftcontroller.StartLifting())
+            {
                 GetComponent<PlayerSheepAbilities>().sheepFlocks[(int)SheepTypes.BUILD].spellParticle.Play(true);
 
-				rb.AddForce(Vector3.down * rb.velocity.y, ForceMode.VelocityChange);
+                rb.AddForce(Vector3.down * rb.velocity.y, ForceMode.VelocityChange);
 
-				CanLift = false;
-				// lifting = true is now in PlayerSheepLift
+                CanLift = false;
+                // lifting = true is now in PlayerSheepLift
 
-				StartCoroutine(GetComponent<PlayerSheepLift>().PlayerPath());
-			}
-		}
-		else if (context.canceled && isLifting)
-		{
-			rb.AddForce(Vector3.down * rb.velocity.y, ForceMode.VelocityChange);
+                StartCoroutine(GetComponent<PlayerSheepLift>().PlayerPath());
+            }
+        }
+        else if (context.canceled && isLifting)
+        {
+            rb.AddForce(Vector3.down * rb.velocity.y, ForceMode.VelocityChange);
 
-			isLifting = false;
-		}
+            isLifting = false;
+        }
     }
 
     IEnumerator SuperJumpPrevention()
