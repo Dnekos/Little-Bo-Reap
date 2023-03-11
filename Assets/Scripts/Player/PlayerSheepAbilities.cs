@@ -485,7 +485,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 
 			//TEMP SOUND
 			FMODUnity.RuntimeManager.PlayOneShotAttached(summonSound, gameObject);
-			Debug.Log("summon sound play");
+			//Debug.Log("summon sound play");
 
 			//in case we summon all at once
 			#region old stuff

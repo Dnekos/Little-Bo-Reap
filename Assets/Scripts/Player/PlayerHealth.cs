@@ -42,9 +42,9 @@ public class PlayerHealth : Damageable
 		RespawnEvent.listener.AddListener(delegate { ResetHealth(); });
 	}
 
-	private void Update()
+	private void LateUpdate()
 	{
-		if (transform.position.y < minAltitude)
+		if (transform.position.y < minAltitude && Health > 0)
 		{
 			Health = 0;
 			OnDeath();

@@ -175,10 +175,11 @@ public class DialogBox : MonoBehaviour
 		// enable HUD and world
 		WorldState.instance.HUD.ToggleHud(true);
 		if (WorldState.instance.gameState == WorldState.State.Dialog) // if statement needed in case it conflicts with respawn
-		{
 			WorldState.instance.gameState = WorldState.State.Play;
-		}
-		inputs.SwitchCurrentActionMap("PlayerMovement");
+
+		// sometimes its not??
+		if (inputs.isActiveAndEnabled)
+			inputs.SwitchCurrentActionMap("PlayerMovement");
 
 		// player look
 		if (player != null)

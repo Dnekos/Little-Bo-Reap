@@ -31,6 +31,7 @@ public class Destructible : MonoBehaviour
         foreach (Rigidbody childRigidbody in brokenPieces)
         {
             childRigidbody.AddExplosionForce(600f, explosionOrigin.position, 500f);
+			Destroy(childRigidbody.gameObject, 5);
         }
 
         Destroy(gameObject);
