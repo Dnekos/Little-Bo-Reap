@@ -38,7 +38,8 @@ public class DialogBox : MonoBehaviour
 	TextMeshProUGUI TextBody;
 	[SerializeField]
 	PlayerInput inputs;
-
+	[SerializeField]
+	GameEvent RespawnEvent;
 
 	private void Awake()
 	{
@@ -53,6 +54,9 @@ public class DialogBox : MonoBehaviour
 		cinematicCamera.enabled = false;
 
 		inputs ??= WorldState.instance.player.GetComponent<PlayerInput>();
+
+		// register listener for if player skips/dies in dialog
+		RespawnEvent.listener.AddListener(CloseUI);
 	}
 
 	/// <summary>
@@ -170,7 +174,10 @@ public class DialogBox : MonoBehaviour
 
 		// enable HUD and world
 		WorldState.instance.HUD.ToggleHud(true);
-		WorldState.instance.gameState = WorldState.State.Play;
+		if (WorldState.instance.gameState == WorldState.State.Dialog) // if statement needed in case it conflicts with respawn
+		{
+			WorldState.instance.gameState = WorldState.State.Play;
+		}
 		inputs.SwitchCurrentActionMap("PlayerMovement");
 
 		// player look
@@ -178,8 +185,6 @@ public class DialogBox : MonoBehaviour
 			player.LookTarget = null;
 
 
-		// reset back to last state
-		WorldState.instance.gameState = WorldState.State.Play; // switch to whatever state it was before dialogue started
 	}
 
 	/// <summary>
