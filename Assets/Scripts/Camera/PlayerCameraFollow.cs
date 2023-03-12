@@ -27,6 +27,11 @@ public class PlayerCameraFollow : MonoBehaviour
     [SerializeField] Transform playerOrientation;
     [SerializeField] Transform playerBody;
 
+    [Header("Kiosk Mode")]
+    [SerializeField] float kioskCamSpeed;
+    [SerializeField] float timeToTriggerKiosk = 5f;
+    float currentIdleTime;
+
                                                                                      
     Vector2 mouseValue; //value taken from input                                     
     float mouseX = 0;
@@ -74,6 +79,15 @@ public class PlayerCameraFollow : MonoBehaviour
 
     private void Update()
     {
+        //kiosk mode crap
+        currentIdleTime += Time.deltaTime;
+
+        if(currentIdleTime >= timeToTriggerKiosk)
+        {
+            yRotation += kioskCamSpeed * Time.deltaTime;
+        }
+
+
         mouseX = mouseValue.x * mouseSensitivity * Time.deltaTime;
         mouseY = mouseValue.y * mouseSensitivity * Time.deltaTime; ;
 
@@ -98,6 +112,7 @@ public class PlayerCameraFollow : MonoBehaviour
     public void OnMouseLook(InputAction.CallbackContext context)
     {
         mouseValue = context.ReadValue<Vector2>();
+        currentIdleTime = 0f;
     }
 
 }
