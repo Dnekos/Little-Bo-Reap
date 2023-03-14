@@ -45,6 +45,14 @@ public class BattleArena : MonoBehaviour
 	[Header("Music")]
 	[SerializeField] int afterMusic;
 
+	[Header("End Effects")]
+	[SerializeField] GameObject finalCamera;
+	[SerializeField] Vector3 yOffset;
+	[SerializeField] Transform lookPoint;
+	[SerializeField] float camSpawnSphereRadius = 5f;
+	Vector3 finalEnemyPosition = Vector3.zero;
+	bool finalEnemyConfirmed;
+
 	// Start is called before the first frame update
 	void Start()
 	{
@@ -63,6 +71,26 @@ public class BattleArena : MonoBehaviour
 	{
 		if (SpawnedEnemiesFolder.childCount == 0 && CurrentWave >= 0 && CurrentWave < waves.Length) // if killed all enemies AND waves started
 			AdvanceWave(); // advance wave
+
+		//if in the final wave, watch for the last enemy!
+		if(CurrentWave == waves.Length -1)
+        {
+			if(!finalEnemyConfirmed)
+            {
+				int i = 0;
+				foreach (Transform child in SpawnedEnemiesFolder)
+				{
+					i++;
+				}
+				if (i == 1) finalEnemyConfirmed = true;
+
+			}
+			else
+            {
+				finalEnemyPosition = SpawnedEnemiesFolder.GetChild(0).transform.position;
+            }
+
+		}
 	}
 
 	void ResetArena()
@@ -89,6 +117,9 @@ public class BattleArena : MonoBehaviour
 			WorldState.instance.currentWorldTheme = afterMusic;
 			Instantiate(SoulReward, SoulSpawnPoint.position, SoulSpawnPoint.rotation, SpawnedEnemiesFolder); //spawn soul reward
 
+			var cam = Instantiate(finalCamera, finalEnemyPosition + (Random.insideUnitSphere * camSpawnSphereRadius) + yOffset, Quaternion.identity) as GameObject;
+			lookPoint.position = finalEnemyPosition;
+			cam.GetComponent<ArenaEndCamera>().InitCamera(lookPoint);
 		
 			StartCoroutine(EndBattleSlow());
 		}

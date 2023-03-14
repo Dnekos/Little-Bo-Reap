@@ -157,6 +157,10 @@ public enum SheepStates
 		//defualt to not black sheep
 		isBlackSheep = false;
 
+        //remove all velocity
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+
 		//if default state is wander, go wandering
 		if (currentSheepState == SheepStates.WANDER)
 		{

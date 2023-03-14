@@ -14602,6 +14602,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Collectable_Summon_Charge
       objectReference: {fileID: 0}
+    - target: {fileID: 6048175850917063721, guid: d48341c11c99a5243b26d1d0891c7d55,
+        type: 3}
+      propertyPath: m_Layer
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 6048175850917063764, guid: d48341c11c99a5243b26d1d0891c7d55,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -14615,7 +14620,7 @@ PrefabInstance:
     - target: {fileID: 6048175850917063766, guid: d48341c11c99a5243b26d1d0891c7d55,
         type: 3}
       propertyPath: m_RootOrder
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6048175850917063766, guid: d48341c11c99a5243b26d1d0891c7d55,
         type: 3}
@@ -14690,12 +14695,12 @@ PrefabInstance:
     - target: {fileID: 6915857925316740038, guid: d48341c11c99a5243b26d1d0891c7d55,
         type: 3}
       propertyPath: m_Height
-      value: 1
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 6915857925316740038, guid: d48341c11c99a5243b26d1d0891c7d55,
         type: 3}
       propertyPath: m_Radius
-      value: 0.5
+      value: 0.3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects:
@@ -14735,8 +14740,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attractSpeed: 3
-  collectDistance: 1.5
-  attractSpeedIncreaseOverTime: 7
+  collectDistance: 2.5
+  attractSpeedIncreaseOverTime: 100
   collectParticles: {fileID: 7329368155823602672, guid: 66564ac7e4b1dd1478313d4d93e8f9d7,
     type: 3}
   playerBody: {fileID: 0}

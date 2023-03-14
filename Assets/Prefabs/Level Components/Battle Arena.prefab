@@ -97,6 +97,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &3053121073789019578
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2442515365887596881}
+  m_Layer: 0
+  m_Name: LookPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2442515365887596881
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3053121073789019578}
+  m_LocalRotation: {x: -0, y: 0.7071065, z: -0, w: 0.7071071}
+  m_LocalPosition: {x: -77.61691, y: -17.547533, z: -354.72125}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3952563775712835195}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3952563775712835198
 GameObject:
   m_ObjectHideFlags: 0
@@ -132,6 +163,7 @@ Transform:
   - {fileID: 6921586270909204316}
   - {fileID: 6961024771130660109}
   - {fileID: 6942374812879854887}
+  - {fileID: 2442515365887596881}
   m_Father: {fileID: 0}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -162,6 +194,7 @@ MonoBehaviour:
       AlternateSpawn: {x: 3, y: 2, z: 0}
       NumEnemies: 0
       RandomRadius: 0
+  FlightPaths: []
   slowTimeScale: 0.3
   slowTimeAtEnd: 0.75
   slowTimeVolume: {fileID: 5044069173411945248}
@@ -170,14 +203,12 @@ MonoBehaviour:
   SoulReward: {fileID: 2521674433815051762, guid: d39315b1299c0a849ae75b961281c19a,
     type: 3}
   RespawnPlayer: {fileID: 11400000, guid: 19937298da8f18b41b1d2572d7bb5bcb, type: 2}
-  music:
-    Guid:
-      Data1: -1270416703
-      Data2: 1313078803
-      Data3: -1246434936
-      Data4: -1463915353
-    Path: event:/Music/Music_Controls
   afterMusic: 0
+  finalCamera: {fileID: 4872236329810728023, guid: cc50bcbe95095b94db3bbce8fc30c5e4,
+    type: 3}
+  yOffset: {x: 0, y: 10, z: 0}
+  lookPoint: {fileID: 2442515365887596881}
+  camSpawnSphereRadius: 12
 --- !u!54 &1464307041640402974
 Rigidbody:
   m_ObjectHideFlags: 0
