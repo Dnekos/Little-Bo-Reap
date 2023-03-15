@@ -32,7 +32,11 @@ public abstract class Interactable : MonoBehaviour
 	/// <summary>
 	/// A second Interact function, to be used for things that dont need player feedback, like playing single use interactions when loading
 	/// </summary>
-	public virtual void InteractBackend() {	}
+	public virtual void InteractBackend()
+	{
+		if (onlyInteractableOnce)
+			canInteract = false;
+	}
 
 
 	virtual protected void Update()
@@ -44,13 +48,13 @@ public abstract class Interactable : MonoBehaviour
 	virtual protected void OnTriggerEnter(Collider other)
 	{
 		// if entered on the forced
-		if (other.gameObject == WorldState.instance.player && inputIcon != null)
+		if (other.gameObject == WorldState.instance.player && inputIcon != null && canInteract)
 			inputIcon.gameObject.SetActive(true);
 
 	}
 	virtual protected void OnTriggerExit(Collider other)
 	{
-		if (other.gameObject == WorldState.instance.player && inputIcon != null)
+		if (other.gameObject == WorldState.instance.player && inputIcon != null && canInteract)
 			inputIcon.gameObject.SetActive(false);
 	}
 }

@@ -15,9 +15,7 @@ public class WorldStateEditor : Editor
 		WorldState myScript = (WorldState)target;
 
 		if (GUILayout.Button("List Graves"))
-		{
-			SerializedProperty graves = serializedObject.FindProperty("SheepGraves");
-			 
+		{			 
 			myScript.SheepGraves = FindObjectsOfType<SheepGrave>();
 			Debug.Log("Logged graves, found " + myScript.SheepGraves.Length +" graves.");
 		}

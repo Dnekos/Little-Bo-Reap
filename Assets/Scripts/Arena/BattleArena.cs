@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BattleArena : MonoBehaviour
+public class BattleArena : PuzzleDoor
 {
 	[System.Serializable]
 	public struct EnemyWave
@@ -25,7 +25,6 @@ public class BattleArena : MonoBehaviour
 	protected EnemyWave[] waves;
 	protected int CurrentWave = -1;
 
-	GameObject DoorsFolder;
 	Transform SpawnedEnemiesFolder;
 
 	[SerializeField] EnemyFlightPath[] FlightPaths;
@@ -54,11 +53,10 @@ public class BattleArena : MonoBehaviour
 	bool finalEnemyConfirmed;
 
 	// Start is called before the first frame update
-	void Start()
+	void Awake()
 	{
 		SpawnedEnemiesFolder = transform.GetChild(1);
-		DoorsFolder = transform.GetChild(2).gameObject;
-		DoorsFolder.SetActive(false); // keep doors open
+		door.SetActive(false); // keep doors open
 
 		if (colliderMesh != null && colliderMesh.GetComponent<MeshRenderer>() != null)
 			colliderMesh.GetComponent<MeshRenderer>().enabled = false;
@@ -67,37 +65,26 @@ public class BattleArena : MonoBehaviour
 	}
 
 	// Update is called once per frame
-	void Update()
+	override protected void Update()
 	{
 		if (SpawnedEnemiesFolder.childCount == 0 && CurrentWave >= 0 && CurrentWave < waves.Length) // if killed all enemies AND waves started
 			AdvanceWave(); // advance wave
 
 		//if in the final wave, watch for the last enemy!
-		if(CurrentWave == waves.Length -1)
-        {
-			if(!finalEnemyConfirmed)
-            {
-				int i = 0;
-				foreach (Transform child in SpawnedEnemiesFolder)
-				{
-					i++;
-				}
-				if (i == 1) finalEnemyConfirmed = true;
-
-			}
+		if (CurrentWave == waves.Length - 1)
+		{
+			if (!finalEnemyConfirmed && SpawnedEnemiesFolder.childCount == 1)
+				finalEnemyConfirmed = true;
 			else
-            {
 				finalEnemyPosition = SpawnedEnemiesFolder.GetChild(0).transform.position;
-            }
-
 		}
 	}
 
 	void ResetArena()
 	{
-		if (CurrentWave != waves.Length) // if arena is not cleared already
+		if (!isOpened) // if arena is not cleared already
 		{
-			DoorsFolder.SetActive(false); // reopen doors
+			door.SetActive(false); // reopen doors
 			CurrentWave = -1; // reset waves
 
 			foreach (Transform child in SpawnedEnemiesFolder) // clear enemies
@@ -112,7 +99,8 @@ public class BattleArena : MonoBehaviour
 		if (CurrentWave == waves.Length)
 		{
 			// if all waves done,
-			DoorsFolder.SetActive(false); // open doors
+			OpenDoor();
+			//DoorsFolder.SetActive(false); // open doors
 			WorldState.instance.ChangeMusic(afterMusic);
 			WorldState.instance.currentWorldTheme = afterMusic;
 			Instantiate(SoulReward, SoulSpawnPoint.position, SoulSpawnPoint.rotation, SpawnedEnemiesFolder); //spawn soul reward
@@ -135,9 +123,9 @@ public class BattleArena : MonoBehaviour
 
 				}
 			}
-				
-
 	}
+
+
 
 	protected IEnumerator SpawnEnemy(GameObject enemy, GameObject particle, Vector3 pos)
 	{
@@ -163,12 +151,11 @@ public class BattleArena : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
 	{
-		if (CurrentWave == -1 && other.gameObject.CompareTag("Player")) // untriggered
+		if (!isOpened && CurrentWave == -1 && other.gameObject.CompareTag("Player")) // untriggered
 		{
-			DoorsFolder.SetActive(true);
+			door.SetActive(true);
 			AdvanceWave();
 			WorldState.instance.ChangeMusic(1);
-
 		}
 	}
 
