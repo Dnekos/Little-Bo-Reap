@@ -123,7 +123,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7147184127069598891}
-  - component: {fileID: 7147184127069598868}
+  - component: {fileID: 1961770770748072034}
   m_Layer: 0
   m_Name: Pinwheel_Puzzle
   m_TagString: Untagged
@@ -147,7 +147,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7147184127069598868
+--- !u!114 &1961770770748072034
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -156,8 +156,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 7147184127069598890}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7bda0402c794d74a9380c5614b71622, type: 3}
+  m_Script: {fileID: 11500000, guid: 4dade0a3085ad3f43a56d61029efd019, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   door: {fileID: 7147184126712898427}
-  pinwheels: []
+  keys: []
+  isOpened: 0

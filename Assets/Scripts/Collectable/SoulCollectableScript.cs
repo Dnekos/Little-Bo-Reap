@@ -9,20 +9,14 @@ public class SoulCollectableScript : Collectable
     protected override void CollectableEffect()
     {
         Debug.Log("Add Souls: " + soulValue.ToString());
-        //WorldState.instance.passiveValues.soulsCount += soulValue;
-        SheepPassives.soulsCount += soulValue;
+        WorldState.instance.PersistentData.soulsCount += soulValue;
+        //SheepPassives.soulsCount += soulValue;
 
         //clamps player soul count to a positive number.
-        /*
-        if (WorldState.instance.passiveValues.soulsCount < 0)
+        
+        if (WorldState.instance.PersistentData.soulsCount < 0)
         {
-            WorldState.instance.passiveValues.soulsCount = 0;
-        }
-        */
-
-        if (SheepPassives.soulsCount < 0)
-        {
-            SheepPassives.soulsCount = 0;
+            WorldState.instance.PersistentData.soulsCount = 0;
         }
     }
 }

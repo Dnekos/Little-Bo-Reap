@@ -29,6 +29,12 @@ public abstract class Interactable : MonoBehaviour
 			canInteract = false;
     }
 
+	/// <summary>
+	/// A second Interact function, to be used for things that dont need player feedback, like playing single use interactions when loading
+	/// </summary>
+	public virtual void InteractBackend() {	}
+
+
 	virtual protected void Update()
 	{
 		if (inputIcon != null)

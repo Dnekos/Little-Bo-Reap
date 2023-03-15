@@ -110,7 +110,8 @@ public class DialogBox : MonoBehaviour
 
 	public void ReadNextLine()
 	{
-		if (WorldState.instance.gameState != WorldState.State.Dialog || IsCountingText()) // dont continue if not looking at dialogue or its still counting
+		// dont continue if not looking at dialogue or its still counting
+		if (WorldState.instance.gameState != WorldState.State.Dialog || IsCountingText() || currentspeaker == null) 
 			return;
 		else if (lineIndex < activeCon.script.Length)
 		{
@@ -213,6 +214,9 @@ public class DialogBox : MonoBehaviour
 		switch (WorldState.instance.gameState)
 		{
 			case WorldState.State.Dialog:
+				if (currentspeaker == null)
+					return;
+
 				textTimer += textSpeed * Time.deltaTime; // increment time
 				currentspeaker.SetTalking(AdvancingText);
 

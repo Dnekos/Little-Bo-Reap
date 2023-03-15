@@ -12,6 +12,9 @@ public class ButtonChangeScene : MonoBehaviour
 
 	public void ChangeScene()
 	{
+		if (WorldState.instance != null)
+			WorldState.instance.SaveGame();
+
 		FMODUnity.RuntimeManager.PlayOneShot(clickSound);
 
 		// pausing the game pauses gameplay sounds, if we're changing scenes we shouldn't be paused

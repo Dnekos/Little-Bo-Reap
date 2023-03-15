@@ -41,6 +41,7 @@ public class HUDManager : MonoBehaviour
 	[SerializeField] GameObject ProgressionMenu;
 	[SerializeField] GameObject ProgressionFirstSelected;
 	public event Action<GameObject> activePanelChange;
+	[SerializeField] ProgressionParent[] upgradeTrees;
 
 	[Header("Death")]
 	[SerializeField] GameObject deathUI;
@@ -102,8 +103,17 @@ public class HUDManager : MonoBehaviour
 	private void Start()
 	{
 		WorldState.instance.HUD = this;
+		StartCoroutine(Initialize());
 	}
-
+	/// <summary>
+	/// needed for set up that may have blockers (other things in start)
+	/// </summary>
+	private IEnumerator Initialize()
+	{
+		yield return new WaitForEndOfFrame();
+		for (int i = 0; i < upgradeTrees.Length; i++)
+			upgradeTrees[i].CheckLoadedUpgrades();
+	}
 	public void UpdateActiveFlockUI(int currentFlock, string number, Color uiColor)
 	{
 		SetSheepPositions(currentFlock);

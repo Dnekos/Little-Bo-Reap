@@ -9,6 +9,12 @@ public class LevelEndInteractable : Interactable
 
     public override void Interact()
     {
+		// save game
+		if (WorldState.instance != null)
+		{
+			WorldState.instance.SetSaveNextLevel(SceneManager.GetSceneByName(levelName).buildIndex);
+		}
+
 		FMOD.Studio.Bus myBus = FMODUnity.RuntimeManager.GetBus("bus:/SFX");
 		myBus.stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
 		SceneManager.LoadScene(levelName);

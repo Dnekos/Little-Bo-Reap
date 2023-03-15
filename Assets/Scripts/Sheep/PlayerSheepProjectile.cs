@@ -99,7 +99,7 @@ public class PlayerSheepProjectile : MonoBehaviour
 		}
 		else if (collision.gameObject.CompareTag("Target"))
         {
-			collision.gameObject.GetComponent<LaunchTarget>().DoThing();
+			collision.gameObject.GetComponent<LaunchTarget>().OpenKey();
         }
 	}
 }

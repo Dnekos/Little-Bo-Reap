@@ -94,7 +94,7 @@ public class PlayerBuildWall : MonoBehaviour
 			}
 			GameObject constructPrefab;
 			// spawn wall
-			if(WorldState.instance.passiveValues.activeBuilderAbility == "Ability 1")
+			if(WorldState.instance.PersistentData.activeBuilderAbility == ActiveUpgrade.Ability2)
 			{
 				constructPrefab = bellPrefab;
 			}

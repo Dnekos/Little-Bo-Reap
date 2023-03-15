@@ -92,7 +92,7 @@ public class SheepVortexBehavior : SheepBehavior
 		if (other.CompareTag("Pinwheel"))
 		{
 			Pinwheel pinwheel = other.GetComponent<Pinwheel>();
-			if (!pinwheel.isSpinning)
+			if (!pinwheel.isOpened)
 				pinwheel.StartCoroutine(pinwheel.SpinPinwheel());
 		}
 	}

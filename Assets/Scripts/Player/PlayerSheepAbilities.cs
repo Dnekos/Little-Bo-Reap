@@ -95,8 +95,26 @@ public class PlayerSheepAbilities : MonoBehaviour
 		gothMode = GetComponent<PlayerGothMode>();
 		spawnParticles = new List<GameObject>();
 
-		Invoke("UpdateFlockUI", Time.deltaTime); // slow but prevents this being called before HUD is set up
+		StartCoroutine(Initialize()); // slow but prevents this being called before HUD is set up
 	}
+
+	/// <summary>
+	/// needed for set up that may have blockers (other things in start)
+	/// </summary>
+	private IEnumerator Initialize()
+	{
+		yield return new WaitForEndOfFrame();
+		// get flock totals from save data
+		SaveData sd = WorldState.instance.PersistentData;
+		if (sd.currentCheckpoint > -1) // only set sheep if we are past the first checkpoint, so as to not overwrite starting sheep
+		{
+			sheepFlocks[0].MaxSize = sd.totalBuilder;
+			sheepFlocks[1].MaxSize = sd.totalRam;
+			sheepFlocks[2].MaxSize = sd.totalFluffy;
+		}
+		UpdateFlockUI();
+	}
+
 	private void Update()
 	{
 		// set leader
