@@ -105,9 +105,9 @@ public class BattleArena : PuzzleDoor
 			WorldState.instance.currentWorldTheme = afterMusic;
 			Instantiate(SoulReward, SoulSpawnPoint.position, SoulSpawnPoint.rotation, SpawnedEnemiesFolder); //spawn soul reward
 
-			var cam = Instantiate(finalCamera, finalEnemyPosition + (Random.insideUnitSphere * camSpawnSphereRadius) + yOffset, Quaternion.identity) as GameObject;
+			var cam = Instantiate(finalCamera, finalEnemyPosition, Quaternion.identity) as GameObject;
 			lookPoint.position = finalEnemyPosition;
-			cam.GetComponent<ArenaEndCamera>().InitCamera(lookPoint);
+			cam.GetComponent<ArenaEndCamera>().InitCamera(lookPoint, finalEnemyPosition);
 		
 			StartCoroutine(EndBattleSlow());
 		}
