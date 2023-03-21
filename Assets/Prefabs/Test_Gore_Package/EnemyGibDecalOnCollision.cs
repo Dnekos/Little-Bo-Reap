@@ -30,7 +30,7 @@ public class EnemyGibDecalOnCollision : MonoBehaviour
             
 
             //canSplatter = false;
-            Instantiate(bloodSplatterPrefab, theCollisionEvents[0].intersection, Quaternion.FromToRotation(Vector3.forward, theCollisionEvents[0].intersection));
+            Instantiate(bloodSplatterPrefab, theCollisionEvents[0].intersection, Quaternion.FromToRotation(Vector3.forward, theCollisionEvents[0].intersection.normalized));
         }
 
     }
