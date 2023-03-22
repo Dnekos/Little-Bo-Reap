@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class StartButton : MonoBehaviour
 {
     [SerializeField] string levelToLoad;
+	[SerializeField] string endlessLevelToLoad;
 	[Header("Buttons"), SerializeField]
 	Button Continue;
 	[SerializeField]
@@ -77,5 +78,12 @@ public class StartButton : MonoBehaviour
 	{
 		yield return new WaitForSeconds(2);
 		SceneManager.LoadScene(index);
+	}
+
+	public void LoadEndless()
+    {
+		StartEffects();
+		levelToLoad = endlessLevelToLoad;
+		Invoke("LoadScene", 2f);
 	}
 }
