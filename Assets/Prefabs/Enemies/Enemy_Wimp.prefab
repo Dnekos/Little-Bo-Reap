@@ -348,7 +348,7 @@ Transform:
   - {fileID: 4682966789505449384}
   - {fileID: 9148356261420363692}
   m_Father: {fileID: 0}
-  m_RootOrder: 29
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!195 &808622167113473382
 NavMeshAgent:
@@ -386,7 +386,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Health: 100
   MaxHealth: 100
-  gibs: {fileID: 1095515628264178047, guid: 8b735b699a109b044ad08a09a3c97878, type: 3}
+  gibs: {fileID: 8039274497699848023, guid: c149dc1e77ba2b3409f557bd827b3191, type: 3}
   damageNumber: {fileID: 758784450076825086, guid: 917e1ac09e21f3f499d8aa30f802b69e,
     type: 3}
   damageNumberGoth: {fileID: 758784450076825086, guid: 0a7b484cc73c2c047b45b91fd1f75b6d,
@@ -417,10 +417,10 @@ MonoBehaviour:
   - {fileID: 4645614311413259885, guid: 2ea8437ad6787b049b56c5883a68aae6, type: 3}
   - {fileID: 4645614311413259885, guid: 484308373c7ce7249b0a2955d5de5e32, type: 3}
   - {fileID: 6060198684946403098, guid: 4b17e9d88b42899429f3f7846d72d21d, type: 3}
-  graph: {fileID: 11400000, guid: f0622bfdc93cea0478284f400526498d, type: 2}
   SpawnParticlePrefab: {fileID: 6246327466764470281, guid: 817debac214ef9f4ba98b6f41baf3376,
     type: 3}
   SpawnWaitTime: 2
+  graph: {fileID: 11400000, guid: f0622bfdc93cea0478284f400526498d, type: 2}
   currentEnemyState: 3
   StunTime: 0.3
   playerLayer:
@@ -430,6 +430,8 @@ MonoBehaviour:
   delayBetweenAttacks: 0.3
   StickCollider: {fileID: 3378065037508933954}
   anim: {fileID: 7640452614347437415}
+  distracted: 0
+  bellLoc: {x: 0, y: 0, z: 0}
   isExecutable: 1
   mustBeExecuted: 1
   executionHealthThreshhold: 1
