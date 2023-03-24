@@ -154,8 +154,7 @@ public enum SheepStates
 		isInvulnerable = true;
 		Invoke("DisableSpawnInvuln", invulnTimeOnSpawn);
 
-		//defualt to not black sheep
-		isBlackSheep = false;
+		
 
         //remove all velocity
         rb.velocity = Vector3.zero;
@@ -360,7 +359,11 @@ public enum SheepStates
     {
 		walker.Stop();
 
-		RemoveSheep(sheepType, this);
+        //defualt to not black sheep
+        isBlackSheep = false;
+        blackSheepParticles.SetActive(false);
+
+        RemoveSheep(sheepType, this);
 		gameObject.SetActive(false);
 		//CancelLift();
 
