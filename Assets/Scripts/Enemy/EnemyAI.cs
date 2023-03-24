@@ -286,9 +286,11 @@ public class EnemyAI : EnemyBase
 
 	void ToExecutionState()
 	{
-		rb.mass = 100f;
+		rb.mass = 1f;
 		rb.velocity = Vector3.zero;
+		rb.useGravity = true;
 		agent.enabled = false;
+		rb.isKinematic = false;
 		gameObject.layer = LayerMask.NameToLayer("EnemyExecute");
 		rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
 		currentEnemyState = EnemyStates.EXECUTABLE;
