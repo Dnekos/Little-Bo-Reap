@@ -303,36 +303,75 @@ public enum SheepStates
 	{
 		FMODUnity.RuntimeManager.PlayOneShotAttached(biteSound, gameObject);
 
-		if (blackSheepDamage)
-		{
-			//subtract 1 from health
-			TakeDamage(selfDamage, transform.forward);
-
-            if (sheepType == 1) //if ram, use ram damage/knockback variables
-            {
-                Instantiate(theAttack.explosionEffect, transform.position, transform.rotation);
-                target?.GetComponent<EnemyAI>().TakeDamage(theAttack.BSAttack, transform.forward,
-                    WorldState.instance.passiveValues.ramDamage, WorldState.instance.passiveValues.ramKnockback);
-            }
-            else
-            {
-                Instantiate(theAttack.explosionEffect, transform.position, transform.rotation);
-                target?.GetComponent<EnemyAI>().TakeDamage(theAttack.BSAttack, transform.forward);
-            }
-		}
-        else
+        //check if its an EnemyAI base. If it doesnt have this, damage using the damagable class
+        if(target.GetComponent<EnemyAI>() == null)
         {
-            if (sheepType == 1) //if ram, use ram damage/knockback variables
+            if (blackSheepDamage)
             {
-                Instantiate(theAttack.explosionEffect, transform.position, transform.rotation);
-                target?.GetComponent<EnemyAI>().TakeDamage(theAttack, transform.forward,
-                    WorldState.instance.passiveValues.ramDamage, WorldState.instance.passiveValues.ramKnockback);
+                //subtract 1 from health
+                TakeDamage(selfDamage, transform.forward);
+
+                if (sheepType == 1) //if ram, use ram damage/knockback variables
+                {
+                    Instantiate(theAttack.explosionEffect, transform.position, transform.rotation);
+                    target?.GetComponent<Damageable>().TakeDamage(theAttack.BSAttack, transform.forward,
+                        WorldState.instance.passiveValues.ramDamage, WorldState.instance.passiveValues.ramKnockback);
+                }
+                else
+                {
+                    Instantiate(theAttack.explosionEffect, transform.position, transform.rotation);
+                    target?.GetComponent<Damageable>().TakeDamage(theAttack.BSAttack, transform.forward);
+                }
             }
             else
             {
-                target?.GetComponent<EnemyAI>().TakeDamage(theAttack, transform.forward);
+                if (sheepType == 1) //if ram, use ram damage/knockback variables
+                {
+                    Instantiate(theAttack.explosionEffect, transform.position, transform.rotation);
+                    target?.GetComponent<Damageable>().TakeDamage(theAttack, transform.forward,
+                        WorldState.instance.passiveValues.ramDamage, WorldState.instance.passiveValues.ramKnockback);
+                }
+                else
+                {
+                    target?.GetComponent<Damageable>().TakeDamage(theAttack, transform.forward);
+                }
             }
         }
+        else
+        {
+            if (blackSheepDamage)
+            {
+                //subtract 1 from health
+                TakeDamage(selfDamage, transform.forward);
+
+                if (sheepType == 1) //if ram, use ram damage/knockback variables
+                {
+                    Instantiate(theAttack.explosionEffect, transform.position, transform.rotation);
+                    target?.GetComponent<EnemyAI>().TakeDamage(theAttack.BSAttack, transform.forward,
+                        WorldState.instance.passiveValues.ramDamage, WorldState.instance.passiveValues.ramKnockback);
+                }
+                else
+                {
+                    Instantiate(theAttack.explosionEffect, transform.position, transform.rotation);
+                    target?.GetComponent<EnemyAI>().TakeDamage(theAttack.BSAttack, transform.forward);
+                }
+            }
+            else
+            {
+                if (sheepType == 1) //if ram, use ram damage/knockback variables
+                {
+                    Instantiate(theAttack.explosionEffect, transform.position, transform.rotation);
+                    target?.GetComponent<EnemyAI>().TakeDamage(theAttack, transform.forward,
+                        WorldState.instance.passiveValues.ramDamage, WorldState.instance.passiveValues.ramKnockback);
+                }
+                else
+                {
+                    target?.GetComponent<EnemyAI>().TakeDamage(theAttack, transform.forward);
+                }
+            }
+        }
+
+		
 	}
     private void OnTriggerEnter(Collider other)
     {
