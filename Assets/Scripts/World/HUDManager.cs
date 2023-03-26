@@ -42,8 +42,9 @@ public class HUDManager : MonoBehaviour
 	[SerializeField] GameObject ProgressionFirstSelected;
 	public event Action<GameObject> activePanelChange;
 	[SerializeField] ProgressionParent[] upgradeTrees;
+	[SerializeField] TextMeshProUGUI SoulNumber;
 
-	[Header("Death")]
+    [Header("Death")]
 	[SerializeField] GameObject deathUI;
 
 
@@ -123,7 +124,12 @@ public class HUDManager : MonoBehaviour
 		flockNumber.color = uiColor;
 	}
 
-	private void SetSheepPositions(int currentFlock)
+    public void UpdateSoulCount(string currentSouls)
+    {
+		SoulNumber.text = currentSouls + " Souls";
+    }
+
+    private void SetSheepPositions(int currentFlock)
 	{
 		for(int i = 0; i < sheepIcons.Length; i++)
 		{
