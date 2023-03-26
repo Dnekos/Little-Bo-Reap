@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6643f54b0a665ed41bbf904033ace10b, type: 3}
+  m_Name: Baba_Yagas_House_Stomp
+  m_EditorClassIdentifier: 
+  damage: 20
+  airborneLift: 0
+  animation: Boss_Stomp
+  DealsHitstun: 1
+  ShowNumber: 1
+  forwardKnockback: 30
+  upwardKnockback: 30
+  hitboxPrefab: {fileID: 3825271835072028399, guid: f705343c7c7775f4b9a6339c61af28ca,
+    type: 3}
+  MaxCooldown: 1
+  ID: SLAM
+  TransitionIn: 0
+  attackStartSound:
+    Guid:
+      Data1: -1516851570
+      Data2: 1275689125
+      Data3: -706628987
+      Data4: 1488203871
+    Path: event:/Big Guy/Club Swing
+  PercentOfSheep: 0

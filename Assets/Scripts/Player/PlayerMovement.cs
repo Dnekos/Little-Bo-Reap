@@ -242,7 +242,7 @@ public class PlayerMovement : MonoBehaviour
     void SpeedCheck()
     {
         //check if moving
-		isMoving = moveValue.magnitude != 0;
+		isMoving = moveValue.magnitude > 0.25f;
 
         //check current velocity
         Vector3 velocityCheck = new Vector3(rb.velocity.x, 0f, rb.velocity.z);

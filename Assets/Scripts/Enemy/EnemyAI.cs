@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 using XNode.Examples.StateGraph;
+
 public enum EnemyStates
 {
 	WANDER = 0,
@@ -12,15 +13,16 @@ public enum EnemyStates
 	IDLE = 3,
 	EXECUTABLE = 4
 }
-public class EnemyAI : Damageable
+public class EnemyAI : EnemyBase
 {
 	[Header("AI"), SerializeField]
 	StateGraph graph;
 	Dictionary<int, float> Cooldowns;
 
-	[Header("Spawning")]
-	public GameObject SpawnParticlePrefab;
-	public float SpawnWaitTime = 2;
+	//This info is now in EnemyBase
+	//[Header("Spawning")]
+	//public GameObject SpawnParticlePrefab;
+	//public float SpawnWaitTime = 2;
 
 	[Header("Enemy State")]
 	[SerializeField] protected EnemyStates currentEnemyState;
@@ -52,8 +54,9 @@ public class EnemyAI : Damageable
 	[SerializeField] float fallRate = 50;
 
 	[Header("Sounds")]
-	[SerializeField] FMODUnity.EventReference swingSound;
+	[SerializeField]  FMODUnity.EventReference swingSound;
 	[SerializeField] FMODUnity.EventReference clubHitSound;
+
 
 	[HideInInspector]
 	public Transform player;
@@ -77,8 +80,8 @@ public class EnemyAI : Damageable
 	// Update is called once per frame
 	protected virtual void Update()
 	{
-		if (GetComponent<Animator>() != null)
-			GetComponent<Animator>().SetBool("isMoving", agent.velocity.magnitude > 1);
+		if (anim != null)
+			anim.SetBool("isMoving", agent.velocity.magnitude > 1);
 
 		if (agent.desiredVelocity.sqrMagnitude > 0.8f)
 		{
@@ -103,7 +106,7 @@ public class EnemyAI : Damageable
 	{
 		return currentEnemyState;
 	}
-	public bool SetDestination(Vector3 dest)
+	public virtual bool SetDestination(Vector3 dest)
 	{
 		// dont pathfind bad destinations
 		if (dest == null || float.IsNaN(dest.x))
@@ -120,7 +123,7 @@ public class EnemyAI : Damageable
 		else
 		{
 			agent.SetDestination(dest);
-			if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 5, 1))
+			if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 5, 1) || agent.isOnOffMeshLink)
 			{
 				transform.position = hit.position;
 			}
@@ -151,6 +154,7 @@ public class EnemyAI : Damageable
 		base.OnDeath();
 	}
 	#endregion
+
 	#region Attacking
 	Vector3 ClosestGuy()
 	{
@@ -175,13 +179,20 @@ public class EnemyAI : Damageable
 		if (Cooldowns[index] < 0)
 		{
 			atk.PerformAttack(anim);
+			FMODUnity.RuntimeManager.PlayOneShotAttached(swingSound, gameObject);
 			Cooldowns[index] = atk.MaxCooldown;
 			activeAttack = atk;
 			return true;
 		}
 		return false;
 	}
+
+	public void PlaySound(string path)
+	{
+		FMODUnity.RuntimeManager.PlayOneShotAttached(path, gameObject);
+	}
 	#endregion
+
 	#region Collisions
 	private void OnCollisionEnter(Collision collision)
 	{
@@ -214,6 +225,7 @@ public class EnemyAI : Damageable
 		}
 	}
 	#endregion
+
 	int convert4(string key)
 	{
 		// https://stackoverflow.com/questions/3858908/convert-a-4-char-string-into-int32
@@ -247,9 +259,10 @@ public class EnemyAI : Damageable
 		}
 	}
 	#endregion
+
 	#region Health Override and Hitstun
 	//to apply normal damage, use this overload
-	public override void TakeDamage(Attack atk, Vector3 attackForward)
+	public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
 	{
 		//if they must be executed, return
 		if (mustBeExecuted && Health < executionHealthThreshhold)
@@ -261,7 +274,8 @@ public class EnemyAI : Damageable
 			StartCoroutine("OnHitStun");
 		}
 		// subtract health
-		base.TakeDamage(atk, attackForward);
+		base.TakeDamage(atk, attackForward, damageAmp, knockbackMultiplier);
+
 		if (isExecutable && Health <= executionHealthThreshhold)
 		{
 			rb.mass = 100f;
@@ -273,6 +287,7 @@ public class EnemyAI : Damageable
 			executeTrigger.SetActive(true);
 		}
 	}
+
 	protected override void OnDeath()
 	{
 		if (isExecutable)
@@ -293,7 +308,7 @@ public class EnemyAI : Damageable
 		isExecutable = false;
 		base.ForceKill();
 	}
-	//to apply black sheep damage, use this overload
+	/*//to apply black sheep damage, use this overload
 	public override void TakeDamage(SheepAttack atk, Vector3 attackForward)
 	{
 		//if they must be executed, return
@@ -318,7 +333,7 @@ public class EnemyAI : Damageable
 			currentEnemyState = EnemyStates.EXECUTABLE;
 			executeTrigger.gameObject.SetActive(true);
 		}
-	}
+	}*/
 	IEnumerator OnHitStun()
 	{
 		// save current state and set to Hitstun

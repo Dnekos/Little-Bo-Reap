@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using System;
 
 [System.Serializable]
@@ -14,12 +16,13 @@ public struct SheepIcons
 
 public class HUDManager : MonoBehaviour
 {
+	[SerializeField]
+	PlayerInput inputs;
 	[SerializeField] GameObject HUD;
 
 	[Header("Sheep UI")]
 	[SerializeField] TextMeshProUGUI redText;
 	[SerializeField] TextMeshProUGUI flockNumber;
-	[SerializeField] Image flockTypeIcon;
 
 	[Header("Sheep Swap Variables")]
 	[SerializeField] GameObject flockSelectMenu;
@@ -34,6 +37,9 @@ public class HUDManager : MonoBehaviour
 	[SerializeField] string swapAnimationUI;
 	[SerializeField] string noSheepAnimUI;
 
+	[Header("Progression")]
+	[SerializeField] GameObject ProgressionMenu;
+	[SerializeField] GameObject ProgressionFirstSelected;
 	public event Action<GameObject> activePanelChange;
 
 
@@ -45,7 +51,39 @@ public class HUDManager : MonoBehaviour
 	{
 		HUD.SetActive(value);
 	}
+	public void ToggleProgressionMenu(bool value)
+	{
+		ProgressionMenu.SetActive(value);
+		if (value)
+		{
+			// set active button
+			EventSystem.current.SetSelectedGameObject(ProgressionFirstSelected);
 
+			// mouse 
+			Cursor.visible = true;
+			Cursor.lockState = CursorLockMode.None;
+
+			// disable HUD and pause
+			ToggleHud(false);
+			WorldState.instance.gameState = WorldState.State.Dialog;
+			inputs.SwitchCurrentActionMap("Dialog");
+			Time.timeScale = 0;
+
+		}
+		else
+		{
+			Time.timeScale = 1;
+
+			// mouse
+			Cursor.visible = false;
+			Cursor.lockState = CursorLockMode.Locked;
+
+			// return to normal gameplay
+			ToggleHud(true);
+			WorldState.instance.gameState = WorldState.State.Play;
+			inputs.SwitchCurrentActionMap("PlayerMovement");
+		}
+	}
 	private void Start()
 	{
 		WorldState.instance.HUD = this;
@@ -53,7 +91,6 @@ public class HUDManager : MonoBehaviour
 
 	public void UpdateActiveFlockUI(int currentFlock, string number, Color uiColor)
 	{
-		//flockTypeIcon.sprite = sheepIcon;
 		SetSheepPositions(currentFlock);
 
 		flockNumber.text = number;

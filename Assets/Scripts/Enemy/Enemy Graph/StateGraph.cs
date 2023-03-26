@@ -11,6 +11,8 @@ namespace XNode.Examples.StateGraph {
 
 		public EnemyAI currentUser = null;
 
+
+
 		public void AnalyzeGraph(EnemyAI caller)
 		{
 			currentUser = caller;

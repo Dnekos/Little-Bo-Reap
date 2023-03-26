@@ -17,7 +17,7 @@ public class PlayerSheepProjectile : MonoBehaviour
     [SerializeField] GameObject blackSheepParticles;
     [SerializeField] GameObject gibs;
     public bool isBlackSheep = false;
-
+	public int SheepType;
     Rigidbody rb;
 
     void Awake()
@@ -65,13 +65,35 @@ public class PlayerSheepProjectile : MonoBehaviour
 
 			if (isBlackSheep)
 			{
-				collision.gameObject?.GetComponent<Damageable>()?.TakeDamage(launchAttack, -forcePoint);
+				if (SheepType == 0)
+				{
+					collision.gameObject?.GetComponent<Damageable>()?.TakeDamage(launchAttack.BSAttack, -forcePoint, WorldState.instance.passiveValues.builderLaunchDam, 1.0f);
+				}
+				if (SheepType == 1)
+				{
+					collision.gameObject?.GetComponent<Damageable>()?.TakeDamage(launchAttack.BSAttack, -forcePoint, WorldState.instance.passiveValues.ramDamage, WorldState.instance.passiveValues.ramKnockback);
+				}
+				else if (SheepType == 2) //checks for fluffy sheep by checking if it's not a ram OR a builder. Because we don't have an isFluffySheep. The fuck?
+				{
+					collision.gameObject?.GetComponent<Damageable>()?.TakeDamage(launchAttack.BSAttack, -forcePoint);
+				}
 				Instantiate(launchAttack.explosionEffect, transform.position, transform.rotation);
 				DestroySheepProjectile();
 			}
 			else
 			{
-				collision.gameObject?.GetComponent<Damageable>()?.TakeDamage((Attack)launchAttack, -forcePoint);
+				if (SheepType == 0) 
+				{ 
+					collision.gameObject?.GetComponent<Damageable>()?.TakeDamage(launchAttack, -forcePoint, WorldState.instance.passiveValues.builderLaunchDam); 
+				}
+				if (SheepType == 1)
+				{ 
+					collision.gameObject?.GetComponent<Damageable>()?.TakeDamage(launchAttack, -forcePoint, WorldState.instance.passiveValues.ramDamage, WorldState.instance.passiveValues.ramKnockback); 
+				}
+				else if (SheepType == 2) //checks for fluffy sheep by checking if it's not a ram OR a builder. Because we don't have an isFluffySheep. The fuck?
+                {
+					collision.gameObject?.GetComponent<Damageable>()?.TakeDamage(launchAttack, -forcePoint);
+				}
 				Invoke("DestroySheepProjectile", lifeTimeAfterAttack);
 			}
 		}

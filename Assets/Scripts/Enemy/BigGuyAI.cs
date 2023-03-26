@@ -24,7 +24,7 @@ public class BigGuyAI : EnemyAI
 	public void SpawnShockwave()
 	{
 		if (activeAttack != null)
-			activeAttack.SpawnObject(ShockwaveSpawnPoint.position);
+			activeAttack.SpawnObject(ShockwaveSpawnPoint.position, Quaternion.identity);
 	}	
 
 
@@ -41,7 +41,7 @@ public class BigGuyAI : EnemyAI
 			HealthBarCanvas.SetActive(false);
 	}
 
-	public override void TakeDamage(Attack atk, Vector3 attackForward)
+	public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
 	{
 		base.TakeDamage(atk, attackForward);
 

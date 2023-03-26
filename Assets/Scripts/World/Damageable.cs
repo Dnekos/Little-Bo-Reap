@@ -5,6 +5,7 @@ using TMPro;
 
 public class Damageable : MonoBehaviour
 {
+	//TODO figure out how to keep health protected
 	[Header("Health")]
 	[SerializeField] protected float Health;
 	[SerializeField] protected float MaxHealth;
@@ -16,56 +17,60 @@ public class Damageable : MonoBehaviour
 	[Header("Sounds")]
 	[SerializeField] protected FMODUnity.EventReference hurtSound;
 	[SerializeField] protected FMODUnity.EventReference deathSound;
+	WorldState world;
 
 
 	[Header("Drop Variables")]
 	[Tooltip("Number of souls dropped on death.")]
 	[SerializeField] protected int soulValue;
+	[Tooltip("Number of healthPickups dropped on death.")]
+	[SerializeField] protected int healthValue;
 	[Tooltip("Affects speed at which souls fly out on death.")]
 	[SerializeField] protected float soulSpeed;
 	[Tooltip("Affects the height at which souls spawn from. should be higher for larger enemies.")]
 	[SerializeField] protected float soulSpawnHeight;
 
-	[Tooltip("The collectable that is worth one soul.")]
-	[SerializeField] protected GameObject soulCollectableOne;
+	[Tooltip("The Array of Soul Collectable increments.")]
+	[SerializeField] protected GameObject[] soulCollectables;
 
 	protected Rigidbody rb;
 
-    // Start is called before the first frame update
-    virtual protected void Start()
-    {
+	// Start is called before the first frame update
+	virtual protected void Start()
+	{
 		Health = MaxHealth;
 		rb = GetComponent<Rigidbody>();
-    }
-
-	virtual public void TakeDamage(Attack atk, Vector3 attackForward)
+	}
+	//Non Sheep TakeDamage
+	virtual public void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
 	{
-		if(!isInvulnerable || Health <= 0)
-        {
+		if (!isInvulnerable || Health <= 0)
+		{
 			// deal damage
-			Health -= atk.damage;
-			Vector3 knockbackForce = attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback;
+			Health -= atk.damage * ((damageAmp <= 0) ? 1 : damageAmp);
 
-			Debug.Log(gameObject.name + " took " + atk.damage + " damage (force: "+ knockbackForce + ", mag "+ knockbackForce .magnitude+ ")");
+			// knockback
+			DealKnockback(attackForward, atk.forwardKnockback, atk.upwardKnockback, knockbackMultiplier);
+			
+			//Debug.Log(gameObject.name + " took " + atk.damage * ((damageAmp <= 0) ? 1 : damageAmp) + " damage (force: " + knockbackForce + ", mag " + knockbackForce.magnitude + ")");
+			//Debug.Log(gameObject.name + " took " + atk.damage + " damage (force: " + knockbackForce + ", mag " + knockbackForce.magnitude + ")");
 
-			//create damage number
-			var number = Instantiate(damageNumber, transform.position, transform.rotation) as GameObject;
-			number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)atk.damage).ToString();
-
-			// add knockback if the current knockback is stronger than the current velocity
-			//Vector3 knockbackForce = attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback;
-			// this isnt working, maybe because the object is getting too much knockback in one frame?
-			if (rb.velocity.sqrMagnitude < knockbackForce.sqrMagnitude)
-			// TODO: make this not shit
-			//if (true)
+			if (atk.ShowNumber)
 			{
-				// we want to cancel out the current velocity, so as to knock launch them into the stratosphere
-				//rb.AddForce(-rb.velocity, ForceMode.VelocityChange);
-				rb.velocity = Vector3.zero;
-				//Debug.Log("before vel: " + rb.velocity + " " + rb.velocity.magnitude);
-				// TODO: make this force, not impulse, idiot
-				rb.velocity = attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback;
-				//Debug.Log("after vel: " + rb.velocity + " " + rb.velocity.magnitude);
+				if(atk is SheepAttack)
+                {
+					//create damage number
+					GameObject number = Instantiate(damageNumber, transform.position, transform.rotation);
+					number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)atk.damage).ToString();
+				}
+				else
+                {
+					//create damage number
+					GameObject number = Instantiate(damageNumberGoth, transform.position, transform.rotation);
+					number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)atk.damage).ToString();
+				}
+
+				
 			}
 
 			// invoke death
@@ -75,38 +80,76 @@ public class Damageable : MonoBehaviour
 				FMODUnity.RuntimeManager.PlayOneShotAttached(hurtSound, gameObject);
 
 		}
-
 	}
 
-	virtual public void TakeDamage(SheepAttack atk, Vector3 attackForward)
-    {
-		if (!isInvulnerable)
+	// TODO: Mitko fix this function 
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="forward">direction f_mag points in</param>
+	/// <param name="f_mag">magnitude of forward</param>
+	/// <param name="u_mag">magnitude of force in direction of world up</param>
+	/// <param name="mult">overall multiplier of knockback</param>
+
+	//------------------------------------------------------------------
+	//old Knockback implementation(eliminated extreme knockback
+	//void DealKnockback(Vector3 forward, float f_mag, float u_mag, float mult = 1)
+	//{
+	//	Vector3 knockbackForce = (forward * f_mag + Vector3.up * u_mag) * mult;
+
+
+	//	// add knockback if the current knockback is stronger than the current velocity
+	//	//Vector3 knockbackForce = attackForward * atk.forwardKnockback + Vector3.up * atk.upwardKnockback;
+	//	// this isnt working, maybe because the object is getting too much knockback in one frame?
+	//	if (rb.velocity.sqrMagnitude < knockbackForce.sqrMagnitude)
+	//	// TODO: make this not shit
+	//	//if (true)
+	//	{
+	//		// we want to cancel out the current velocity, so as to knock launch them into the stratosphere
+	//		//rb.AddForce(-rb.velocity, ForceMode.VelocityChange);
+	//		rb.velocity = Vector3.zero;
+	//		Debug.Log("before vel: " + rb.velocity + " " + rb.velocity.magnitude);
+	//		// TODO: make this force, not impulse, idiot
+	//		rb.velocity = forward * f_mag + Vector3.up * u_mag;
+	//		Debug.Log("after vel: " + rb.velocity + " " + rb.velocity.magnitude);
+	//	}
+	//}
+	//------------------------------------------------------------------
+
+	void DealKnockback(Vector3 forward, float f_mag, float u_mag, float mult = 1)
+	{
+		Vector3 knockbackForce = (forward * f_mag + Vector3.up * u_mag) * mult;
+
+		// add knockback if the current knockback is stronger than the current velocity
+		if (rb.velocity.sqrMagnitude < knockbackForce.sqrMagnitude)
 		{
-			// deal damage
-			Health -= atk.damageBlack;
-			Debug.Log(gameObject.name + " took " + atk.damageBlack + " damage (force: " + (attackForward * atk.forwardKnockbackBlack + Vector3.up * atk.upwardKnockbackBlack) + ")");
+			//float knockbackMult = knockbackForce.magnitude - rb.velocity.magnitude;
+			// we want to cancel out the current velocity, so as to knock launch them into the stratosphere
+			//rb.AddForce((knockbackForce - rb.velocity) * knockbackMult, ForceMode.Impulse
+			//rb.AddForce((knockbackForce.normalized * knockbackForce.magnitude), ForceMode.Impulse);
 
-			//create damage number
-			var number = Instantiate(damageNumberGoth, transform.position, transform.rotation) as GameObject;
-			number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)atk.damageBlack).ToString();
+			rb.AddForce(knockbackForce - rb.velocity, ForceMode.VelocityChange);
+			//this worked the best
 
-			// add knockback
-			rb.AddForce(attackForward * atk.forwardKnockbackBlack + Vector3.up * atk.upwardKnockbackBlack, ForceMode.Impulse);
-
-			// invoke death
-			if (Health <= 0)
-				OnDeath();
+			Debug.Log("before vel: " + rb.velocity + " " + rb.velocity.magnitude);
+		}
+		if (rb.velocity.sqrMagnitude > knockbackForce.sqrMagnitude)
+		{
+			rb.AddForce(- rb.velocity, ForceMode.Impulse);
+			//this only works Using impulse, changing it to velocity change bugs it out
+			Debug.Log("MAX VEL: " + rb.velocity.sqrMagnitude);
 		}
 	}
-	
+
 	virtual public void ForceKill()
-    {
+	{
 		OnDeath();
-    }
+	}
 
 	virtual protected void OnDeath()
 	{
 		SoulDropCalculation(soulValue);
+		HealthDropCalculation(healthValue);
 
 		FMODUnity.RuntimeManager.PlayOneShot(deathSound, transform.position);
 
@@ -118,11 +161,61 @@ public class Damageable : MonoBehaviour
 	{
 		while (soulsToDrop > 0)
 		{
-			var soulSpawnOffset = new Vector3(Random.Range(-1,1),soulSpawnHeight, Random.Range(-1,1));
-			var soulCollectable = Instantiate(soulCollectableOne, transform.position + soulSpawnOffset, transform.rotation) as GameObject;
-			soulCollectable.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-1,1), 1f, Random.Range(-1,1)) * soulSpeed;
+			var soulSpawnOffset = new Vector3(Random.Range(-1, 1), soulSpawnHeight, Random.Range(-1, 1));
+
+			while (soulsToDrop >= 100)
+			{
+				soulSpawnOffset = new Vector3(Random.Range(-1, 1), soulSpawnHeight, Random.Range(-1, 1));
+				var soulCollectable100 = Instantiate(soulCollectables[4], transform.position + soulSpawnOffset, transform.rotation) as GameObject;
+				soulCollectable100.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-1, 1), 1f, Random.Range(-1, 1)) * soulSpeed;
+				Debug.Log("SoulDropped");
+				soulsToDrop -= 100;
+			}
+
+			while (soulsToDrop >= 50)
+			{
+				soulSpawnOffset = new Vector3(Random.Range(-1, 1), soulSpawnHeight, Random.Range(-1, 1));
+				var soulCollectable50 = Instantiate(soulCollectables[3], transform.position + soulSpawnOffset, transform.rotation) as GameObject;
+				soulCollectable50.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-1, 1), 1f, Random.Range(-1, 1)) * soulSpeed;
+				Debug.Log("SoulDropped");
+				soulsToDrop -= 50;
+			}
+
+			while (soulsToDrop >= 20)
+			{
+				soulSpawnOffset = new Vector3(Random.Range(-1, 1), soulSpawnHeight, Random.Range(-1, 1));
+				var soulCollectable20 = Instantiate(soulCollectables[2], transform.position + soulSpawnOffset, transform.rotation) as GameObject;
+				soulCollectable20.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-1, 1), 1f, Random.Range(-1, 1)) * soulSpeed;
+				Debug.Log("SoulDropped");
+				soulsToDrop -= 20;
+			}
+
+			while (soulsToDrop >= 5)
+			{
+				soulSpawnOffset = new Vector3(Random.Range(-1, 1), soulSpawnHeight, Random.Range(-1, 1));
+				var soulCollectable5 = Instantiate(soulCollectables[1], transform.position + soulSpawnOffset, transform.rotation) as GameObject;
+				soulCollectable5.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-1, 1), 1f, Random.Range(-1, 1)) * soulSpeed;
+				Debug.Log("SoulDropped");
+				soulsToDrop -= 5;
+			}
+
+			soulSpawnOffset = new Vector3(Random.Range(-1, 1), soulSpawnHeight, Random.Range(-1, 1));
+			var soulCollectable = Instantiate(soulCollectables[0], transform.position + soulSpawnOffset, transform.rotation) as GameObject;
+			soulCollectable.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-1, 1), 1f, Random.Range(-1, 1)) * soulSpeed;
 			Debug.Log("SoulDropped");
 			soulsToDrop--;
+		}
+	}
+
+	private void HealthDropCalculation(int healthToDrop)
+	{
+		while (healthToDrop > 0)
+		{
+			var healthSpawnOffset = new Vector3(Random.Range(-1, 1), soulSpawnHeight, Random.Range(-1, 1));
+			var healthPickup = Instantiate(soulCollectables[5], transform.position + healthSpawnOffset, transform.rotation) as GameObject;
+			healthPickup.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-1, 1), 1f, Random.Range(-1, 1)) * soulSpeed;
+			Debug.Log("SoulDropped");
+			healthToDrop--;
 		}
 	}
 }

@@ -28,12 +28,22 @@ public class BattleArena : MonoBehaviour
 	GameObject DoorsFolder;
 	Transform SpawnedEnemiesFolder;
 
+	[SerializeField] EnemyFlightPath[] FlightPaths;
+
 	[SerializeField] float slowTimeScale = 0.3f;
 	[SerializeField] float slowTimeAtEnd = 1f;
 	[SerializeField] GameObject slowTimeVolume;
+	[SerializeField] GameObject colliderMesh;
+
+	//soul spawning variables - might make this a struct later but it's only 2 varibles so it could be unnecessary.
+	[SerializeField] Transform SoulSpawnPoint;
+	[SerializeField] GameObject SoulReward;
 
 	[Header("Resetting"), SerializeField]
 	GameEvent RespawnPlayer;
+
+	[Header("Music")]
+	[SerializeField] int afterMusic;
 
 	// Start is called before the first frame update
 	void Start()
@@ -41,6 +51,9 @@ public class BattleArena : MonoBehaviour
 		SpawnedEnemiesFolder = transform.GetChild(1);
 		DoorsFolder = transform.GetChild(2).gameObject;
 		DoorsFolder.SetActive(false); // keep doors open
+
+		if (colliderMesh != null && colliderMesh.GetComponent<MeshRenderer>() != null)
+			colliderMesh.GetComponent<MeshRenderer>().enabled = false;
 
 		RespawnPlayer?.listener.AddListener(delegate { ResetArena(); });
 	}
@@ -72,6 +85,11 @@ public class BattleArena : MonoBehaviour
 		{
 			// if all waves done,
 			DoorsFolder.SetActive(false); // open doors
+			WorldState.instance.ChangeMusic(afterMusic);
+			WorldState.instance.currentWorldTheme = afterMusic;
+			Instantiate(SoulReward, SoulSpawnPoint.position, SoulSpawnPoint.rotation, SpawnedEnemiesFolder); //spawn soul reward
+
+		
 			StartCoroutine(EndBattleSlow());
 		}
 		else
@@ -82,7 +100,7 @@ public class BattleArena : MonoBehaviour
 				{
 					Vector3 SpawnPoint = (enemy.SpawnPoint == null) ? enemy.AlternateSpawn : enemy.SpawnPoint.position;
 					SpawnPoint = SpawnPoint + new Vector3(Random.Range(-enemy.RandomRadius, enemy.RandomRadius), 0, Random.Range(-enemy.RandomRadius, enemy.RandomRadius));
-					StartCoroutine(SpawnEnemy(enemy.EnemyPrefab, enemy.EnemyPrefab.GetComponent<EnemyAI>().SpawnParticlePrefab, SpawnPoint));
+					StartCoroutine(SpawnEnemy(enemy.EnemyPrefab, enemy.EnemyPrefab.GetComponent<EnemyBase>().SpawnParticlePrefab, SpawnPoint));
 
 				}
 			}
@@ -94,16 +112,32 @@ public class BattleArena : MonoBehaviour
 	{
 
 		Instantiate(particle, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder);
-		yield return new WaitForSeconds(enemy.GetComponent<EnemyAI>().SpawnWaitTime);
-		Instantiate(enemy, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder).GetComponent<EnemyAI>().ToChase();
+		yield return new WaitForSeconds(enemy.GetComponent<EnemyBase>().SpawnWaitTime);
+        //Instantiate(enemy, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder).GetComponent<EnemyAI>().ToChase();
+				//I see "ToChase()" is just an empty function so I commented it out
+        GameObject newEnemy = Instantiate(enemy, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder);
+
+		//if the enemy has a spline follower script(that means it is a flying enemy)
+		//then find the index the flying enemy has and attach it to the corresponding flight path in this script's array
+		AttachToSpline(newEnemy);
+    }
+
+	private void AttachToSpline(GameObject enemy)
+	{
+		if(enemy.GetComponent<SplineFollower>() != null)
+		{
+			enemy.GetComponent<SplineFollower>().path = FlightPaths[enemy.GetComponent<FlyingEnemyAI>().flightPathIndex];
+		}
 	}
 
-	private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
 	{
 		if (CurrentWave == -1 && other.gameObject.CompareTag("Player")) // untriggered
 		{
 			DoorsFolder.SetActive(true);
 			AdvanceWave();
+			WorldState.instance.ChangeMusic(1);
+
 		}
 	}
 
@@ -118,5 +152,6 @@ public class BattleArena : MonoBehaviour
 		slowTimeVolume.SetActive(false);
 		Time.timeScale = 1f;
 		Time.fixedDeltaTime = 0.02F * Time.timeScale;
+		
 	}
 }

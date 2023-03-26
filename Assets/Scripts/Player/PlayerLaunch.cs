@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerLaunch : MonoBehaviour
 {
+	[SerializeField] GameObject reticle;
+
 	[Header("Sheep Launch Variables")]
 
 	[SerializeField] Transform launchOrigin;
@@ -90,8 +92,11 @@ public class PlayerLaunch : MonoBehaviour
 							Instantiate(flocks.GetSheepFlock(flockType).SheepProjectilePrefab, launchOrigin.position, launchOrigin.rotation)
 							.GetComponent<PlayerSheepProjectile>();
 
+						reticle.GetComponent<ReticleControls>().ResetReticle();
+
 						launchSheep.isBlackSheep = flocks.GetActiveSheep(flockType)[i].isBlackSheep;
 						launchSheep.LaunchProjectile();
+						launchSheep.SheepType = (int)flockType;
 
 						flocks.GetActiveSheep(flockType)[i].KillSheep();
 

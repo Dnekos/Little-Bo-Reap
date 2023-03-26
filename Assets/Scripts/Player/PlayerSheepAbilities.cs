@@ -53,8 +53,9 @@ public class PlayerSheepAbilities : MonoBehaviour
 	public List<PlayerSheepAI> leaderSheep;
 
 	[Header("Sheep Swap Variables")]
-	[SerializeField] ParticleSystem bellParticles;
+	[SerializeField] List<ParticleSystem> bellParticles;
 	[SerializeField] ParticleSystem bellParticleBurst;
+
 	Vector2 WheelOpenMousePos;
 	bool isInFlockMenu = false;
 	float swapContextValue; // i feel like there is a way to not have this non-local
@@ -67,7 +68,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 	public float summonBlackSheepPercent = 10f;
 	[SerializeField] string summonAnimation, racallAnimation;
 	[SerializeField] ParticleSystem RecallVFX;
-	[SerializeField] GameObject summonParticle;
+	[SerializeField] List<GameObject> summonParticle;
 	[SerializeField] float summonParticleLerpSpeed = 5f;
 	[SerializeField] GameEvent endConstructsEvent;
 	List<GameObject> spawnParticles;
@@ -92,7 +93,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 		gothMode = GetComponent<PlayerGothMode>();
 		spawnParticles = new List<GameObject>();
 
-		UpdateFlockUI();
+		Invoke("UpdateFlockUI", Time.deltaTime); // slow but prevents this being called before HUD is set up
 	}
 	private void Update()
 	{
@@ -155,9 +156,17 @@ public class PlayerSheepAbilities : MonoBehaviour
 		{
 			currentFlockIndex = newindex;
 			currentFlockType = (SheepTypes)currentFlockIndex;
-			var particleModule = bellParticles.main;
-			particleModule.startColor = sheepFlocks[currentFlockIndex].UIColor;
+			//var particleModule = bellParticles.main;
+			//particleModule.startColor = sheepFlocks[currentFlockIndex].UIColor;
+
+			for(int i = 0; i < bellParticles.Count; i++)
+            {
+				if (currentFlockIndex == i) bellParticles[i].gameObject.SetActive(true);
+				else bellParticles[i].gameObject.SetActive(false);         
+            }
+
 			sheepFlocks[currentFlockIndex].flockChangeParticle.Play(true);
+			FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Sheep", currentFlockIndex);
 
 			WorldState.instance.HUD.SwapAnimation();
 
@@ -178,9 +187,17 @@ public class PlayerSheepAbilities : MonoBehaviour
 
 			currentFlockType = (SheepTypes)currentFlockIndex;
 
-			var particleModule = bellParticles.main;
-			particleModule.startColor = sheepFlocks[currentFlockIndex].UIColor;
+			//var particleModule = bellParticles.main;
+			//particleModule.startColor = sheepFlocks[currentFlockIndex].UIColor;
+
+			for (int i = 0; i < bellParticles.Count; i++)
+			{
+				if (currentFlockIndex == i) bellParticles[i].gameObject.SetActive(true);
+				else bellParticles[i].gameObject.SetActive(false);
+			}
+
 			sheepFlocks[currentFlockIndex].flockChangeParticle.Play(true);
+			FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Sheep", currentFlockIndex);
 
 			WorldState.instance.HUD.SwapAnimation();
 
@@ -226,8 +243,8 @@ public class PlayerSheepAbilities : MonoBehaviour
 			currentFlockType = (SheepTypes)currentFlockIndex;
 
 
-			var particleModule = bellParticles.main;
-			particleModule.startColor = sheepFlocks[currentFlockIndex].UIColor;
+			//var particleModule = bellParticles.main;
+			//particleModule.startColor = sheepFlocks[currentFlockIndex].UIColor;
 			sheepFlocks[currentFlockIndex].flockChangeParticle.Play(true);
 
 			WorldState.instance.HUD.SwapAnimation();
@@ -245,9 +262,9 @@ public class PlayerSheepAbilities : MonoBehaviour
 				currentFlockIndex = flockToChange;
 				currentFlockType = (SheepTypes)currentFlockIndex;
 
-				var particleModule = bellParticles.main;
-				particleModule.startColor = sheepFlocks[currentFlockIndex].UIColor;
-				sheepFlocks[currentFlockIndex].flockChangeParticle.Play(true);
+				//var particleModule = bellParticles.main;
+				//particleModule.startColor = sheepFlocks[currentFlockIndex].UIColor;
+				//sheepFlocks[currentFlockIndex].flockChangeParticle.Play(true);
 
 				WorldState.instance.HUD.SwapAnimation();
 
@@ -450,6 +467,11 @@ public class PlayerSheepAbilities : MonoBehaviour
 				StartCoroutine(SummonSheep(flockType, i));
 			}
 
+			while( WorldState.instance.SheepPool[currentFlockIndex].Count < amountToSummon)
+			{
+				WorldState.instance.SheepPool[currentFlockIndex].Add(null);
+			}
+
 			//start cooldown
 			StartCoroutine(SummonSheepCooldown());
 
@@ -608,11 +630,11 @@ public class PlayerSheepAbilities : MonoBehaviour
 		//if inside navmesh, spawn sheep!
 		if (found)
 		{
-			var soulParticle = Instantiate(summonParticle, transform.position, Quaternion.identity) as GameObject;
+			var soulParticle = Instantiate(summonParticle[currentFlockIndex], transform.position, Quaternion.identity) as GameObject;
 			soulParticle.GetComponent<Sheep_Summon_Particle>().removeFunction = new PlayerSheepAI.callSheep(RemoveSheepFromList);
 			soulParticle.GetComponent<Sheep_Summon_Particle>()?.InitSheepParticle(GetCurrentSheepPrefab(theSheepType), summonParticleLerpSpeed, hit.position, this, theSheepType, index);
-			var module = soulParticle.GetComponent<ParticleSystem>().main;
-			module.startColor = sheepFlocks[(int)theSheepType].UIColor;
+			//var module = soulParticle.GetComponent<ParticleSystem>().main;
+			//module.startColor = sheepFlocks[(int)theSheepType].UIColor;
 			spawnParticles.Add(soulParticle);
 
 		}

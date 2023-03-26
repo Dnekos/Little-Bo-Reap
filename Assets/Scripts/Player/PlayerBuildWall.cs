@@ -120,7 +120,7 @@ public class PlayerBuildWall : MonoBehaviour
 		sheepChargePoint.GetComponent<Interactable>().Interact();
 
 		// confirm juice
-		flocks.GetSheepFlock(SheepTypes.RAM).spellParticle.Play(true);
+		flocks.GetSheepFlock(SheepTypes.BUILD).spellParticle.Play(true);
 		Instantiate(confirmPrefab, sheepChargePoint.transform.position - prefabSpawnOffset, player.playerOrientation.transform.rotation);
 	}
 

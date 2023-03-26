@@ -16,11 +16,18 @@ public class EnemyAttack : Attack
 	[Tooltip("keep this 4 characters pls")]
 	public string ID;
 
-	public virtual void SpawnObject(Vector3 pos)
+	[Header("Animation"), SerializeField]
+	bool TransitionIn = false;
+	[Header("Sounds")]
+	[SerializeField] FMODUnity.EventReference attackStartSound;
+
+
+	//	public virtual void SpawnObject(Vector3 pos)
+	public virtual void SpawnObject(Vector3 pos, Quaternion rot)
 	{
 		if (hitboxPrefab != null)
 		{
-			Instantiate(hitboxPrefab, pos, new Quaternion());
+			Instantiate(hitboxPrefab, pos, rot);
 		}
 	}
 
@@ -30,7 +37,12 @@ public class EnemyAttack : Attack
 	}
 	public virtual void PerformAttack(Animator anim)
 	{
-		anim.Play(animation);
-
+		Debug.Log("what");
+		FMODUnity.RuntimeManager.PlayOneShotAttached(attackStartSound, anim.gameObject);
+		if (TransitionIn)
+			anim.SetTrigger(animation);
+		else
+			anim.Play(animation);
 	}
+
 }
