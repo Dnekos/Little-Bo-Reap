@@ -28,6 +28,7 @@ public class BattleArena : PuzzleDoor
 	Transform SpawnedEnemiesFolder;
 
 	[SerializeField] EnemyFlightPath[] FlightPaths;
+	[SerializeField] float flightPathMaxDisplacement;
 
 	[SerializeField] float slowTimeScale = 0.3f;
 	[SerializeField] float slowTimeAtEnd = 1f;
@@ -146,6 +147,10 @@ public class BattleArena : PuzzleDoor
 		if(enemy.GetComponent<SplineFollower>() != null)
 		{
 			enemy.GetComponent<SplineFollower>().path = FlightPaths[enemy.GetComponent<FlyingEnemyAI>().flightPathIndex];
+
+			//add a random position offset. without this, they all stack up on top of each other
+			float rand = Random.Range(0f, flightPathMaxDisplacement);
+			enemy.GetComponent<SplineFollower>().SplinePosition += rand;
 		}
 	}
 
