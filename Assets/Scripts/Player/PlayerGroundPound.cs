@@ -51,12 +51,10 @@ public class PlayerGroundPound : MonoBehaviour
     {
         if (playerMovement.isFalling)
         {
-			playerMovement.isFalling = false;
+            FMODUnity.RuntimeManager.PlayOneShotAttached(explodeSound, gameObject);
+            playerMovement.isFalling = false;
             animator.SetBool("isFalling", false);
             Instantiate(heavyParticle, transform.position, transform.rotation);
-
-            //TEMP SOUND
-            FMODUnity.RuntimeManager.PlayOneShotAttached(explodeSound,gameObject);
 
             //camera shake!
             playerCam.ShakeCamera(true);
