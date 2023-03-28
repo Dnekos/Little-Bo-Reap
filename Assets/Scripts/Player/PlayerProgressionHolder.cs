@@ -25,10 +25,11 @@ public class PlayerProgressionHolder : MonoBehaviour
     public void incrementSouls(int value)
     {
         WorldState.instance.PersistentData.soulsCount += value;
+        WorldState.instance.HUD.UpdateSoulCount(WorldState.instance.PersistentData.soulsCount.ToString());
         //SheepPassives.soulsCount += value;
 
         //clamps player soul count to a positive number.
-        
+
         if (WorldState.instance.PersistentData.soulsCount < 0)
         {
             WorldState.instance.PersistentData.soulsCount = 0;

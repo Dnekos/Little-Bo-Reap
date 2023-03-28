@@ -47,6 +47,7 @@ public class EnemyAI : EnemyBase
 	[SerializeField] protected GameObject executeTrigger;
 	public Transform executePlayerPos;
 	public Execution execution;
+	[SerializeField] float timeTillGib = 10f;
 	EnemyStates stunState;
 
 	[Header("Ground Check")]
@@ -94,6 +95,12 @@ public class EnemyAI : EnemyBase
 		}
 		foreach (var key in Cooldowns.Keys.ToList())
 			Cooldowns[key] -= Time.deltaTime;
+
+		if(currentEnemyState == EnemyStates.EXECUTABLE)
+        {
+			timeTillGib -= Time.deltaTime;
+			if (timeTillGib <= 0) ForceKill();
+        }
 	}
 	private void FixedUpdate()
 	{
@@ -286,9 +293,11 @@ public class EnemyAI : EnemyBase
 
 	void ToExecutionState()
 	{
-		rb.mass = 100f;
+		rb.mass = 1f;
 		rb.velocity = Vector3.zero;
+		rb.useGravity = true;
 		agent.enabled = false;
+		rb.isKinematic = false;
 		gameObject.layer = LayerMask.NameToLayer("EnemyExecute");
 		rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
 		currentEnemyState = EnemyStates.EXECUTABLE;

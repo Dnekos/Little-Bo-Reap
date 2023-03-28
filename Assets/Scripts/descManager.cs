@@ -1,3 +1,6 @@
+//REVIEW: This looks good, but I would say maybe change the name of the 'panel' variable,
+    //because I wasn't 100% sure what that would represent in engine
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

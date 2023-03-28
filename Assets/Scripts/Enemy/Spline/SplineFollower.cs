@@ -5,7 +5,7 @@ using UnityEngine;
 public class SplineFollower : MonoBehaviour
 {
 	[SerializeField] public EnemyFlightPath path;
-	[SerializeField] float SplinePosition = 0;
+	[SerializeField] public float SplinePosition = 0;
 	[SerializeField] float SplineSpeed = 1;
 
 

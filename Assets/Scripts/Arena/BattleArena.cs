@@ -28,6 +28,7 @@ public class BattleArena : PuzzleDoor
 	Transform SpawnedEnemiesFolder;
 
 	[SerializeField] EnemyFlightPath[] FlightPaths;
+	[SerializeField] float flightPathMaxDisplacement;
 
 	[SerializeField] float slowTimeScale = 0.3f;
 	[SerializeField] float slowTimeAtEnd = 1f;
@@ -105,10 +106,11 @@ public class BattleArena : PuzzleDoor
 			WorldState.instance.currentWorldTheme = afterMusic;
 			Instantiate(SoulReward, SoulSpawnPoint.position, SoulSpawnPoint.rotation, SpawnedEnemiesFolder); //spawn soul reward
 
+			//REVIEW: Looks good! Clear and efficient
 			var cam = Instantiate(finalCamera, finalEnemyPosition, Quaternion.identity) as GameObject;
 			lookPoint.position = finalEnemyPosition;
 			cam.GetComponent<ArenaEndCamera>().InitCamera(lookPoint, finalEnemyPosition);
-		
+			
 			StartCoroutine(EndBattleSlow());
 		}
 		else
@@ -146,6 +148,10 @@ public class BattleArena : PuzzleDoor
 		if(enemy.GetComponent<SplineFollower>() != null)
 		{
 			enemy.GetComponent<SplineFollower>().path = FlightPaths[enemy.GetComponent<FlyingEnemyAI>().flightPathIndex];
+
+			//add a random position offset. without this, they all stack up on top of each other
+			float rand = Random.Range(0f, flightPathMaxDisplacement);
+			enemy.GetComponent<SplineFollower>().SplinePosition += rand;
 		}
 	}
 

@@ -318,7 +318,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Health: 100
   MaxHealth: 100
-  gibs: {fileID: 1095515628264178047, guid: 8b735b699a109b044ad08a09a3c97878, type: 3}
+  gibs: {fileID: 8039274497699848023, guid: c149dc1e77ba2b3409f557bd827b3191, type: 3}
   damageNumber: {fileID: 758784450076825086, guid: 917e1ac09e21f3f499d8aa30f802b69e,
     type: 3}
   damageNumberGoth: {fileID: 758784450076825086, guid: 0a7b484cc73c2c047b45b91fd1f75b6d,
@@ -349,10 +349,10 @@ MonoBehaviour:
   - {fileID: 4645614311413259885, guid: 2ea8437ad6787b049b56c5883a68aae6, type: 3}
   - {fileID: 4645614311413259885, guid: 484308373c7ce7249b0a2955d5de5e32, type: 3}
   - {fileID: 6060198684946403098, guid: 4b17e9d88b42899429f3f7846d72d21d, type: 3}
-  graph: {fileID: 11400000, guid: fcdf494c27592514395720d5b6c8c8ad, type: 2}
   SpawnParticlePrefab: {fileID: 6246327466764470281, guid: 817debac214ef9f4ba98b6f41baf3376,
     type: 3}
   SpawnWaitTime: 2
+  graph: {fileID: 11400000, guid: fcdf494c27592514395720d5b6c8c8ad, type: 2}
   currentEnemyState: 3
   StunTime: 0.3
   playerLayer:
@@ -362,6 +362,8 @@ MonoBehaviour:
   delayBetweenAttacks: 0.5
   StickCollider: {fileID: 2936668666298259511}
   anim: {fileID: 7793549503377347602}
+  distracted: 0
+  bellLoc: {x: 0, y: 0, z: 0}
   isExecutable: 1
   mustBeExecuted: 1
   executionHealthThreshhold: 1

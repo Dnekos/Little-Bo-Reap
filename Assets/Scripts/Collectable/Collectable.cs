@@ -44,7 +44,8 @@ public abstract class Collectable : MonoBehaviour
 
     void Update()
     {
-        if (isPulled == true)
+        if (isPulled == true)//REVIEW: this can be made into its own function, rather than all the code be in the update function
+                             //Also if need be, this code could then be accessed outside of this script
         {
             var step = attractSpeed * Time.deltaTime; // calculate distance to move
             transform.position = Vector3.Lerp(transform.position, playerBody.transform.position, step);
@@ -63,7 +64,7 @@ public abstract class Collectable : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    private void FixedUpdate()//REVIEW: We can delete this to clean the script up a little
     {
       // if (isPulled == true)
       // {

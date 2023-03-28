@@ -16,6 +16,7 @@ public class LeaveProgression : MonoBehaviour
     private void Exit()
     {
         WorldState.instance.player.GetComponent<PlayerSheepAbilities>().DeleteAllSheep();
+        //REVIEW: Would like a comment for why we have to delete all sheep when we leave the progression menu
         WorldState.instance.player.GetComponent<PlayerPauseMenu>().PauseGame();
         transform.gameObject.SetActive(false);
     }

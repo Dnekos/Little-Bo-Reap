@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerCameraFollow : MonoBehaviour
 {
@@ -30,6 +31,10 @@ public class PlayerCameraFollow : MonoBehaviour
     [Header("Kiosk Mode")]
     [SerializeField] float kioskCamSpeed;
     [SerializeField] float timeToTriggerKiosk = 5f;
+    [SerializeField] float timeToBootPlayer = 100f;
+    [SerializeField] string mainMenu;
+    [SerializeField] GameObject playerHUD;
+    bool inKioskMode;
     float currentIdleTime;
 
                                                                                      
@@ -84,7 +89,17 @@ public class PlayerCameraFollow : MonoBehaviour
 
         if(currentIdleTime >= timeToTriggerKiosk)
         {
+            if (!inKioskMode)
+            {
+                playerHUD.SetActive(false);
+                inKioskMode = true;
+            }
             yRotation += kioskCamSpeed * Time.deltaTime;
+        }
+
+        if(currentIdleTime >= timeToBootPlayer)
+        {
+            SceneManager.LoadScene(mainMenu);
         }
 
 
@@ -111,6 +126,12 @@ public class PlayerCameraFollow : MonoBehaviour
 
     public void OnMouseLook(InputAction.CallbackContext context)
     {
+        if (inKioskMode)
+        {
+            inKioskMode = false;
+            playerHUD.SetActive(true);
+        }
+
         mouseValue = context.ReadValue<Vector2>();
         currentIdleTime = 0f;
     }

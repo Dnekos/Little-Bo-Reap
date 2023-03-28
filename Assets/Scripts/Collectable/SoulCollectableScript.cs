@@ -1,3 +1,4 @@
+//REVIEW: Looks Good!
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,7 @@ public class SoulCollectableScript : Collectable
     {
         Debug.Log("Add Souls: " + soulValue.ToString());
         WorldState.instance.PersistentData.soulsCount += soulValue;
+        WorldState.instance.HUD.UpdateSoulCount(WorldState.instance.PersistentData.soulsCount.ToString());
         //SheepPassives.soulsCount += soulValue;
 
         //clamps player soul count to a positive number.
