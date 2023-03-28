@@ -12,6 +12,7 @@ public class PlayerSheepLift : MonoBehaviour
 	float sheepHeight;
 
 	[SerializeField] FMODUnity.EventReference placeSound;
+	[SerializeField] FMODUnity.EventReference failSound;
 	[SerializeField] ParticleSystem liftFailParticle;
 
 	[SerializeField] float SheepLerpSpeed = 0.5f;
@@ -74,6 +75,7 @@ public class PlayerSheepLift : MonoBehaviour
 		if (!hitGround || info.distance * SheepSpacingMod > sheepHeight * flocks.GetActiveSheep(SheepTypes.BUILD).Count || info.collider.CompareTag("Sheep") || info.collider.gameObject == platform)
         {
 			liftFailParticle.Play(true);
+			FMODUnity.RuntimeManager.PlayOneShot(failSound, transform.position);
 			return false;
 		}
 			
