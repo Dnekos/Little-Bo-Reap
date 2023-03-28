@@ -127,9 +127,16 @@ public class BattleArena : PuzzleDoor
 			}
 	}
 
+    public override void OpenDoor()
+    {
+		//for now, destroy door. can have an animation or something more pretty later
+		isOpened = true;
+		WorldState.instance.AddActivatedDoor(this);
+		door.SetActive(false);
+	}
 
 
-	protected IEnumerator SpawnEnemy(GameObject enemy, GameObject particle, Vector3 pos)
+    protected IEnumerator SpawnEnemy(GameObject enemy, GameObject particle, Vector3 pos)
 	{
 
 		Instantiate(particle, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder);

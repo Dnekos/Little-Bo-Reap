@@ -31,7 +31,7 @@ public class PuzzleDoor : MonoBehaviour
             }
         }
 	}
-	public void OpenDoor()
+	virtual public void OpenDoor()
 	{
 		//for now, destroy door. can have an animation or something more pretty later
 		isOpened = true;
