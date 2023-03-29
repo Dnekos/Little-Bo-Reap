@@ -41,18 +41,13 @@ public class ProgressionParent : MonoBehaviour
         
         if (WorldState.instance.passiveValues.soulsCount >= costs[currentCostIndex])
         {
-            //turn on light
-            //TODO make this for all uptions
+            //turn on light            
             int upgradeNotch = -1;
-            for (int i = 0; i < upgrades[index].transform.childCount; i++)
+            Transform notch = upgrades[index].transform.parent.Find("notch");
+            if (notch.GetComponent<Image>().color != Color.green)
             {
-                Transform notch = upgrades[index].transform.GetChild(i);
-                if (notch.GetComponent<Image>().color != Color.green)
-                {
-                    notch.GetComponent<Image>().color = Color.green;
-                    upgradeNotch = i;
-                    break;
-                }
+                notch.GetComponent<Image>().color = Color.green;
+                upgradeNotch = index;             
             }
             if (upgradeNotch != -1)
             {
@@ -62,7 +57,8 @@ public class ProgressionParent : MonoBehaviour
                 upgradesAllValues.Add(upgrade2Values);
                 upgradesAllValues.Add(upgrade3Values);
                 float [] currentUpgradeValues = upgradesAllValues[index];
-                Upgrade(thisType, index, currentUpgradeValues[upgradeNotch]);
+                //in the event we move to multiple upgrades change this back to upgrade notch from 0
+                Upgrade(thisType, index, currentUpgradeValues[0]);
                 currentCostIndex++;
             }
         }
