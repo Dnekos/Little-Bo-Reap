@@ -58,7 +58,7 @@ public class DialogBox : MonoBehaviour
 		inputs ??= WorldState.instance.player.GetComponent<PlayerInput>();
 
 		// register listener for if player skips/dies in dialog
-		RespawnEvent.listener.AddListener(CloseUI);
+		RespawnEvent.Add(CloseUI);
 	}
 
 	/// <summary>

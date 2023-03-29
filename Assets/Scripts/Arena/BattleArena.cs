@@ -62,7 +62,7 @@ public class BattleArena : PuzzleDoor
 		if (colliderMesh != null && colliderMesh.GetComponent<MeshRenderer>() != null)
 			colliderMesh.GetComponent<MeshRenderer>().enabled = false;
 
-		RespawnPlayer?.listener.AddListener(delegate { ResetArena(); });
+		RespawnPlayer?.Add(delegate { ResetArena(); });
 	}
 
 	// Update is called once per frame

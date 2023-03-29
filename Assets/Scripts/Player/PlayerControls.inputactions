@@ -221,7 +221,7 @@
                     "path": "<Gamepad>/leftStick",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Xbox",
                     "action": "WASDMovement",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -463,7 +463,7 @@
                     "path": "<Gamepad>/leftStickPress",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Xbox",
                     "action": "GroundPound",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -1066,5 +1066,17 @@
             ]
         }
     ],
-    "controlSchemes": []
+    "controlSchemes": [
+        {
+            "name": "Xbox",
+            "bindingGroup": "Xbox",
+            "devices": [
+                {
+                    "devicePath": "<XInputController>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
 }

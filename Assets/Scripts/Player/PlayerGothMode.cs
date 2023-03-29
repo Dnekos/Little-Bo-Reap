@@ -62,7 +62,7 @@ public class PlayerGothMode : MonoBehaviour
 
 		gothMeter.ChangeFill(GothMeterCount);
 
-		RespawnEvent.listener.AddListener(delegate { ResetGoth(); });
+		RespawnEvent.Add(delegate { ResetGoth(); });
 
 		meshes = materialParent.GetComponentsInChildren<SkinnedMeshRenderer>();
 
