@@ -24,6 +24,8 @@ public class ProgressionParent : MonoBehaviour
     [SerializeField] float[] upgrade3Values = { 10f, 20f, 50000f };
 
     int currentCostIndex;
+    int abilityBSoulCost = 1;
+    bool altAbilityUnlocked = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -71,16 +73,41 @@ public class ProgressionParent : MonoBehaviour
         switch (thisType)
         {
             case SheepTypes.BUILD:
-                WorldState.instance.passiveValues.activeBuilderAbility = "Ability " + index;
+                if(index == 0 || AbilityUnlock())
+                {
+                    WorldState.instance.passiveValues.activeBuilderAbility = "Ability " + index;
+                }
                 break;
             case SheepTypes.RAM:
-                WorldState.instance.passiveValues.activeRamAbility = "Ability " + index;
+                if (index == 0 || AbilityUnlock())
+                {
+                    WorldState.instance.passiveValues.activeRamAbility = "Ability " + index;
+                }
                 break;
             case SheepTypes.FLUFFY:
-                WorldState.instance.passiveValues.activeFluffyAbility = "Ability " + index;
+                if (index == 0 || AbilityUnlock())
+                {
+                    WorldState.instance.passiveValues.activeFluffyAbility = "Ability " + index;
+                }
                 break;
+        }      
+    }
+
+    bool AbilityUnlock()
+    {
+        if(altAbilityUnlocked)
+        {
+            return true;
         }
-        
+        //if we have not unlocked already lets try to unlock.
+        if(WorldState.instance.passiveValues.bossSoulsCount >= abilityBSoulCost)
+        {
+            WorldState.instance.passiveValues.bossSoulsCount -= abilityBSoulCost;
+            altAbilityUnlocked = true;
+            //add visual for unlocking alt ability here
+            return true;
+        }
+        return false;
     }
 
     public void Upgrade(SheepTypes type, int index, float newValue)
