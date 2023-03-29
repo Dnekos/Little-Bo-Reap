@@ -8,6 +8,7 @@ using System.Collections;
 
 public class DialogBox : MonoBehaviour
 {
+
 	// active dialogline variables
 	Speaker currentspeaker; // might not need
 	Conversation activeCon;
@@ -30,6 +31,7 @@ public class DialogBox : MonoBehaviour
 
 	[Header("Looking"), SerializeField]
 	CameraOffsetAdjuster player;
+	[SerializeField] GameEvent EndAimMode;
 
 	[Header("Components")]
 	[SerializeField]
@@ -80,6 +82,7 @@ public class DialogBox : MonoBehaviour
 
 		// stop player
 		WorldState.instance.player.GetComponent<PlayerMovement>().HaltPlayer();
+		EndAimMode.Raise();
 
 		// set up speaker vars
 		currentspeaker = active_conversation;

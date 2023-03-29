@@ -5,11 +5,13 @@ using UnityEngine.UI;
 
 public class ReticleControls : MonoBehaviour
 {
+	[SerializeField] GameEvent ResetAimMode, EndAimMode;
+
     public List<Sprite> reticles;
 
     [SerializeField] GameObject reticle;
     Color baseColor;
-    [SerializeField] float fadeTimeInSec;
+    [SerializeField] float fadeTimeInSec, alphaFadeSpeed = 1;
     float duration;
 
 	Image im;
@@ -22,6 +24,9 @@ public class ReticleControls : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+		ResetAimMode.Add(ResetReticle);
+		EndAimMode.Add(EndReticle);
+
 		im = GetComponent<Image>();
 
 		//grabs the starting color (read: opacity) of the reticle for later use, then makes it transparent.
@@ -34,7 +39,7 @@ public class ReticleControls : MonoBehaviour
     {
         if (duration <= 0)
         {
-			im.color = new Color(baseColor.r, baseColor.g, baseColor.b, im.color.a - 0.1f);
+			im.color = new Color(baseColor.r, baseColor.g, baseColor.b, im.color.a - alphaFadeSpeed * Time.deltaTime);
         }
         else
         {
@@ -48,4 +53,9 @@ public class ReticleControls : MonoBehaviour
 		im.color = baseColor;
         duration = fadeTimeInSec;
     }
+	public void EndReticle()
+	{
+		im.color = new Color(baseColor.r, baseColor.g, baseColor.b, 0.0f);
+		duration = 0;
+	}
 }

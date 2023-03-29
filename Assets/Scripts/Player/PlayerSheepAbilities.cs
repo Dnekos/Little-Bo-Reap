@@ -87,7 +87,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 		// needed to prevent gamepad from opening debuggers, comment out if you want the SRP debug window
 		UnityEngine.Rendering.DebugManager.instance.enableRuntimeUI = false;
 
-		respawnEvent.listener.AddListener(DeleteAllSheep);
+		respawnEvent.Add(DeleteAllSheep);
 
 		summonResource = GetComponent<PlayerSummoningResource>();
 		animator = GetComponent<PlayerAnimationController>().playerAnimator;
@@ -388,7 +388,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 			animator.Play(racallAnimation);
 
 			// stop constructs
-			endConstructsEvent.listener.Invoke();
+			endConstructsEvent.Raise();
 
 			//TEMP SOUND
 			FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound, gameObject);
@@ -462,7 +462,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 			sheepFlocks[(int)flockType].spellParticle.Play(true);
 
 			// stop constructs
-			endConstructsEvent.listener.Invoke();
+			endConstructsEvent.Raise();
 
 			for (int i = spawnParticles.Count - 1; i >= 0; i--)
 			{
