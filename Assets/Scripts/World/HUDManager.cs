@@ -43,6 +43,8 @@ public class HUDManager : MonoBehaviour
 	public event Action<GameObject> activePanelChange;
 	[SerializeField] ProgressionParent[] upgradeTrees;
 	[SerializeField] TextMeshProUGUI SoulNumber;
+    [SerializeField] Animator SoulUIAnimator;
+    [SerializeField] string soulCollectAnimation;
 
     [Header("Death")]
 	[SerializeField] GameObject deathUI;
@@ -127,6 +129,7 @@ public class HUDManager : MonoBehaviour
     public void UpdateSoulCount(string currentSouls)
     {
 		SoulNumber.text = currentSouls + " Souls";
+		SoulCollectAnimation();
     }
 
     private void SetSheepPositions(int currentFlock)
@@ -214,4 +217,10 @@ public class HUDManager : MonoBehaviour
 		if (SwapUIAnimator.gameObject.activeSelf)
 			SwapUIAnimator.Play(noSheepAnimUI);
 	}
+    public void SoulCollectAnimation()
+    {
+        if (SoulUIAnimator.gameObject.activeSelf)
+            SoulUIAnimator.Play(soulCollectAnimation);
+    }
 }
+	

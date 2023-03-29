@@ -15,7 +15,7 @@ public class SoulCollectableScript : Collectable
         //SheepPassives.soulsCount += soulValue;
 
         //clamps player soul count to a positive number.
-        
+
         if (WorldState.instance.PersistentData.soulsCount < 0)
         {
             WorldState.instance.PersistentData.soulsCount = 0;
