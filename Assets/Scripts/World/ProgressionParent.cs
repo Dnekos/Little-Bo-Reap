@@ -1,3 +1,6 @@
+//REVIEW: Overall, looks good, I would say just try to add more comments on stuff that might be confusing out of context
+    //For example variables with vague names like 'index' or 'thisType'
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,7 +41,7 @@ public class ProgressionParent : MonoBehaviour
     void Upgrade(int index)
     {
 		// we use bit shifting to get the correct bit at the flag we're looking for
-		int flagindex = 1 << (((int)thisType + 1) * 3 + index + 1);
+		int flagindex = 1 << (((int)thisType + 1) * 3 + index + 1);//REVIEW: 'flagindex' --> 'flagIndex' to keep with camelCase standard
 
 		Debug.Log("upgrading path:" + index);
 
@@ -62,6 +65,7 @@ public class ProgressionParent : MonoBehaviour
 		}
 		else
 			Debug.Log("not enough money");
+            //REVIEW: Maybe we can have a visual representation for the player to know they don't have enough souls
     }
 
 	/// <summary>
