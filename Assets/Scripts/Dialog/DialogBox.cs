@@ -134,7 +134,7 @@ public class DialogBox : MonoBehaviour
 
 		// player look
 		if (player != null)
-			player.LookTarget = null;
+			player.StopLooking();
 
 	}
 	#endregion

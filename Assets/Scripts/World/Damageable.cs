@@ -77,7 +77,7 @@ public class Damageable : MonoBehaviour
 			if (Health <= 0)
 				OnDeath();
 			else // don't play hurt sound when dying smh
-				FMODUnity.RuntimeManager.PlayOneShotAttached(hurtSound, gameObject);
+				FMODUnity.RuntimeManager.PlayOneShot(hurtSound, transform.position);
 
 		}
 	}
