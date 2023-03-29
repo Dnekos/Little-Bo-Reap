@@ -1632,12 +1632,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2200f90216dbcad4fac232052e56d806, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ResetAimMode: {fileID: 0}
+  EndAimMode: {fileID: 0}
   reticles:
   - {fileID: 21300000, guid: defc8cedb684b4b45a0e163c87df2fa2, type: 3}
   - {fileID: 21300000, guid: 401f5a28cf2a5774982637eb0a48f5cf, type: 3}
   - {fileID: 21300050, guid: 0f970087e679960468886ed0c3df91a0, type: 3}
   reticle: {fileID: 0}
   fadeTimeInSec: 2
+  alphaFadeSpeed: 1
 --- !u!1 &2585279638438793739
 GameObject:
   m_ObjectHideFlags: 0
@@ -2151,7 +2154,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 10ca93c416112d744ab59a1f826f72f4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7bcfda04ac9e4f24f81949539f31650f, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -3277,7 +3280,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 3e2d0b03d84c3f2409e9d7ad93f65e18, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7bcfda04ac9e4f24f81949539f31650f, type: 3}
   m_Type: 3
   m_PreserveAspect: 1
   m_FillCenter: 1
