@@ -61,7 +61,6 @@ public class CameraOffsetAdjuster : MonoBehaviour
 
 		// keep it clamped
 		lerptime = Mathf.Clamp01(lerptime);
-		Debug.Log(lerptime);
 	}
 	public void StopLooking()
 	{
