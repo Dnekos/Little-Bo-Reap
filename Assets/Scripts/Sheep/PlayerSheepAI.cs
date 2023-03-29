@@ -479,10 +479,13 @@ public enum SheepStates
     {
         return currentSheepState;
     }
-	public void SetSheepState(SheepStates newstate)
-	{
-		if (hitstunCo != null)
-			StopCoroutine(hitstunCo);
+    public void SetSheepState(SheepStates newstate)
+    {
+        if (hitstunCo != null)
+        { 
+            StopCoroutine(hitstunCo);
+            rb.isKinematic = true;
+         }
 
 		// if they were in an ability, end it, this is messy and gross
 		if (currentSheepState == SheepStates.ABILITY)
@@ -636,11 +639,14 @@ public enum SheepStates
 
         // wait until grounded
         yield return new WaitUntil(() => isGrounded);
-		//yield return new WaitForSeconds(0.1f);
+        //yield return new WaitForSeconds(0.1f);
 
-		// if sheep were attacking, they can resume attacking 
-		// the condition is needed because actions like vortex and construct should not be resumed
-		SetSheepState((origState == SheepStates.ATTACK) ? origState : SheepStates.WANDER);
+        rb.isKinematic = true;
+
+
+        // if sheep were attacking, they can resume attacking 
+        // the condition is needed because actions like vortex and construct should not be resumed
+        SetSheepState((origState == SheepStates.ATTACK) ? origState : SheepStates.WANDER);
     }
 
     private void OnCollisionStay(Collision collision)
@@ -652,6 +658,7 @@ public enum SheepStates
 
 			agent.enabled = true;
 
+            rb.isKinematic = true;
             rb.constraints = RigidbodyConstraints.FreezeAll;
 
             rb.angularVelocity = Vector3.zero;
