@@ -9,14 +9,14 @@ public abstract class Interactable : MonoBehaviour
     public bool onlyInteractableOnce;
 
 	[Header("Input Canvas"), SerializeField]
-	protected Transform inputIcon;
+	protected Canvas inputIcon;
 	protected Transform maincam;
 
 	virtual protected void Start()
 	{
 		if (inputIcon != null)
 		{
-			inputIcon.gameObject.SetActive(false);
+			inputIcon.enabled = false;
 			maincam = Camera.main.transform;
 		}
 	}
@@ -42,19 +42,19 @@ public abstract class Interactable : MonoBehaviour
 	virtual protected void Update()
 	{
 		if (inputIcon != null)
-			inputIcon.rotation = maincam.rotation;
+			inputIcon.transform.rotation = maincam.rotation;
 	}
 
 	virtual protected void OnTriggerEnter(Collider other)
 	{
 		// if entered on the forced
 		if (other.gameObject == WorldState.instance.player && inputIcon != null && canInteract)
-			inputIcon.gameObject.SetActive(true);
+			inputIcon.enabled = true;
 
 	}
 	virtual protected void OnTriggerExit(Collider other)
 	{
 		if (other.gameObject == WorldState.instance.player && inputIcon != null && canInteract)
-			inputIcon.gameObject.SetActive(false);
+			inputIcon.enabled = false;
 	}
 }
