@@ -100,14 +100,14 @@ public class PlayerControlSwitcher : MonoBehaviour
 			if (Gamepad.current is XInputController)
 			{
 				// XBOX
-				cse.Raise(xbox);
 				_currentController = CurrentControllerType.Xbox;
+				cse.Raise(xbox);
 			}
 			else if (Gamepad.current is DualShockGamepad)
 			{
 				// PlayStation
-				cse.Raise(playstation);
 				_currentController = CurrentControllerType.PlayStation;
+				cse.Raise(playstation);
 			}
 			else
 			{
@@ -119,6 +119,7 @@ public class PlayerControlSwitcher : MonoBehaviour
 		{
 			// Keyboard
 			_currentController = CurrentControllerType.Keyboard;
+			cse.Raise(null);
 		}
 		Debug.Log("Current Controls: " + _currentController);
 	}
@@ -148,7 +149,23 @@ public class PlayerControlSwitcher : MonoBehaviour
 
 		// check which control to display
 		string returner = "";
-		if (_currentController == CurrentControllerType.Keyboard)
+
+		if ((_currentController == CurrentControllerType.PlayStation || _currentController == CurrentControllerType.Xbox) && Gamepad.current != null)
+		{
+			// loop through all bindings
+			for (int i = 0; i < action.bindings.Count; i++)
+			{
+				// check if bindings work on this control scheme (and isnt a composite like the Vector2D used in WASD)
+				if (!action.bindings[i].isComposite && InputControlPath.TryFindControl(Gamepad.current, action.bindings[i].effectivePath) != null)
+				{
+					// make sure to add on the tag to get the TMP_Sprite
+					returner += "<sprite name=\"" + InputControlPath.ToHumanReadableString(
+						action.bindings[i].effectivePath,
+						InputControlPath.HumanReadableStringOptions.OmitDevice) + "\" tint=1> ";
+				}
+			}
+		}
+		else if (_currentController == CurrentControllerType.Keyboard)
 		{
 			// loop through all bindings
 			for (int i = 0; i < action.bindings.Count; i++)
@@ -173,22 +190,7 @@ public class PlayerControlSwitcher : MonoBehaviour
 					else if (mouseString.CompareTo("Scroll/Down") == 0) // ignore the other side of scrolling
 						continue;
 
-					returner += "<sprite name=\"" + mouseString + "\" > ";
-				}
-			}
-		}
-		else
-		{
-			// loop through all bindings
-			for (int i = 0; i < action.bindings.Count; i++)
-			{               
-				// check if bindings work on this control scheme (and isnt a composite like the Vector2D used in WASD)
-				if (!action.bindings[i].isComposite && InputControlPath.TryFindControl(Gamepad.current, action.bindings[i].effectivePath) != null)
-				{
-					// make sure to add on the tag to get the TMP_Sprite
-					returner += "<sprite name=\"" + InputControlPath.ToHumanReadableString(
-						action.bindings[i].effectivePath,
-						InputControlPath.HumanReadableStringOptions.OmitDevice)+ "\" > " ;
+					returner += "<sprite name=\"" + mouseString + "\" tint=1> ";
 				}
 			}
 		}

@@ -8,7 +8,6 @@ using System.Collections;
 
 public class DialogBox : MonoBehaviour
 {
-
 	// active dialogline variables
 	Speaker currentspeaker; // might not need
 	Conversation activeCon;
@@ -123,7 +122,6 @@ public class DialogBox : MonoBehaviour
 		// switch cameras
 		gameCamera.enabled = true;
 		cinematicCamera.enabled = false;
-
 
 		// enable HUD and world
 		WorldState.instance.HUD.ToggleHud(true);
@@ -251,17 +249,6 @@ public class DialogBox : MonoBehaviour
 		}
 	}
 
-	string AnalyseControl(string controlCall)
-	{
-		if (PlayerControlSwitcher._currentController == PlayerControlSwitcher.CurrentControllerType.Keyboard)
-		{
-
-			return "";
-		}
-		else
-			return controlCall;
-	}
-
 	void IncrementCurrentLine()
 	{
 		// make sure we do any TMPro tags in one go
@@ -273,12 +260,10 @@ public class DialogBox : MonoBehaviour
 				temp += Line[textIndex++];
 			} while (Line[textIndex - 1] != '>' && textIndex < Line.Length);
 
-			TextBody.text += PlayerControlSwitcher.getTextFromAction(temp);//AnalyseControl(temp);
+			TextBody.text += PlayerControlSwitcher.getTextFromAction(temp);
 		}
 		else
-		{
 			TextBody.text += Line[textIndex++]; // add next letter and increment
-		}
 	}
 
 	void ChangeSprite(TMP_SpriteAsset newAsset)
