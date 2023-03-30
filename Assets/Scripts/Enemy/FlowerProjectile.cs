@@ -5,7 +5,8 @@ using UnityEngine;
 public class FlowerProjectile : MonoBehaviour
 {
     [SerializeField] Attack FlowerProjectileAttack;
-
+	[SerializeField] float projectileInitialForce =2000f;
+	[SerializeField] ForceMode launchType = ForceMode.Force;
     List<Damageable> hitTargets;
 
     Vector3 origPos;
@@ -21,22 +22,12 @@ public class FlowerProjectile : MonoBehaviour
         origPos = transform.position;
 
         FireProjectile();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        currentTimeAlive += Time.deltaTime;
-
-        if (currentTimeAlive >= maxTimeAlive)
-            Destroy(gameObject);
+		Destroy(gameObject, maxTimeAlive);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        //if not damageable
-        //    return;
-
+		// im sorry what is this
         Vector3 flattenedOtherPos = new Vector3(other.transform.position.x, transform.position.y, other.transform.position.z);
         Damageable targetHealth = other.GetComponent<Damageable>();
 		if (targetHealth != null && !other.isTrigger)
@@ -45,13 +36,16 @@ public class FlowerProjectile : MonoBehaviour
 			hitTargets.Add(targetHealth);
 			Debug.Log(other.gameObject.name + "hit by Flower Projectile Attack");
 			targetHealth.TakeDamage(FlowerProjectileAttack, (flattenedOtherPos - origPos).normalized);
+
+			// kill yourself
+			Destroy(gameObject);
 		}
     }
 
 
     private void FireProjectile()
     {
-        this.GetComponentInChildren<Rigidbody>().AddForce(this.transform.forward * 2000f);
+        this.GetComponentInChildren<Rigidbody>().AddForce(this.transform.forward * 2000f, launchType);
     }
 
 }
