@@ -49,6 +49,8 @@ public enum SheepStates
     [Header("Pet Sheep Stuff")]
     [SerializeField] ParticleSystem petSheepParticles;
     [SerializeField] string petAnimation;
+    [SerializeField] float maxSize;
+    [SerializeField] float minSize;
 
 	[Header("Sounds")]
 	[SerializeField] FMODUnity.EventReference biteSound;
@@ -110,6 +112,9 @@ public enum SheepStates
 	override protected void Start()
     {
         base.Start();
+
+        float size = Random.Range(minSize, maxSize);
+        transform.localScale = new Vector3(size, size, size);
 
         if (sheepType == 2)
         {
