@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerSheepLift : MonoBehaviour
 {
+	[Header("Settings")]
 	[SerializeField] int AllowedSurvivingSheep = 5;
 	[SerializeField] float SheepSpacingMod = 0.5f;
 	[Tooltip("this should be the primary collider on the player"), SerializeField] 
@@ -11,6 +12,7 @@ public class PlayerSheepLift : MonoBehaviour
 	[SerializeField,Min(1)] int maxSheep = 15;
 	float sheepHeight;
 
+	[Header("Juice")]
 	[SerializeField] FMODUnity.EventReference placeSound;
 	[SerializeField] FMODUnity.EventReference failSound;
 	[SerializeField] ParticleSystem liftFailParticle;
