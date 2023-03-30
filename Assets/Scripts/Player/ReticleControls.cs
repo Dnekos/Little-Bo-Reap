@@ -6,9 +6,9 @@ using UnityEngine.UI;
 public class ReticleControls : MonoBehaviour
 {
 	[SerializeField] GameEvent ResetAimMode, EndAimMode;
-
+    //REVIEW: This should probably be private and serialized
     public List<Sprite> reticles;
-
+    
     [SerializeField] GameObject reticle;
     Color baseColor;
     [SerializeField] float fadeTimeInSec, alphaFadeSpeed = 1;

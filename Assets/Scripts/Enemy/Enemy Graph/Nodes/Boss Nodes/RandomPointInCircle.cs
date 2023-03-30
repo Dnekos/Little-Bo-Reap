@@ -17,7 +17,8 @@ namespace XNode.Examples.StateGraph
 		{
 			Vector3 p = GetInputValue<Vector3>("point", this.point);
 			float r = GetInputValue<float>("radius", this.radius);
-
+			//REVIEW: using random point in unit sphere will make it incredibly unlikely to 
+			//hit the outside ring as most points of a sphere from the top will be in the center
 			Vector3 randomPosition = UnityEngine.Random.insideUnitSphere * r;
 			Vector3 destinationPosition = new Vector3(randomPosition.x + p.x, p.y, randomPosition.z + p.z);
 
