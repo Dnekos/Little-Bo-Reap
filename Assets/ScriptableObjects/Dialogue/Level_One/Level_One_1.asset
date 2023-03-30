@@ -26,10 +26,10 @@ MonoBehaviour:
     CameraTransitionSpeed: 0
     CameraPos: {x: 0, y: 0, z: 0}
     CameraEuler: {x: 0, y: 0, z: 0}
-  - body: 'Press <sprite name="DPad"> to turn all sheep into black sheep
+  - body: 'Press <GothMode> to turn all sheep into black sheep
 
-      when
-      dead ringer bar is full
+      when dead ringer
+      bar is full
 
       temp, will add icons and stuff later'
     changeCamera: 0

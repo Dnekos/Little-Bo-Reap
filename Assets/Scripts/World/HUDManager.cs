@@ -73,6 +73,10 @@ public class HUDManager : MonoBehaviour
 	public void ToggleProgressionMenu(bool value)
 	{
 		ProgressionMenu.SetActive(value);
+
+		// pause sounds
+		FMODUnity.RuntimeManager.GetBus("bus:/SFX/Gameplay").setPaused(value);
+
 		if (value)
 		{
 			// set active button
@@ -87,7 +91,6 @@ public class HUDManager : MonoBehaviour
 			WorldState.instance.gameState = WorldState.State.Dialog;
 			inputs.SwitchCurrentActionMap("Dialog");
 			Time.timeScale = 0;
-
 		}
 		else
 		{

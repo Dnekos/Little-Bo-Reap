@@ -31,6 +31,7 @@ public class Speaker : Interactable
 	public override void Interact()
 	{
 		DB.ActivateUI(this);
+
 		if (repeatingScript != null)
 			script = repeatingScript;
 	}
