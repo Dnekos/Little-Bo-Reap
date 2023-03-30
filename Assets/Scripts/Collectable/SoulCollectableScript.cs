@@ -6,12 +6,14 @@ using UnityEngine;
 public class SoulCollectableScript : Collectable
 {
     [SerializeField] int soulValue;
+    [SerializeField] FMODUnity.EventReference soulsfx;
     //effect: adds souls equal to value
     protected override void CollectableEffect()
     {
         Debug.Log("Add Souls: " + soulValue.ToString());
         WorldState.instance.PersistentData.soulsCount += soulValue;
         WorldState.instance.HUD.UpdateSoulCount(WorldState.instance.PersistentData.soulsCount.ToString());
+        FMODUnity.RuntimeManager.PlayOneShot(soulsfx);
         //SheepPassives.soulsCount += soulValue;
 
         //clamps player soul count to a positive number.
