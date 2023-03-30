@@ -14,6 +14,6 @@ public class FollowMousePosition : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        this.transform.position = Input.mousePosition + offset / transform.parent.parent.parent.GetComponent<Canvas>().scaleFactor;
+        this.transform.position = Input.mousePosition + offset * transform.parent.parent.parent.GetComponent<Canvas>().scaleFactor;
     }
 }
