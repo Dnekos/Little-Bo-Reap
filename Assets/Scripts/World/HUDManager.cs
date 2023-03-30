@@ -43,6 +43,8 @@ public class HUDManager : MonoBehaviour
 	public event Action<GameObject> activePanelChange;
 	[SerializeField] ProgressionParent[] upgradeTrees;
 	[SerializeField] TextMeshProUGUI SoulNumber;
+    [SerializeField] Animator SoulUIAnimator;
+    [SerializeField] string soulCollectAnimation;
 
     [Header("Death")]
 	[SerializeField] GameObject deathUI;
@@ -71,6 +73,10 @@ public class HUDManager : MonoBehaviour
 	public void ToggleProgressionMenu(bool value)
 	{
 		ProgressionMenu.SetActive(value);
+
+		// pause sounds
+		FMODUnity.RuntimeManager.GetBus("bus:/SFX/Gameplay").setPaused(value);
+
 		if (value)
 		{
 			// set active button
@@ -85,7 +91,6 @@ public class HUDManager : MonoBehaviour
 			WorldState.instance.gameState = WorldState.State.Dialog;
 			inputs.SwitchCurrentActionMap("Dialog");
 			Time.timeScale = 0;
-
 		}
 		else
 		{
@@ -127,6 +132,7 @@ public class HUDManager : MonoBehaviour
     public void UpdateSoulCount(string currentSouls)
     {
 		SoulNumber.text = currentSouls + " Souls";
+		SoulCollectAnimation();
     }
 
     private void SetSheepPositions(int currentFlock)
@@ -214,4 +220,10 @@ public class HUDManager : MonoBehaviour
 		if (SwapUIAnimator.gameObject.activeSelf)
 			SwapUIAnimator.Play(noSheepAnimUI);
 	}
+    public void SoulCollectAnimation()
+    {
+        if (SoulUIAnimator.gameObject.activeSelf)
+            SoulUIAnimator.Play(soulCollectAnimation);
+    }
 }
+	

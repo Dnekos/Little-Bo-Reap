@@ -39,7 +39,7 @@ public class PlayerHealth : Damageable
 		playermove = GetComponent<PlayerMovement>();
 		healthBar.ChangeFill(Health / MaxHealth);
 
-		RespawnEvent.listener.AddListener(delegate { ResetHealth(); });
+		RespawnEvent.Add(delegate { ResetHealth(); });
 	}
 
 	private void LateUpdate()
@@ -59,7 +59,7 @@ public class PlayerHealth : Damageable
 	}
 	public void Respawn()
 	{
-		RespawnEvent.listener.Invoke();
+		RespawnEvent.Raise();
 	}
 	#endregion
 

@@ -151,20 +151,15 @@ public class WorldState : MonoBehaviour
 		{
 			// set up instance
 			instance = this;
-			Respawn.listener.AddListener(RespawnPlayer);
+			Respawn.Add(RespawnPlayer);
 			player = GameObject.FindGameObjectWithTag("Player");
 
 			Debug.Log("made World Instance");
 
-			MusicToggle.listener.AddListener(Toggle);
+			MusicToggle.Add(Toggle);
 			music = GetComponent<FMODUnity.StudioEventEmitter>();
 			ChangeMusic(0);
 			currentWorldTheme = 0;
-
-			// default settings
-			PlayerCameraFollow cam = FindObjectOfType<PlayerCameraFollow>();
-			if (cam != null)
-				cam.mouseSensitivity = PlayerPrefs.GetFloat("sensitivity", 1) * cam.mouseSensitivityMax;
 
 			// volume settings
 			FMOD.Studio.Bus myBus = FMODUnity.RuntimeManager.GetBus("bus:/SFX");
@@ -228,7 +223,7 @@ public class WorldState : MonoBehaviour
 				SpawnPoints[PersistentData.currentCheckpoint].debugSheepAdder.SetActive(true);
 			}
 
-			Respawn.listener.Invoke();
+			Respawn.Raise();
 		}
 	}
 
@@ -317,7 +312,7 @@ public class WorldState : MonoBehaviour
 
 			// move player if found loaded stuff
 			if (PersistentData.currentCheckpoint > -1)
-				Respawn.listener.Invoke();
+				Respawn.Raise();
 			Debug.Log("Game data loaded!");
 		}
 		else

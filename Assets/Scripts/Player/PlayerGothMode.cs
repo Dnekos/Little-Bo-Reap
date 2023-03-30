@@ -14,7 +14,8 @@ public class PlayerGothMode : MonoBehaviour
         Goth
     }
 
-    [Header("Goth Mode")]
+	[Header("Goth Mode")]
+	[SerializeField] ParticleSystem eyeFlashParticle;
     [SerializeField] GameObject gothParticles;
     [SerializeField] VolumeProfile gothVolume;
     [SerializeField] GameObject explosion;
@@ -62,7 +63,7 @@ public class PlayerGothMode : MonoBehaviour
 
 		gothMeter.ChangeFill(GothMeterCount);
 
-		RespawnEvent.listener.AddListener(delegate { ResetGoth(); });
+		RespawnEvent.Add(delegate { ResetGoth(); });
 
 		meshes = materialParent.GetComponentsInChildren<SkinnedMeshRenderer>();
 
@@ -166,6 +167,7 @@ public class PlayerGothMode : MonoBehaviour
 				movement.HaltPlayer();
 
 				// start up hammer
+				eyeFlashParticle.Play(true);
 				anim.Play(hammerAnimation);
 				gothMode = GothState.Hammer;
 				sheepHammer.Interact();

@@ -4861,11 +4861,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80314f688087ee24aa4587705d2698e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isOpened: 0
   tempParticles: {fileID: 2089355185964967284}
   spinTime: 5
   idleAnim: Pinwheel_Idle
   spinAnim: Pinwheel_Spin
-  isSpinning: 0
 --- !u!65 &8376771597097552924
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5006,7 +5006,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 15f8ddc85651b754aa4de2933e256ba3, type: 2}
+      objectReference: {fileID: 2100000, guid: 9933debd17a9425418ffd55438c7f3b2, type: 2}
     - target: {fileID: -3987513150972942500, guid: 2c2f50a65d2e84e46b2e5fb5c35d681f,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -5036,7 +5036,8 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 15f8ddc85651b754aa4de2933e256ba3, type: 2}
+      objectReference: {fileID: 4979034430209466471, guid: d2746e20a28a2dc439ffcd87ac935549,
+        type: 3}
     - target: {fileID: 919132149155446097, guid: 2c2f50a65d2e84e46b2e5fb5c35d681f,
         type: 3}
       propertyPath: m_Name

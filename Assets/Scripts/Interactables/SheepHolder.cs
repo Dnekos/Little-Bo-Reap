@@ -16,7 +16,7 @@ public class SheepHolder : Interactable
 
 	private void Awake()
 	{
-		endConstructEvent.listener.AddListener(RemoveSheep);
+		endConstructEvent.Add(RemoveSheep);
 	}
 	public virtual void RemoveSheep()
 	{

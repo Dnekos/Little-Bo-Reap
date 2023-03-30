@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerLaunch : MonoBehaviour
 {
-	[SerializeField] GameObject reticle;
+	[SerializeField] GameEvent ResetAimMode, EndAimMode;
 
 	[Header("Sheep Launch Variables")]
 
@@ -91,7 +91,8 @@ public class PlayerLaunch : MonoBehaviour
 							Instantiate(flocks.GetSheepFlock(flockType).SheepProjectilePrefab, launchOrigin.position, launchOrigin.rotation)
 							.GetComponent<PlayerSheepProjectile>();
 
-						reticle.GetComponent<ReticleControls>().ResetReticle();
+						// do reticle stuff
+						ResetAimMode.Raise();
 
 						launchSheep.isBlackSheep = flocks.GetActiveSheep(flockType)[i].isBlackSheep;
 						launchSheep.LaunchProjectile();

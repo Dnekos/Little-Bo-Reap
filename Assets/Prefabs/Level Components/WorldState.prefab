@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4016259675076083573}
   - component: {fileID: 4016259675076083572}
   - component: {fileID: 3365873462784824161}
+  - component: {fileID: 4042317859643986266}
   m_Layer: 0
   m_Name: WorldState
   m_TagString: Untagged
@@ -47,12 +48,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameState: 0
+  Loading: 2
   passiveValues:
-    soulsCount: 0
-    bossSoulsCount: 0
-    activeBuilderAbility: 
-    activeRamAbility: 
-    activeFluffyAbility: 
     builderLaunchDam: 0
     builderCorruptChance: 0
     builderConstructDR: 0
@@ -62,11 +59,26 @@ MonoBehaviour:
     fluffyHealth: 0
     fluffyKnockResist: 0
     fluffyVortexDuration: 0
+  PersistentData:
+    boughtUpgrades: 0
+    soulsCount: 0
+    bossSoulsCount: 0
+    currentLevelIndex: 0
+    currentCheckpoint: 0
+    graveIndexes: 
+    doorIndexes: 
+    activeBuilderAbility: 0
+    activeRamAbility: 0
+    activeFluffyAbility: 0
+    totalBuilder: 0
+    totalRam: 0
+    totalFluffy: 0
   SpawnPoints: []
-  activeSpawnPoint: -1
+  SheepGraves: []
+  doors: []
   Respawn: {fileID: 11400000, guid: 19937298da8f18b41b1d2572d7bb5bcb, type: 2}
-  currentScore: 0
   MusicToggle: {fileID: 11400000, guid: 9bd00c9cd9464204d8a6799a3e7142d3, type: 2}
+  currentWorldTheme: 0
   player: {fileID: 0}
   HUD: {fileID: 0}
 --- !u!114 &4016259675076083572
@@ -237,8 +249,31 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: f98c3e5d-013f-49eb-a479-09fc6060d8d5
     m_ActionName: Dialog/AdvanceText[/Mouse/leftButton,/Keyboard/space,/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ea74ad52-c969-4048-8f0a-0d381f8ce4e5
+    m_ActionName: RamCharge/PauseMenu[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: edf51ad9-0a69-4032-882d-34963427bd32
+    m_ActionName: RamCharge/StopCharge[/Keyboard/space]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: CinematicCameras
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &4042317859643986266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4016259675076083575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87d4913581c1197449debfe665513fdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cse: {fileID: 11400000, guid: 4de8823a48db57946be67c4bec6bd4c8, type: 2}
+  playstation: {fileID: 11400000, guid: d3f6dbb121f04534c89e0fb0aa233573, type: 2}
+  xbox: {fileID: 11400000, guid: de0255a6de4fdac4dbbc45400de71296, type: 2}

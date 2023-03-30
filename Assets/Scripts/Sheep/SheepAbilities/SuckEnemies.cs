@@ -25,11 +25,14 @@ public class SuckEnemies : MonoBehaviour
     [SerializeField] float forwardKnock;
 
     List<GameObject> enemiesStuck = new List<GameObject>();
+                //REVIEW: just a suggestion, but I recently learned about Hash Sets, which have more optimal lookup time than lists,
+                //      maybe they could work here since we are using a lot of Count() and Contains() commands, but I haven't used them before so I'm not 100% sure on it
 
     // Start is called before the first frame update
     void Start()
     {
-        GetComponent<SphereCollider>().radius = suckDistance;
+        //REVIEW: we might want an If statement here to check if the Sphere collider exists
+        GetComponent<SphereCollider>().radius = suckDistance;//REVIEW: the sphere collider is something we could pass into this script from engine
     }
 
     // Update is called once per frame

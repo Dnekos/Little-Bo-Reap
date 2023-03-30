@@ -17,7 +17,7 @@ public class PlayerSummoningResource : MonoBehaviour
 
 	private void Start()
 	{
-		RespawnEvent.listener.AddListener(delegate { ResetBlood(); });
+		RespawnEvent.Add(delegate { ResetBlood(); });
 		bar.ChangeFill(currentBlood / maxBlood);
 	}
 

@@ -6,7 +6,12 @@ using UnityEngine.Events;
 [CreateAssetMenu(fileName = "NewGameEvent", menuName = "ScriptableObjects/Game Event")]
 public class GameEvent : ScriptableObject
 {
-	public UnityEvent listener;
+	protected UnityEvent listener;
+
+	public virtual void Add(UnityAction call)
+	{
+		listener.AddListener(call);
+	}
 
 	public virtual void Raise()
 	{

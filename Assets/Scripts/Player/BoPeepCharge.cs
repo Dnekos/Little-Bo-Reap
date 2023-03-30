@@ -1,3 +1,5 @@
+//REVIEW: Would like a comment on why we have to change the players max move speed for this charge attack
+		//	(I know why you have to, but someone who isn't in the code base regularly might scratch their heads looking at that)
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,7 +18,7 @@ public class BoPeepCharge : MonoBehaviour
 	[SerializeField] float chargeDuration = 1.5f;
 
 	[SerializeField] PlayerMovement moveController;
-	bool charging;
+	bool charging;//REVIEW: mentioned this on another review, but I like 'isCharging' more as a name for bools(I'm nitpicking)
 
 	//hold reg max move speed to set it back after.
 	float maxMoveSpeedTemp;
@@ -31,7 +33,8 @@ public class BoPeepCharge : MonoBehaviour
 
 	public void AbilityUpdate()
 	{
-		Vector2 MovementVector = new Vector2(0, 1);
+		Vector2 MovementVector = new Vector2(0, 1);//REVIEW: maybe make this Vector2 a variable that can be modified in engine
+															//Or, Im guessing you just want to move forward, so maybe you just want to use the player's forward vector
 		moveController.SetMovementVector(MovementVector);
 		//DEPRECATED
 		/*
@@ -66,7 +69,7 @@ public class BoPeepCharge : MonoBehaviour
 		//set timer to 0
 		this.StartCoroutine(ChargeTimer());
 
-		Vector2 MovementVector = new Vector2(0, 1);
+		Vector2 MovementVector = new Vector2(0, 1);//REVIEW: same as above
   		maxMoveSpeedTemp = GetComponent<PlayerMovement>().GetMaxMoveSpeed();
 		moveController.SetMaxMoveSpeed(chargeSpeed);
 		moveController.SetMovementVector(MovementVector);
