@@ -8,6 +8,7 @@ public class PlayerGroundPound : MonoBehaviour
     [Header("Visuals")]
     [SerializeField] FMODUnity.EventReference explodeSound;
     [SerializeField] string heavyAirAnimation;
+    [SerializeField] ParticleSystem eyeFlashParticle;
 
     [Header("Timing / Conditions")]
     [SerializeField] float coolDown = 3f;
@@ -93,6 +94,7 @@ public class PlayerGroundPound : MonoBehaviour
 		startFallPos = transform.position;
 
 		animator.SetBool("isFalling", playerMovement.isFalling);
+        
 
         //called from animator, slam down!!
         rb.AddForce(-rb.velocity, ForceMode.VelocityChange);
@@ -117,6 +119,7 @@ public class PlayerGroundPound : MonoBehaviour
             //groundPoundIcon.CooldownUIEffect(coolDown);
 
             animator.Play(heavyAirAnimation);
+            
 
             StartCoroutine(SlamDown());
 
@@ -129,6 +132,7 @@ public class PlayerGroundPound : MonoBehaviour
     IEnumerator SlamDown()
     {
         yield return new WaitForSeconds(timeTillSlamDown);
+        eyeFlashParticle.Play(true);
         HeavySlamDown();
     }
 

@@ -60,10 +60,14 @@ public class CameraOffsetAdjuster : MonoBehaviour
 		}
 
 		// keep it clamped
-		Mathf.Clamp01(lerptime);
+		lerptime = Mathf.Clamp01(lerptime);
+	}
+	public void StopLooking()
+	{
+		LookTarget = null;
 	}
 	/*
-	 * doesnt work with a generic rig, so sad
+	// doesnt work with a generic rig, so sad
 	private void OnAnimatorIK(int layerIndex)
 	{
 		Debug.Log("checking");

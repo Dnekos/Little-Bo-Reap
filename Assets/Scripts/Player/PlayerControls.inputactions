@@ -221,7 +221,7 @@
                     "path": "<Gamepad>/leftStick",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Xbox",
+                    "groups": "",
                     "action": "WASDMovement",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -463,7 +463,7 @@
                     "path": "<Gamepad>/leftStickPress",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Xbox",
+                    "groups": "",
                     "action": "GroundPound",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -569,17 +569,6 @@
                 },
                 {
                     "name": "",
-                    "id": "19d10705-39b8-4c4c-9e9e-8e79bc98d0c2",
-                    "path": "<Gamepad>/rightTrigger",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "SheepActiveAbility",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "47a2db1d-6e65-48f0-97e3-fe7aa5be21cb",
                     "path": "<Keyboard>/1",
                     "interactions": "",
@@ -597,17 +586,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "SheepActiveAbility",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "d9ed73cd-fa15-4b2e-88a9-d7429af7e2ab",
-                    "path": "<Gamepad>/rightStickPress",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "PetSheep",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -641,6 +619,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "PauseMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d9ed73cd-fa15-4b2e-88a9-d7429af7e2ab",
+                    "path": "<Gamepad>/rightStickPress",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PetSheep",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "19d10705-39b8-4c4c-9e9e-8e79bc98d0c2",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SheepActiveAbility",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -1066,17 +1066,5 @@
             ]
         }
     ],
-    "controlSchemes": [
-        {
-            "name": "Xbox",
-            "bindingGroup": "Xbox",
-            "devices": [
-                {
-                    "devicePath": "<XInputController>",
-                    "isOptional": false,
-                    "isOR": false
-                }
-            ]
-        }
-    ]
+    "controlSchemes": []
 }
