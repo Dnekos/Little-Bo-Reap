@@ -8,6 +8,8 @@ public class ArmoredBigGuyAI : BigGuyAI
     [Header("Armor")]
 	[SerializeField] GameObject ArmorBarCanvas;
 	[SerializeField] Transform[] ArmorBars;
+    [SerializeField] GameObject armorObject;
+    [SerializeField] ParticleSystem destroyParticles;
     private bool armorBroken = false;
 
     protected override void Start()
@@ -42,6 +44,8 @@ public class ArmoredBigGuyAI : BigGuyAI
         {
             ArmorBarCanvas.SetActive(false);
             HealthBarCanvas.SetActive(true);
+            armorObject.SetActive(false);
+            destroyParticles.Play(true);
             armorBroken = true;
         }
     }
