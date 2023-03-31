@@ -10,6 +10,10 @@ public class ArenaEndCamera : MonoBehaviour
     [SerializeField] float spawnRadiusMax = 20f;
     [SerializeField] float ySpawnOffsetMin = 1;
     [SerializeField] float ySpawnOffsetMax = 6;
+    [SerializeField] float collideCheckRadius = 0.25f;
+    [SerializeField] LayerMask groundLayer;
+    int currentChecks;
+    [SerializeField] int maxChecks = 10;
     Vector3 lookPosition;
 
 	// Start is called before the first frame update
@@ -40,6 +44,13 @@ public class ArenaEndCamera : MonoBehaviour
 
         transform.position = newPos;
         transform.LookAt(look);
+
+        if(Physics.CheckSphere(transform.position, collideCheckRadius, groundLayer) && currentChecks < maxChecks)
+        {
+            Debug.LogWarning("Camera is in something! trying again");
+            currentChecks++;
+            InitCamera(look, centerPos);
+        }
 
     }
 
