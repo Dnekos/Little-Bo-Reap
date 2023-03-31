@@ -206,7 +206,16 @@ public class WorldState : MonoBehaviour
 			music.Play();
 	}
 
-#region Spawning
+	public void DisableControls()
+	{
+		player.GetComponent<PlayerInput>().DeactivateInput();
+	}
+	public void EnableControls()
+	{
+		player.GetComponent<PlayerInput>().ActivateInput();
+	}
+
+	#region Spawning
 	public void SetSpawnPoint(Checkpoint point)
 	{
 		PersistentData.currentCheckpoint = System.Array.FindIndex<Checkpoint>(SpawnPoints, spawnpoint => spawnpoint == point);
