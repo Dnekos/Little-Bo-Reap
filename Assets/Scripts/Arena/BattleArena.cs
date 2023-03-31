@@ -42,6 +42,9 @@ public class BattleArena : PuzzleDoor
 	[Header("Resetting"), SerializeField]
 	GameEvent RespawnPlayer;
 
+	[Header("Boot Player")]
+	[SerializeField] Transform bootSpawnPoint;
+
 	[Header("Music")]
 	[SerializeField] int afterMusic;
 
@@ -52,6 +55,8 @@ public class BattleArena : PuzzleDoor
 	[SerializeField] float camSpawnSphereRadius = 5f;
 	Vector3 finalEnemyPosition = Vector3.zero;
 	bool finalEnemyConfirmed;
+
+
 
 	// Start is called before the first frame update
 	void Awake()
@@ -85,6 +90,7 @@ public class BattleArena : PuzzleDoor
 	{
 		if (!isOpened) // if arena is not cleared already
 		{
+			WorldState.instance.isInCombat = false;
 			door.SetActive(false); // reopen doors
 			CurrentWave = -1; // reset waves
 
@@ -99,6 +105,8 @@ public class BattleArena : PuzzleDoor
 		CurrentWave++;
 		if (CurrentWave == waves.Length)
 		{
+			WorldState.instance.isInCombat = false;
+
 			// if all waves done,
 			OpenDoor();
 			//DoorsFolder.SetActive(false); // open doors
@@ -169,6 +177,7 @@ public class BattleArena : PuzzleDoor
 			door.SetActive(true);
 			AdvanceWave();
 			WorldState.instance.ChangeMusic(1);
+			WorldState.instance.InitCombatBootPoint(bootSpawnPoint);
 		}
 	}
 

@@ -316,6 +316,7 @@ Transform:
   - {fileID: 6961024771130660109}
   - {fileID: 6942374812879854887}
   - {fileID: 2442515365887596881}
+  - {fileID: 4274364251002911571}
   m_Father: {fileID: 0}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -333,6 +334,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   door: {fileID: 6671324369607637575}
   keys: []
+  doorMinY: 0
+  doorDropRate: 15
+  dustParticles: {fileID: 0}
   isOpened: 0
   waves:
   - Enemies:
@@ -359,6 +363,7 @@ MonoBehaviour:
   SoulReward: {fileID: 2521674433815051762, guid: d39315b1299c0a849ae75b961281c19a,
     type: 3}
   RespawnPlayer: {fileID: 11400000, guid: 19937298da8f18b41b1d2572d7bb5bcb, type: 2}
+  bootSpawnPoint: {fileID: 4274364251002911571}
   afterMusic: 0
   finalCamera: {fileID: 4872236329810728023, guid: cc50bcbe95095b94db3bbce8fc30c5e4,
     type: 3}
@@ -381,6 +386,37 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!1 &4409957496308616521
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4274364251002911571}
+  m_Layer: 0
+  m_Name: Boot_Spawn_Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4274364251002911571
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4409957496308616521}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3952563775712835195}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4809428607759761449
 GameObject:
   m_ObjectHideFlags: 0
