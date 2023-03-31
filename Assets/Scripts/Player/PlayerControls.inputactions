@@ -775,6 +775,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "SkipToBoss",
+                    "type": "Button",
+                    "id": "c3d59674-4a77-48c0-90bd-ac3e75b598f7",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -896,6 +905,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "JumpCheckpoint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "eeea979d-46da-49c5-9724-aca50307edaa",
+                    "path": "<Keyboard>/i",
+                    "interactions": "Hold(duration=1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SkipToBoss",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

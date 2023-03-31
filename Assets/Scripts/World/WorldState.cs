@@ -56,6 +56,7 @@ public struct SaveData
 	[Header("LevelPosition")]
 	public int currentLevelIndex;
 	public int currentCheckpoint;
+	public bool goingToBoss;
 
 	public List<int> graveIndexes;
 	public List<int> doorIndexes;
@@ -78,6 +79,7 @@ public struct SaveData
 
 		currentLevelIndex = -1;
 		currentCheckpoint = -1;
+		goingToBoss = false;
 
 
 		graveIndexes = new List<int>();
@@ -143,6 +145,9 @@ public class WorldState : MonoBehaviour
 	public GameObject player;
 	[HideInInspector]
 	public HUDManager HUD;
+
+	[Header("Boss Skip")]
+	bool isHoldingSkip;
 
 	// Start is called before the first frame update
 	void Awake()
@@ -236,6 +241,20 @@ public class WorldState : MonoBehaviour
 		}
 	}
 
+	public void OnSkiptoBoss(InputAction.CallbackContext context)
+    {
+		if (context.performed)
+		{
+			PersistentData.currentCheckpoint = SpawnPoints.Length - 1;
+			if (SpawnPoints[PersistentData.currentCheckpoint].addsSheep)
+			{
+				SpawnPoints[PersistentData.currentCheckpoint].debugSheepAdder.SetActive(true);
+			}
+			Respawn.Raise();
+			Debug.Log("Skip to boss!");
+		}
+    }
+
 	void RespawnPlayer()
 	{
 		if (PersistentData.currentCheckpoint == -1)
@@ -269,6 +288,12 @@ public class WorldState : MonoBehaviour
 			PersistentData.doorIndexes.Add(index);
 	}
 	#endregion
+
+	public void GoToBoss(int levelIndex)
+    {
+		PersistentData.goingToBoss = true;
+		SaveGame(levelIndex);
+    }
 
 	#region saving
 	// https://www.red-gate.com/simple-talk/development/dotnet-development/saving-game-data-with-unity/
