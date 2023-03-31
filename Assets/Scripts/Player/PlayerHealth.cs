@@ -27,6 +27,10 @@ public class PlayerHealth : Damageable
 	[SerializeField, Tooltip("If the player y position is under this, kill the player")]
 	float minAltitude = -50;
 
+	[Header("Boot Player")]
+	[SerializeField] float bootDamage = 15;
+	[SerializeField] float bootInvulnTime = 5f;
+
 	[Header("Components")]
 	[SerializeField]
 	PlayerInput[] inputs;
@@ -46,8 +50,9 @@ public class PlayerHealth : Damageable
 	{
 		if (transform.position.y < minAltitude && Health > 0)
 		{
-			Health = 0;
-			OnDeath();
+			BootPlayerBack();
+			//Health = 0;
+			//OnDeath();
 		}
 	}
 
@@ -82,6 +87,29 @@ public class PlayerHealth : Damageable
 		Cursor.visible = false;
 
 	}
+
+	public void BootPlayerBack()
+    {
+		if(!isHurt)
+        {
+			StartCoroutine(HurtCooldown());
+
+			//apply damage
+			if (Health > bootDamage)
+			{
+				Health -= bootDamage;
+				healthBar.ChangeFill((Health / MaxHealth));
+			}
+			else
+			{
+				Health = 1;
+				healthBar.ChangeFill((Health / MaxHealth));
+			}
+
+			WorldState.instance.BootPlayer();
+		}
+		
+    }
 
 	protected override void OnDeath()
 	{
@@ -162,4 +190,11 @@ public class PlayerHealth : Damageable
 		yield return new WaitForSeconds(hitstunTimer);
 		HitStunned = false;
 	}
+
+	IEnumerator BootInvuln()
+    {
+		isInvulnerable = true;
+		yield return new WaitForSeconds(bootInvulnTime);
+		isInvulnerable = false;
+    }
 }

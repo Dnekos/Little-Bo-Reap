@@ -146,8 +146,9 @@ public class WorldState : MonoBehaviour
 	[HideInInspector]
 	public HUDManager HUD;
 
-	[Header("Boss Skip")]
-	bool isHoldingSkip;
+	[Header("Booting player")]
+	public bool isInCombat;
+	public Transform combatBootPoint;
 
 	// Start is called before the first frame update
 	void Awake()
@@ -252,6 +253,35 @@ public class WorldState : MonoBehaviour
 			}
 			Respawn.Raise();
 			Debug.Log("Skip to boss!");
+		}
+    }
+
+	public void InitCombatBootPoint(Transform spawnLoc)
+    {
+		isInCombat = true;
+		combatBootPoint = spawnLoc;
+    }
+	public void BootPlayer()
+    {
+		if(isInCombat)
+        {
+			player.GetComponent<Rigidbody>().position = combatBootPoint.position;
+			player.transform.rotation = combatBootPoint.rotation;
+			player.GetComponent<Rigidbody>().velocity = Vector3.zero;
+		}
+		else
+        {
+			if (PersistentData.currentCheckpoint == -1)
+			{
+				SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+				return;
+			}
+			else
+            {
+				player.GetComponent<Rigidbody>().position = SpawnPoints[PersistentData.currentCheckpoint].RespawnPoint.position;
+				player.transform.rotation = SpawnPoints[PersistentData.currentCheckpoint].RespawnPoint.rotation;
+				player.GetComponent<Rigidbody>().velocity = Vector3.zero;
+			}
 		}
     }
 
