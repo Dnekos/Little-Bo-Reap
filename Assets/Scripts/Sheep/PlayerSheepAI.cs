@@ -795,7 +795,7 @@ public enum SheepStates
         Collider[] enemyHits = (Physics.OverlapSphere(targetPos, targetRadius, enemyLayer));
         foreach (Collider enemy in enemyHits)
         {
-			Damageable enemyDamageable = enemy.GetComponent<Damageable>();
+			Damageable enemyDamageable = enemy.GetComponent<EnemyBase>();
 			if (enemyDamageable != null && (!(enemyDamageable is EnemyAI) || ((EnemyAI)enemyDamageable).GetState() != EnemyStates.EXECUTABLE))
 				attackTargets?.Add(enemyDamageable);
         }
