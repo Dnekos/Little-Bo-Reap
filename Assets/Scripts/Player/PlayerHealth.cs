@@ -92,7 +92,10 @@ public class PlayerHealth : Damageable
     {
 		if(!isHurt)
         {
+			//get hurt, take damage, and boot yourself back up
 			StartCoroutine(HurtCooldown());
+			StartCoroutine(HitVignette());
+			StartCoroutine(BootInvuln());
 
 			//apply damage
 			if (Health > bootDamage)
