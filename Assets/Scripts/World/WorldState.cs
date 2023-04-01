@@ -256,6 +256,7 @@ public class WorldState : MonoBehaviour
 		}
     }
 
+	//tell us we're in combat, sets combat boot point. Called from battleArena
 	public void InitCombatBootPoint(Transform spawnLoc)
     {
 		isInCombat = true;
@@ -263,12 +264,14 @@ public class WorldState : MonoBehaviour
     }
 	public void BootPlayer()
     {
+		//in combat you get booted back to the specified point
 		if(isInCombat)
         {
 			player.GetComponent<Rigidbody>().position = combatBootPoint.position;
 			player.transform.rotation = combatBootPoint.rotation;
 			player.GetComponent<Rigidbody>().velocity = Vector3.zero;
 		}
+		//out of combat go to checkpoint
 		else
         {
 			if (PersistentData.currentCheckpoint == -1)
