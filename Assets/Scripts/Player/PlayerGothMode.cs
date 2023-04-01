@@ -25,6 +25,7 @@ public class PlayerGothMode : MonoBehaviour
     [SerializeField] float gothMeterChargeTime;
     [SerializeField] float gothMeterDuration;
     public GothState gothMode = GothState.Normal;
+	WorldState ws;
 
 	[Header("Hammer")]
 	[SerializeField,Tooltip("minimum amount of active sheep to make hammer, if less go straight to goth")] float MinSheep;
@@ -32,11 +33,13 @@ public class PlayerGothMode : MonoBehaviour
     [SerializeField] string hammerAnimation = "Bo_Peep_Hammer";
     Animator anim;
 	PlayerInput input;
+	
 
     [Header("Postprocess")]
     [SerializeField] float defaultSaturation = -100f;
     [SerializeField] float saturationIncreaseOverTime = 10f;
     UnityEngine.Rendering.Universal.ColorAdjustments gothSaturation;
+
 
 	[Header("Materials")]
 	[SerializeField] GameObject materialParent;
@@ -53,6 +56,7 @@ public class PlayerGothMode : MonoBehaviour
 
 	PlayerSheepAbilities playerSheep;
 	PlayerMovement movement;
+	int previousMusic;
 
     private void Start()
     {
@@ -76,11 +80,14 @@ public class PlayerGothMode : MonoBehaviour
         anim = GetComponent<PlayerAnimationController>().playerAnimator;
 		input = GetComponent<PlayerInput>();
 		movement = GetComponent<PlayerMovement>();
+		ws = FindObjectOfType<WorldState>();
+		previousMusic = ws.currentWorldTheme;
 
 	}
 
 	void ResetGoth()
 	{
+		ws.ChangeMusic(previousMusic);
 		// reset mesh material		
 		if (gothMode != GothState.Normal)
 			foreach (SkinnedMeshRenderer mesh in meshes)
@@ -181,8 +188,11 @@ public class PlayerGothMode : MonoBehaviour
     {
         //TEMP SOUND
         FMODUnity.RuntimeManager.PlayOneShotAttached(gothSound, gameObject);
-
-        Instantiate(explosion, transform.position, transform.rotation);
+		previousMusic = ws.currentWorldTheme;
+		Debug.Log("Previous Music: " + previousMusic);
+		ws.ChangeMusic(3);
+		
+		Instantiate(explosion, transform.position, transform.rotation);
 
         gothSaturation.saturation.value = defaultSaturation;
 
