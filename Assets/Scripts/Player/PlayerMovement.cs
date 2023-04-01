@@ -38,7 +38,7 @@ public class PlayerMovement : MonoBehaviour
     bool canJump = true;
 	[SerializeField] float CoyoteTime = 0.2f;
 	float CoyoteTimer;
-
+	Coroutine JmpCoroutine;
 
 	// GROUND POUND
 	[HideInInspector] public bool isFalling = false;
@@ -307,11 +307,15 @@ public class PlayerMovement : MonoBehaviour
     {
         if (CoyoteTimer > 0f && context.started && canJump && !isLifting)
         {
-            //prevent super jumps
-            StartCoroutine(SuperJumpPrevention());
+			//prevent super jumps
+			if (JmpCoroutine != null)
+				StopCoroutine(JmpCoroutine);
+			JmpCoroutine = StartCoroutine(SuperJumpPrevention());
 
-            // SOUND
-            FMODUnity.RuntimeManager.PlayOneShotAttached(jumpSound, gameObject);
+			CoyoteTimer = 0;
+
+			// SOUND
+			FMODUnity.RuntimeManager.PlayOneShotAttached(jumpSound, gameObject);
 
             // play particles
             jumpParticles.Play();
@@ -325,7 +329,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (context.started && CanLift && !isFalling)
         {
-            if (liftcontroller.StartLifting())
+			if (liftcontroller.StartLifting())
             {
                 GetComponent<PlayerSheepAbilities>().sheepFlocks[(int)SheepTypes.BUILD].spellParticle.Play(true);
 

@@ -27,7 +27,8 @@ public class PlayerGroundPound : MonoBehaviour
     [SerializeField] float airDownForce;
     [SerializeField] PlayerCameraFollow playerCam;
 
-	[Header("Explosion")]
+    [Header("Explosion")]
+    [SerializeField] GameObject crackAndDirtParticles;
 	[SerializeField] float DamageMultiplier = 1;
     [SerializeField] GameObject heavyParticle;
     [SerializeField] Transform particleOrigin;
@@ -56,6 +57,7 @@ public class PlayerGroundPound : MonoBehaviour
             playerMovement.isFalling = false;
             animator.SetBool("isFalling", false);
             Instantiate(heavyParticle, transform.position, transform.rotation);
+            GameObject dirt = Instantiate(crackAndDirtParticles, transform.position, transform.rotation);
 
             //camera shake!
             playerCam.ShakeCamera(true);
@@ -87,7 +89,8 @@ public class PlayerGroundPound : MonoBehaviour
     }
     public void SpawnHeavyParticle()
     {
-        GameObject explode = Instantiate(heavyParticle, particleOrigin.position, particleOrigin.rotation);       
+        GameObject explode = Instantiate(heavyParticle, particleOrigin.position, particleOrigin.rotation);
+        
     }
     public void HeavySlamDown()
     {

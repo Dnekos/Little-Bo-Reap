@@ -49,6 +49,8 @@ public enum SheepStates
     [Header("Pet Sheep Stuff")]
     [SerializeField] ParticleSystem petSheepParticles;
     [SerializeField] string petAnimation;
+    [SerializeField] float maxSize;
+    [SerializeField] float minSize;
 
 	[Header("Sounds")]
 	[SerializeField] FMODUnity.EventReference biteSound;
@@ -110,6 +112,9 @@ public enum SheepStates
 	override protected void Start()
     {
         base.Start();
+
+        float size = Random.Range(minSize, maxSize);
+        transform.localScale = new Vector3(size, size, size);
 
         if (sheepType == 2)
         {
@@ -459,7 +464,7 @@ public enum SheepStates
     public void RecallSheep()
     {
         // sheep cant be recalled when stunned OR DEFENDING
-        if (currentSheepState == SheepStates.ABILITY)
+        if (currentSheepState == SheepStates.STUN || currentSheepState == SheepStates.ABILITY)
             return;
 
         // if the sheep is too high up, stun it first so that it gets closer to the ground
@@ -469,6 +474,7 @@ public enum SheepStates
             return;
         }
 
+		agent.enabled = true;
 		animator.SetBool("isDefending", false);
 
 		SetSheepState(SheepStates.FOLLOW_PLAYER);
@@ -481,11 +487,11 @@ public enum SheepStates
     }
     public void SetSheepState(SheepStates newstate)
     {
-        if (hitstunCo != null)
-        { 
-            StopCoroutine(hitstunCo);
-            rb.isKinematic = true;
-         }
+		if (hitstunCo != null)
+		{
+			StopCoroutine(hitstunCo);
+			rb.isKinematic = true;
+		}
 
 		// if they were in an ability, end it, this is messy and gross
 		if (currentSheepState == SheepStates.ABILITY)
@@ -614,7 +620,7 @@ public enum SheepStates
 		// coroutine
 		if (hitstunCo != null)
 			StopCoroutine(hitstunCo);
-		hitstunCo = StartCoroutine(OnHitStun(SheepStates.WANDER));
+		hitstunCo = StartCoroutine(OnHitStun(stateAfterStun));
 
 		// get out of any constructs
 		EndConstruct();
@@ -632,7 +638,6 @@ public enum SheepStates
         isGrounded = false;
 
         rb.isKinematic = false;
-        rb.constraints = RigidbodyConstraints.None;
         rb.constraints = RigidbodyConstraints.FreezeRotation;
 
         yield return new WaitForSeconds(StunTime);
@@ -641,28 +646,28 @@ public enum SheepStates
         yield return new WaitUntil(() => isGrounded);
         //yield return new WaitForSeconds(0.1f);
 
-        rb.isKinematic = true;
+       // rb.isKinematic = true;
+		agent.enabled = true;
 
+		//rb.isKinematic = true;
+		rb.constraints = RigidbodyConstraints.FreezeAll;
 
-        // if sheep were attacking, they can resume attacking 
-        // the condition is needed because actions like vortex and construct should not be resumed
-        SetSheepState((origState == SheepStates.ATTACK) ? origState : SheepStates.WANDER);
-    }
+		rb.angularVelocity = Vector3.zero;
+		rb.velocity = Vector3.zero;
+		Debug.Log(gameObject.name + " ending stunn");
+		// if sheep were attacking, they can resume attacking 
+		// the condition is needed because actions like vortex and construct should not be resumed
+		SetSheepState(stateAfterStun);//(origState == SheepStates.ATTACK) ? origState : SheepStates.WANDER);
+
+	}
 
     private void OnCollisionStay(Collision collision)
     {
+		Debug.Log((currentSheepState == SheepStates.STUN) + " " + (collision.collider.gameObject.layer == LayerMask.NameToLayer("Ground")));
         if (currentSheepState == SheepStates.STUN && collision.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
 			//Debug.Log("sheep collided with " + collision.gameObject);
             isGrounded = true;
-
-			agent.enabled = true;
-
-            rb.isKinematic = true;
-            rb.constraints = RigidbodyConstraints.FreezeAll;
-
-            rb.angularVelocity = Vector3.zero;
-            rb.velocity = Vector3.zero;
         }
     }
     #endregion
@@ -790,7 +795,7 @@ public enum SheepStates
         Collider[] enemyHits = (Physics.OverlapSphere(targetPos, targetRadius, enemyLayer));
         foreach (Collider enemy in enemyHits)
         {
-			Damageable enemyDamageable = enemy.GetComponent<Damageable>();
+			Damageable enemyDamageable = enemy.GetComponent<EnemyBase>();
 			if (enemyDamageable != null && (!(enemyDamageable is EnemyAI) || ((EnemyAI)enemyDamageable).GetState() != EnemyStates.EXECUTABLE))
 				attackTargets?.Add(enemyDamageable);
         }
@@ -876,7 +881,7 @@ public enum SheepStates
 	}
 	public void EndConstruct()
 	{
-		agent.enabled = true;
+		//agent.enabled = true;
 		//gameObject.layer = SheepLayer;     
 
 		// if not already changed, make sure its not on CONSTRUCT

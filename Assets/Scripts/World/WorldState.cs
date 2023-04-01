@@ -56,6 +56,7 @@ public struct SaveData
 	[Header("LevelPosition")]
 	public int currentLevelIndex;
 	public int currentCheckpoint;
+	public bool goingToBoss;
 
 	public List<int> graveIndexes;
 	public List<int> doorIndexes;
@@ -78,6 +79,7 @@ public struct SaveData
 
 		currentLevelIndex = -1;
 		currentCheckpoint = -1;
+		goingToBoss = false;
 
 
 		graveIndexes = new List<int>();
@@ -144,6 +146,10 @@ public class WorldState : MonoBehaviour
 	[HideInInspector]
 	public HUDManager HUD;
 
+	[Header("Booting player")]
+	public bool isInCombat;
+	public Transform combatBootPoint;
+
 	// Start is called before the first frame update
 	void Awake()
 	{
@@ -206,7 +212,16 @@ public class WorldState : MonoBehaviour
 			music.Play();
 	}
 
-#region Spawning
+	public void DisableControls()
+	{
+		player.GetComponent<PlayerInput>().DeactivateInput();
+	}
+	public void EnableControls()
+	{
+		player.GetComponent<PlayerInput>().ActivateInput();
+	}
+
+	#region Spawning
 	public void SetSpawnPoint(Checkpoint point)
 	{
 		PersistentData.currentCheckpoint = System.Array.FindIndex<Checkpoint>(SpawnPoints, spawnpoint => spawnpoint == point);
@@ -226,6 +241,52 @@ public class WorldState : MonoBehaviour
 			Respawn.Raise();
 		}
 	}
+
+	public void OnSkiptoBoss(InputAction.CallbackContext context)
+    {
+		if (context.performed)
+		{
+			PersistentData.currentCheckpoint = SpawnPoints.Length - 1;
+			if (SpawnPoints[PersistentData.currentCheckpoint].addsSheep)
+			{
+				SpawnPoints[PersistentData.currentCheckpoint].debugSheepAdder.SetActive(true);
+			}
+			Respawn.Raise();
+			Debug.Log("Skip to boss!");
+		}
+    }
+
+	//tell us we're in combat, sets combat boot point. Called from battleArena
+	public void InitCombatBootPoint(Transform spawnLoc)
+    {
+		isInCombat = true;
+		combatBootPoint = spawnLoc;
+    }
+	public void BootPlayer()
+    {
+		//in combat you get booted back to the specified point
+		if(isInCombat)
+        {
+			player.GetComponent<Rigidbody>().position = combatBootPoint.position;
+			player.transform.rotation = combatBootPoint.rotation;
+			player.GetComponent<Rigidbody>().velocity = Vector3.zero;
+		}
+		//out of combat go to checkpoint
+		else
+        {
+			if (PersistentData.currentCheckpoint == -1)
+			{
+				SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+				return;
+			}
+			else
+            {
+				player.GetComponent<Rigidbody>().position = SpawnPoints[PersistentData.currentCheckpoint].RespawnPoint.position;
+				player.transform.rotation = SpawnPoints[PersistentData.currentCheckpoint].RespawnPoint.rotation;
+				player.GetComponent<Rigidbody>().velocity = Vector3.zero;
+			}
+		}
+    }
 
 	void RespawnPlayer()
 	{
@@ -260,6 +321,12 @@ public class WorldState : MonoBehaviour
 			PersistentData.doorIndexes.Add(index);
 	}
 	#endregion
+
+	public void GoToBoss(int levelIndex)
+    {
+		PersistentData.goingToBoss = true;
+		SaveGame(levelIndex);
+    }
 
 	#region saving
 	// https://www.red-gate.com/simple-talk/development/dotnet-development/saving-game-data-with-unity/

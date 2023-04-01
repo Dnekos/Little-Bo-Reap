@@ -8,6 +8,7 @@ public class StartButton : MonoBehaviour
 {
     [SerializeField] string levelToLoad;
 	[SerializeField] string endlessLevelToLoad;
+	[SerializeField] string bossLevel;
 	[Header("Buttons"), SerializeField]
 	Button Continue;
 	[SerializeField]
@@ -84,6 +85,13 @@ public class StartButton : MonoBehaviour
     {
 		StartEffects();
 		levelToLoad = endlessLevelToLoad;
+		Invoke("LoadScene", 2f);
+	}
+
+	public void LoadBoss()
+    {
+		StartEffects();
+		levelToLoad = bossLevel;
 		Invoke("LoadScene", 2f);
 	}
 }

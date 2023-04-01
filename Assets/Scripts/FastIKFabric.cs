@@ -68,7 +68,7 @@ namespace DitzelGames.FastIK
             Root = transform;
             for (var i = 0; i <= ChainLength; i++)
             {
-				Debug.Log(Root);
+				//Debug.Log(Root);
                 if (Root == null)
                     throw new UnityException("The chain value is longer than the ancestor chain!");
                 Root = Root.parent;

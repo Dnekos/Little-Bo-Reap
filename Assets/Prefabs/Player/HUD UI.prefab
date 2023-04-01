@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2338155259098904143}
   - component: {fileID: 7679753148468414466}
   - component: {fileID: 5362029429938391127}
+  - component: {fileID: 2007222329847174625}
   m_Layer: 5
   m_Name: NumberImage Place Holder
   m_TagString: Untagged
@@ -100,6 +101,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2007222329847174625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 64836991220289054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c6abf06de99b504bb92589b5058bcaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  idleAnimation: HUD_Number_Idle
 --- !u!1 &141999965222969963
 GameObject:
   m_ObjectHideFlags: 0
@@ -1571,7 +1585,7 @@ RectTransform:
   m_GameObject: {fileID: 2400336634332101087}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7334300033658114475}
@@ -1579,7 +1593,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 2, y: 37}
   m_SizeDelta: {x: 30, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6095910490345847622
@@ -4629,6 +4643,7 @@ GameObject:
   - component: {fileID: 7091619355248765559}
   - component: {fileID: 5481730429996165227}
   - component: {fileID: 7779087361674768678}
+  - component: {fileID: 8024254580552689278}
   m_Layer: 5
   m_Name: NumberImage Place Holder
   m_TagString: Untagged
@@ -4717,6 +4732,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &8024254580552689278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6601896790961233077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c6abf06de99b504bb92589b5058bcaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  idleAnimation: HUD_Number_Idle
 --- !u!1 &6674444456676329730
 GameObject:
   m_ObjectHideFlags: 0

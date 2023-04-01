@@ -8,7 +8,7 @@ public class HealthCollectable : Collectable
     // Start is called before the first frame update
     void Start()
     {
-
+        //REVIEW: remove this function if its not neeeded
     }
     //effect: heals player based on healing power of collectable.
     protected override void CollectableEffect()

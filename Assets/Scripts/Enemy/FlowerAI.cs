@@ -4,16 +4,14 @@ using UnityEngine;
 
 public class FlowerAI : EnemyBase
 {
-    Dictionary<int, float> Cooldowns;
-
+	[Header("Flower")]
+	[SerializeField, Tooltip("how close for the flower to start locking in on player")] float Range = 70f;
     [SerializeField] Transform flowerBody;
-    [SerializeField] Transform flowerHead;
-
-    [SerializeField] Transform projectile;
     [SerializeField] Transform attackPoint;
 
     [SerializeField] protected EnemyAttack activeAttack;
-    [SerializeField] Animator anim;
+	bool canAttack = true;
+	Animator anim;
 
     [Header("Sounds")]
     [SerializeField] FMODUnity.EventReference attackSound;
@@ -23,43 +21,38 @@ public class FlowerAI : EnemyBase
     
 
     // Start is called before the first frame update
-    void Start()
+    override protected void Start()
     {
         base.Start();
-        Cooldowns = new Dictionary<int, float>();
         player = WorldState.instance.player.transform;
-
-    }
+		anim = GetComponent<Animator>();
+	}
 
     // Update is called once per frame
     void Update()
     {
 
-        //adjust this(make it its own function)
-        if ((player.position - this.transform.position).magnitude < 100f)
-        {
-            FlowerRotate();
-            RunAttack(activeAttack);
-        }
+		//adjust this(make it its own function)
+		if ((player.position - this.transform.position).magnitude < Range)
+		{
+			FlowerRotate();
+			if (canAttack)
+			{
+				//anim.Play();
+				activeAttack.PerformAttack(anim);
+				StartCoroutine(RunCooldown());
+			}
+		}
     }
 
     void FlowerRotate()
     {
         Quaternion bodyLookRotation = Quaternion.LookRotation(player.position - flowerBody.position, transform.eulerAngles);
-        Quaternion headLookRotation = Quaternion.LookRotation(player.position - flowerHead.position, transform.eulerAngles);
 
         //have body and head turn towards player(y-axis for body, x-axis for head)
-        flowerBody.eulerAngles = Quaternion.Euler(0f, bodyLookRotation.eulerAngles.y, 0f).eulerAngles;
-
-        flowerHead.eulerAngles = flowerBody.eulerAngles + Quaternion.Euler(headLookRotation.eulerAngles.x, 0f, 0f).eulerAngles;
-
+        flowerBody.eulerAngles = Quaternion.Euler(bodyLookRotation.eulerAngles.x, bodyLookRotation.eulerAngles.y, 0f).eulerAngles;
     }
 
-    public void RunAttack(EnemyAttack atk)
-    {
-        atk.PerformAttack(anim);
-        activeAttack = atk;
-    }
 
     public void SpawnProjectile()
     {
@@ -67,4 +60,10 @@ public class FlowerAI : EnemyBase
 			activeAttack.SpawnObject(attackPoint.position, attackPoint.rotation);
     }
 
+	IEnumerator RunCooldown()
+	{
+		canAttack = false;
+		yield return new WaitForSeconds(activeAttack.MaxCooldown);
+		canAttack = true;
+	}
 }

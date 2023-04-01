@@ -8,6 +8,8 @@ public class ArmoredBigGuyAI : BigGuyAI
     [Header("Armor")]
 	[SerializeField] GameObject ArmorBarCanvas;
 	[SerializeField] Transform[] ArmorBars;
+    [SerializeField] GameObject armorObject;
+    [SerializeField] ParticleSystem destroyParticles;
     private bool armorBroken = false;
 
     protected override void Start()
@@ -27,7 +29,7 @@ public class ArmoredBigGuyAI : BigGuyAI
         if(armorBroken == true)
         {
             base.TakeDamage(atk, attackForward);
-
+            //REVIEW: I would use >= for the health execution if check
             if (Health != MaxHealth || Health > executionHealthThreshhold)
             {
                 HealthBarCanvas.SetActive(true);
@@ -42,6 +44,8 @@ public class ArmoredBigGuyAI : BigGuyAI
         {
             ArmorBarCanvas.SetActive(false);
             HealthBarCanvas.SetActive(true);
+            armorObject.SetActive(false);
+            destroyParticles.Play(true);
             armorBroken = true;
         }
     }

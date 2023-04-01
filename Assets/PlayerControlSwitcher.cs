@@ -95,33 +95,36 @@ public class PlayerControlSwitcher : MonoBehaviour
 	}
 	void CheckCurrentController()
 	{
+		CurrentControllerType oldContType = _currentController;
 		if (Gamepad.all.Count > 0)
 		{
-			if (Gamepad.current is XInputController)
+			if (Gamepad.current is XInputController && _currentController != CurrentControllerType.Xbox)
 			{
 				// XBOX
 				_currentController = CurrentControllerType.Xbox;
 				cse.Raise(xbox);
 			}
-			else if (Gamepad.current is DualShockGamepad)
+			else if (Gamepad.current is DualShockGamepad && _currentController != CurrentControllerType.PlayStation)
 			{
 				// PlayStation
 				_currentController = CurrentControllerType.PlayStation;
 				cse.Raise(playstation);
 			}
-			else
+			else if (!(Gamepad.current is XInputController || Gamepad.current is DualShockGamepad) && _currentController != CurrentControllerType.Other)
 			{
 				// Other
 				_currentController = CurrentControllerType.Other;
 			}
 		}
-		else if (Keyboard.current != null)
+		else if (Keyboard.current != null && _currentController != CurrentControllerType.Keyboard)
 		{
 			// Keyboard
 			_currentController = CurrentControllerType.Keyboard;
 			cse.Raise(null);
 		}
-		Debug.Log("Current Controls: " + _currentController);
+
+		if (_currentController != oldContType) // if it changed, log it
+			Debug.Log("Current Controls: " + _currentController);
 	}
 
 	static public string getTextFromAction(string actionname, bool trimBookends = true)

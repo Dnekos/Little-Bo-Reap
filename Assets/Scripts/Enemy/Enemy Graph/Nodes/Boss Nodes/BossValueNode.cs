@@ -34,7 +34,7 @@ namespace XNode.Examples.StateGraph
 					}
 
 					case BossVariables.CURRENT_HEATH:
-						return ((BabaYagasHouseAI)user).GetHeath();//is this the best way to do this?
+						return ((BabaYagasHouseAI)user).GetHeath();//is this the best way to do this? idk maybe
 
 					case BossVariables.MAX_HEALTH:
 						return ((BabaYagasHouseAI)user).GetMaxHeath();
