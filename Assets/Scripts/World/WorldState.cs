@@ -134,6 +134,7 @@ public class WorldState : MonoBehaviour
 	bool UIOff = false;
 	FMODUnity.StudioEventEmitter music;
 	public int currentWorldTheme;
+	public int biomeTheme;
 
 
 	// values other classes may care about
@@ -166,6 +167,7 @@ public class WorldState : MonoBehaviour
 			music = GetComponent<FMODUnity.StudioEventEmitter>();
 			ChangeMusic(0);
 			currentWorldTheme = 0;
+			biomeTheme = 0;
 
 			// volume settings
 			FMOD.Studio.Bus myBus = FMODUnity.RuntimeManager.GetBus("bus:/SFX");
@@ -201,7 +203,10 @@ public class WorldState : MonoBehaviour
 	public void ChangeMusic(int music)
     {
 		FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Music", music);
+		currentWorldTheme = music;
 		Debug.Log("current theme: "+music);
+		if (music == 2)
+			biomeTheme = music;
 	}
 	void Toggle()
 	{
