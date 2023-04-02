@@ -3,7 +3,12 @@ guid: 678c88bb3bf487844bd77002ee93a401
 ModelImporter:
   serializedVersion: 22103
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: t_rock
+    second: {fileID: 2100000, guid: c235fad1e891619429e06dba91124642, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -89,7 +94,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 10
+    globalScale: 1000
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
