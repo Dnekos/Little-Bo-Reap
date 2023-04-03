@@ -9803,8 +9803,8 @@ RectTransform:
   m_GameObject: {fileID: 5656156270443709191}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0.488}
-  m_LocalScale: {x: 0.633044, y: 0.63355047, z: 0.633044}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: -0.52, y: 0.520416, z: 0.52}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 5656156270570844856}
   m_RootOrder: -1
@@ -9842,7 +9842,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a76b65206f3f3534899a57fc6a0673f5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 268e879067b42904aaa6b9ecf71ab4cd, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -14968,7 +14968,7 @@ Transform:
   - {fileID: 4864243750246051808}
   - {fileID: 7094932325932050876}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 150, z: 0}
 --- !u!65 &5656156271694720178
 BoxCollider:
@@ -15470,6 +15470,11 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 0a89cb58669212f49a823ba72a0c21dc,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: df27025d6ecd8a74f81285e0ccdb247c, type: 2}
     - target: {fileID: -5754084199372789682, guid: 0a89cb58669212f49a823ba72a0c21dc,
         type: 3}
       propertyPath: m_Mesh
