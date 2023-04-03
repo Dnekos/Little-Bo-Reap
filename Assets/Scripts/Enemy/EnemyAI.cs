@@ -117,10 +117,14 @@ public class EnemyAI : EnemyBase
 	{
 		return currentEnemyState;
 	}
+	public Animator GetAnimator()
+	{
+		return anim;
+	}
 	public virtual bool SetDestination(Vector3 dest)
 	{
 		// dont pathfind bad destinations
-		if (dest == null || float.IsNaN(dest.x))
+		if (dest == null || float.IsNaN(dest.x) || dest == Vector3.negativeInfinity || dest == Vector3.positiveInfinity)
 		{
 			Debug.LogWarning("tried giving " + gameObject + " invalid destination");
 			return false;
@@ -134,7 +138,11 @@ public class EnemyAI : EnemyBase
 		else
 		{
 			agent.SetDestination(dest);
-			if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 5, 1) || agent.isOnOffMeshLink)
+
+			// if on offmeshlink, no mdification needed, if the mesh link is too tall they may through an error
+			if (agent.isOnOffMeshLink)
+				return true;
+			if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 5, 1))
 			{
 				transform.position = hit.position;
 			}
@@ -214,7 +222,7 @@ public class EnemyAI : EnemyBase
 	private void OnTriggerEnter(Collider other)
 	{
 		Damageable target = other.GetComponent<Damageable>();
-		if (target != null && !(target is EnemyAI) && !NearbyGuys.Contains(other.transform) && !other.isTrigger)
+		if (target != null && !(target is EnemyBase) && !other.isTrigger && !NearbyGuys.Contains(other.transform))
 		{
 			NearbyGuys.Add(other.transform);
 		}
@@ -222,7 +230,7 @@ public class EnemyAI : EnemyBase
 	private void OnTriggerExit(Collider other)
 	{
 		Damageable target = other.GetComponent<Damageable>();
-		if (target != null && !(target is EnemyAI) && NearbyGuys.Contains(other.transform) && !other.isTrigger)
+		if (target != null && !(target is EnemyBase) && !other.isTrigger && NearbyGuys.Contains(other.transform))
 		{
 			NearbyGuys.Remove(other.transform);
 		}

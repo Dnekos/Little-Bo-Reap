@@ -8,15 +8,40 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3144780416417880595, guid: 7cc970a4dc583f7429d29f2024d5d0b7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3144780416992027502, guid: 7cc970a4dc583f7429d29f2024d5d0b7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3144780417171599832, guid: 7cc970a4dc583f7429d29f2024d5d0b7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3144780417788249730, guid: 7cc970a4dc583f7429d29f2024d5d0b7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: 5711783724753186002, guid: 7cc970a4dc583f7429d29f2024d5d0b7,
         type: 3}
       propertyPath: m_Name
-      value: FX_FrogBomb
+      value: FrogBombProjectile
+      objectReference: {fileID: 0}
+    - target: {fileID: 5711783724753186002, guid: 7cc970a4dc583f7429d29f2024d5d0b7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 5711783724753186007, guid: 7cc970a4dc583f7429d29f2024d5d0b7,
         type: 3}
       propertyPath: m_RootOrder
-      value: 15
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5711783724753186007, guid: 7cc970a4dc583f7429d29f2024d5d0b7,
         type: 3}
@@ -68,6 +93,31 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5711783725048865101, guid: 7cc970a4dc583f7429d29f2024d5d0b7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 5711783725083503774, guid: 7cc970a4dc583f7429d29f2024d5d0b7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 5711783725505790420, guid: 7cc970a4dc583f7429d29f2024d5d0b7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 5711783726074692414, guid: 7cc970a4dc583f7429d29f2024d5d0b7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 5711783726201068947, guid: 7cc970a4dc583f7429d29f2024d5d0b7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 7cc970a4dc583f7429d29f2024d5d0b7, type: 3}
@@ -77,38 +127,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 6447627177352844913}
   m_PrefabAsset: {fileID: 0}
---- !u!135 &2870121125537859568
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1602938182242941603}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 2.26
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4268284269905399324
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1602938182242941603}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7479e9d55bf068b468518ab881721478, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FlyingEnemyProjectileAttack: {fileID: 11400000, guid: 854381fa47b4a6a4399eade5820b54b2,
-    type: 2}
-  maxTimeAlive: 2.5
-  ExplosionSpawnPoint: {fileID: 1602938182242941606}
-  ExplosionDamage: 10
-  activeAttack: {fileID: 11400000, guid: 03d538869db14ff4a8c28f47f7286a2a, type: 2}
-  anim: {fileID: 2304317952009989272}
 --- !u!54 &6275854614765045676
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -125,6 +143,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!135 &2870121125537859568
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1602938182242941603}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 2.26
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &2304317952009989272
 Animator:
   serializedVersion: 4
@@ -145,6 +176,25 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &4268284269905399324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1602938182242941603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7479e9d55bf068b468518ab881721478, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FlyingEnemyProjectileAttack: {fileID: 11400000, guid: 854381fa47b4a6a4399eade5820b54b2,
+    type: 2}
+  maxTimeAlive: 2.5
+  ExplosionSpawnPoint: {fileID: 1602938182242941606}
+  ExplosionDamage: 10
+  activeAttack: {fileID: 11400000, guid: 03d538869db14ff4a8c28f47f7286a2a, type: 2}
+  anim: {fileID: 2304317952009989272}
 --- !u!4 &1602938182242941606 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5711783724753186007, guid: 7cc970a4dc583f7429d29f2024d5d0b7,

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Majority Equality
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 900.6245, y: 93.6344}
+  position: {x: 936, y: -456}
   ports:
     keys:
     - rhs
@@ -111,6 +111,47 @@ MonoBehaviour:
       _dynamic: 0
   desiredValue: 2
   result: 2
+--- !u!114 &-7679966801965411995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: Enemy Is Attacking
+  m_EditorClassIdentifier: Project.Enemy:XNode.Examples.StateGraph:EnemyIsAttackingNode
+  graph: {fileID: 11400000}
+  position: {x: 88, y: 120}
+  ports:
+    keys:
+    - not
+    - enter
+    values:
+    - _fieldName: not
+      _node: {fileID: -7679966801965411995}
+      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: enter
+      _node: {fileID: -7679966801965411995}
+      _typeQualifiedName: XNode.Examples.StateGraph.StateNode+Empty, Project.Enemy,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: exit
+        node: {fileID: 2769681369106552012}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  not: 1
 --- !u!114 &-7478212554675153415
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -170,7 +211,7 @@ MonoBehaviour:
   m_Name: Vector Arithmatic
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 536, y: -328}
+  position: {x: 568, y: -888}
   ports:
     keys:
     - num1
@@ -282,7 +323,7 @@ MonoBehaviour:
   m_Name: Value
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 296, y: -376}
+  position: {x: 328, y: -936}
   ports:
     keys:
     - desiredValue
@@ -324,7 +365,7 @@ MonoBehaviour:
   m_Name: Executable
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 88, y: 696}
+  position: {x: 72, y: 936}
   ports:
     keys:
     - not
@@ -453,7 +494,7 @@ MonoBehaviour:
   m_Name: Enemy Stunned
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 88, y: 808}
+  position: {x: 72, y: 1048}
   ports:
     keys:
     - not
@@ -481,6 +522,69 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   not: 1
+--- !u!114 &-2603640677487426864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5164f389544afdb428bf90ccc73bf966, type: 3}
+  m_Name: Agent Preset
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 120, y: -296}
+  ports:
+    keys:
+    - speed
+    - acceleration
+    - stoppingDist
+    - enter
+    values:
+    - _fieldName: speed
+      _node: {fileID: -2603640677487426864}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: acceleration
+      _node: {fileID: -2603640677487426864}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: stoppingDist
+      _node: {fileID: -2603640677487426864}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: enter
+      _node: {fileID: -2603640677487426864}
+      _typeQualifiedName: XNode.Examples.StateGraph.StateNode+Empty, Project.Enemy,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: exit
+        node: {fileID: 2769681369106552012}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  speed: 0
+  acceleration: 0
+  stoppingDist: 8
 --- !u!114 &-1803708998616160469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -547,6 +651,69 @@ MonoBehaviour:
   lhs: 0
   opp: 0
   rhs: 3
+--- !u!114 &-713459155878950300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5164f389544afdb428bf90ccc73bf966, type: 3}
+  m_Name: Agent Preset
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 56, y: 744}
+  ports:
+    keys:
+    - speed
+    - acceleration
+    - stoppingDist
+    - enter
+    values:
+    - _fieldName: speed
+      _node: {fileID: -713459155878950300}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: acceleration
+      _node: {fileID: -713459155878950300}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: stoppingDist
+      _node: {fileID: -713459155878950300}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: enter
+      _node: {fileID: -713459155878950300}
+      _typeQualifiedName: XNode.Examples.StateGraph.StateNode+Empty, Project.Enemy,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: exit
+        node: {fileID: 2769681369106552012}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  speed: 15
+  acceleration: 270
+  stoppingDist: 8
 --- !u!114 &-631206125309266620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -560,7 +727,7 @@ MonoBehaviour:
   m_Name: Value
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 584, y: 104}
+  position: {x: 616, y: -456}
   ports:
     keys:
     - desiredValue
@@ -602,7 +769,7 @@ MonoBehaviour:
   m_Name: Has Nearby
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 152, y: 40}
+  position: {x: 120, y: -120}
   ports:
     keys:
     - rhs
@@ -697,6 +864,8 @@ MonoBehaviour:
   - {fileID: -6427765409943727301}
   - {fileID: -8781648901870405066}
   - {fileID: -5836268909582168705}
+  - {fileID: -2603640677487426864}
+  - {fileID: -713459155878950300}
   currentUser: {fileID: 0}
 --- !u!114 &735015450114438443
 MonoBehaviour:
@@ -711,7 +880,7 @@ MonoBehaviour:
   m_Name: Value
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 536, y: -424}
+  position: {x: 568, y: -984}
   ports:
     keys:
     - desiredValue
@@ -753,7 +922,7 @@ MonoBehaviour:
   m_Name: Vector Arithmatic
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 808, y: -264}
+  position: {x: 840, y: -824}
   ports:
     keys:
     - num1
@@ -867,7 +1036,7 @@ MonoBehaviour:
   m_Name: Execute Attack
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 1064, y: -296}
+  position: {x: 1096, y: -856}
   ports:
     keys:
     - attack
@@ -908,7 +1077,7 @@ MonoBehaviour:
   m_Name: Start Sequence
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -280, y: 56}
+  position: {x: -712, y: -8}
   ports:
     keys:
     - exit
@@ -926,10 +1095,16 @@ MonoBehaviour:
         node: {fileID: -5836268909582168705}
         reroutePoints: []
       - fieldName: enter
+        node: {fileID: -713459155878950300}
+        reroutePoints: []
+      - fieldName: enter
         node: {fileID: -5491330496827090157}
         reroutePoints: []
       - fieldName: enter
         node: {fileID: -146168830594426719}
+        reroutePoints: []
+      - fieldName: enter
+        node: {fileID: -2603640677487426864}
         reroutePoints: []
       - fieldName: enter
         node: {fileID: 7469263771611773727}
@@ -1004,7 +1179,7 @@ MonoBehaviour:
   m_Name: Value
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 344, y: 200}
+  position: {x: 376, y: -360}
   ports:
     keys:
     - desiredValue
@@ -1046,7 +1221,7 @@ MonoBehaviour:
   m_Name: Sequence
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 392, y: -168}
+  position: {x: 424, y: -728}
   ports:
     keys:
     - exit
@@ -1092,7 +1267,7 @@ MonoBehaviour:
   m_Name: Value
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 296, y: -280}
+  position: {x: 328, y: -840}
   ports:
     keys:
     - desiredValue
@@ -1134,7 +1309,7 @@ MonoBehaviour:
   m_Name: Arithmatic
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 792, y: 344}
+  position: {x: 824, y: -216}
   ports:
     keys:
     - num1
@@ -1201,7 +1376,7 @@ MonoBehaviour:
   m_Name: Execute Attack
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 856, y: -24}
+  position: {x: 888, y: -584}
   ports:
     keys:
     - attack
@@ -1242,7 +1417,7 @@ MonoBehaviour:
   m_Name: Value
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -168, y: 216}
+  position: {x: -120, y: -40}
   ports:
     keys:
     - desiredValue
@@ -1284,7 +1459,7 @@ MonoBehaviour:
   m_Name: Attack Selector
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 132.62448, y: -98.3656}
+  position: {x: 168, y: -648}
   ports:
     keys:
     - exit
@@ -1330,7 +1505,7 @@ MonoBehaviour:
   m_Name: Arithmatic
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 584, y: 216}
+  position: {x: 616, y: -344}
   ports:
     keys:
     - num1
@@ -1397,7 +1572,7 @@ MonoBehaviour:
   m_Name: Sword Check
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 1064, y: -168}
+  position: {x: 1096, y: -728}
   ports:
     keys:
     - rhs
@@ -1463,7 +1638,7 @@ MonoBehaviour:
   m_Name: Sequence
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 392, y: -40}
+  position: {x: 424, y: -600}
   ports:
     keys:
     - exit

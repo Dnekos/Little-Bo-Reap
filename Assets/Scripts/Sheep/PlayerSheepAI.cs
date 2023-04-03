@@ -648,6 +648,11 @@ public enum SheepStates
 
        // rb.isKinematic = true;
 		agent.enabled = true;
+		if (!agent.isOnNavMesh)
+		{
+			SetHitstun(stateAfterStun);
+			yield break;
+		}
 
 		//rb.isKinematic = true;
 		rb.constraints = RigidbodyConstraints.FreezeAll;
@@ -663,7 +668,6 @@ public enum SheepStates
 
     private void OnCollisionStay(Collision collision)
     {
-		Debug.Log((currentSheepState == SheepStates.STUN) + " " + (collision.collider.gameObject.layer == LayerMask.NameToLayer("Ground")));
         if (currentSheepState == SheepStates.STUN && collision.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
 			//Debug.Log("sheep collided with " + collision.gameObject);
@@ -683,19 +687,25 @@ public enum SheepStates
         Vector3 randomPosition = Random.insideUnitSphere * wanderRadius;
         randomPosition += transform.position;
 
-        //if inside navmesh, charge!
-        if (NavMesh.SamplePosition(randomPosition, out NavMeshHit hit, wanderRadius, 1))
-        {
-            //get charge
-            destination = hit.position;
+		//if inside navmesh, charge!
+		if (agent.isOnNavMesh)
+		{
+			if (NavMesh.SamplePosition(randomPosition, out NavMeshHit hit, wanderRadius, 1))
+			{
+				//get charge
+				destination = hit.position;
 
-            //set agent destination
-            agent.destination = destination;
-        }
-        else agent.destination = transform.position;
+				//set agent destination
+				agent.destination = destination;
+			}
+			else
+				agent.destination = transform.position;
+		}
+		else if (!agent.isOnOffMeshLink)
+			SetHitstun(SheepStates.WANDER);
 
-        //wander cooldown
-        StartCoroutine(WanderCooldown());
+		//wander cooldown
+		StartCoroutine(WanderCooldown());
     }
 
     void DoWander()

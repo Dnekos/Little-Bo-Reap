@@ -20,6 +20,12 @@ public class BigGuyAI : EnemyAI
 		HealthBarCanvas.SetActive(false);
 	}
 
+	private void LateUpdate()
+	{
+		Debug.LogWarning(gameObject.name + " ");//.speed + " " + GetAgent().destination);
+		Debug.Log(GetAgent());
+	}
+
 	// for animation trigger
 	public void SpawnShockwave()
 	{
