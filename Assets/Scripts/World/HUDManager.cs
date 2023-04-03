@@ -129,9 +129,10 @@ public class HUDManager : MonoBehaviour
 		flockNumber.color = uiColor;
 	}
 
-    public void UpdateSoulCount(string currentSouls)
+    public void UpdateSoulCount()
     {
-		SoulNumber.text = currentSouls + " Souls";
+		string currentSouls = WorldState.instance.PersistentData.soulsCount.ToString();
+        SoulNumber.text = currentSouls + " Souls";
 		SoulCollectAnimation();
     }
 

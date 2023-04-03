@@ -106,8 +106,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 806bf9cc1357efa44b070a521b854cae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Health: 50
-  MaxHealth: 50
+  Health: 40
+  MaxHealth: 40
   gibs: {fileID: 8393827636954465993, guid: ea9e825e8a7044c4e9974a7bbc512c0d, type: 3}
   damageNumber: {fileID: 758784450076825086, guid: 917e1ac09e21f3f499d8aa30f802b69e,
     type: 3}
@@ -129,7 +129,7 @@ MonoBehaviour:
       Data4: 2067519149
     Path: event:/Little Guy/Death
   soulValue: 0
-  healthValue: 0
+  healthValue: 5
   soulSpeed: 0
   soulSpawnHeight: 0
   soulCollectables:
@@ -146,7 +146,7 @@ MonoBehaviour:
   frogPrefab: {fileID: 7282202646638689952, guid: 081f1844227e67e4c93d95fa26fd41c8,
     type: 3}
   attackPoint: {fileID: 3646282132022668368}
-  attackRadius: 20
+  attackRadius: 40
   attackDamage: 10
   activeAttack: {fileID: 11400000, guid: 854381fa47b4a6a4399eade5820b54b2, type: 2}
   anim: {fileID: 3800762412101906831}
@@ -190,8 +190,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 6, y: 6, z: 8}
-  m_Center: {x: 0, y: 0, z: -1}
+  m_Size: {x: 8.406078, y: 7.5092287, z: 10.300325}
+  m_Center: {x: 0.52243996, y: -0.024294376, z: -0.9087994}
 --- !u!54 &6206451952008027165
 Rigidbody:
   m_ObjectHideFlags: 0

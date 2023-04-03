@@ -7,7 +7,7 @@ using TMPro;
 [CreateAssetMenu(fileName = "NewGameEvent", menuName = "ScriptableObjects/TMP_SA Event")]
 public class ControlSpriteEvent : ScriptableObject
 {
-	protected UnityEvent<TMP_SpriteAsset> listener;
+	public UnityEvent<TMP_SpriteAsset> listener;
 
 	public virtual void Add(UnityAction<TMP_SpriteAsset> call)
 	{

@@ -100,9 +100,14 @@ public class BattleArena : PuzzleDoor
 
 	}
 
-	virtual protected void AdvanceWave()
+	virtual protected void IncrementWaveNumber()
 	{
 		CurrentWave++;
+	}
+
+	virtual protected void AdvanceWave()
+	{
+		IncrementWaveNumber();
 		if (CurrentWave == waves.Length)
 		{
 			WorldState.instance.isInCombat = false;

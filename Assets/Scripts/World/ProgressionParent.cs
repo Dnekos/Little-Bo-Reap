@@ -52,9 +52,10 @@ public class ProgressionParent : MonoBehaviour
 			//TODO make this for all uptions
 			ActivateUI(index);
 			WorldState.instance.PersistentData.soulsCount -= costs[currentCostIndex];
+            WorldState.instance.HUD.UpdateSoulCount();
 
-			// TODO: make this not done every time, put it in start
-			List<float[]> upgradesAllValues = new List<float[]>();
+            // TODO: make this not done every time, put it in start
+            List<float[]> upgradesAllValues = new List<float[]>();
 			upgradesAllValues.Add(upgrade1Values);
 			upgradesAllValues.Add(upgrade2Values);
 			upgradesAllValues.Add(upgrade3Values);

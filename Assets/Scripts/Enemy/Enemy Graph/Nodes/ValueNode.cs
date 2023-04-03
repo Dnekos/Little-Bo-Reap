@@ -58,9 +58,11 @@ namespace XNode.Examples.StateGraph {
 						}
 						if (guys.Count > 1)
 							average_pos /= guys.Count;
+					//	Debug.Log("average: " + average_pos + " " + guys.Count);
 						return average_pos;
 
 					case Variable.PLAYER_POS:
+					//Debug.Log("average: " + (graph as StateGraph).currentUser.player);
 						return (graph as StateGraph).currentUser.player.position;
 					case Variable.BELL_LOC:
 						return (graph as StateGraph).currentUser.bellLoc;

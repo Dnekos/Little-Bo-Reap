@@ -15,6 +15,7 @@ public class FrogAI : EnemyAI
 	override protected void Start()
 	{
 		base.Start();
+		Debug.Log(player);
 	}
 
 	// for animation trigger

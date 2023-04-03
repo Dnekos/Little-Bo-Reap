@@ -12,7 +12,7 @@ public class SoulCollectableScript : Collectable
     {
         Debug.Log("Add Souls: " + soulValue.ToString());
         WorldState.instance.PersistentData.soulsCount += soulValue;
-        WorldState.instance.HUD.UpdateSoulCount(WorldState.instance.PersistentData.soulsCount.ToString());
+        WorldState.instance.HUD.UpdateSoulCount();
         FMODUnity.RuntimeManager.PlayOneShot(soulsfx);
         //SheepPassives.soulsCount += soulValue;
 
