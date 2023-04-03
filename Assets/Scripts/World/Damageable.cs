@@ -46,8 +46,9 @@ public class Damageable : MonoBehaviour
 	{
 		if (!isInvulnerable || Health <= 0)
 		{
+			float damage = atk.damage * ((damageAmp <= 0) ? 1 : damageAmp);
 			// deal damage
-			Health -= atk.damage * ((damageAmp <= 0) ? 1 : damageAmp);
+			Health -= damage;
 
 			// knockback
 			DealKnockback(attackForward, atk.forwardKnockback, atk.upwardKnockback, knockbackMultiplier);
@@ -61,13 +62,13 @@ public class Damageable : MonoBehaviour
                 {
 					//create damage number
 					GameObject number = Instantiate(damageNumber, transform.position, transform.rotation);
-					number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)atk.damage).ToString();
+					number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)damage).ToString();
 				}
 				else
                 {
 					//create damage number
 					GameObject number = Instantiate(damageNumberGoth, transform.position, transform.rotation);
-					number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)atk.damage).ToString();
+					number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)damage).ToString();
 				}
 
 				
