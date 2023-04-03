@@ -12,7 +12,7 @@ public class EndlessBattlePlayerDebug : MonoBehaviour
     //I couldn't figure out what dumbass script overwrites setting flock size in editor so im doing this. 
     private void Start()
     {
-        Invoke("SetFlock", 1f);
+        Invoke("SetFlock", Time.deltaTime);
     }
 
     void SetFlock()

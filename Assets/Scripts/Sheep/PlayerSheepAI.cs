@@ -159,10 +159,11 @@ public enum SheepStates
 		isInvulnerable = true;
 		Invoke("DisableSpawnInvuln", invulnTimeOnSpawn);
 
-		
+		if (hitstunCo != null)
+			StopCoroutine(hitstunCo);
 
-        //remove all velocity
-        rb.velocity = Vector3.zero;
+		//remove all velocity
+		rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
 
 		//if default state is wander, go wandering
@@ -614,7 +615,7 @@ public enum SheepStates
     #region Sheep Stun 
 	public void SetHitstun(SheepStates stateAfterStun)
 	{
-		if (this == null || currentSheepState == SheepStates.ABILITY)
+		if (this == null || !gameObject.activeInHierarchy || currentSheepState == SheepStates.ABILITY)
 			return;
 
 		// coroutine
