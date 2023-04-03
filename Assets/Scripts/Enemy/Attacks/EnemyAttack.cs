@@ -37,7 +37,8 @@ public class EnemyAttack : Attack
 	}
 	public virtual void PerformAttack(Animator anim)
 	{
-		FMODUnity.RuntimeManager.PlayOneShotAttached(attackStartSound, anim.gameObject);
+		if (!attackStartSound.IsNull)
+			FMODUnity.RuntimeManager.PlayOneShotAttached(attackStartSound, anim.gameObject);
 		if (TransitionIn)
 			anim.SetTrigger(animation);
 		else

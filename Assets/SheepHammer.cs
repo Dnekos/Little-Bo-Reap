@@ -12,6 +12,7 @@ public class SheepHammer : SheepHolder
 
 	[Header("Sounds")]
 	[SerializeField] protected FMODUnity.EventReference placeSound;
+	[SerializeField] FMODUnity.EventReference explosionSound;
 
 	Vector3 adjustedColExt; //adjusted collider extents, used for determining valid place positions
 
@@ -73,6 +74,7 @@ public class SheepHammer : SheepHolder
 		}
 		// explosion effect
 		Instantiate(ExplosionPrefab, hammerPoint.position, Quaternion.identity);
+		FMODUnity.RuntimeManager.PlayOneShot(explosionSound, hammerPoint.position);
 	}
 	#endregion
 
