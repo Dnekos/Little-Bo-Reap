@@ -207,6 +207,12 @@ public enum SheepStates
         else 
 			animator.SetBool("isMoving", false);
 
+        //stun
+        if (currentSheepState == SheepStates.STUN)
+            animator.SetBool("isStunned", true);
+        else
+            animator.SetBool("isStunned", false);
+
         //jump
         if (agent.isOnOffMeshLink && !isJumping )
         {
