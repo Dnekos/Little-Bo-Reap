@@ -6,6 +6,7 @@ public class KillAllSheep : MonoBehaviour
 {
     [SerializeField] SheepTypes sheepToSubtract;
     [SerializeField] int subtractAmount;
+	[SerializeField, Min(0)] int MinimumSheep = 10;
     bool hasKilled;
 
     private void OnTriggerEnter(Collider other)
@@ -13,9 +14,11 @@ public class KillAllSheep : MonoBehaviour
         if(other.CompareTag("Player") && !hasKilled)
         {
             hasKilled = true;
-            other.GetComponent<PlayerSheepAbilities>().DeleteAllSheep();
-            other.GetComponent<PlayerSheepAbilities>().sheepFlocks[(int)sheepToSubtract].MaxSize -= subtractAmount;
-            other.GetComponent<PlayerSheepAbilities>().UpdateFlockUI();
+			PlayerSheepAbilities player = other.GetComponent<PlayerSheepAbilities>();
+
+			player.DeleteAllSheep();
+            player.sheepFlocks[(int)sheepToSubtract].MaxSize = Mathf.Max(player.sheepFlocks[(int)sheepToSubtract].MaxSize - subtractAmount, MinimumSheep);
+            player.UpdateFlockUI();
         }
     }
 }
