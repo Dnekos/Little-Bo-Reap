@@ -27,7 +27,7 @@ public class SheepVortexBehavior : SheepBehavior
 	{
 
 		Transform player = WorldState.instance.player.transform;
-		//Debug.Log("following player");
+		Debug.Log("following player");
 
 		if (Vector3.Distance(player.transform.position, ps.transform.position) < vortexRadius + 2)//defendRotateDistance - 2f)
 		{

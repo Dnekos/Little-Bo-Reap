@@ -27,7 +27,7 @@ public class EnemyAI : EnemyBase
 	[Header("Enemy State")]
 	[SerializeField] protected EnemyStates currentEnemyState;
 	[SerializeField] float StunTime = 0.3f;
-	[SerializeField] LayerMask playerLayer;
+	[SerializeField] LayerMask playerLayer;					 
 
 	[Header("Attacking")]
 	public List<Transform> NearbyGuys;
@@ -59,12 +59,11 @@ public class EnemyAI : EnemyBase
 	[SerializeField] float fallRate = 50;
 
 	[Header("Sounds")]
-	[SerializeField]  FMODUnity.EventReference swingSound;
+	[SerializeField] FMODUnity.EventReference swingSound;
 	[SerializeField] FMODUnity.EventReference clubHitSound;
 
 
-	[HideInInspector]
-	public Transform player;
+	[HideInInspector] public Transform player;
 	NavMeshAgent agent;
 
 	// Start is called before the first frame update
@@ -301,6 +300,7 @@ public class EnemyAI : EnemyBase
 
 	void ToExecutionState()
 	{
+		suckResistant = true;
 		rb.mass = 1f;
 		rb.velocity = Vector3.zero;
 		rb.useGravity = true;
