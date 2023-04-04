@@ -114,6 +114,14 @@ public class PlayerCameraFollow : MonoBehaviour
 	private void Update()
     {
         //kiosk mode crap
+        if(inKioskMode && Keyboard.current.anyKey.isPressed || inKioskMode && Gamepad.current.leftStick.IsActuated())
+        {
+            inKioskMode = false;
+            WorldState.instance.HUD.ToggleHud(true);
+            currentIdleTime = 0f;
+        }
+
+
         currentIdleTime += Time.deltaTime;
 
         if(currentIdleTime >= timeToTriggerKiosk)

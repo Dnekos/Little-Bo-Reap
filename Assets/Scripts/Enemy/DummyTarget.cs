@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DummyTarget : Damageable
+public class DummyTarget : EnemyBase
 {
     Vector3 targetPos;
 	// Start is called before the first frame update
