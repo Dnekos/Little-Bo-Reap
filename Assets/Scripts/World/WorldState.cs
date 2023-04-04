@@ -135,7 +135,7 @@ public class WorldState : MonoBehaviour
 	FMODUnity.StudioEventEmitter music;
 	public int currentWorldTheme;
 	public int biomeTheme;
-
+	//[SerializeField] FMODUnity.ParamRef boss;
 
 	// values other classes may care about
 	int deaths = 0;
@@ -201,12 +201,18 @@ public class WorldState : MonoBehaviour
 	}
 
 	public void ChangeMusic(int music)
-    {
+	{
 		FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Music", music);
 		currentWorldTheme = music;
-		Debug.Log("current theme: "+music);
+		Debug.Log("current theme: " + music);
 		if (music == 2)
 			biomeTheme = music;
+		if (music == 1)
+		{
+			FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Kick Level", Random.Range(0, 2));
+			FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Bass Fades", Random.Range(0f, 2f));
+			FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Synth Fade", Random.Range(0f, 2f));
+		}
 	}
 	void Toggle()
 	{
@@ -332,7 +338,6 @@ public class WorldState : MonoBehaviour
 		PersistentData.goingToBoss = true;
 		SaveGame(levelIndex);
     }
-
 	#region saving
 	// https://www.red-gate.com/simple-talk/development/dotnet-development/saving-game-data-with-unity/
 	/// <summary>

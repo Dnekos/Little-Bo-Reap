@@ -65,6 +65,7 @@ MonoBehaviour:
     bossSoulsCount: 0
     currentLevelIndex: 0
     currentCheckpoint: 0
+    goingToBoss: 0
     graveIndexes: 
     doorIndexes: 
     activeBuilderAbility: 0
@@ -79,8 +80,14 @@ MonoBehaviour:
   Respawn: {fileID: 11400000, guid: 19937298da8f18b41b1d2572d7bb5bcb, type: 2}
   MusicToggle: {fileID: 11400000, guid: 9bd00c9cd9464204d8a6799a3e7142d3, type: 2}
   currentWorldTheme: 0
+  biomeTheme: 0
+  kick:
+    Name: 
+    Value: 0
   player: {fileID: 0}
   HUD: {fileID: 0}
+  isInCombat: 0
+  combatBootPoint: {fileID: 0}
 --- !u!114 &4016259675076083572
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107,7 +114,13 @@ MonoBehaviour:
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
-  Params: []
+  Params:
+  - Name: Kick Level
+    Value: 2
+  - Name: Bass Fades
+    Value: 0
+  - Name: Synth Fades
+    Value: 0
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
@@ -257,6 +270,14 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: edf51ad9-0a69-4032-882d-34963427bd32
     m_ActionName: RamCharge/StopCharge[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c3d59674-4a77-48c0-90bd-ac3e75b598f7
+    m_ActionName: CinematicCameras/SkipToBoss[/Keyboard/i]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e19019e0-1817-4f3f-a348-f80bab023c93
+    m_ActionName: PauseMenu/PauseMenu[/Keyboard/escape]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: CinematicCameras

@@ -17,6 +17,7 @@ public class FlyingEnemyAI : EnemyBase
 
     [Header("Sounds")]
     [SerializeField] FMODUnity.EventReference attackSound;
+    [SerializeField] FMODUnity.EventReference Flying;
 
     [HideInInspector]public Transform player;
     [HideInInspector]public bool attacking;//checks animator to see if we are attacking
