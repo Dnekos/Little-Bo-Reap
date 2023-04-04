@@ -186,7 +186,8 @@ public class WorldState : MonoBehaviour
 
 	private void Start()
 	{
-		PersistentData = new SaveData(1);
+		if (Loading != LoadState.None)
+			PersistentData = new SaveData(1);
 #if UNITY_EDITOR
 		if (Loading.HasFlag(LoadState.Editor))
 		{
