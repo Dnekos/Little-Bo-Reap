@@ -114,32 +114,31 @@ public class PlayerCameraFollow : MonoBehaviour
 	private void Update()
     {
         //kiosk mode crap
-        if(inKioskMode && Keyboard.current.anyKey.isPressed || inKioskMode && Gamepad.current.leftStick.IsActuated())
+        if(inKioskMode && ((Keyboard.current != null && Keyboard.current.anyKey.isPressed) || (Gamepad.current != null && Gamepad.current.leftStick.IsActuated())))
         {
             inKioskMode = false;
             WorldState.instance.HUD.ToggleHud(true);
             currentIdleTime = 0f;
         }
 
-
-        currentIdleTime += Time.deltaTime;
+		// dont do kiosk stuff while in dialog
+		if (WorldState.instance.gameState == WorldState.State.Play)
+			currentIdleTime += Time.deltaTime;
 
         if(currentIdleTime >= timeToTriggerKiosk)
         {
             if (!inKioskMode)
             {
-				
                 WorldState.instance.HUD.ToggleHud(false);
                 inKioskMode = true;
             }
             yRotation += kioskCamSpeed * Time.deltaTime;
-        }
 
-        if(currentIdleTime >= timeToBootPlayer)
-        {
-            SceneManager.LoadScene(mainMenu);
-        }
-
+			if (currentIdleTime >= timeToBootPlayer)
+			{
+				SceneManager.LoadScene(mainMenu);
+			}
+		}
 
         mouseX = mouseValue.x * mouseSensitivity * Time.deltaTime;
         mouseY = mouseValue.y * mouseSensitivity * Time.deltaTime;
