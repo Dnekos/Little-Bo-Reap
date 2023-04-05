@@ -8,9 +8,12 @@ public class ToggleSounds : MonoBehaviour
     [SerializeField] FMODUnity.EventReference activationSound;
     [SerializeField] FMODUnity.EventReference deactivationSound;
     ProgressionParent progression;
+    [SerializeField] Camera camera;
+    [SerializeField] GameObject gameObject;
     private void Start()
     {
-        FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Mouse", transform.position.x / Screen.currentResolution.width);
+    
+       // FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Mouse", camera.WorldToScreenPoint(gameObject).x / Screen.currentResolution.width);
         progression = FindObjectOfType<ProgressionParent>();
     }
     public void OnHover()
