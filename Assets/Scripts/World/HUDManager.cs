@@ -40,6 +40,8 @@ public class HUDManager : MonoBehaviour
 	[Header("Progression")]
 	[SerializeField] GameObject ProgressionMenu;
 	[SerializeField] GameObject ProgressionFirstSelected;
+	[SerializeField] FMODUnity.EventReference progressionOpen;
+	[SerializeField] FMODUnity.EventReference progressionClose;
 	public event Action<GameObject> activePanelChange;
 
 
@@ -68,6 +70,7 @@ public class HUDManager : MonoBehaviour
 			WorldState.instance.gameState = WorldState.State.Dialog;
 			inputs.SwitchCurrentActionMap("Dialog");
 			Time.timeScale = 0;
+			FMODUnity.RuntimeManager.PlayOneShot(progressionOpen);
 
 		}
 		else
@@ -82,6 +85,7 @@ public class HUDManager : MonoBehaviour
 			ToggleHud(true);
 			WorldState.instance.gameState = WorldState.State.Play;
 			inputs.SwitchCurrentActionMap("PlayerMovement");
+			FMODUnity.RuntimeManager.PlayOneShot(progressionClose);
 		}
 	}
 	private void Start()
