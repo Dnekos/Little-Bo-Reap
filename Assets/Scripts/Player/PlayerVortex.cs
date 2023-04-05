@@ -25,6 +25,7 @@ public class PlayerVortex : MonoBehaviour
 	[Header("Blackhole Variables")]
 	[SerializeField] bool blackHole;
 	[SerializeField] GameObject blackHoleObj;
+	[SerializeField] GameObject vfxObject;
 	// components
 	PlayerSheepAbilities flocks;
 	Animator animator;
@@ -117,6 +118,8 @@ public class PlayerVortex : MonoBehaviour
 			defendPoints[i].gameObject.SetActive(false);
 		}
 
+		if (blackHole) vfxObject.SetActive(false);
+
 		//start cooldown
 		canDefend = false;
 		defendIcon.CooldownUIEffect(defendCooldown);
@@ -173,6 +176,8 @@ public class PlayerVortex : MonoBehaviour
 				{
 					defendPoints[i].gameObject.SetActive(true);
 				}
+
+				if (blackHole) vfxObject.SetActive(true);
 
 				//start timer
 				currentDefendTime = 0;
