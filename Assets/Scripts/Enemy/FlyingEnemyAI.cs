@@ -26,12 +26,11 @@ public class FlyingEnemyAI : EnemyBase
 
 
     // Start is called before the first frame update
-    void Start()
+    override protected void Start()
     {
         base.Start();
         Cooldowns = new Dictionary<int, float>();
         player = WorldState.instance.player.transform;
-
     }
 
     // Update is called once per frame

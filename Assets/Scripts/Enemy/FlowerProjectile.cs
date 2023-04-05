@@ -13,7 +13,6 @@ public class FlowerProjectile : MonoBehaviour
     Vector3 origPos;
 
     [SerializeField] float maxTimeAlive = 2.5f;
-    float currentTimeAlive = 0;
 
     // Start is called before the first frame update
     void Start()
