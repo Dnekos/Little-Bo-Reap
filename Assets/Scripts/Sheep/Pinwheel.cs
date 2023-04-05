@@ -23,4 +23,9 @@ public class Pinwheel : PuzzleKey
         }
         else yield return null;
     }
+
+    public bool GetOpened()
+    {
+        return isOpened;
+    }
 }

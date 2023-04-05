@@ -28,6 +28,13 @@ public class BabaYagasHouseAI : EnemyAI
 	[SerializeField] GameObject HealthBarCanvas;
 	[SerializeField] Transform HealthBar;
 
+    [Header("Stun Objects")]
+	[SerializeField] GameObject armorObject;
+	[SerializeField] GameObject pinwheelObjectLeft;
+	[SerializeField] GameObject pinwheelObjectRight;
+	[SerializeField] ParticleSystem destroyParticles;
+	private bool armorBroken = false;
+
 	[Header("Game End Stuff")]
 	[SerializeField] GameObject endGameObject;
 
@@ -54,9 +61,15 @@ public class BabaYagasHouseAI : EnemyAI
 	private void FixedUpdate()
     {
 		rb.AddForce(Vector3.down * bossFallRate);
+
+		//base the armor on bool so it can be easliy turned on and off
+		if(armorBroken == false)
+        {
+			armorObject.SetActive(true);
+        }
+
+		CheckPinwheels();
 	}
-
-
 
 	protected override void OnDeath()
     {
@@ -102,6 +115,8 @@ public class BabaYagasHouseAI : EnemyAI
 			enemySpawner.transform.SetAsLastSibling();
 			enemiesSpawned = true;
 			enemySpawnerPlaceholder = enemySpawner;
+
+			armorBroken = false;
 		}
 
 	}
@@ -143,6 +158,15 @@ public class BabaYagasHouseAI : EnemyAI
 		}
 		else
 			HealthBarCanvas.SetActive(false);
+
+		if (atk.name == "Ram_Attack_Charge" && armorBroken == false)
+		{
+			armorObject.SetActive(false);
+			destroyParticles.Play(true);
+			armorBroken = true;
+			//put into stun state
+			GetAnimator().SetTrigger("BBYGH_Stun 1");
+		}
 
 	}
 
@@ -197,6 +221,19 @@ public class BabaYagasHouseAI : EnemyAI
 		SetDestination(moveToPos);
 
     }
+
+	public void CheckPinwheels()//if they are spinning, boss gets stunned
+    {
+		if (pinwheelObjectLeft.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Pinwheel_Spin"))
+		{
+			GetAnimator().SetTrigger("BBYGH_Stun1");
+		}
+
+		if (pinwheelObjectRight.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Pinwheel_Spin"))
+		{
+			GetAnimator().SetTrigger("BBYGH_Stun1");
+		}
+	}
 
 	Vector3 RandomPointInCircle(Vector3 center, float radius)
     {
