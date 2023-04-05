@@ -13,6 +13,7 @@ public class BabaYagasHouseAI : EnemyAI
 	[SerializeField] bool enemiesSpawned = false;
 	[SerializeField] int numEnemiesSpawned;
 	[SerializeField] Transform enemySpawnPoint;
+    [HideInInspector] GameObject enemySpawnerPlaceholder = null;//this will be filled in when it gets created
 	//include which enemies will spawn 
 
 	[Header("Fire Breath")]
@@ -95,11 +96,20 @@ public class BabaYagasHouseAI : EnemyAI
 	{
 		if (activeAttack != null)
 		{
-			activeAttack.SpawnObject(enemySpawnPoint.position, enemySpawnPoint.rotation);
+			//activeAttack.SpawnObject(enemySpawnPoint.position, enemySpawnPoint.rotation);
+			GameObject enemySpawner = Instantiate(activeAttack.hitboxPrefab, enemySpawnPoint.position, enemySpawnPoint.rotation);
+			enemySpawner.transform.SetParent(transform);
+			enemySpawner.transform.SetAsLastSibling();
 			enemiesSpawned = true;
+			enemySpawnerPlaceholder = enemySpawner;
 		}
 
 	}
+
+	public GameObject getEnemySpawner()
+    {
+		return enemySpawnerPlaceholder;
+    }
 	public void BreatheFire()
     {
 		if (activeAttack != null)
@@ -153,6 +163,7 @@ public class BabaYagasHouseAI : EnemyAI
 		else
 		{
 			GetAgent().SetDestination(dest);
+			
 			if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 5, 1) || GetAgent().isOnOffMeshLink)
 			{
 				transform.position = hit.position;
@@ -189,7 +200,7 @@ public class BabaYagasHouseAI : EnemyAI
 
 	Vector3 RandomPointInCircle(Vector3 center, float radius)
     {
-		Vector3 randomPosition = UnityEngine.Random.insideUnitSphere * radius;
+		Vector3 randomPosition = UnityEngine.Random.insideUnitCircle * radius;
 		Vector3 destinationPosition = new Vector3(randomPosition.x + center.x, center.y, randomPosition.z + center.z);
 
 		Vector3 result = destinationPosition;
