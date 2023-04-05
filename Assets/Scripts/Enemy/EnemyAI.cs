@@ -78,7 +78,7 @@ public class EnemyAI : EnemyBase
 	}
 	void RunBehaviorTree()
 	{
-		NearbyGuys.RemoveAll(item => item == null);
+		NearbyGuys.RemoveAll(item => item == null || !item.gameObject.activeInHierarchy);
 		graph.AnalyzeGraph(this);
 	}
 	// Update is called once per frame
