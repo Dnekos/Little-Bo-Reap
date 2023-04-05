@@ -17,13 +17,10 @@ public class PauseMenuButton : MonoBehaviour
 		pp.PauseGame();
 		FMOD.Studio.Bus myBus = FMODUnity.RuntimeManager.GetBus("bus:/SFX/Gameplay");
 		myBus.setPaused(false);
-
 	}
 
 	public void EnableOrDisablePanel()
 	{
-		FMODUnity.RuntimeManager.PlayOneShot(clickSound);
-
 		if (panel.activeSelf)
 		{
 			panel.SetActive(false);
