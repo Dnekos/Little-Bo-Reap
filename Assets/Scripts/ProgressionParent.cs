@@ -25,7 +25,7 @@ public class ProgressionParent : MonoBehaviour
 
     int currentCostIndex;
     int abilityBSoulCost = 1;
-    bool altAbilityUnlocked = false;
+    public bool altAbilityUnlocked = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -48,6 +48,7 @@ public class ProgressionParent : MonoBehaviour
             Transform notch = upgrades[index].transform.parent.Find("notch");
             if (notch.GetComponent<Image>().color != Color.green)
             {
+                
                 notch.GetComponent<Image>().color = Color.green;
                 upgradeNotch = index;             
             }

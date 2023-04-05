@@ -18,4 +18,10 @@ public class ButtonSounds : MonoBehaviour
     {
         FMODUnity.RuntimeManager.PlayOneShot(clickSound, transform.position);
     }
+    public void MusicEnable()
+    
+    {
+        FMOD.Studio.Bus musicBUs = FMODUnity.RuntimeManager.GetBus("bus:/Music");
+        //musicBUs.setPaused(false);
+    }
 }
