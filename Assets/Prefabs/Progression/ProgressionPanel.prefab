@@ -1398,6 +1398,7 @@ GameObject:
   - component: {fileID: 5897604668022814520}
   - component: {fileID: 3336198375716835758}
   - component: {fileID: 5496829256152999958}
+  - component: {fileID: 2009258811376345490}
   m_Layer: 0
   m_Name: BaseAbility
   m_TagString: Untagged
@@ -1567,6 +1568,38 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2009258811376345490}
+          m_TargetAssemblyTypeName: ToggleSounds, Assembly-CSharp
+          m_MethodName: OnClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 15
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2009258811376345490}
+          m_TargetAssemblyTypeName: ToggleSounds, Assembly-CSharp
+          m_MethodName: OnClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &5496829256152999958
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1582,6 +1615,39 @@ MonoBehaviour:
   descTextBox: {fileID: 3694544522795333873}
   panel: {fileID: 8359060244565142963}
   desc: 
+--- !u!114 &2009258811376345490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2405627058973230146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 408b49306cb3f2445bddf9f3fe4bff14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSound:
+    Guid:
+      Data1: -1812214317
+      Data2: 1156154451
+      Data3: -1247921783
+      Data4: -1387685725
+    Path: event:/Progression/UI/Hover
+  activationSound:
+    Guid:
+      Data1: 256641678
+      Data2: 1318391969
+      Data3: -1888341629
+      Data4: 1447659027
+    Path: event:/Progression/UI/Activated
+  deactivationSound:
+    Guid:
+      Data1: 1234217502
+      Data2: 1245527464
+      Data3: 115029148
+      Data4: -235647893
+    Path: event:/Progression/UI/Deactivated
 --- !u!1 &2405627059016797939
 GameObject:
   m_ObjectHideFlags: 0
@@ -1926,6 +1992,7 @@ GameObject:
   - component: {fileID: 7291089162412200568}
   - component: {fileID: 8930478514152877143}
   - component: {fileID: 4973631309522315441}
+  - component: {fileID: 4532002895391686414}
   m_Layer: 0
   m_Name: Upgrade2
   m_TagString: Untagged
@@ -2095,6 +2162,38 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4532002895391686414}
+          m_TargetAssemblyTypeName: ToggleSounds, Assembly-CSharp
+          m_MethodName: OnClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 15
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4532002895391686414}
+          m_TargetAssemblyTypeName: ToggleSounds, Assembly-CSharp
+          m_MethodName: OnClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &4973631309522315441
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2110,6 +2209,39 @@ MonoBehaviour:
   descTextBox: {fileID: 0}
   panel: {fileID: 0}
   desc: 
+--- !u!114 &4532002895391686414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2405627059368981190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 408b49306cb3f2445bddf9f3fe4bff14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSound:
+    Guid:
+      Data1: -1812214317
+      Data2: 1156154451
+      Data3: -1247921783
+      Data4: -1387685725
+    Path: event:/Progression/UI/Hover
+  activationSound:
+    Guid:
+      Data1: 256641678
+      Data2: 1318391969
+      Data3: -1888341629
+      Data4: 1447659027
+    Path: event:/Progression/UI/Activated
+  deactivationSound:
+    Guid:
+      Data1: 1234217502
+      Data2: 1245527464
+      Data3: 115029148
+      Data4: -235647893
+    Path: event:/Progression/UI/Deactivated
 --- !u!1 &2405627059583300347
 GameObject:
   m_ObjectHideFlags: 0
@@ -2417,6 +2549,7 @@ GameObject:
   - component: {fileID: 9037365468511908740}
   - component: {fileID: 4370613973423009459}
   - component: {fileID: 1223454988436361381}
+  - component: {fileID: 5435983576700046226}
   m_Layer: 0
   m_Name: AbilityAlt
   m_TagString: Untagged
@@ -2586,6 +2719,38 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 5435983576700046226}
+          m_TargetAssemblyTypeName: ToggleSounds, Assembly-CSharp
+          m_MethodName: OnClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 15
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 5435983576700046226}
+          m_TargetAssemblyTypeName: ToggleSounds, Assembly-CSharp
+          m_MethodName: OnClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &1223454988436361381
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2601,6 +2766,39 @@ MonoBehaviour:
   descTextBox: {fileID: 3694544522795333873}
   panel: {fileID: 8359060244565142963}
   desc: 
+--- !u!114 &5435983576700046226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2405627059818782638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 408b49306cb3f2445bddf9f3fe4bff14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSound:
+    Guid:
+      Data1: -1812214317
+      Data2: 1156154451
+      Data3: -1247921783
+      Data4: -1387685725
+    Path: event:/Progression/UI/Hover
+  activationSound:
+    Guid:
+      Data1: 256641678
+      Data2: 1318391969
+      Data3: -1888341629
+      Data4: 1447659027
+    Path: event:/Progression/UI/Activated
+  deactivationSound:
+    Guid:
+      Data1: 1234217502
+      Data2: 1245527464
+      Data3: 115029148
+      Data4: -235647893
+    Path: event:/Progression/UI/Deactivated
 --- !u!1 &2405627059946801859
 GameObject:
   m_ObjectHideFlags: 0
@@ -2616,6 +2814,7 @@ GameObject:
   - component: {fileID: 9037365466509223657}
   - component: {fileID: 4370613974637362142}
   - component: {fileID: 1223454986697917896}
+  - component: {fileID: 5261348403289443354}
   m_Layer: 0
   m_Name: AbilityAlt
   m_TagString: Untagged
@@ -2785,6 +2984,38 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 5261348403289443354}
+          m_TargetAssemblyTypeName: ToggleSounds, Assembly-CSharp
+          m_MethodName: OnClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 15
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 5261348403289443354}
+          m_TargetAssemblyTypeName: ToggleSounds, Assembly-CSharp
+          m_MethodName: OnClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &1223454986697917896
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2800,6 +3031,39 @@ MonoBehaviour:
   descTextBox: {fileID: 3694544522795333873}
   panel: {fileID: 8359060244565142963}
   desc: 
+--- !u!114 &5261348403289443354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2405627059946801859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 408b49306cb3f2445bddf9f3fe4bff14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSound:
+    Guid:
+      Data1: -1812214317
+      Data2: 1156154451
+      Data3: -1247921783
+      Data4: -1387685725
+    Path: event:/Progression/UI/Hover
+  activationSound:
+    Guid:
+      Data1: 256641678
+      Data2: 1318391969
+      Data3: -1888341629
+      Data4: 1447659027
+    Path: event:/Progression/UI/Activated
+  deactivationSound:
+    Guid:
+      Data1: 1234217502
+      Data2: 1245527464
+      Data3: 115029148
+      Data4: -235647893
+    Path: event:/Progression/UI/Deactivated
 --- !u!1 &2405627060247930774
 GameObject:
   m_ObjectHideFlags: 0
@@ -2815,6 +3079,7 @@ GameObject:
   - component: {fileID: 1296752058510815232}
   - component: {fileID: 8589618560022833702}
   - component: {fileID: 906180448557399571}
+  - component: {fileID: 4684768548655821808}
   m_Layer: 0
   m_Name: Upgrade3
   m_TagString: Untagged
@@ -2984,6 +3249,38 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4684768548655821808}
+          m_TargetAssemblyTypeName: ToggleSounds, Assembly-CSharp
+          m_MethodName: OnClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 15
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4684768548655821808}
+          m_TargetAssemblyTypeName: ToggleSounds, Assembly-CSharp
+          m_MethodName: OnClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &906180448557399571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2999,6 +3296,39 @@ MonoBehaviour:
   descTextBox: {fileID: 0}
   panel: {fileID: 0}
   desc: 
+--- !u!114 &4684768548655821808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2405627060247930774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 408b49306cb3f2445bddf9f3fe4bff14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSound:
+    Guid:
+      Data1: -1812214317
+      Data2: 1156154451
+      Data3: -1247921783
+      Data4: -1387685725
+    Path: event:/Progression/UI/Hover
+  activationSound:
+    Guid:
+      Data1: 256641678
+      Data2: 1318391969
+      Data3: -1888341629
+      Data4: 1447659027
+    Path: event:/Progression/UI/Activated
+  deactivationSound:
+    Guid:
+      Data1: 1234217502
+      Data2: 1245527464
+      Data3: 115029148
+      Data4: -235647893
+    Path: event:/Progression/UI/Deactivated
 --- !u!1 &2405627060289316958
 GameObject:
   m_ObjectHideFlags: 0
@@ -3302,6 +3632,7 @@ GameObject:
   - component: {fileID: 5897604667089478229}
   - component: {fileID: 3336198376381531331}
   - component: {fileID: 5496829256008465787}
+  - component: {fileID: 1465041547634355841}
   m_Layer: 0
   m_Name: BaseAbility
   m_TagString: Untagged
@@ -3471,6 +3802,38 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1465041547634355841}
+          m_TargetAssemblyTypeName: ToggleSounds, Assembly-CSharp
+          m_MethodName: OnClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 15
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1465041547634355841}
+          m_TargetAssemblyTypeName: ToggleSounds, Assembly-CSharp
+          m_MethodName: OnClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &5496829256008465787
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3486,6 +3849,39 @@ MonoBehaviour:
   descTextBox: {fileID: 3694544522795333873}
   panel: {fileID: 8359060244565142963}
   desc: 
+--- !u!114 &1465041547634355841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2405627060724191535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 408b49306cb3f2445bddf9f3fe4bff14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSound:
+    Guid:
+      Data1: -1812214317
+      Data2: 1156154451
+      Data3: -1247921783
+      Data4: -1387685725
+    Path: event:/Progression/UI/Hover
+  activationSound:
+    Guid:
+      Data1: 256641678
+      Data2: 1318391969
+      Data3: -1888341629
+      Data4: 1447659027
+    Path: event:/Progression/UI/Activated
+  deactivationSound:
+    Guid:
+      Data1: 1234217502
+      Data2: 1245527464
+      Data3: 115029148
+      Data4: -235647893
+    Path: event:/Progression/UI/Deactivated
 --- !u!1 &2405627060755176350
 GameObject:
   m_ObjectHideFlags: 0
@@ -3500,6 +3896,7 @@ GameObject:
   - component: {fileID: 2405627060755176346}
   - component: {fileID: 8527716095794725754}
   - component: {fileID: 6805056856289469375}
+  - component: {fileID: 4727330342340955324}
   m_Layer: 0
   m_Name: Upgrade1
   m_TagString: Untagged
@@ -3669,6 +4066,71 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4727330342340955324}
+          m_TargetAssemblyTypeName: ToggleSounds, Assembly-CSharp
+          m_MethodName: OnClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 15
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4727330342340955324}
+          m_TargetAssemblyTypeName: ToggleSounds, Assembly-CSharp
+          m_MethodName: OnClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!114 &4727330342340955324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2405627060755176350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 408b49306cb3f2445bddf9f3fe4bff14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSound:
+    Guid:
+      Data1: -1812214317
+      Data2: 1156154451
+      Data3: -1247921783
+      Data4: -1387685725
+    Path: event:/Progression/UI/Hover
+  activationSound:
+    Guid:
+      Data1: 256641678
+      Data2: 1318391969
+      Data3: -1888341629
+      Data4: 1447659027
+    Path: event:/Progression/UI/Activated
+  deactivationSound:
+    Guid:
+      Data1: 1234217502
+      Data2: 1245527464
+      Data3: 115029148
+      Data4: -235647893
+    Path: event:/Progression/UI/Deactivated
 --- !u!1 &2405627060785836011
 GameObject:
   m_ObjectHideFlags: 0
@@ -3907,6 +4369,7 @@ GameObject:
   - component: {fileID: 2425937892770336334}
   - component: {fileID: 8543504563173627566}
   - component: {fileID: 6825279581308925547}
+  - component: {fileID: 870334617540891609}
   m_Layer: 0
   m_Name: Upgrade1
   m_TagString: Untagged
@@ -4076,6 +4539,71 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 870334617540891609}
+          m_TargetAssemblyTypeName: ToggleSounds, Assembly-CSharp
+          m_MethodName: OnClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 15
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 870334617540891609}
+          m_TargetAssemblyTypeName: ToggleSounds, Assembly-CSharp
+          m_MethodName: OnClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!114 &870334617540891609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2425937892770336330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 408b49306cb3f2445bddf9f3fe4bff14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSound:
+    Guid:
+      Data1: -1812214317
+      Data2: 1156154451
+      Data3: -1247921783
+      Data4: -1387685725
+    Path: event:/Progression/UI/Hover
+  activationSound:
+    Guid:
+      Data1: 256641678
+      Data2: 1318391969
+      Data3: -1888341629
+      Data4: 1447659027
+    Path: event:/Progression/UI/Activated
+  deactivationSound:
+    Guid:
+      Data1: 1234217502
+      Data2: 1245527464
+      Data3: 115029148
+      Data4: -235647893
+    Path: event:/Progression/UI/Deactivated
 --- !u!1 &2425937892797121787
 GameObject:
   m_ObjectHideFlags: 0
@@ -4091,6 +4619,7 @@ GameObject:
   - component: {fileID: 5841354033202247553}
   - component: {fileID: 3351986570317631767}
   - component: {fileID: 5512548520718411951}
+  - component: {fileID: 2863566353266256696}
   m_Layer: 0
   m_Name: BaseAbility
   m_TagString: Untagged
@@ -4260,6 +4789,38 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2863566353266256696}
+          m_TargetAssemblyTypeName: ToggleSounds, Assembly-CSharp
+          m_MethodName: OnClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 15
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2863566353266256696}
+          m_TargetAssemblyTypeName: ToggleSounds, Assembly-CSharp
+          m_MethodName: OnClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &5512548520718411951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4275,6 +4836,39 @@ MonoBehaviour:
   descTextBox: {fileID: 3694544522795333873}
   panel: {fileID: 8359060244565142963}
   desc: 
+--- !u!114 &2863566353266256696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2425937892797121787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 408b49306cb3f2445bddf9f3fe4bff14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSound:
+    Guid:
+      Data1: -1812214317
+      Data2: 1156154451
+      Data3: -1247921783
+      Data4: -1387685725
+    Path: event:/Progression/UI/Hover
+  activationSound:
+    Guid:
+      Data1: 256641678
+      Data2: 1318391969
+      Data3: -1888341629
+      Data4: 1447659027
+    Path: event:/Progression/UI/Activated
+  deactivationSound:
+    Guid:
+      Data1: 1234217502
+      Data2: 1245527464
+      Data3: 115029148
+      Data4: -235647893
+    Path: event:/Progression/UI/Deactivated
 --- !u!1 &2425937893240206130
 GameObject:
   m_ObjectHideFlags: 0
@@ -4463,6 +5057,7 @@ GameObject:
   - component: {fileID: 1240413602818975188}
   - component: {fileID: 8645886728317321202}
   - component: {fileID: 890392113457900487}
+  - component: {fileID: 4979370480297158572}
   m_Layer: 0
   m_Name: Upgrade3
   m_TagString: Untagged
@@ -4632,6 +5227,38 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4979370480297158572}
+          m_TargetAssemblyTypeName: ToggleSounds, Assembly-CSharp
+          m_MethodName: OnClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 15
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4979370480297158572}
+          m_TargetAssemblyTypeName: ToggleSounds, Assembly-CSharp
+          m_MethodName: OnClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &890392113457900487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4647,6 +5274,39 @@ MonoBehaviour:
   descTextBox: {fileID: 0}
   panel: {fileID: 0}
   desc: 
+--- !u!114 &4979370480297158572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2425937893411811906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 408b49306cb3f2445bddf9f3fe4bff14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSound:
+    Guid:
+      Data1: -1812214317
+      Data2: 1156154451
+      Data3: -1247921783
+      Data4: -1387685725
+    Path: event:/Progression/UI/Hover
+  activationSound:
+    Guid:
+      Data1: 256641678
+      Data2: 1318391969
+      Data3: -1888341629
+      Data4: 1447659027
+    Path: event:/Progression/UI/Activated
+  deactivationSound:
+    Guid:
+      Data1: 1234217502
+      Data2: 1245527464
+      Data3: 115029148
+      Data4: -235647893
+    Path: event:/Progression/UI/Deactivated
 --- !u!1 &2425937893578972951
 GameObject:
   m_ObjectHideFlags: 0
@@ -4662,6 +5322,7 @@ GameObject:
   - component: {fileID: 9053084879221650237}
   - component: {fileID: 4354878555478519306}
   - component: {fileID: 1167203533369511964}
+  - component: {fileID: 2167321553151806656}
   m_Layer: 0
   m_Name: AbilityAlt
   m_TagString: Untagged
@@ -4831,6 +5492,38 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2167321553151806656}
+          m_TargetAssemblyTypeName: ToggleSounds, Assembly-CSharp
+          m_MethodName: OnClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 15
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2167321553151806656}
+          m_TargetAssemblyTypeName: ToggleSounds, Assembly-CSharp
+          m_MethodName: OnClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &1167203533369511964
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4846,6 +5539,39 @@ MonoBehaviour:
   descTextBox: {fileID: 3694544522795333873}
   panel: {fileID: 8359060244565142963}
   desc: 
+--- !u!114 &2167321553151806656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2425937893578972951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 408b49306cb3f2445bddf9f3fe4bff14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSound:
+    Guid:
+      Data1: -1812214317
+      Data2: 1156154451
+      Data3: -1247921783
+      Data4: -1387685725
+    Path: event:/Progression/UI/Hover
+  activationSound:
+    Guid:
+      Data1: 256641678
+      Data2: 1318391969
+      Data3: -1888341629
+      Data4: 1447659027
+    Path: event:/Progression/UI/Activated
+  deactivationSound:
+    Guid:
+      Data1: 1234217502
+      Data2: 1245527464
+      Data3: 115029148
+      Data4: -235647893
+    Path: event:/Progression/UI/Deactivated
 --- !u!1 &2425937894034959921
 GameObject:
   m_ObjectHideFlags: 0
@@ -4998,6 +5724,7 @@ GameObject:
   - component: {fileID: 7342853451603953580}
   - component: {fileID: 8874138957840546179}
   - component: {fileID: 5029900568685706597}
+  - component: {fileID: 8865341234808859012}
   m_Layer: 0
   m_Name: Upgrade2
   m_TagString: Untagged
@@ -5167,6 +5894,38 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 8865341234808859012}
+          m_TargetAssemblyTypeName: ToggleSounds, Assembly-CSharp
+          m_MethodName: OnClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 15
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 8865341234808859012}
+          m_TargetAssemblyTypeName: ToggleSounds, Assembly-CSharp
+          m_MethodName: OnClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &5029900568685706597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5182,6 +5941,39 @@ MonoBehaviour:
   descTextBox: {fileID: 0}
   panel: {fileID: 0}
   desc: 
+--- !u!114 &8865341234808859012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2425937894286567186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 408b49306cb3f2445bddf9f3fe4bff14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSound:
+    Guid:
+      Data1: -1812214317
+      Data2: 1156154451
+      Data3: -1247921783
+      Data4: -1387685725
+    Path: event:/Progression/UI/Hover
+  activationSound:
+    Guid:
+      Data1: 256641678
+      Data2: 1318391969
+      Data3: -1888341629
+      Data4: 1447659027
+    Path: event:/Progression/UI/Activated
+  deactivationSound:
+    Guid:
+      Data1: 1234217502
+      Data2: 1245527464
+      Data3: 115029148
+      Data4: -235647893
+    Path: event:/Progression/UI/Deactivated
 --- !u!1 &2425937894446575261
 GameObject:
   m_ObjectHideFlags: 0
