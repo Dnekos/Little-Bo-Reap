@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Majority Equality
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 936, y: -456}
+  position: {x: 920, y: -184}
   ports:
     keys:
     - rhs
@@ -124,7 +124,7 @@ MonoBehaviour:
   m_Name: Enemy Is Attacking
   m_EditorClassIdentifier: Project.Enemy:XNode.Examples.StateGraph:EnemyIsAttackingNode
   graph: {fileID: 11400000}
-  position: {x: 88, y: 120}
+  position: {x: 72, y: 1208}
   ports:
     keys:
     - not
@@ -211,7 +211,7 @@ MonoBehaviour:
   m_Name: Vector Arithmatic
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 568, y: -888}
+  position: {x: 552, y: -616}
   ports:
     keys:
     - num1
@@ -323,7 +323,7 @@ MonoBehaviour:
   m_Name: Value
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 328, y: -936}
+  position: {x: 312, y: -664}
   ports:
     keys:
     - desiredValue
@@ -535,7 +535,7 @@ MonoBehaviour:
   m_Name: Agent Preset
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 120, y: -296}
+  position: {x: 136, y: -904}
   ports:
     keys:
     - speed
@@ -727,7 +727,7 @@ MonoBehaviour:
   m_Name: Value
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 616, y: -456}
+  position: {x: 600, y: -184}
   ports:
     keys:
     - desiredValue
@@ -769,7 +769,7 @@ MonoBehaviour:
   m_Name: Has Nearby
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 120, y: -120}
+  position: {x: 104, y: 152}
   ports:
     keys:
     - rhs
@@ -866,6 +866,7 @@ MonoBehaviour:
   - {fileID: -5836268909582168705}
   - {fileID: -2603640677487426864}
   - {fileID: -713459155878950300}
+  - {fileID: -7679966801965411995}
   currentUser: {fileID: 0}
 --- !u!114 &735015450114438443
 MonoBehaviour:
@@ -880,7 +881,7 @@ MonoBehaviour:
   m_Name: Value
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 568, y: -984}
+  position: {x: 552, y: -712}
   ports:
     keys:
     - desiredValue
@@ -922,7 +923,7 @@ MonoBehaviour:
   m_Name: Vector Arithmatic
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 840, y: -824}
+  position: {x: 824, y: -552}
   ports:
     keys:
     - num1
@@ -1036,7 +1037,7 @@ MonoBehaviour:
   m_Name: Execute Attack
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 1096, y: -856}
+  position: {x: 1080, y: -584}
   ports:
     keys:
     - attack
@@ -1089,6 +1090,9 @@ MonoBehaviour:
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       connections:
       - fieldName: enter
+        node: {fileID: -7679966801965411995}
+        reroutePoints: []
+      - fieldName: enter
         node: {fileID: -3949227092167442910}
         reroutePoints: []
       - fieldName: enter
@@ -1104,10 +1108,10 @@ MonoBehaviour:
         node: {fileID: -146168830594426719}
         reroutePoints: []
       - fieldName: enter
-        node: {fileID: -2603640677487426864}
+        node: {fileID: 7469263771611773727}
         reroutePoints: []
       - fieldName: enter
-        node: {fileID: 7469263771611773727}
+        node: {fileID: -2603640677487426864}
         reroutePoints: []
       _direction: 1
       _connectionType: 0
@@ -1179,7 +1183,7 @@ MonoBehaviour:
   m_Name: Value
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 376, y: -360}
+  position: {x: 360, y: -88}
   ports:
     keys:
     - desiredValue
@@ -1221,7 +1225,7 @@ MonoBehaviour:
   m_Name: Sequence
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 424, y: -728}
+  position: {x: 408, y: -456}
   ports:
     keys:
     - exit
@@ -1267,7 +1271,7 @@ MonoBehaviour:
   m_Name: Value
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 328, y: -840}
+  position: {x: 312, y: -568}
   ports:
     keys:
     - desiredValue
@@ -1309,7 +1313,7 @@ MonoBehaviour:
   m_Name: Arithmatic
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 824, y: -216}
+  position: {x: 808, y: 56}
   ports:
     keys:
     - num1
@@ -1376,7 +1380,7 @@ MonoBehaviour:
   m_Name: Execute Attack
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 888, y: -584}
+  position: {x: 872, y: -312}
   ports:
     keys:
     - attack
@@ -1417,7 +1421,7 @@ MonoBehaviour:
   m_Name: Value
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -120, y: -40}
+  position: {x: -136, y: 232}
   ports:
     keys:
     - desiredValue
@@ -1459,7 +1463,7 @@ MonoBehaviour:
   m_Name: Attack Selector
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 168, y: -648}
+  position: {x: 152, y: -376}
   ports:
     keys:
     - exit
@@ -1505,7 +1509,7 @@ MonoBehaviour:
   m_Name: Arithmatic
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 616, y: -344}
+  position: {x: 600, y: -72}
   ports:
     keys:
     - num1
@@ -1572,7 +1576,7 @@ MonoBehaviour:
   m_Name: Sword Check
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 1096, y: -728}
+  position: {x: 1080, y: -456}
   ports:
     keys:
     - rhs
@@ -1638,7 +1642,7 @@ MonoBehaviour:
   m_Name: Sequence
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 424, y: -600}
+  position: {x: 408, y: -328}
   ports:
     keys:
     - exit
