@@ -12,6 +12,13 @@ public class PlayerStampede : MonoBehaviour
 	[SerializeField] LayerMask chargeTargetLayers;
 	[SerializeField, Tooltip("how steep the point can be placed")] float maxSlope = 30;
 
+	[Header("Charge Point Scaling and Color")]
+	[SerializeField] float minPointScale = 0.5f;
+	[SerializeField] float maxPointScale = 1.5f;
+	[SerializeField] float pointRatio = 0;
+	[SerializeField] Color defaultColor;
+	[SerializeField] Color redColor;
+
 	[Header("Bo Peep")]
 	[SerializeField] string chargeAnimation;
 	[SerializeField] AbilityIcon chargeIcon;
@@ -60,6 +67,37 @@ public class PlayerStampede : MonoBehaviour
 				//draw charge point
 				sheepChargePoint.transform.position = hit.point;
 				sheepChargePoint.transform.rotation = GetComponent<PlayerMovement>().playerOrientation.transform.rotation;
+
+				float nearbySheep = 0;
+				//update charge point size based on nearby sheepy!
+				for (int i = 0; i < flocks.GetActiveSheep(SheepTypes.RAM).Count; i++)
+				{
+					if (flocks.GetActiveSheep(SheepTypes.RAM)[i].IsCommandable() &&
+						Vector3.Distance(transform.position, flocks.GetActiveSheep(SheepTypes.RAM)[i].transform.position) <= distanceToUse)
+                    {
+						nearbySheep++;
+                    }
+				}
+
+				if(nearbySheep == 0)
+                {
+					Debug.Log("no sheep?");
+					sheepChargePoint.transform.localScale = new Vector3(minPointScale, minPointScale, minPointScale);
+					sheepChargePoint.GetComponent<SheepChargePointParticle>().ChangeParticleColors(redColor);
+                }
+				else
+                {
+					sheepChargePoint.GetComponent<SheepChargePointParticle>().ChangeParticleColors(defaultColor);
+					pointRatio = nearbySheep / (float)flocks.GetActiveSheep(SheepTypes.RAM).Count;
+
+					float newScale = pointRatio * maxPointScale;
+
+					if (newScale < minPointScale) sheepChargePoint.transform.localScale = new Vector3(minPointScale, minPointScale, minPointScale);
+					else sheepChargePoint.transform.localScale = new Vector3(newScale, newScale, newScale);
+				}
+				
+
+
 			}
 			else
 			{

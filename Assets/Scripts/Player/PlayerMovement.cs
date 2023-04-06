@@ -457,9 +457,9 @@ public class PlayerMovement : MonoBehaviour
 		slowTimeVolume.gameObject.SetActive(true);
 		slowTimeVolume.weight = volumeStrength;
 
-        slowTimeUI.gameObject.SetActive(true);
-		Color uiCol = new Color(slowTimeUI.color.r, slowTimeUI.color.g, slowTimeUI.color.b, slowUIOpacity);
-		slowTimeUI.color = uiCol;
+        //slowTimeUI.gameObject.SetActive(true);
+		//Color uiCol = new Color(slowTimeUI.color.r, slowTimeUI.color.g, slowTimeUI.color.b, slowUIOpacity);
+		//slowTimeUI.color = uiCol;
 
 		yield return new WaitForSecondsRealtime(dashSlowLength);
 
@@ -468,19 +468,26 @@ public class PlayerMovement : MonoBehaviour
 		Time.fixedDeltaTime = 0.02F;
 		health.isInvulnerable = false;
 
+        //// IM USING THIS DEMETRI :D
+        float inverse_time_opacity = 0.4f / dashSlowLength;
+        float newWeight = volumeStrength;
+        for (float inverse_time = 1 / dashSlowLength; slowTimeVolume.weight > 0; slowTimeVolume.weight -= Time.deltaTime * inverse_time)
+        {
+        	newWeight -= Time.deltaTime * inverse_time_opacity;
+        	yield return new WaitForEndOfFrame();
+        }
 
+        //// this makes the perfect dash fade out smoother. TODO: make this curved better. actually, maybe this should be an animation?
+        //float inverse_time_opacity = 0.4f / dashSlowLength;
+        //for (float inverse_time = 1 / dashSlowLength; slowTimeVolume.weight > 0; slowTimeVolume.weight -= Time.deltaTime * inverse_time)
+        //{
+        //	uiCol.a -= Time.deltaTime * inverse_time_opacity;
+        //	slowTimeUI.color = uiCol;
+        //	yield return new WaitForEndOfFrame();
+        //}
 
-		// this makes the perfect dash fade out smoother. TODO: make this curved better. actually, maybe this should be an animation?
-		float inverse_time_opacity = 0.4f / dashSlowLength;
-		for (float inverse_time = 1 / dashSlowLength; slowTimeVolume.weight > 0; slowTimeVolume.weight -= Time.deltaTime * inverse_time)
-		{
-			uiCol.a -= Time.deltaTime * inverse_time_opacity;
-			slowTimeUI.color = uiCol;
-			yield return new WaitForEndOfFrame();
-		}
-
-		slowTimeVolume.gameObject.SetActive(false);
-        slowTimeUI.gameObject.SetActive(false);
+        slowTimeVolume.gameObject.SetActive(false);
+        //slowTimeUI.gameObject.SetActive(false);
         
     }
 

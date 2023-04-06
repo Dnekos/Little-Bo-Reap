@@ -15,7 +15,7 @@ public class SuckEnemies : MonoBehaviour
     [SerializeField] float vortexMaxHeight = 2f;
 
     [Header("Spin Speed")]
-    [SerializeField] float inVortexRotSpeed = 5f;
+    [SerializeField] float inVortexRotSpeed = 0.01f;
     [SerializeField] float inVortexLerpSpeed = 0.6f;
     [SerializeField] bool inVortexLerpUseDt = false;
 
@@ -76,7 +76,6 @@ public class SuckEnemies : MonoBehaviour
     public void Spin()
     {
         Transform player = WorldState.instance.player.transform;
-        Debug.Log("following player");
 
         for (int i = 0; i < enemiesStuck.Count; i++)
         {
@@ -86,11 +85,10 @@ public class SuckEnemies : MonoBehaviour
             }
             if (Vector3.Distance(player.transform.position, enemiesStuck[i].transform.position) < spinDistance + 2)//defendRotateDistance - 2f)
             {
-                float radAngle = (i / (float)enemiesStuck.Count) * Mathf.PI * 2;
-                Vector2 RandomCircle = Random.insideUnitCircle.normalized * vortexRandCircle;
+                //arbitrary number to increase size so that the enemy doesnt teleport around anymore.
+                float radAngle = (i / ((float)enemiesStuck.Count + 20)) * Mathf.PI * 2;
 
                 Vector3 dest = player.transform.position
-                    + new Vector3(RandomCircle.x, Random.Range(vortexMinHeight, vortexMaxHeight), RandomCircle.y)
                     + new Vector3(Mathf.Sin(radAngle + Time.time * inVortexRotSpeed), 0, Mathf.Cos(radAngle + Time.time * inVortexRotSpeed)) * spinDistance;
 
                 enemiesStuck[i].transform.position = Vector3.Lerp(enemiesStuck[i].transform.position, dest, inVortexLerpSpeed * (inVortexLerpUseDt ? Time.deltaTime : 1));
@@ -132,7 +130,10 @@ public class SuckEnemies : MonoBehaviour
         {
             if (!enemiesStuck.Contains(other.gameObject))
             {
-                enemiesStuck.Add(other.gameObject);
+                if (!other.gameObject.GetComponent<EnemyBase>().suckResistant)
+                {
+                    enemiesStuck.Add(other.gameObject);
+                }
             }
         }
     }
@@ -143,8 +144,17 @@ public class SuckEnemies : MonoBehaviour
         {
             if (!enemiesStuck.Contains(other.gameObject))
             {
-                enemiesStuck.Add(other.gameObject);
+                if (!other.gameObject.GetComponent<EnemyBase>().suckResistant)
+                {
+                    enemiesStuck.Add(other.gameObject);
+                }
             }
+            //if we contain it and its suck resis then its prob execute remove it from the list
+            else if (other.gameObject.GetComponent<EnemyBase>().suckResistant)
+            {
+                enemiesStuck.Remove(other.gameObject);
+            }
+            
         }
     }
 }

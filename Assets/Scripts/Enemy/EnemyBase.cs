@@ -9,4 +9,7 @@ public class EnemyBase : Damageable
     public GameObject SpawnParticlePrefab;
     public float SpawnWaitTime = 2;
 
+    //special enemies are most likely to be unsuckable so it goes here
+    public bool suckResistant = false;
+
 }
