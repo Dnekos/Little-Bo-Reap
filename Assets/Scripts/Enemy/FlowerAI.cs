@@ -26,10 +26,13 @@ public class FlowerAI : EnemyBase
         base.Start();
         player = WorldState.instance.player.transform;
 		anim = GetComponent<Animator>();
+
+		// dont shoot automatically
+		StartCoroutine(RunCooldown());
 	}
 
-    // Update is called once per frame
-    void Update()
+	// Update is called once per frame
+	void Update()
     {
 
 		//adjust this(make it its own function)
