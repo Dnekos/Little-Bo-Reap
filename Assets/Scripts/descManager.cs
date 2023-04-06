@@ -17,15 +17,15 @@ public class descManager : MonoBehaviour
 
     public void MouseOver()
     {
-        descTextBox.gameObject.SetActive(true);
-        panel.SetActive(true);
+        descTextBox.enabled = true;
+        panel.GetComponent<Image>().enabled = true;
         descTextBox.text = desc;
     }
 
     public void MouseExit()
     {
-        descTextBox.gameObject.SetActive(false);
-        panel.SetActive(false);
+        descTextBox.enabled = false;
+        panel.GetComponent<Image>().enabled = false;
         descTextBox.text = "";
     }
 }
