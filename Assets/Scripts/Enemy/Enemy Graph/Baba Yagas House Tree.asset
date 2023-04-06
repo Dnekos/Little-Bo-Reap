@@ -1874,6 +1874,7 @@ MonoBehaviour:
   - {fileID: -7002027658114344180}
   - {fileID: 9103426935813545683}
   - {fileID: -1483783207928873960}
+  - {fileID: 7581810401876866826}
   currentUser: {fileID: 0}
 --- !u!114 &497988340604685361
 MonoBehaviour:
@@ -2872,6 +2873,47 @@ MonoBehaviour:
       _dynamic: 0
   desiredValue: 0
   result: 0
+--- !u!114 &7581810401876866826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff967641a0d97b54eba088e1b23f3568, type: 3}
+  m_Name: Boss Is Attacking
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -568, y: 680}
+  ports:
+    keys:
+    - not
+    - enter
+    values:
+    - _fieldName: not
+      _node: {fileID: 7581810401876866826}
+      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: enter
+      _node: {fileID: 7581810401876866826}
+      _typeQualifiedName: XNode.Examples.StateGraph.StateNode+Empty, Project.Enemy,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: exit
+        node: {fileID: 7844085352538720092}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  not: 1
 --- !u!114 &7844085352538720092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2898,6 +2940,9 @@ MonoBehaviour:
       connections:
       - fieldName: enter
         node: {fileID: -1482007402123089933}
+        reroutePoints: []
+      - fieldName: enter
+        node: {fileID: 7581810401876866826}
         reroutePoints: []
       - fieldName: enter
         node: {fileID: 9197588226662332365}
