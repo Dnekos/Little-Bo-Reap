@@ -93141,6 +93141,7 @@ GameObject:
   - component: {fileID: 7386700366853540259}
   - component: {fileID: 2653397696958240276}
   - component: {fileID: 6295243076123589088}
+  - component: {fileID: 4621411935726890877}
   m_Layer: 0
   m_Name: Player_Blackhole
   m_TagString: Untagged
@@ -93200,6 +93201,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 3870380308813204389}
+--- !u!135 &4621411935726890877
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5283067463789025570}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 20
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5308287387793732065
 GameObject:
   m_ObjectHideFlags: 0
@@ -140391,7 +140405,7 @@ PrefabInstance:
     - target: {fileID: 5506577549838111979, guid: 3919446d108d40c42b13068f8fa37be5,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 5506577549838111979, guid: 3919446d108d40c42b13068f8fa37be5,
         type: 3}

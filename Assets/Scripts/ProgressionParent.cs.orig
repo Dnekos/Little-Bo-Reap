@@ -24,8 +24,13 @@ public class ProgressionParent : MonoBehaviour
     [SerializeField] float[] upgrade3Values = { 10f, 20f, 50000f };
 
     int currentCostIndex;
+<<<<<<< HEAD
+    int abilityBSoulCost = 1;
+    public bool altAbilityUnlocked = false;
+=======
     int abilitySoulCost = 1;
     bool altAbilityUnlocked = false;
+>>>>>>> tempUI
     // Start is called before the first frame update
     void Start()
     {
@@ -48,6 +53,7 @@ public class ProgressionParent : MonoBehaviour
             Transform notch = upgrades[index].transform.parent.Find("notch");
             if (notch.GetComponent<Image>().color != Color.green)
             {
+                
                 notch.GetComponent<Image>().color = Color.green;
                 upgradeNotch = index;             
             }
