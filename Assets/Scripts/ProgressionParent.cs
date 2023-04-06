@@ -24,7 +24,7 @@ public class ProgressionParent : MonoBehaviour
     [SerializeField] float[] upgrade3Values = { 10f, 20f, 50000f };
 
     int currentCostIndex;
-    int abilityBSoulCost = 1;
+    int abilitySoulCost = 1;
     bool altAbilityUnlocked = false;
     // Start is called before the first frame update
     void Start()
@@ -32,7 +32,7 @@ public class ProgressionParent : MonoBehaviour
         upgrades[0].onClick.AddListener(delegate { Upgrade(0); });
         upgrades[1].onClick.AddListener(delegate { Upgrade(1); });
         upgrades[2].onClick.AddListener(delegate { Upgrade(2); });
-        
+           
         abilities[0].onClick.AddListener(delegate { AbilityChange(0); });
         abilities[1].onClick.AddListener(delegate { AbilityChange(1); });
     }
@@ -76,18 +76,24 @@ public class ProgressionParent : MonoBehaviour
                 if(index == 0 || AbilityUnlock())
                 {
                     WorldState.instance.passiveValues.activeBuilderAbility = "Ability " + index;
+                    abilities[index].transform.parent.Find("notch").GetComponent<Image>().color = Color.green;
+                    abilities[(index + 1) % 2].transform.parent.Find("notch").GetComponent<Image>().color = Color.white;
                 }
                 break;
             case SheepTypes.RAM:
                 if (index == 0 || AbilityUnlock())
                 {
                     WorldState.instance.passiveValues.activeRamAbility = "Ability " + index;
+                    abilities[index].transform.parent.Find("notch").GetComponent<Image>().color = Color.green;
+                    abilities[(index + 1) % 2].transform.parent.Find("notch").GetComponent<Image>().color = Color.white;
                 }
                 break;
             case SheepTypes.FLUFFY:
                 if (index == 0 || AbilityUnlock())
                 {
                     WorldState.instance.passiveValues.activeFluffyAbility = "Ability " + index;
+                    abilities[index].transform.parent.Find("notch").GetComponent<Image>().color = Color.green;
+                    abilities[(index + 1) % 2].transform.parent.Find("notch").GetComponent<Image>().color = Color.white;
                 }
                 break;
         }      
@@ -100,9 +106,9 @@ public class ProgressionParent : MonoBehaviour
             return true;
         }
         //if we have not unlocked already lets try to unlock.
-        if(WorldState.instance.passiveValues.bossSoulsCount >= abilityBSoulCost)
+        if(WorldState.instance.passiveValues.soulsCount >= abilitySoulCost)
         {
-            WorldState.instance.passiveValues.bossSoulsCount -= abilityBSoulCost;
+            WorldState.instance.passiveValues.soulsCount -= abilitySoulCost;
             altAbilityUnlocked = true;
             //add visual for unlocking alt ability here
             return true;
