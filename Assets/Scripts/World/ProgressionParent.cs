@@ -42,17 +42,15 @@ public class ProgressionParent : MonoBehaviour
 
     void Upgrade(int index)
     {
-		// we use bit shifting to get the correct bit at the flag we're looking for
-		int flagindex = 1 << (((int)thisType + 1) * 3 + index + 1);//REVIEW: 'flagindex' --> 'flagIndex' to keep with camelCase standard
+        // we use bit shifting to get the correct bit at the flag we're looking for
+        int exponent = index + (thisType * 3 + 1) - 1;
+        int flagIndex = 1 << exponent;//(((int)thisType + 1) * 3 + index);//REVIEW: 'flagindex' --> 'flagIndex' to keep with camelCase standard
 
-		Debug.Log("upgrading path:" + index);
 
         if (WorldState.instance.PersistentData.soulsCount >= costs[0])
         {
-            Debug.Log("have enought money");
-            if (!WorldState.instance.PersistentData.boughtUpgrades.HasFlag((SaveData.Upgrades)flagindex))
+            if (!WorldState.instance.PersistentData.boughtUpgrades.HasFlag((SaveData.Upgrades)flagIndex))
             {
-                Debug.Log("passed flag check");
                 //turn on light
                 //TODO make this for all uptions
                 ActivateUI(index);
