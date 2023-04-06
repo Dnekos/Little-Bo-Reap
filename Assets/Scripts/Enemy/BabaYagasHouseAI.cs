@@ -165,7 +165,7 @@ public class BabaYagasHouseAI : EnemyAI
 			destroyParticles.Play(true);
 			armorBroken = true;
 			//put into stun state
-			GetAnimator().SetTrigger("BBYGH_Stun 1");
+			GetAnimator().Play("BBYGH_Stun 1");
 		}
 
 	}
@@ -187,7 +187,7 @@ public class BabaYagasHouseAI : EnemyAI
 		else
 		{
 			GetAgent().SetDestination(dest);
-			
+			GetAnimator().Play("Baba_Yagas_House_Move");
 			if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 5, 1) || GetAgent().isOnOffMeshLink)
 			{
 				transform.position = hit.position;
@@ -206,17 +206,16 @@ public class BabaYagasHouseAI : EnemyAI
 	
 	IEnumerator DelayMovement()
     {
-		//MoveBoss();
-		yield return new WaitForSeconds(1);
+		yield return new WaitForSeconds(0);
 		MoveBoss();
-		yield return new WaitForSeconds(1);
+		yield return new WaitForSeconds(0);
 
 	}
 
 	public void MoveBoss()
     {
 		//for now, a predetermined vector
-		Vector3 moveToPos = RandomPointInCircle(spawnPoint, 50f);
+		Vector3 moveToPos = RandomPointInCircle(spawnPoint, 100f);
 
 		SetDestination(moveToPos);
 
@@ -226,12 +225,12 @@ public class BabaYagasHouseAI : EnemyAI
     {
 		if (pinwheelObjectLeft.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Pinwheel_Spin"))
 		{
-			GetAnimator().SetTrigger("BBYGH_Stun1");
+			GetAnimator().Play("BBYGH_Stun1");
 		}
 
 		if (pinwheelObjectRight.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Pinwheel_Spin"))
 		{
-			GetAnimator().SetTrigger("BBYGH_Stun1");
+			GetAnimator().Play("BBYGH_Stun1");
 		}
 	}
 
