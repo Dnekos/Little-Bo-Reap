@@ -450,6 +450,11 @@ MonoBehaviour:
     Path: 
   player: {fileID: 0}
   attacking: 0
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 64
+  fallForce: 450
+  pauseBeforeSpiral: 0.8
 --- !u!95 &3800762412101906831
 Animator:
   serializedVersion: 4
