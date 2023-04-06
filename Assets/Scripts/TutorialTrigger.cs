@@ -12,7 +12,7 @@ public class TutorialTrigger : MonoBehaviour
     private void Awake()
     {
         tutorialCanvas.SetActive(false);
-		UIToggle.listener.AddListener(delegate { Toggle(); });
+		UIToggle.Add(delegate { Toggle(); });
 
 	}
 

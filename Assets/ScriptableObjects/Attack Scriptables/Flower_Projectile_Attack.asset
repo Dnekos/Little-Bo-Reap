@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6643f54b0a665ed41bbf904033ace10b, type: 3}
+  m_Name: Flower_Projectile_Attack
+  m_EditorClassIdentifier: 
+  damage: 15
+  airborneLift: 0
+  animation: Flower_Attack
+  DealsHitstun: 1
+  ShowNumber: 1
+  forwardKnockback: 30
+  upwardKnockback: 20
+  hitboxPrefab: {fileID: 5918201918768744704, guid: 19929a99ce716bd44a659dfac4d50ea1,
+    type: 3}
+  MaxCooldown: 3
+  ID: FLWR
+  TransitionIn: 0
+  attackStartSound:
+    Guid:
+      Data1: 305399217
+      Data2: 1086997324
+      Data3: 2029623705
+      Data4: 43883865
+    Path: event:/Plant/Spitting
+  PercentOfSheep: 0.5

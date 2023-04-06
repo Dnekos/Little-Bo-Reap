@@ -36,10 +36,10 @@ public class CinematicCameras : MonoBehaviour
 	public void OnToggleUI(InputAction.CallbackContext context)
 	{
 		UI.enabled = !UI.enabled;
-		UIToggle.listener.Invoke();
+		UIToggle.Raise();
 	}
 	public void OnToggleMusic(InputAction.CallbackContext context)
 	{
-		MusicToggle.listener.Invoke();
+		MusicToggle.Raise();
 	}
 }

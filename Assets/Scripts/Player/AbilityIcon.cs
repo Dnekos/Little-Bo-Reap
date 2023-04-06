@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,8 +9,11 @@ public class AbilityIcon : MonoBehaviour
 {
     float rechargeTime = 1f;
     Image image;
+    public Image Image { get { return image; } }
+
     bool isFilling = false;
 
+    public event Action<float> fillableChanged;
 
     private void Start()
     {
@@ -24,9 +28,15 @@ public class AbilityIcon : MonoBehaviour
 
             if (image.fillAmount >= 1)
 				isFilling = false;
+
+            fillableChanged.Invoke(image.fillAmount);
         }
-        
     }
+
+    public void UIIsEnabled()
+	{
+        image.fillAmount = 1;
+	}
 
     public void CooldownUIEffect(float theCooldown)
     {

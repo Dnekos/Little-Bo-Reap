@@ -7,8 +7,7 @@ public enum SheepStates
 {
     FOLLOW_PLAYER = 0,
     WANDER = 1,
-    STAMPEDE = 2,
-    VORTEX = 3,
+    ABILITY = 2,
 	CONSTRUCT = 4,
     ATTACK = 5,
 	STUN = 6, // TODO, make this the same as the enemy's
@@ -16,15 +15,20 @@ public enum SheepStates
 }
 
 [RequireComponent(typeof(NavMeshAgent))]
-public class PlayerSheepAI : Damageable
+ public partial class PlayerSheepAI : Damageable
 {
     [Header("Sheep State Variables")]
     [SerializeField] int sheepType;
     [SerializeField] SheepStates currentSheepState;
     [SerializeField] float baseSpeedMin = 15f;
     [SerializeField] float baseSpeedMax = 20f;
+
+	[Header("Jumping")]
     [SerializeField] string jumpAnimation;
+    [SerializeField] string jumpLandAnimation;
     [SerializeField] float jumpSpeed = 8f;
+    OffMeshLink link;
+    float oldLinkCost;
     [SerializeField] float invulnTimeOnSpawn = 1.5f;
     bool isJumping = false;
     float storedSpeed;
@@ -45,6 +49,8 @@ public class PlayerSheepAI : Damageable
     [Header("Pet Sheep Stuff")]
     [SerializeField] ParticleSystem petSheepParticles;
     [SerializeField] string petAnimation;
+    [SerializeField] float maxSize;
+    [SerializeField] float minSize;
 
 	[Header("Sounds")]
 	[SerializeField] FMODUnity.EventReference biteSound;
@@ -75,47 +81,30 @@ public class PlayerSheepAI : Damageable
     //public float attackDamage = 5f;
     [SerializeField] bool canAttack = true;
 
-    [Header("Charge State Variables")]
-    [SerializeField] float chargeSpeed = 35f;
-    [SerializeField] float chargePointRadius = 10f;
-    [SerializeField] float chargeStopDistance = 0f;
-    [SerializeField] float chargeCheckTime = 1f;
-    [SerializeField] float chargeCheckSpeed = 2f;
-    [SerializeField] SheepAttack chargeAttack;
-    [SerializeField] Collider chargeCollider;
-    [SerializeField] GameObject chargeParticles;
-    [SerializeField] GameObject chargeExplosion;
-
-	Vector3 chargeDirection;
-    float chargeCheckCurrent = 0;
-    Vector3 chargePoint;
-    //bool isCharging;
-
-    [Header("Defend State Variables")]
-    [SerializeField] float defendSpeed = 35f;
-    [SerializeField] float defendStopDistance = 0f;
-    [SerializeField] SheepAttack defendAttack;
-    [SerializeField] float defendRotateDistance = 5f;
-    [SerializeField] float defendMinHeight = 0f;
-    [SerializeField] float defendMaxHeight = 2f;
-    [SerializeField] float defendSlerpTime = 5f;
-    Transform defendPoint;
-    bool isMovingToDefend;
+	[Header("Active Ability")]
+	public SheepBehavior ability;
+	public GameObject chargeParticles;
 
     [Header("Stun State Variables")]
     [SerializeField] float StunTime = 1;
     [SerializeField] float fallRate = 50;
 	Coroutine hitstunCo;
     bool isGrounded;
+
+	// Construct values
 	[HideInInspector] // hold new position so that constructs can query it even if sheep is still lerping to it
 	public Vector3 constructPos;
+	[HideInInspector]
+	public float Radius;
 
 	[Header("DEBUG")]
 	public PlayerSheepAI leaderSheep;
+	public int sheepPoolIndex;
+	public List<PlayerSheepAI> activeSheepPool; // pointer to other sheep
 
 	// components
     Transform player;
-    NavMeshAgent agent;
+    [HideInInspector] public NavMeshAgent agent;
     Animator animator;
 	public delegate void callSheep(int x, PlayerSheepAI y);
 	public callSheep RemoveSheep;
@@ -123,6 +112,14 @@ public class PlayerSheepAI : Damageable
 	override protected void Start()
     {
         base.Start();
+
+        float size = Random.Range(minSize, maxSize);
+        transform.localScale = new Vector3(size, size, size);
+
+        if (sheepType == 2)
+        {
+            MaxHealth += WorldState.instance.passiveValues.fluffyHealth;
+        }
 
 		walker = GetComponent<FMODUnity.StudioEventEmitter>();
 
@@ -132,27 +129,70 @@ public class PlayerSheepAI : Damageable
 
         player = WorldState.instance.player.transform;
 
-        //get random follow stopping distance
-        //this prevents sheep from clumping up and getting jittery when in a flock behind player
-        agentStoppingDistance = Random.Range(followStoppingDistanceMin, followStoppingDistanceMax);
+		Radius = GetRadius();
 
-        isInvulnerable = true;
-        Invoke("DisableSpawnInvuln", invulnTimeOnSpawn);
+		Initialize();
 
-        //check black sheep stuff
-        if (isBlackSheep)
-			blackSheepParticles.SetActive(true);
+		constructPos = Vector3.negativeInfinity;
+	}
 
-        //if default state is wander, go wandering
-        if (currentSheepState == SheepStates.WANDER)
-        {
+	/// <summary>
+	/// everything needed when the sheep is reenabled from the pool
+	/// </summary>
+	public void Initialize()
+	{
+		// prevent them from getting stuck in the summon animation might be unneeded
+		animator.Rebind();
+		animator.Play("Test_Sheep_Summon", -1, 0);
+
+		agent.enabled = true;
+
+		Health = MaxHealth;
+
+		//make sure off mesh link is null
+		link = null;
+
+		//get random follow stopping distance
+		//this prevents sheep from clumping up and getting jittery when in a flock behind player
+		agentStoppingDistance = Random.Range(followStoppingDistanceMin, followStoppingDistanceMax);
+
+		isInvulnerable = true;
+		Invoke("DisableSpawnInvuln", invulnTimeOnSpawn);
+
+		if (hitstunCo != null)
+			StopCoroutine(hitstunCo);
+
+		//remove all velocity
+		rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+
+		//if default state is wander, go wandering
+		if (currentSheepState == SheepStates.WANDER)
+		{
 			SheepSetDestination(transform.position);
-            agent.speed = wanderSpeed;
-            agent.stoppingDistance = wanderStopDistance;
+			agent.speed = wanderSpeed;
+			agent.stoppingDistance = wanderStopDistance;
 			SetSheepState(SheepStates.WANDER);
 
-            GoWandering();
-        }
+			GoWandering();
+		}
+	}
+
+	float GetRadius()
+	{
+		// find out how big a sheep is
+		Collider scol = GetComponent<Collider>();
+		if (scol is SphereCollider)
+			return ((SphereCollider)scol).radius * transform.localScale.x;
+		else if (scol is CapsuleCollider)
+			return Mathf.Max(((CapsuleCollider)scol).radius, ((CapsuleCollider)scol).height * 0.5f) * transform.lossyScale.y;
+		else
+			return scol.bounds.size.y * 0.5f;
+	}
+
+	private void OnDestroy()
+    {
+        ReleaseOffmeshLink();
     }
 
     void DisableSpawnInvuln()
@@ -160,16 +200,23 @@ public class PlayerSheepAI : Damageable
         isInvulnerable = false;
     }
 
-    void CheckAnimation()
+    void UpdateAnimation()
     {
         if (agent.velocity.sqrMagnitude > 1) 
 			animator.SetBool("isMoving", true);
         else 
 			animator.SetBool("isMoving", false);
 
+        //stun
+        if (currentSheepState == SheepStates.STUN)
+            animator.SetBool("isStunned", true);
+        else
+            animator.SetBool("isStunned", false);
+
         //jump
-        if (agent.isOnOffMeshLink && !isJumping)
+        if (agent.isOnOffMeshLink && !isJumping )
         {
+            AcquireOffmeshLink();
             storedSpeed = agent.speed;
             agent.speed = jumpSpeed;
             isJumping = true;
@@ -177,6 +224,8 @@ public class PlayerSheepAI : Damageable
         }
         if (isJumping && !agent.isOnOffMeshLink)
         {
+            ReleaseOffmeshLink();
+            animator.Play(jumpLandAnimation);
             agent.speed = storedSpeed;
             isJumping = false;
         }
@@ -188,7 +237,26 @@ public class PlayerSheepAI : Damageable
 		walker.SetParameter("Speed", agent.velocity.magnitude);
 	}
 
-	public void GothMode()
+    void AcquireOffmeshLink()
+    {
+        if (link == null)
+        {
+            link = agent.currentOffMeshLinkData.offMeshLink;
+            oldLinkCost = link.costOverride;
+            link.costOverride = 1000.0f;
+        }
+    }
+
+    void ReleaseOffmeshLink()
+    {
+        if (link != null)
+        {
+            link.costOverride = oldLinkCost;
+            link = null;
+        }
+    }
+
+    public void GothMode()
     {
         isBlackSheep = true;
         blackSheepParticles.SetActive(true);
@@ -196,7 +264,7 @@ public class PlayerSheepAI : Damageable
 
     private void Update()
     {
-        CheckAnimation();
+        UpdateAnimation();
 
         //state machine
         switch (currentSheepState)
@@ -211,15 +279,9 @@ public class PlayerSheepAI : Damageable
                     DoWander();
                     break;
                 }
-            case SheepStates.STAMPEDE:
+            case SheepStates.ABILITY:
                 {
-					UpdateChargeDestination();
-                    CheckCharge();
-                    break;
-                }
-            case SheepStates.VORTEX:
-                {
-                    DoDefendPlayer();
+					ability.AbilityUpdate(this);
                     break;
                 }
             case SheepStates.CONSTRUCT:
@@ -249,46 +311,87 @@ public class PlayerSheepAI : Damageable
         }
     }
 
-	void DealDamage(Collider target, SheepAttack theAttack, bool blackSheepDamage)
+	public void DealDamage(Collider target, SheepAttack theAttack, bool blackSheepDamage)
 	{
 		FMODUnity.RuntimeManager.PlayOneShotAttached(biteSound, gameObject);
 
-		if (blackSheepDamage)
-		{
-			//subtract 1 from health
-			TakeDamage(selfDamage, transform.forward);
+        //check if its an EnemyAI base. If it doesnt have this, damage using the damagable class
+        if(target.GetComponent<EnemyAI>() == null)
+        {
+            if (blackSheepDamage)
+            {
+                //subtract 1 from health
+                TakeDamage(selfDamage, transform.forward);
 
-			Instantiate(theAttack.explosionEffect, transform.position, transform.rotation);
-			target?.GetComponent<EnemyAI>().TakeDamage(theAttack, transform.forward);
-		}
-		else
-			target?.GetComponent<EnemyAI>().TakeDamage((Attack)theAttack, transform.forward);
+                if (sheepType == 1) //if ram, use ram damage/knockback variables
+                {
+                    Instantiate(theAttack.explosionEffect, transform.position, transform.rotation);
+                    target?.GetComponent<Damageable>().TakeDamage(theAttack.BSAttack, transform.forward,
+                        WorldState.instance.passiveValues.ramDamage, WorldState.instance.passiveValues.ramKnockback);
+                }
+                else
+                {
+                    Instantiate(theAttack.explosionEffect, transform.position, transform.rotation);
+                    target?.GetComponent<Damageable>().TakeDamage(theAttack.BSAttack, transform.forward);
+                }
+            }
+            else
+            {
+                if (sheepType == 1) //if ram, use ram damage/knockback variables
+                {
+                    Instantiate(theAttack.explosionEffect, transform.position, transform.rotation);
+                    target?.GetComponent<Damageable>().TakeDamage(theAttack, transform.forward,
+                        WorldState.instance.passiveValues.ramDamage, WorldState.instance.passiveValues.ramKnockback);
+                }
+                else
+                {
+                    target?.GetComponent<Damageable>().TakeDamage(theAttack, transform.forward);
+                }
+            }
+        }
+        else
+        {
+            if (blackSheepDamage)
+            {
+                //subtract 1 from health
+                TakeDamage(selfDamage, transform.forward);
+
+                if (sheepType == 1) //if ram, use ram damage/knockback variables
+                {
+                    Instantiate(theAttack.explosionEffect, transform.position, transform.rotation);
+                    target?.GetComponent<EnemyAI>().TakeDamage(theAttack.BSAttack, transform.forward,
+                        WorldState.instance.passiveValues.ramDamage, WorldState.instance.passiveValues.ramKnockback);
+                }
+                else
+                {
+                    Instantiate(theAttack.explosionEffect, transform.position, transform.rotation);
+                    target?.GetComponent<EnemyAI>().TakeDamage(theAttack.BSAttack, transform.forward);
+                }
+            }
+            else
+            {
+                if (sheepType == 1) //if ram, use ram damage/knockback variables
+                {
+                    Instantiate(theAttack.explosionEffect, transform.position, transform.rotation);
+                    target?.GetComponent<EnemyAI>().TakeDamage(theAttack, transform.forward,
+                        WorldState.instance.passiveValues.ramDamage, WorldState.instance.passiveValues.ramKnockback);
+                }
+                else
+                {
+                    target?.GetComponent<EnemyAI>().TakeDamage(theAttack, transform.forward);
+                }
+            }
+        }
+
+		
 	}
     private void OnTriggerEnter(Collider other)
     {
         switch (currentSheepState)
         {
-            case SheepStates.STAMPEDE:
+            case SheepStates.ABILITY:
                 {
-                    if (other.CompareTag("Enemy"))
-                    {
-                        Instantiate(chargeExplosion, transform.position, transform.rotation);
-                        DealDamage(other, chargeAttack, isBlackSheep);
-                        TakeDamage(selfDamage, transform.forward);
-                    }
-                    if (other.CompareTag("Breakable"))
-                    {
-                        other.GetComponent<BreakableWall>()?.DamageWall();
-                    }
-                    break;
-                }
-            case SheepStates.VORTEX:
-                {
-                    if (other.CompareTag("Enemy"))
-                    {
-                        DealDamage(other, defendAttack, isBlackSheep);
-                        TakeDamage(selfDamage, transform.forward);
-                    }
+					ability.AbilityTriggerEnter(this, other);
                     break;
                 }
             case SheepStates.STUN:
@@ -307,9 +410,18 @@ public class PlayerSheepAI : Damageable
     {
 		walker.Stop();
 
-		RemoveSheep(sheepType, this);
-		Destroy(gameObject);
-    }
+        //defualt to not black sheep
+        isBlackSheep = false;
+        blackSheepParticles.SetActive(false);
+
+        RemoveSheep(sheepType, this);
+		gameObject.SetActive(false);
+		//CancelLift();
+
+		ReleaseOffmeshLink();
+
+		//Destroy(gameObject);
+	}
 
 	void SheepSetDestination(Vector3 dest)
 	{
@@ -327,8 +439,28 @@ public class PlayerSheepAI : Damageable
     {
         Instantiate(gibs, transform.position, transform.rotation);
     }
+	public bool IsCommandable()
+	{
+		return currentSheepState == SheepStates.ABILITY || currentSheepState == SheepStates.FOLLOW_PLAYER || currentSheepState == SheepStates.WANDER;
+	}
+	float GetRandomSheepBaseSpeed()
+	{
+		float speed = Random.Range(baseSpeedMin, baseSpeedMax);
+		return speed;
+	}
 
-    public void PetSheep()
+	public Animator GetAnimator()
+	{
+		return animator;
+	}
+	public void SetStopDist(float stopDist)
+	{
+		agent.stoppingDistance = stopDist;
+	}
+	#endregion
+
+	#region SheepActions
+	public void PetSheep()
     {
         petSheepParticles.Play();
 		FMODUnity.RuntimeManager.PlayOneShotAttached(petSound, gameObject);
@@ -339,7 +471,7 @@ public class PlayerSheepAI : Damageable
     public void RecallSheep()
     {
         // sheep cant be recalled when stunned OR DEFENDING
-        if (currentSheepState == SheepStates.STUN || currentSheepState == SheepStates.VORTEX)
+        if (currentSheepState == SheepStates.STUN || currentSheepState == SheepStates.ABILITY)
             return;
 
         // if the sheep is too high up, stun it first so that it gets closer to the ground
@@ -349,6 +481,7 @@ public class PlayerSheepAI : Damageable
             return;
         }
 
+		agent.enabled = true;
 		animator.SetBool("isDefending", false);
 
 		SetSheepState(SheepStates.FOLLOW_PLAYER);
@@ -359,21 +492,44 @@ public class PlayerSheepAI : Damageable
     {
         return currentSheepState;
     }
-	public void SetSheepState(SheepStates newstate)
-	{
+    public void SetSheepState(SheepStates newstate)
+    {
 		if (hitstunCo != null)
+		{
 			StopCoroutine(hitstunCo);
+			rb.isKinematic = true;
+		}
+
+		// if they were in an ability, end it, this is messy and gross
+		if (currentSheepState == SheepStates.ABILITY)
+		{
+			currentSheepState = newstate;
+			ability.End(this);
+		}
+
 		currentSheepState = newstate;
+
+
+		// reset speed (notable for stampede)
+		switch (currentSheepState)
+		{
+			case SheepStates.ATTACK:
+				agent.speed = baseSpeedCurrent;
+				agent.obstacleAvoidanceType = ObstacleAvoidanceType.MedQualityObstacleAvoidance;
+				break;
+			case SheepStates.WANDER:
+				agent.speed = wanderSpeed;
+				agent.stoppingDistance = wanderStopDistance;
+				agent.obstacleAvoidanceType = ObstacleAvoidanceType.MedQualityObstacleAvoidance;
+				break;
+			case SheepStates.FOLLOW_PLAYER:
+				agent.stoppingDistance = attackStopDistance;
+				agent.speed = baseSpeedCurrent;
+				agent.obstacleAvoidanceType = ObstacleAvoidanceType.MedQualityObstacleAvoidance;
+				break;
+		}
 	}
-    public bool IsCommandable()
-    {
-        return currentSheepState == SheepStates.STAMPEDE || currentSheepState == SheepStates.FOLLOW_PLAYER || currentSheepState == SheepStates.WANDER;
-    }
-    float GetRandomSheepBaseSpeed()
-    {
-        float speed = Random.Range(baseSpeedMin, baseSpeedMax);
-        return speed;
-    }
+
     #endregion
 
     #region Health
@@ -384,12 +540,50 @@ public class PlayerSheepAI : Damageable
 		Instantiate(gibs, transform.position, transform.rotation);
         KillSheep();
     }
-    public override void TakeDamage(Attack atk, Vector3 attackForward)
+    public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
     {
-		if (atk.DealsHitstun)
-			SetHitstun(SheepStates.WANDER);
+        if (atk.DealsHitstun)
+            SetHitstun(SheepStates.WANDER);
 
-        base.TakeDamage(atk, attackForward);
+		Debug.Log("Took Damage in a " + currentSheepState.ToString() + " State.");
+
+		switch (currentSheepState)
+        {
+            case SheepStates.LIFT:  //If you are in a LIFT state, take damage modified by the ConstructDR multiplier
+                base.TakeDamage(atk, attackForward, WorldState.instance.passiveValues.builderConstructDR);
+                break;
+            case SheepStates.CONSTRUCT:  //If you are in a CONSTRUCT state, take damage modified by the ConstructDR multiplier
+                base.TakeDamage(atk, attackForward, WorldState.instance.passiveValues.builderConstructDR);
+                break;
+            case SheepStates.ABILITY:  //If you are in a STAMPEDE state, take damage modified by the StampedeDR multiplier
+				if (ability is SheepStampedeBehavior)
+					base.TakeDamage(atk, attackForward, WorldState.instance.passiveValues.ramChargeDR);
+				else
+				{
+					if (sheepType != 2) //If this is a fluffy sheep, apply the fluffy knockback resistance multiplier
+					{
+						base.TakeDamage(atk, attackForward);
+					}
+					else
+					{
+						Debug.Log("Fluffy Took Damage");
+						base.TakeDamage(atk, attackForward, 0.0f, WorldState.instance.passiveValues.fluffyKnockResist);
+					}
+				}
+				break;
+
+            default: //Otherwise, take damage as normal.
+                if (sheepType != 2) //If this is a fluffy sheep, apply the fluffy knockback resistance multiplier
+                {
+                    base.TakeDamage(atk, attackForward);
+                }
+                else
+                {
+                    Debug.Log("Fluffy Took Damage");
+                    base.TakeDamage(atk, attackForward, 0.0f, WorldState.instance.passiveValues.fluffyKnockResist);
+                }
+                break;
+        }
     }
     #endregion
 
@@ -427,24 +621,30 @@ public class PlayerSheepAI : Damageable
     #region Sheep Stun 
 	public void SetHitstun(SheepStates stateAfterStun)
 	{
-		if (this == null)
+		if (this == null || !gameObject.activeInHierarchy || currentSheepState == SheepStates.ABILITY)
 			return;
+
+		// coroutine
 		if (hitstunCo != null)
 			StopCoroutine(hitstunCo);
-		hitstunCo = StartCoroutine(OnHitStun(SheepStates.WANDER));
+		hitstunCo = StartCoroutine(OnHitStun(stateAfterStun));
+
+		// get out of any constructs
+		EndConstruct();
 	}
 	IEnumerator OnHitStun(SheepStates stateAfterStun)
     {
-        // save current state and set to Hitstun
-        currentSheepState = SheepStates.STUN;
+		// save current state and set to Hitstun
+		SheepStates origState = currentSheepState;
+		currentSheepState = SheepStates.STUN;
         gameObject.layer = LayerMask.NameToLayer("PlayerSheep");
+
         //turn on rb and turn off navmesh (turned on in GroundCheck (which cant be called when hitstunned))
         //rb.isKinematic = false;
         agent.enabled = false;
         isGrounded = false;
 
         rb.isKinematic = false;
-        rb.constraints = RigidbodyConstraints.None;
         rb.constraints = RigidbodyConstraints.FreezeRotation;
 
         yield return new WaitForSeconds(StunTime);
@@ -453,22 +653,32 @@ public class PlayerSheepAI : Damageable
         yield return new WaitUntil(() => isGrounded);
         //yield return new WaitForSeconds(0.1f);
 
-        currentSheepState = stateAfterStun;
-    }
+       // rb.isKinematic = true;
+		agent.enabled = true;
+		if (!agent.isOnNavMesh)
+		{
+			SetHitstun(stateAfterStun);
+			yield break;
+		}
 
-    private void OnCollisionEnter(Collision collision)
+		//rb.isKinematic = true;
+		rb.constraints = RigidbodyConstraints.FreezeAll;
+
+		rb.angularVelocity = Vector3.zero;
+		rb.velocity = Vector3.zero;
+		Debug.Log(gameObject.name + " ending stunn");
+		// if sheep were attacking, they can resume attacking 
+		// the condition is needed because actions like vortex and construct should not be resumed
+		SetSheepState(stateAfterStun);//(origState == SheepStates.ATTACK) ? origState : SheepStates.WANDER);
+
+	}
+
+    private void OnCollisionStay(Collision collision)
     {
         if (currentSheepState == SheepStates.STUN && collision.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
 			//Debug.Log("sheep collided with " + collision.gameObject);
             isGrounded = true;
-
-			agent.enabled = true;
-
-            rb.constraints = RigidbodyConstraints.FreezeAll;
-
-            rb.angularVelocity = Vector3.zero;
-            rb.velocity = Vector3.zero;
         }
     }
     #endregion
@@ -484,19 +694,25 @@ public class PlayerSheepAI : Damageable
         Vector3 randomPosition = Random.insideUnitSphere * wanderRadius;
         randomPosition += transform.position;
 
-        //if inside navmesh, charge!
-        if (NavMesh.SamplePosition(randomPosition, out NavMeshHit hit, wanderRadius, 1))
-        {
-            //get charge
-            destination = hit.position;
+		//if inside navmesh, charge!
+		if (agent.isOnNavMesh)
+		{
+			if (NavMesh.SamplePosition(randomPosition, out NavMeshHit hit, wanderRadius, 1))
+			{
+				//get charge
+				destination = hit.position;
 
-            //set agent destination
-            agent.destination = destination;
-        }
-        else agent.destination = transform.position;
+				//set agent destination
+				agent.destination = destination;
+			}
+			else
+				agent.destination = transform.position;
+		}
+		else if (!agent.isOnOffMeshLink)
+			SetHitstun(SheepStates.WANDER);
 
-        //wander cooldown
-        StartCoroutine(WanderCooldown());
+		//wander cooldown
+		StartCoroutine(WanderCooldown());
     }
 
     void DoWander()
@@ -596,15 +812,16 @@ public class PlayerSheepAI : Damageable
         Collider[] enemyHits = (Physics.OverlapSphere(targetPos, targetRadius, enemyLayer));
         foreach (Collider enemy in enemyHits)
         {
-			Damageable enemyDamageable = enemy.GetComponent<Damageable>();
+			Damageable enemyDamageable = enemy.GetComponent<EnemyBase>();
 			if (enemyDamageable != null && (!(enemyDamageable is EnemyAI) || ((EnemyAI)enemyDamageable).GetState() != EnemyStates.EXECUTABLE))
 				attackTargets?.Add(enemyDamageable);
         }
 
-		//start attacking!
-		SetSheepState(SheepStates.ATTACK);
+        //set agent stopping speed here for now, where did it go? idk someone removed it so here it is
         agent.stoppingDistance = attackStopDistance;
-        agent.speed = baseSpeedCurrent;
+
+        //start attacking!
+        SetSheepState(SheepStates.ATTACK);
     }
 
     //depreciated function, here as a reference now
@@ -629,138 +846,21 @@ public class PlayerSheepAI : Damageable
         canAttack = true;
     }
 
-    #endregion
+	#endregion
 
-    #region Stampede
-    //check here to make sure our sheep arent stuck in charge or caught on something.
-    void CheckCharge()
+	#region Active Ability
+	// TODO: these two needing specific inputs is the only hangup
+	public void BeginAbility(Vector3 theChargePosition)
     {
-        chargeCheckCurrent += Time.deltaTime;
-
-		//if time is past threshold and our movement velocity is too low, end charge early.
-		if (chargeCheckCurrent > chargeCheckTime && agent.velocity.magnitude <= chargeCheckSpeed)
-		{
-			if (leaderSheep == this)
-				Debug.Log("stopping charge "+ (chargeCheckCurrent > chargeCheckTime) + " " + (agent.velocity.magnitude <= chargeCheckSpeed));
-			
-
-			//isCharging = false;
-			agent.speed = wanderSpeed;
-			agent.stoppingDistance = wanderStopDistance;
-			agent.obstacleAvoidanceType = ObstacleAvoidanceType.MedQualityObstacleAvoidance;
-			SetSheepState(SheepStates.WANDER);
-			chargeParticles.SetActive(false);
-		}
+		ability.Begin(this, theChargePosition);
     }
-
-    public void BeginCharge(Vector3 theChargePosition)
-    {
-        //CHARGE!
-       // isCharging = true;
-
-        chargeParticles.SetActive(true);
-
-        //set timer to 0
-        chargeCheckCurrent = 0;
-
-		//set destination
-		chargeDirection = theChargePosition;
-		UpdateChargeDestination();
-
-		//set speed
-		agent.speed = chargeSpeed;
-        agent.stoppingDistance = chargeStopDistance;
-        agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
-
-		//set sheep state
-		SetSheepState(SheepStates.STAMPEDE);
-    }
-
-	void UpdateChargeDestination()
+	public void EndAbility(GameObject Projectile)
 	{
-		//set destination
-		//get random point inside radius
-		Vector3 chargePosition = transform.position + chargeDirection * 5;
-
-		//if inside navmesh, charge!
-		if (NavMesh.SamplePosition(chargePosition, out NavMeshHit hit, chargePointRadius, 1))
-		{
-			//get charge
-			chargePosition = hit.position;
-
-			//set agent destination
-			agent.destination = chargePosition;
-		}
-		else
-		{
-
-			if (leaderSheep == this)
-				Debug.Log("didn't find a chargepoint");
-			agent.destination = chargePosition;
-
-			// end charge
-		//	isCharging = false;
-			agent.speed = wanderSpeed;
-			agent.stoppingDistance = wanderStopDistance;
-			agent.obstacleAvoidanceType = ObstacleAvoidanceType.MedQualityObstacleAvoidance;
-			SetSheepState(SheepStates.WANDER);
-			chargeParticles.SetActive(false);
-		}
+		ability.End(this, Projectile);
 	}
-    #endregion
+	#endregion
 
-    #region Defend Player
-    void DoDefendPlayer()
-    {
-        if(isMovingToDefend)
-        {
-            Debug.Log("following player");
-            transform.position = Vector3.Lerp(transform.position, player.transform.position, defendSlerpTime * Time.deltaTime);
-
-            if (Vector3.Distance(player.transform.position, transform.position) < defendRotateDistance - 2f)
-            {
-                isMovingToDefend = false;
-
-                transform.parent = defendPoint;
-                transform.localPosition = Random.insideUnitCircle.normalized * defendRotateDistance;
-
-                float randPosY = Random.Range(defendMinHeight, defendMaxHeight);
-
-                transform.localPosition = new Vector3(transform.localPosition.x, randPosY, transform.localPosition.y);
-            }
-        }
-        
-    }
-    public void BeginDefendPlayer(Transform theDefendPoint)
-    {
-        //
-        agent.enabled = false;
-
-        //set defened mode
-        defendPoint = theDefendPoint;
-        isMovingToDefend = true;
-
-        float randAnimSpeed = Random.Range(1f, 3f);
-        animator.speed = randAnimSpeed;
-
-        animator.SetBool("isDefending", true);
-
-        //set speed
-        agent.speed = defendSpeed;
-        agent.stoppingDistance = defendStopDistance;
-		SetSheepState(SheepStates.VORTEX);
-    }
-
-    public void EndDefendPlayer(GameObject fluffyProjectile)
-    {
-        var launchSheep = Instantiate(fluffyProjectile, transform.position, transform.rotation);
-        if (isBlackSheep) launchSheep.GetComponent<PlayerSheepProjectile>().isBlackSheep = true;
-        launchSheep.GetComponent<PlayerSheepProjectile>().LaunchProjectile(transform.position - player.transform.position);
-    }
-
-    #endregion
-
-    #region Sheep Construct / Lift
+	#region Sheep Construct / Lift
 	public void StartLift()
 	{
 		SetSheepState(SheepStates.LIFT);
@@ -796,14 +896,16 @@ public class PlayerSheepAI : Damageable
 		rb.angularVelocity = Vector3.zero;
 		rb.velocity = Vector3.zero;
 	}
-	public void EndConstruct(bool callRemove = true)
+	public void EndConstruct()
 	{
-		agent.enabled = true;
+		//agent.enabled = true;
 		//gameObject.layer = SheepLayer;     
 
 		// if not already changed, make sure its not on CONSTRUCT
 		if (currentSheepState == SheepStates.CONSTRUCT)
-			SetHitstun(SheepStates.WANDER);
+			SetHitstun(SheepStates.FOLLOW_PLAYER);
+		if (ability is SheepVortexBehavior)
+			ability.End(this);
 	}
 	#endregion
 }

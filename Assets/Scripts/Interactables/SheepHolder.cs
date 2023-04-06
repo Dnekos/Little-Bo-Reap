@@ -4,16 +4,19 @@ using UnityEngine;
 
 public class SheepHolder : Interactable
 {
-	[SerializeField] protected List<Transform> containedSheep;
+	[SerializeField] protected List<PlayerSheepAI> containedSheep;
 	[Header("Layers")]
 	[SerializeField] protected int SheepLayer = 10;
 	[SerializeField] protected int GroundLayer = 6;
 	[SerializeField] protected float CurveT = -1;
 	[SerializeField] GameEvent endConstructEvent;
 
+	[Header("Sheep sizing")]
+	[SerializeField] protected float SheepRadiusMult = 1;
+
 	private void Awake()
 	{
-		endConstructEvent.listener.AddListener(RemoveSheep);
+		endConstructEvent.Add(RemoveSheep);
 	}
 	public virtual void RemoveSheep()
 	{

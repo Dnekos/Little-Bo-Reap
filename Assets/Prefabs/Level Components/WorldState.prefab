@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4016259675076083573}
   - component: {fileID: 4016259675076083572}
   - component: {fileID: 3365873462784824161}
+  - component: {fileID: 4042317859643986266}
   m_Layer: 0
   m_Name: WorldState
   m_TagString: Untagged
@@ -46,13 +47,47 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bae2a13a94739c34e93405df70fa285e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Dead: 0
+  gameState: 0
+  Loading: 2
+  passiveValues:
+    builderLaunchDam: 0
+    builderCorruptChance: 0
+    builderConstructDR: 0
+    ramChargeDR: 0
+    ramDamage: 0
+    ramKnockback: 0
+    fluffyHealth: 0
+    fluffyKnockResist: 0
+    fluffyVortexDuration: 0
+  PersistentData:
+    boughtUpgrades: 0
+    soulsCount: 0
+    bossSoulsCount: 0
+    currentLevelIndex: 0
+    currentCheckpoint: 0
+    goingToBoss: 0
+    graveIndexes: 
+    doorIndexes: 
+    activeBuilderAbility: 0
+    activeRamAbility: 0
+    activeFluffyAbility: 0
+    totalBuilder: 0
+    totalRam: 0
+    totalFluffy: 0
   SpawnPoints: []
-  activeSpawnPoint: -1
+  SheepGraves: []
+  doors: []
   Respawn: {fileID: 11400000, guid: 19937298da8f18b41b1d2572d7bb5bcb, type: 2}
-  currentScore: 0
   MusicToggle: {fileID: 11400000, guid: 9bd00c9cd9464204d8a6799a3e7142d3, type: 2}
+  currentWorldTheme: 0
+  biomeTheme: 0
+  kick:
+    Name: 
+    Value: 0
   player: {fileID: 0}
+  HUD: {fileID: 0}
+  isInCombat: 0
+  combatBootPoint: {fileID: 0}
 --- !u!114 &4016259675076083572
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68,18 +103,24 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: 1637806147
-      Data2: 1330873044
-      Data3: 2050376077
-      Data4: 1122967596
-    Path: event:/Music/World Music
+      Data1: -1270416703
+      Data2: 1313078803
+      Data3: -1246434936
+      Data4: -1463915353
+    Path: event:/Music/Music_Controls
   Event: 
   PlayEvent: 1
   StopEvent: 2
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
-  Params: []
+  Params:
+  - Name: Kick Level
+    Value: 2
+  - Name: Bass Fades
+    Value: 0
+  - Name: Synth Fades
+    Value: 0
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
@@ -163,10 +204,6 @@ MonoBehaviour:
     m_ActionName: PlayerMovement/Execute[/Keyboard/e]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 4dfd2a40-9301-4cfb-93b9-9991e2e4a4ab
-    m_ActionName: PlayerMenu/PauseMenu[/Keyboard/escape]
-  - m_PersistentCalls:
-      m_Calls: []
     m_ActionId: 69cc146f-1176-465e-8891-58ba71261dc3
     m_ActionName: PlayerMenu/DEBUG_Quit_Game[/Keyboard/equals]
   - m_PersistentCalls:
@@ -205,8 +242,59 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: c91e9761-51bb-4a02-b792-3aeeb97af856
     m_ActionName: CinematicCameras/JumpCheckpoint[/Keyboard/o]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d62e9d4b-30db-4c4b-9c78-0c3283829267
+    m_ActionName: PlayerMovement/SetFlock
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 05cc96a0-ad38-4dc6-bab2-63718e7b2600
+    m_ActionName: PlayerMovement/SheepActiveAbility[/Keyboard/1,/Keyboard/2]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 56b0c570-cf82-4458-acdd-3c305d71e1d8
+    m_ActionName: PlayerMovement/PetSheep
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f8511625-e0a9-4636-a07b-742a7b1aec96
+    m_ActionName: PlayerMovement/PauseMenu[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f98c3e5d-013f-49eb-a479-09fc6060d8d5
+    m_ActionName: Dialog/AdvanceText[/Mouse/leftButton,/Keyboard/space,/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ea74ad52-c969-4048-8f0a-0d381f8ce4e5
+    m_ActionName: RamCharge/PauseMenu[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: edf51ad9-0a69-4032-882d-34963427bd32
+    m_ActionName: RamCharge/StopCharge[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c3d59674-4a77-48c0-90bd-ac3e75b598f7
+    m_ActionName: CinematicCameras/SkipToBoss[/Keyboard/i]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e19019e0-1817-4f3f-a348-f80bab023c93
+    m_ActionName: PauseMenu/PauseMenu[/Keyboard/escape]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: CinematicCameras
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &4042317859643986266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4016259675076083575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87d4913581c1197449debfe665513fdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cse: {fileID: 11400000, guid: 4de8823a48db57946be67c4bec6bd4c8, type: 2}
+  playstation: {fileID: 11400000, guid: d3f6dbb121f04534c89e0fb0aa233573, type: 2}
+  xbox: {fileID: 11400000, guid: de0255a6de4fdac4dbbc45400de71296, type: 2}

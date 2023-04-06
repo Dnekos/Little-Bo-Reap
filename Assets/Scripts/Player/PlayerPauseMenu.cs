@@ -30,7 +30,7 @@ public class PlayerPauseMenu : MonoBehaviour
 		if (isPaused)
         {
 			myBus.setPaused(true);
-			inputs.enabled = false;
+			inputs.SwitchCurrentActionMap("PauseMenu");
             pauseMenu.SetActive(true);
             Time.timeScale = 0f;
             Cursor.visible = true;
@@ -40,8 +40,8 @@ public class PlayerPauseMenu : MonoBehaviour
         {
 			myBus.setPaused(false);
 
-			inputs.enabled = true;
-            controlMenu.SetActive(false);
+			inputs.SwitchCurrentActionMap("PlayerMovement");
+			controlMenu.SetActive(false);
             pauseMenu.SetActive(false);
             Time.timeScale = 1f;
             Cursor.visible = false;

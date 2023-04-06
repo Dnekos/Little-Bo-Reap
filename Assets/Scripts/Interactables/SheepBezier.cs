@@ -47,26 +47,31 @@ public class SheepBezier : SheepHolder
 
 	// components
 
-	private void Start()
+	protected override void Start()
 	{
+		base.Start();
+
 		col.sharedMesh = null;
 
-		containedSheep = new List<Transform>();
+		containedSheep = new List<PlayerSheepAI>();
 		mesh = new Mesh();
 		newVertices = new List<Vector3>();
 		newTriangles = new List<int>();
 	}
 
-	private void Update()
+	private void OnDrawGizmos()
 	{
-		for (float i = 0; i < 1; i+=0.01f)
+		for (float i = 0; i < 1; i += 0.01f)
 		{
 			Vector3 point = CalcCurvePoint(i);
-			Debug.DrawLine(point, point + Differentiate(i), Color.red, 0.1f);
-			Debug.DrawLine(point, point +  DoubleDerivative(i), Color.blue, 0.1f);
-			Debug.DrawLine(point, point + Vector3.Cross(Differentiate(i), DoubleDerivative(i)), Color.cyan, 0.1f);
-
-			Debug.DrawLine(point,  CalcCurvePoint(i+0.01f), Color.green, 0.1f);
+			Gizmos.color = Color.red;
+			Gizmos.DrawLine(point, point + Differentiate(i));
+			Gizmos.color = Color.blue;
+			Gizmos.DrawLine(point, point + DoubleDerivative(i));
+			Gizmos.color = Color.cyan;
+			Gizmos.DrawLine(point, point + Vector3.Cross(Differentiate(i), DoubleDerivative(i)));
+			Gizmos.color = Color.green;
+			Gizmos.DrawLine(point, CalcCurvePoint(i + 0.01f));
 		}
 	}
 
@@ -107,7 +112,7 @@ public class SheepBezier : SheepHolder
 	{
 		for (int i = containedSheep.Count - 1; i >= 0; i--)
 		{
-			containedSheep[i].GetComponent<PlayerSheepAI>().EndConstruct(false);
+			containedSheep[i].GetComponent<PlayerSheepAI>().EndConstruct();
 		}
 		containedSheep.Clear();
 	}
@@ -141,10 +146,12 @@ public class SheepBezier : SheepHolder
 		
 		for (int i = 0; i < flock.Count; i++)
 		{
-			if (flock[i].GetComponent<SphereCollider>() != null)
-				SheepRadius = flock[i].GetComponent<SphereCollider>().radius * flock[i].transform.lossyScale.x;
-			else if (flock[i].GetComponent<CapsuleCollider>() != null)
-				SheepRadius = flock[i].GetComponent<CapsuleCollider>().radius * flock[i].transform.lossyScale.x;
+			Collider col = flock[i].GetComponent<Collider>();
+			if (col is SphereCollider)
+				SheepRadius = ((SphereCollider)col).radius * flock[i].transform.lossyScale.x;
+			else if (col is CapsuleCollider)
+				SheepRadius = Mathf.Max(((CapsuleCollider)col).radius, ((CapsuleCollider)col).height * 0.5f) * flock[i].transform.lossyScale.y;
+			SheepRadius *= SheepRadiusMult;
 
 			// set height if this is the first sheep
 			if (containedSheep.Count == 0)
@@ -158,7 +165,7 @@ public class SheepBezier : SheepHolder
 			}
 
 			// add the little guy
-			AddSheep(flock[i].transform);
+			AddSheep(flock[i]);
 
 			// delay if the sheep increment is right (if bars is two it does sheep 2 at a time)
 			if (i % SheepBars == 0 && delay > 0)
@@ -181,7 +188,7 @@ public class SheepBezier : SheepHolder
 #endif
 	}
 
-	void AddSheep(Transform newSheep)
+	void AddSheep(PlayerSheepAI newSheep)
 	{
 		float RandomCount = 0;
 
@@ -206,7 +213,6 @@ public class SheepBezier : SheepHolder
 			bool Filled = false;
 			for (int i = containedSheep.Count - 1; i >= Mathf.Max(0, containedSheep.Count - sheeptocheck); i--) 
 			{
-
 				SheepChecked++;
 
 				// check the position, using sphere intersections
@@ -224,7 +230,7 @@ public class SheepBezier : SheepHolder
 				// set state of AI
 				newSheep.GetComponent<PlayerSheepAI>()?.DoConstruct(sheepPlacement);
 
-				StartCoroutine(LerpSheep(newSheep, sheepPlacement));
+				StartCoroutine(LerpSheep(newSheep.transform, sheepPlacement));
 
 				return;
 			}
