@@ -18,7 +18,8 @@ public abstract class Interactable : MonoBehaviour
 		{
 			inputIcon.enabled = false;
 			maincam = Camera.main.transform;
-		}
+            Debug.Log("Disabled This " + inputIcon.name);
+        }
 	}
 
 	public virtual void Interact()
