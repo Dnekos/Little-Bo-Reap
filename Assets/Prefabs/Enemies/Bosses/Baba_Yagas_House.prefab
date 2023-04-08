@@ -26070,6 +26070,8 @@ MonoBehaviour:
   SpawnParticlePrefab: {fileID: 5225625775041053419, guid: 0d79b936ef2eed546926c5bad3a31652,
     type: 3}
   SpawnWaitTime: 2
+  minSpawnStagger: 0
+  maxSpawnStagger: 1
   suckResistant: 1
   graph: {fileID: 11400000, guid: 442bfc3177149354b8a25f6e1f06aaad, type: 2}
   currentEnemyState: 3
@@ -26128,7 +26130,7 @@ MonoBehaviour:
   pinwheelObjectLeft: {fileID: 1423758968941448198}
   pinwheelObjectRight: {fileID: 6806401054972975225}
   destroyParticles: {fileID: 771594462963397056}
-  endGameObject: {fileID: 601021469018455316, guid: 696793d2437e520458a1eb3a5b40db43,
+  endGameObject: {fileID: 173784402656952475, guid: 5a028c30d3e44cd41b12b9b034a3068c,
     type: 3}
 --- !u!54 &6442876334591913545
 Rigidbody:

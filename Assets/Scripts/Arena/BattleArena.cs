@@ -121,7 +121,7 @@ public class BattleArena : PuzzleDoor
 			Instantiate(SoulReward, SoulSpawnPoint.position, SoulSpawnPoint.rotation, SpawnedEnemiesFolder); //spawn soul reward
 
 			//REVIEW: Looks good! Clear and efficient
-			var cam = Instantiate(finalCamera, finalEnemyPosition, Quaternion.identity) as GameObject;
+			var cam = Instantiate(finalCamera, finalEnemyPosition + yOffset, Quaternion.identity) as GameObject;
 			lookPoint.position = finalEnemyPosition;
 			cam.GetComponent<ArenaEndCamera>().InitCamera(lookPoint, finalEnemyPosition);
 			
