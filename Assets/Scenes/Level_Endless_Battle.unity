@@ -9171,6 +9171,8 @@ MonoBehaviour:
   soulCollectables: []
   SpawnParticlePrefab: {fileID: 0}
   SpawnWaitTime: 2
+  minSpawnStagger: 0
+  maxSpawnStagger: 1
   suckResistant: 1
   hitAnimation: Dummy_Target_Hit
 --- !u!195 &254985498
@@ -28955,6 +28957,8 @@ MonoBehaviour:
   soulCollectables: []
   SpawnParticlePrefab: {fileID: 0}
   SpawnWaitTime: 2
+  minSpawnStagger: 0
+  maxSpawnStagger: 1
   suckResistant: 1
   hitAnimation: Dummy_Target_Hit
 --- !u!195 &909471383
@@ -43349,7 +43353,7 @@ MonoBehaviour:
         type: 3}
       SpawnPoint: {fileID: 1744773715}
       AlternateSpawn: {x: 5, y: 2, z: 5}
-      NumEnemies: 2
+      NumEnemies: 3
       RandomRadius: 25
   - Enemies:
     - EnemyPrefab: {fileID: 426741378606354996, guid: 78ef9cb2aa8fe6e4d99f147a2228991f,
@@ -43473,6 +43477,8 @@ MonoBehaviour:
   colliderMesh: {fileID: 306003755}
   SoulSpawnPoint: {fileID: 0}
   SoulReward: {fileID: 2521674433815051762, guid: d39315b1299c0a849ae75b961281c19a,
+    type: 3}
+  spawnDelayParticle: {fileID: 1490687681701394675, guid: cd23e2e00ab807048bf08d8e5dd3a302,
     type: 3}
   RespawnPlayer: {fileID: 11400000, guid: 19937298da8f18b41b1d2572d7bb5bcb, type: 2}
   bootSpawnPoint: {fileID: 306003754}
@@ -44871,6 +44877,8 @@ MonoBehaviour:
   soulCollectables: []
   SpawnParticlePrefab: {fileID: 0}
   SpawnWaitTime: 2
+  minSpawnStagger: 0
+  maxSpawnStagger: 1
   suckResistant: 1
   hitAnimation: Dummy_Target_Hit
 --- !u!195 &1988665415

@@ -38,6 +38,7 @@ public class BattleArena : PuzzleDoor
 	//soul spawning variables - might make this a struct later but it's only 2 varibles so it could be unnecessary.
 	[SerializeField] Transform SoulSpawnPoint;
 	[SerializeField] GameObject SoulReward;
+	[SerializeField] GameObject spawnDelayParticle;
 
 	[Header("Resetting"), SerializeField]
 	GameEvent RespawnPlayer;
@@ -134,7 +135,11 @@ public class BattleArena : PuzzleDoor
 				{
 					Vector3 SpawnPoint = (enemy.SpawnPoint == null) ? enemy.AlternateSpawn : enemy.SpawnPoint.position;
 					SpawnPoint = SpawnPoint + new Vector3(Random.Range(-enemy.RandomRadius, enemy.RandomRadius), 0, Random.Range(-enemy.RandomRadius, enemy.RandomRadius));
-					StartCoroutine(SpawnEnemy(enemy.EnemyPrefab, enemy.EnemyPrefab.GetComponent<EnemyBase>().SpawnParticlePrefab, SpawnPoint));
+
+					//get stagger time
+					float stagger = Random.Range(enemy.EnemyPrefab.GetComponent<EnemyBase>().minSpawnStagger, enemy.EnemyPrefab.GetComponent<EnemyBase>().maxSpawnStagger);
+
+					StartCoroutine(SpawnEnemy(enemy.EnemyPrefab, enemy.EnemyPrefab.GetComponent<EnemyBase>().SpawnParticlePrefab, SpawnPoint, stagger));
 
 				}
 			}
@@ -149,14 +154,26 @@ public class BattleArena : PuzzleDoor
 	}
 
 
-    protected IEnumerator SpawnEnemy(GameObject enemy, GameObject particle, Vector3 pos)
+    protected IEnumerator SpawnEnemy(GameObject enemy, GameObject particle, Vector3 pos, float staggerDelay)
 	{
+
+
+		//delay
+		var staggerParticle = Instantiate(spawnDelayParticle, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder) as GameObject;
+		var module = staggerParticle.GetComponent<ParticleSystem>().main;
+		module.duration = staggerDelay + 1;
+		module.startLifetime = staggerDelay;
+		staggerParticle.GetComponent<ParticleSystem>().Play(true);
+
+		yield return new WaitForSeconds(staggerDelay);
 
 		Instantiate(particle, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder);
 		yield return new WaitForSeconds(enemy.GetComponent<EnemyBase>().SpawnWaitTime);
-        //Instantiate(enemy, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder).GetComponent<EnemyAI>().ToChase();
-				//I see "ToChase()" is just an empty function so I commented it out
-        GameObject newEnemy = Instantiate(enemy, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder);
+		//Instantiate(enemy, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder).GetComponent<EnemyAI>().ToChase();
+		//I see "ToChase()" is just an empty function so I commented it out
+
+		
+		GameObject newEnemy = Instantiate(enemy, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder);
 
 		//if the enemy has a spline follower script(that means it is a flying enemy)
 		//then find the index the flying enemy has and attach it to the corresponding flight path in this script's array
