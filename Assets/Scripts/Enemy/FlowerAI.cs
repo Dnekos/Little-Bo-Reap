@@ -13,6 +13,10 @@ public class FlowerAI : EnemyBase
 	bool canAttack = true;
 	Animator anim;
 
+	[Header("Placement")]
+	[SerializeField] LayerMask groundMask;
+	[SerializeField] float startpointOffset;
+
     [Header("Sounds")]
     [SerializeField] FMODUnity.EventReference attackSound;
 
@@ -29,6 +33,11 @@ public class FlowerAI : EnemyBase
 
 		// dont shoot automatically
 		StartCoroutine(RunCooldown());
+
+		// make sure they're on the ground
+		RaycastHit info;
+		if (Physics.Raycast(transform.position + Vector3.up * startpointOffset, Vector3.down, out info, startpointOffset + 20, groundMask, QueryTriggerInteraction.Ignore))
+			transform.position = info.point;
 	}
 
 	// Update is called once per frame

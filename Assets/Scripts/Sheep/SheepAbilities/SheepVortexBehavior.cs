@@ -95,5 +95,9 @@ public class SheepVortexBehavior : SheepBehavior
 				pinwheel.StartCoroutine(pinwheel.SpinPinwheel());
 		}
 	}
+	public override bool IsRecallable(PlayerSheepAI ps)
+	{
+		return false;
+	}
 }
 

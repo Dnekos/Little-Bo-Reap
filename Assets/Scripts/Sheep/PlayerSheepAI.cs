@@ -10,7 +10,7 @@ public enum SheepStates
     ABILITY = 2,
 	CONSTRUCT = 4,
     ATTACK = 5,
-	STUN = 6, // TODO, make this the same as the enemy's
+	STUN = 6,
 	LIFT
 }
 
@@ -471,7 +471,7 @@ public enum SheepStates
     public void RecallSheep()
     {
         // sheep cant be recalled when stunned OR DEFENDING
-        if (currentSheepState == SheepStates.STUN || currentSheepState == SheepStates.ABILITY)
+        if (currentSheepState == SheepStates.STUN || (currentSheepState == SheepStates.ABILITY && !ability.IsRecallable(this)))
             return;
 
         // if the sheep is too high up, stun it first so that it gets closer to the ground
