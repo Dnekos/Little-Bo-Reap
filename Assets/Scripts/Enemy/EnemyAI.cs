@@ -307,7 +307,7 @@ public class EnemyAI : EnemyBase
 		agent.enabled = false;
 		rb.isKinematic = false;
 		gameObject.layer = LayerMask.NameToLayer("EnemyExecute");
-		rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+		rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
 		currentEnemyState = EnemyStates.EXECUTABLE;
 		executeTrigger.SetActive(true);
 	}
