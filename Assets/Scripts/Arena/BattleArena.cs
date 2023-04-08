@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class BattleArena : PuzzleDoor
 {
@@ -131,16 +132,27 @@ public class BattleArena : PuzzleDoor
 			// spawn each enemy
 			foreach (EnemySpawn enemy in waves[CurrentWave].Enemies)
 			{
+				EnemyBase currEnemyPrefab = enemy.EnemyPrefab.GetComponent<EnemyBase>();
 				for (int i = 0; i < enemy.NumEnemies; i++)
 				{
-					Vector3 SpawnPoint = (enemy.SpawnPoint == null) ? enemy.AlternateSpawn : enemy.SpawnPoint.position;
-					SpawnPoint = SpawnPoint + new Vector3(Random.Range(-enemy.RandomRadius, enemy.RandomRadius), 0, Random.Range(-enemy.RandomRadius, enemy.RandomRadius));
+					NavMeshHit hit;
+					Vector3 SpawnPoint;
 
 					//get stagger time
-					float stagger = Random.Range(enemy.EnemyPrefab.GetComponent<EnemyBase>().minSpawnStagger, enemy.EnemyPrefab.GetComponent<EnemyBase>().maxSpawnStagger);
+					float stagger = Random.Range(currEnemyPrefab.minSpawnStagger, currEnemyPrefab.maxSpawnStagger);
+					// do checks to find a valid spawnpoint
+					do
+					{
+						SpawnPoint = (enemy.SpawnPoint == null) ? enemy.AlternateSpawn : enemy.SpawnPoint.position;
+						Vector2 rand = Random.insideUnitCircle;
+						SpawnPoint = SpawnPoint + new Vector3(rand.x * enemy.RandomRadius, 0, rand.y * enemy.RandomRadius);
 
-					StartCoroutine(SpawnEnemy(enemy.EnemyPrefab, enemy.EnemyPrefab.GetComponent<EnemyBase>().SpawnParticlePrefab, SpawnPoint, stagger));
+					} while (!NavMesh.SamplePosition(SpawnPoint, out hit, 5, NavMesh.AllAreas));
+					// if we found a point, set the spawnpoint
+					if (hit.hit)
+						SpawnPoint = hit.position;
 
+					StartCoroutine(SpawnEnemy(enemy.EnemyPrefab, currEnemyPrefab.SpawnParticlePrefab, SpawnPoint, stagger));
 				}
 			}
 	}
