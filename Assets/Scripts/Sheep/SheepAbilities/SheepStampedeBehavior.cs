@@ -115,4 +115,8 @@ public class SheepStampedeBehavior : SheepBehavior
 		ps.chargeParticles.SetActive(false);
 		ps.agent.obstacleAvoidanceType = ObstacleAvoidanceType.MedQualityObstacleAvoidance;
 	}
+	public override bool IsRecallable(PlayerSheepAI ps)
+	{
+		return false;
+	}
 }
