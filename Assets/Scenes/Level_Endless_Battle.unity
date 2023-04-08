@@ -1865,7 +1865,7 @@ PrefabInstance:
     - target: {fileID: 5465943313335475824, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -27.78891
+      value: -27.78888
       objectReference: {fileID: 0}
     - target: {fileID: 5474796224296438636, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
         type: 3}
@@ -4937,7 +4937,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh323818
+  m_Name: pb_Mesh663426
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -7727,7 +7727,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh324420
+  m_Name: pb_Mesh664030
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -8901,7 +8901,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh324136
+  m_Name: pb_Mesh663746
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -9073,6 +9073,7 @@ GameObject:
   - component: {fileID: 254985497}
   - component: {fileID: 254985496}
   - component: {fileID: 254985495}
+  - component: {fileID: 254985499}
   m_Layer: 12
   m_Name: Dummy_Target (3)
   m_TagString: Enemy
@@ -9170,7 +9171,8 @@ MonoBehaviour:
   soulCollectables: []
   SpawnParticlePrefab: {fileID: 0}
   SpawnWaitTime: 2
-  suckResistant: 0
+  suckResistant: 1
+  hitAnimation: Dummy_Target_Hit
 --- !u!195 &254985498
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -9193,6 +9195,26 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!95 &254985499
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 254985493}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 42f2df1843c57db4c9cc9a5896772c7b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &257409180
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9649,7 +9671,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh324658
+  m_Name: pb_Mesh664270
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -15976,7 +15998,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PolyMesh:
-    name: pb_Mesh324136
+    name: pb_Mesh663746
     vertices:
     - {x: 0.000016930668, y: 16.264933, z: 0.000000015180355}
     - {x: 54.625244, y: 16.264927, z: 50.1267}
@@ -25660,7 +25682,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh90580
+  m_Name: pb_Mesh664206
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -28835,6 +28857,7 @@ GameObject:
   - component: {fileID: 909471382}
   - component: {fileID: 909471381}
   - component: {fileID: 909471380}
+  - component: {fileID: 909471384}
   m_Layer: 12
   m_Name: Dummy_Target (4)
   m_TagString: Enemy
@@ -28932,7 +28955,8 @@ MonoBehaviour:
   soulCollectables: []
   SpawnParticlePrefab: {fileID: 0}
   SpawnWaitTime: 2
-  suckResistant: 0
+  suckResistant: 1
+  hitAnimation: Dummy_Target_Hit
 --- !u!195 &909471383
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -28955,6 +28979,26 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!95 &909471384
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 909471378}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 42f2df1843c57db4c9cc9a5896772c7b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &911582601
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31929,7 +31973,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PolyMesh:
-    name: pb_Mesh90580
+    name: pb_Mesh664206
     vertices:
     - {x: -625, y: -0.5, z: 500}
     - {x: 625, y: -0.5, z: 500}
@@ -44729,6 +44773,7 @@ GameObject:
   - component: {fileID: 1988665414}
   - component: {fileID: 1988665413}
   - component: {fileID: 1988665412}
+  - component: {fileID: 1988665416}
   m_Layer: 12
   m_Name: Dummy_Target (5)
   m_TagString: Enemy
@@ -44826,7 +44871,8 @@ MonoBehaviour:
   soulCollectables: []
   SpawnParticlePrefab: {fileID: 0}
   SpawnWaitTime: 2
-  suckResistant: 0
+  suckResistant: 1
+  hitAnimation: Dummy_Target_Hit
 --- !u!195 &1988665415
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -44849,6 +44895,26 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!95 &1988665416
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1988665410}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 42f2df1843c57db4c9cc9a5896772c7b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &1996155422
 PrefabInstance:
   m_ObjectHideFlags: 0
