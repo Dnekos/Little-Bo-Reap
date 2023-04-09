@@ -54,6 +54,14 @@ public class SheepHammer : SheepHolder
 		containedSheep = new List<PlayerSheepAI>();
 	}
 
+	private void Update()
+	{
+		for (int i = 0; i < containedSheep.Count; i++)
+		{
+			containedSheep[i].transform.eulerAngles = new Vector3(transform.eulerAngles.x, containedSheep[i].transform.eulerAngles.y, transform.eulerAngles.z);
+		}
+	}
+
 	#region Hammer Attack
 	public void SpawnExplosion()
 	{
@@ -275,15 +283,17 @@ public class SheepHammer : SheepHolder
 	IEnumerator LerpSheep(Transform newSheep, Vector3 SheepPlacement)
 	{
 		Vector3 oldpos = newSheep.position, localplacement = newSheep.position;
+		newSheep.eulerAngles = new Vector3(transform.eulerAngles.x, Random.Range(0, 360), transform.eulerAngles.x);
 
 		// keep going, incrementing t, while the sheep exists
 		for (float t = 0; newSheep != null; t += Time.deltaTime * lerpSpeed)
 		{
 			if (newSheep == null)
-				yield break;
+				break;
 
 			localplacement = transform.localToWorldMatrix.MultiplyPoint3x4(SheepPlacement);
 			newSheep.position = Vector3.Lerp(oldpos, localplacement, t);
+
 			yield return new WaitForEndOfFrame();
 
 		} 
@@ -291,9 +301,7 @@ public class SheepHammer : SheepHolder
 		if (newSheep != null)
 		{
 			newSheep.position = localplacement;
-			newSheep.eulerAngles = Random.insideUnitSphere * 360;
 			FMODUnity.RuntimeManager.PlayOneShotAttached(placeSound, newSheep.gameObject);
-
 		}
 
 	}
