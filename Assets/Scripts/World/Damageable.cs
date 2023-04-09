@@ -132,13 +132,13 @@ public class Damageable : MonoBehaviour
 			rb.AddForce(knockbackForce - rb.velocity, ForceMode.Impulse);
 			//this worked the best
 
-			Debug.Log("before vel: " + rb.velocity + " " + rb.velocity.magnitude);
+			//Debug.Log("before vel: " + rb.velocity + " " + rb.velocity.magnitude);
 		}
 		if (rb.velocity.sqrMagnitude > knockbackForce.sqrMagnitude)
 		{
 			rb.AddForce(- rb.velocity, ForceMode.Impulse);
 			//this only works Using impulse, changing it to velocity change bugs it out
-			Debug.Log("MAX VEL: " + rb.velocity.sqrMagnitude);
+			//Debug.Log("MAX VEL: " + rb.velocity.sqrMagnitude);
 		}
 	}
 

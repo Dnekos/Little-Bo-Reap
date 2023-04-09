@@ -110,7 +110,12 @@ public class FlyingEnemyAI : EnemyBase
         StartCoroutine(DeathSpiral());
     }
 
-    IEnumerator DeathSpiral()
+	public override void ForceKill()
+	{
+		base.OnDeath();
+	}
+
+	IEnumerator DeathSpiral()
     {
         yield return new WaitForSeconds(pauseBeforeSpiral);
 
