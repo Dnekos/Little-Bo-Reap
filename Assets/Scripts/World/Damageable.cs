@@ -129,7 +129,7 @@ public class Damageable : MonoBehaviour
 			//rb.AddForce((knockbackForce - rb.velocity) * knockbackMult, ForceMode.Impulse
 			//rb.AddForce((knockbackForce.normalized * knockbackForce.magnitude), ForceMode.Impulse);
 
-			rb.AddForce(knockbackForce - rb.velocity, ForceMode.VelocityChange);
+			rb.AddForce(knockbackForce - rb.velocity, ForceMode.Impulse);
 			//this worked the best
 
 			Debug.Log("before vel: " + rb.velocity + " " + rb.velocity.magnitude);

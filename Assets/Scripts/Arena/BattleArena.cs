@@ -137,22 +137,24 @@ public class BattleArena : PuzzleDoor
 				{
 					NavMeshHit hit;
 					Vector3 SpawnPoint;
+					Vector3 baseSpawnPoint = (enemy.SpawnPoint == null) ? enemy.AlternateSpawn : enemy.SpawnPoint.position;
 
 					//get stagger time
 					float stagger = Random.Range(currEnemyPrefab.minSpawnStagger, currEnemyPrefab.maxSpawnStagger);
+					float redundancy = 20;
 					// do checks to find a valid spawnpoint
 					do
 					{
-						SpawnPoint = (enemy.SpawnPoint == null) ? enemy.AlternateSpawn : enemy.SpawnPoint.position;
 						Vector2 rand = Random.insideUnitCircle;
-						SpawnPoint = SpawnPoint + new Vector3(rand.x * enemy.RandomRadius, 0, rand.y * enemy.RandomRadius);
+						SpawnPoint = baseSpawnPoint + new Vector3(rand.x * enemy.RandomRadius, 0, rand.y * enemy.RandomRadius);
 
-					} while (!NavMesh.SamplePosition(SpawnPoint, out hit, 5, NavMesh.AllAreas));
+					} while (!NavMesh.SamplePosition(SpawnPoint, out hit, 5, NavMesh.AllAreas) && --redundancy > 0);
+
 					// if we found a point, set the spawnpoint
 					if (hit.hit)
-						SpawnPoint = hit.position;
-
-					StartCoroutine(SpawnEnemy(enemy.EnemyPrefab, currEnemyPrefab.SpawnParticlePrefab, SpawnPoint, stagger));
+						StartCoroutine(SpawnEnemy(enemy.EnemyPrefab, currEnemyPrefab.SpawnParticlePrefab, hit.position, stagger));
+					else
+						Debug.LogError("Could not find a valid point to spawn " + currEnemyPrefab.gameObject.name + " at " + baseSpawnPoint);
 				}
 			}
 	}
