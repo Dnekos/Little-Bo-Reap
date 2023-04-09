@@ -7,11 +7,9 @@ using XNode.Examples.StateGraph;
 
 public enum EnemyStates
 {
-	WANDER = 0,
-	CHASE_PLAYER = 1,
-	HITSTUN = 2,
-	IDLE = 3,
-	EXECUTABLE = 4,
+	ACTIVE = 0,
+	HITSTUN = 1,
+	EXECUTABLE = 2,
 }
 public class EnemyAI : EnemyBase
 {
@@ -27,7 +25,7 @@ public class EnemyAI : EnemyBase
 	[Header("Enemy State")]
 	[SerializeField] protected EnemyStates currentEnemyState;
 	[SerializeField] float StunTime = 0.3f;
-	[SerializeField] LayerMask playerLayer;					 
+	[SerializeField] LayerMask playerLayer;
 
 	[Header("Attacking")]
 	public List<Transform> NearbyGuys;
@@ -94,12 +92,6 @@ public class EnemyAI : EnemyBase
 		}
 		foreach (var key in Cooldowns.Keys.ToList())
 			Cooldowns[key] -= Time.deltaTime;
-
-		if(currentEnemyState == EnemyStates.EXECUTABLE)
-        {
-			timeTillGib -= Time.deltaTime;
-			if (timeTillGib <= 0) ForceKill();
-        }
 	}
 	private void FixedUpdate()
 	{
@@ -297,6 +289,12 @@ public class EnemyAI : EnemyBase
 		rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
 		currentEnemyState = EnemyStates.EXECUTABLE;
 		executeTrigger.SetActive(true);
+	}
+
+	IEnumerator ForceGibTimer()
+	{
+		yield return new WaitForSeconds(timeTillGib);
+		ForceKill();
 	}
 
 	public override void ForceKill()

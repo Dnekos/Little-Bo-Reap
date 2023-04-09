@@ -407,7 +407,7 @@ MonoBehaviour:
   m_Name: Agent Preset
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -504, y: 40}
+  position: {x: 696, y: -872}
   ports:
     keys:
     - speed
@@ -448,7 +448,7 @@ MonoBehaviour:
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       connections:
       - fieldName: exit
-        node: {fileID: 2769681369106552012}
+        node: {fileID: 740644210368054077}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
@@ -592,7 +592,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e210305f2fc2c34d9e924f98d4b672e, type: 3}
-  m_Name: Selector
+  m_Name: Movement Selector
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
   position: {x: 296, y: -8}
@@ -763,7 +763,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 57fd476a74daa17468ac553b92955c20, type: 3}
-  m_Name: Sequence
+  m_Name: Bell Sequence
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
   position: {x: -120, y: 760}
@@ -1109,7 +1109,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 57fd476a74daa17468ac553b92955c20, type: 3}
-  m_Name: Sequence
+  m_Name: Normal Behavior Sequence
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
   position: {x: -8, y: -184}
@@ -1134,6 +1134,9 @@ MonoBehaviour:
         reroutePoints: []
       - fieldName: enter
         node: {fileID: 2024010398546143260}
+        reroutePoints: []
+      - fieldName: enter
+        node: {fileID: -5858339762485736036}
         reroutePoints: []
       _direction: 1
       _connectionType: 0
@@ -1390,9 +1393,6 @@ MonoBehaviour:
         reroutePoints: []
       - fieldName: enter
         node: {fileID: 1122155319912757339}
-        reroutePoints: []
-      - fieldName: enter
-        node: {fileID: -5858339762485736036}
         reroutePoints: []
       _direction: 1
       _connectionType: 0
