@@ -18,7 +18,10 @@ namespace XNode.Examples.StateGraph {
 			agent.acceleration = acceleration;
 			agent.stoppingDistance = stoppingDist;
 			if (speed == 0)
+			{
 				agent.velocity = Vector3.zero;
+				agent.isStopped = true;
+			}
 			return true;
 		}
 	}

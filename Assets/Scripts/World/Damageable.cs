@@ -219,4 +219,17 @@ public class Damageable : MonoBehaviour
 			healthToDrop--;
 		}
 	}
+
+	// used for constructs and sheep knowing how to far they can attack
+	public float GetRadius()
+	{
+		// find out how big a sheep is
+		Collider scol = GetComponent<Collider>();
+		if (scol is SphereCollider)
+			return ((SphereCollider)scol).radius * transform.localScale.x;
+		else if (scol is CapsuleCollider)
+			return Mathf.Max(((CapsuleCollider)scol).radius, ((CapsuleCollider)scol).height * 0.5f) * transform.lossyScale.y;
+		else
+			return scol.bounds.size.y * 0.5f;
+	}
 }
