@@ -79,7 +79,7 @@ public class PlayerVortex : MonoBehaviour
 		//if (blackHole)
 		if(WorldState.instance.PersistentData.activeFluffyAbility == ActiveUpgrade.Ability2)
 		{
-			blackHoleObj.GetComponent<SuckEnemies>().stopSucking();
+			blackHoleObj.GetComponent<SuckEnemies>().BlackHoleChuckALL();
 		}
 
 		if (!isDefending)
