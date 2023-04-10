@@ -45,7 +45,8 @@ public class BabaYagasHouseAI : EnemyAI
 
 	float bossFallRate = 2000;
 
-	Vector3 spawnPoint;
+	public Vector3 spawnPoint;
+	public float movementRadius = 100f;
  
 
 	// Start is called before the first frame update
@@ -90,7 +91,7 @@ public class BabaYagasHouseAI : EnemyAI
 		{
 			activeAttack.SpawnObject(StompSpawnPoint.position, StompSpawnPoint.rotation);
 			activeAttack.damage = StompDamage;
-			StartCoroutine(DelayMovement());
+			//StartCoroutine(DelayMovement());
 		}
 
 	}
@@ -141,7 +142,7 @@ public class BabaYagasHouseAI : EnemyAI
 		{
 			activeAttack.SpawnObject(fireBreathSpawnPoint.position, fireBreathSpawnPoint.rotation);
 			activeAttack.damage = fireBreathDamage;
-			StartCoroutine(DelayMovement());
+			//StartCoroutine(DelayMovement());
 		}
 	}
 
@@ -151,10 +152,11 @@ public class BabaYagasHouseAI : EnemyAI
 		{
 			activeAttack.SpawnObject(rangedAttackSpawnPoint.position, rangedAttackSpawnPoint.rotation);
 			activeAttack.damage = rangedAttackDamage;
-			StartCoroutine(DelayMovement());
+			//StartCoroutine(DelayMovement());
 		}
 
 	}
+
 
     public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
     {
@@ -182,6 +184,11 @@ public class BabaYagasHouseAI : EnemyAI
 
 	}
 
+	public void StopMovement()
+    {
+		GetAgent().SetDestination(transform.position);
+	}
+
 	public override bool SetDestination(Vector3 dest)
     {
 		// dont pathfind bad destinations
@@ -199,39 +206,41 @@ public class BabaYagasHouseAI : EnemyAI
 		else
 		{
 			GetAgent().SetDestination(dest);
-			GetAnimator().Play("Baba_Yagas_House_Move");
+			Debug.Log(dest);
+			//GetAnimator().Play("Baba_Yagas_House_Move");
 			if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 5, 1) || GetAgent().isOnOffMeshLink)
 			{
 				transform.position = hit.position;
 			}
 			else
 			{
-				print(gameObject + " tried finding a destination while not on a valid point");
+				Debug.Log(gameObject + " tried finding a destination while not on a valid point");
 				//base.OnDeath();
 				return false;
 			}
 		}
-		
+
 		//StartCoroutine(DelayMovement());
+		//GetAnimator().Play("Boss_Idle");//return to idle once movement is done
 		return true;
 	}
 	
-	IEnumerator DelayMovement()
-    {
-		yield return new WaitForSeconds(0);
-		MoveBoss();
-		yield return new WaitForSeconds(0);
+	//IEnumerator DelayMovement()
+ //   {
+	//	yield return new WaitForSeconds(0);
+	//	MoveBoss();
+	//	yield return new WaitForSeconds(0);
 
-	}
+	//}
 
-	public void MoveBoss()
-    {
-		//for now, a predetermined vector
-		Vector3 moveToPos = RandomPointInCircle(spawnPoint, 100f);
+	//public void MoveBoss()
+ //   {
+	//	//for now, a predetermined vector
+	//	Vector3 moveToPos = RandomPointInCircle(spawnPoint, 100f);
 
-		SetDestination(moveToPos);
+	//	SetDestination(moveToPos);
 
-    }
+ //   }
 
 	public void CheckPinwheels()//if they are spinning, boss gets stunned
     {
