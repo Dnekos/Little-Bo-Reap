@@ -63,7 +63,8 @@ public class FlyingEnemyAI : EnemyBase
         RaycastHit hit;
         if(Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, Mathf.Infinity))
         {
-            if((groundMask & 1 << hit.collider.gameObject.layer) == 1)//ground layer
+            //if((groundMask & 1 << hit.collider.gameObject.layer) == 1)//ground layer
+            if (6 == hit.collider.gameObject.layer && Health >= 0)
             {
                 Vector3 point = hit.point;
                 Collider[] hitColliders = Physics.OverlapSphere(point, attackRadius);
@@ -73,12 +74,18 @@ public class FlyingEnemyAI : EnemyBase
                     if(collider.gameObject.tag == "Player" || collider.gameObject.tag == "Sheep")
                     {
                         RunAttack(activeAttack);
+                        attacking = true;
                         return;
                     }
                 }
             }
         }
 
+    }
+
+    public void NotAttacking()
+    {
+        attacking = false;
     }
 
     public void SpawnFrog()

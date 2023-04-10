@@ -11,6 +11,7 @@ public class BabaYagasHouseAI : EnemyAI
 
 	[Header("Spawning Enemies")]
 	[SerializeField] bool enemiesSpawned = false;
+    [HideInInspector] public bool spawningEnemies = false;
 	[SerializeField] int numEnemiesSpawned;
 	[SerializeField] Transform enemySpawnPoint;
     [HideInInspector] GameObject enemySpawnerPlaceholder = null;//this will be filled in when it gets created
@@ -25,6 +26,8 @@ public class BabaYagasHouseAI : EnemyAI
     [SerializeField] Transform rangedAttackSpawnPoint;
 
 	[Header("Healthbar")]
+	[SerializeField] GameObject ArmorBarCanvas;
+	[SerializeField] Transform ArmorBar;
 	[SerializeField] GameObject HealthBarCanvas;
 	[SerializeField] Transform HealthBar;
 
@@ -52,7 +55,7 @@ public class BabaYagasHouseAI : EnemyAI
 
 		spawnPoint = transform.position;
 
-		HealthBarCanvas.SetActive(true);
+		ArmorBarCanvas.SetActive(true);
 
 		float armorBarScale = (Health / MaxHealth);
 		HealthBar.localScale = new Vector3(armorBarScale * -1, 1, 1);
@@ -66,7 +69,8 @@ public class BabaYagasHouseAI : EnemyAI
 		if(armorBroken == false)
         {
 			armorObject.SetActive(true);
-        }
+			ArmorBarCanvas.SetActive(true);
+		}
 
 		CheckPinwheels();
 	}
@@ -114,12 +118,18 @@ public class BabaYagasHouseAI : EnemyAI
 			enemySpawner.transform.SetParent(transform);
 			enemySpawner.transform.SetAsLastSibling();
 			enemiesSpawned = true;
+			spawningEnemies = true;//check to make sure it doesnt take damage while in this state
 			enemySpawnerPlaceholder = enemySpawner;
 
 			armorBroken = false;
 		}
 
 	}
+
+	public void NotSpawningEnemies()//this will get called by animation so it can be damaged again
+    {
+		spawningEnemies = false;
+    }
 
 	public GameObject getEnemySpawner()
     {
@@ -148,23 +158,25 @@ public class BabaYagasHouseAI : EnemyAI
 
     public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
     {
-        base.TakeDamage(atk, attackForward, damageAmp, 0.0f);//no knockback
-
-		if (Health != MaxHealth && Health > executionHealthThreshhold)
+		if (armorBroken == true && enemiesSpawned)
 		{
-			HealthBarCanvas.SetActive(true);
-			float healthbarScale = (Health / MaxHealth);
-			HealthBar.localScale = new Vector3(healthbarScale * -1, 1, 1);
+			base.TakeDamage(atk, attackForward, damageAmp, 0.0f);//no knockback
+			if (Health != MaxHealth || Health >= executionHealthThreshhold)
+			{
+				HealthBarCanvas.SetActive(true);
+				float healthbarScale = (Health / MaxHealth);
+				HealthBar.localScale = new Vector3(healthbarScale * -1, 1, 1);
+			}
+			else
+				HealthBarCanvas.SetActive(false);
 		}
-		else
-			HealthBarCanvas.SetActive(false);
-
 		if (atk.name == "Ram_Attack_Charge" && armorBroken == false)
 		{
+			ArmorBarCanvas.SetActive(false);
+			HealthBarCanvas.SetActive(true);
 			armorObject.SetActive(false);
 			destroyParticles.Play(true);
 			armorBroken = true;
-			//put into stun state
 			GetAnimator().Play("BBYGH_Stun 1");
 		}
 
