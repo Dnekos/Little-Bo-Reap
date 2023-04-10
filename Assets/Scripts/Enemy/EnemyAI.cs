@@ -129,6 +129,7 @@ public class EnemyAI : EnemyBase
 		else
 		{
 			agent.SetDestination(dest);
+			Debug.Log(dest);
 
 			// if on offmeshlink, no mdification needed, if the mesh link is too tall they may through an error
 			if (agent.isOnOffMeshLink)
