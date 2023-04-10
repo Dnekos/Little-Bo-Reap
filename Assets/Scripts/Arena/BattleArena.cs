@@ -135,31 +135,46 @@ public class BattleArena : PuzzleDoor
 				EnemyBase currEnemyPrefab = enemy.EnemyPrefab.GetComponent<EnemyBase>();
 				for (int i = 0; i < enemy.NumEnemies; i++)
 				{
-					NavMeshHit hit;
-					Vector3 SpawnPoint;
-					Vector3 baseSpawnPoint = (enemy.SpawnPoint == null) ? enemy.AlternateSpawn : enemy.SpawnPoint.position;
+					// get point from struct
+					Vector3 SpawnPoint = (enemy.SpawnPoint == null) ? enemy.AlternateSpawn : enemy.SpawnPoint.position;
 
-					//get stagger time
+					// get stagger time
 					float stagger = Random.Range(currEnemyPrefab.minSpawnStagger, currEnemyPrefab.maxSpawnStagger);
-					float redundancy = 20;
-					// do checks to find a valid spawnpoint
-					do
-					{
-						Vector2 rand = Random.insideUnitCircle;
-						SpawnPoint = baseSpawnPoint + new Vector3(rand.x * enemy.RandomRadius, 0, rand.y * enemy.RandomRadius);
 
-					} while (!NavMesh.SamplePosition(SpawnPoint, out hit, 5, NavMesh.AllAreas) && --redundancy > 0);
+					SpawnPoint = (currEnemyPrefab is FlyingEnemyAI) ? SpawnPoint : FindSpawnPoint(enemy, SpawnPoint);
 
-					// if we found a point, set the spawnpoint
-					if (hit.hit)
-						StartCoroutine(SpawnEnemy(enemy.EnemyPrefab, currEnemyPrefab.SpawnParticlePrefab, hit.position, stagger));
-					else
-						Debug.LogError("Could not find a valid point to spawn " + currEnemyPrefab.gameObject.name + " at " + baseSpawnPoint);
+					// if we have a point, spawn the enemy
+					if (SpawnPoint != Vector3.negativeInfinity)
+						StartCoroutine(SpawnEnemy(enemy.EnemyPrefab, currEnemyPrefab.SpawnParticlePrefab, SpawnPoint, stagger));
 				}
 			}
 	}
 
-    public override void OpenDoor()
+	Vector3 FindSpawnPoint(EnemySpawn enemy, Vector3 baseSpawnPoint)
+	{
+		NavMeshHit hit;
+
+		Vector3 SpawnPoint;
+		float redundancy = 20;
+		// do checks to find a valid spawnpoint
+		do
+		{
+			Vector2 rand = Random.insideUnitCircle;
+			SpawnPoint = baseSpawnPoint + new Vector3(rand.x * enemy.RandomRadius, 0, rand.y * enemy.RandomRadius);
+
+		} while (!NavMesh.SamplePosition(SpawnPoint, out hit, 5, NavMesh.AllAreas) && --redundancy > 0);
+
+		// if we found a point, set the spawnpoint
+		if (hit.hit)
+			return hit.position;
+		else
+		{
+			Debug.LogError("Could not find a valid point to spawn " + enemy.EnemyPrefab.name + " at " + baseSpawnPoint);
+			return Vector3.negativeInfinity;
+		}
+	}
+
+	public override void OpenDoor()
     {
 		//for now, destroy door. can have an animation or something more pretty later
 		isOpened = true;

@@ -44,8 +44,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 5, y: 5, z: 5}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 5.2035522, y: 11.539101, z: 5.5098877}
+  m_Center: {x: 0.10177612, y: 3.2695503, z: -0.25494385}
 --- !u!114 &2586762349630955376
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,7 +150,6 @@ GameObject:
   - component: {fileID: 5870838572739010380}
   - component: {fileID: 6323528660858874146}
   - component: {fileID: 8339615372791349944}
-  - component: {fileID: 5220658151156084738}
   m_Layer: 0
   m_Name: Checkpoint
   m_TagString: Untagged
@@ -176,7 +175,7 @@ Transform:
   - {fileID: 8956048683436667824}
   - {fileID: 4653326515006164643}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &6323528660858874146
 BoxCollider:
@@ -215,21 +214,6 @@ MonoBehaviour:
   checkMusic: 0
   addsSheep: 0
   debugSheepAdder: {fileID: 1021215441054636260}
---- !u!114 &5220658151156084738
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7319282972424232426}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b16de2cb50aac9743a1cdb93fc62ef4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  canInteract: 1
-  onlyInteractableOnce: 0
-  inputIcon: {fileID: 0}
 --- !u!1 &8332624047522317622
 GameObject:
   m_ObjectHideFlags: 0

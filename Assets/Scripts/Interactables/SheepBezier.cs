@@ -139,8 +139,13 @@ public class SheepBezier : SheepHolder
 	}
 	IEnumerator AddAllSheep(List<PlayerSheepAI> flock, float delay)
 	{
+		// if no sheep, dont even bother trying
+
 		RemoveAll(false);
 		RemoveAllSheep();
+
+		if (flock.Count <= 0)
+			yield break;
 
 		yield return new WaitForSeconds(delay);
 		
@@ -376,8 +381,10 @@ public class SheepBezier : SheepHolder
 	void SetMesh()
 	{
 		mesh.Clear();
-		mesh.vertices = newVertices.ToArray();
-		mesh.triangles = newTriangles.ToArray();
+		if (newVertices.Count > 0)
+			mesh.vertices = newVertices.ToArray();
+		if (newTriangles.Count > 0)
+			mesh.triangles = newTriangles.ToArray();
 		mesh.Optimize();
 		mesh.RecalculateBounds();
 
