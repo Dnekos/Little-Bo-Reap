@@ -17,13 +17,14 @@ namespace XNode.Examples.StateGraph
 			bool result = ((anim.GetCurrentAnimatorStateInfo(0).IsName("Baba_Yagas_House_Move") || 
 							anim.GetCurrentAnimatorStateInfo(0).IsName("Boss_Ranged_Attack")    ||
 							anim.GetCurrentAnimatorStateInfo(0).IsName("Boss_Flamethrower")     ||
-							anim.GetCurrentAnimatorStateInfo(0).IsName("Boss_Stomp"))			||
+							anim.GetCurrentAnimatorStateInfo(0).IsName("Boss_Stomp")			||
+							anim.GetCurrentAnimatorStateInfo(0).IsName("BBYGH_Perch 1") ||
 							anim.GetCurrentAnimatorStateInfo(0).IsName("Boss_Spawn")			||
 							anim.GetCurrentAnimatorStateInfo(0).IsName("BBYGH_Fire_Start 1")	||
 							anim.GetCurrentAnimatorStateInfo(0).IsName("BBYGH_Fire_Cycle 1")||
 							anim.GetCurrentAnimatorStateInfo(0).IsName("BBYGH_Spawn_Start 1") || 
 							anim.GetCurrentAnimatorStateInfo(0).IsName("BBYGH_Spawn_Cycle 1")&&
-				anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f);
+							anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f));
 
 			return result != not;
 		}
