@@ -73,6 +73,11 @@ public class BabaYagasHouseAI : EnemyAI
 			ArmorBarCanvas.SetActive(true);
 		}
 
+		if(GetAnimator().GetBool("isMoving") == true)
+        {
+			GetAnimator().Play("Baba_Yagas_House_Move");
+		}
+
 		CheckPinwheels();
 	}
 
@@ -132,6 +137,11 @@ public class BabaYagasHouseAI : EnemyAI
 		spawningEnemies = false;
     }
 
+	public void NotAttacking()
+    {
+		//GetAnimator().SetBool("isAttacking", false);
+    }
+
 	public GameObject getEnemySpawner()
     {
 		return enemySpawnerPlaceholder;
@@ -160,7 +170,7 @@ public class BabaYagasHouseAI : EnemyAI
 
     public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
     {
-		if (armorBroken == true && enemiesSpawned)
+		if (armorBroken == true && !spawningEnemies)
 		{
 			base.TakeDamage(atk, attackForward, damageAmp, 0.0f);//no knockback
 			if (Health != MaxHealth || Health >= executionHealthThreshhold)
@@ -179,7 +189,7 @@ public class BabaYagasHouseAI : EnemyAI
 			armorObject.SetActive(false);
 			destroyParticles.Play(true);
 			armorBroken = true;
-			GetAnimator().Play("BBYGH_Stun 1");
+			//GetAnimator().Play("BBYGH_Stun 1");
 		}
 
 	}
@@ -191,6 +201,7 @@ public class BabaYagasHouseAI : EnemyAI
 
 	public override bool SetDestination(Vector3 dest)
     {
+		GetAgent().enabled = true;//dont know why I have to do this, but for some reason, attacking the boss turns off the agent
 		// dont pathfind bad destinations
 		if (dest == null || float.IsNaN(dest.x))
 		{
