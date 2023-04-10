@@ -113,7 +113,7 @@ public class FlyingEnemyAI : EnemyBase
     {
         anim.SetTrigger("Death");
         GetComponent<SplineFollower>().enabled = false;
-        rb.constraints = RigidbodyConstraints.FreezeRotation;
+        rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
         StartCoroutine(DeathSpiral());
     }
 
