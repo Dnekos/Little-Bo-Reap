@@ -6,7 +6,7 @@ public class ButtonCredits : MonoBehaviour
 {
     [SerializeField] List<GameObject> objectsToEnable;
     [SerializeField] List<GameObject> objectsToDisable;
-
+	[SerializeField] Animation credits;
 
     public void CreditsButton()
     {
@@ -18,6 +18,11 @@ public class ButtonCredits : MonoBehaviour
         {
             objectsToDisable[i].SetActive(false);
         }
-    }
+		credits.Rewind();
+		credits.Play();
+		//credits.Sample();
+		//credits.Stop();
+
+	}
 
 }
