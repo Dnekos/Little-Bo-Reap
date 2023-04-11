@@ -7,6 +7,8 @@ public class PlayerPauseMenu : MonoBehaviour
 {
     [SerializeField] GameObject pauseMenu;
     [SerializeField] GameObject controlMenu;
+    [SerializeField] FMODUnity.EventReference pauseSFX;
+    [SerializeField] FMODUnity.EventReference resumeSFX;
     public PlayerInput inputs;
     bool isPaused = false;
 
@@ -35,6 +37,7 @@ public class PlayerPauseMenu : MonoBehaviour
             Time.timeScale = 0f;
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
+            FMODUnity.RuntimeManager.PlayOneShot(pauseSFX);
         }
         else
         {
@@ -46,6 +49,7 @@ public class PlayerPauseMenu : MonoBehaviour
             Time.timeScale = 1f;
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
+            FMODUnity.RuntimeManager.PlayOneShot(resumeSFX);
         }
     }
 }
