@@ -10,7 +10,7 @@ public enum SheepStates
     ABILITY = 2,
 	CONSTRUCT = 4,
     ATTACK = 5,
-	STUN = 6, // TODO, make this the same as the enemy's
+	STUN = 6,
 	LIFT
 }
 
@@ -178,18 +178,6 @@ public enum SheepStates
 		}
 	}
 
-	float GetRadius()
-	{
-		// find out how big a sheep is
-		Collider scol = GetComponent<Collider>();
-		if (scol is SphereCollider)
-			return ((SphereCollider)scol).radius * transform.localScale.x;
-		else if (scol is CapsuleCollider)
-			return Mathf.Max(((CapsuleCollider)scol).radius, ((CapsuleCollider)scol).height * 0.5f) * transform.lossyScale.y;
-		else
-			return scol.bounds.size.y * 0.5f;
-	}
-
 	private void OnDestroy()
     {
         ReleaseOffmeshLink();
@@ -313,78 +301,37 @@ public enum SheepStates
 
 	public void DealDamage(Collider target, SheepAttack theAttack, bool blackSheepDamage)
 	{
-		FMODUnity.RuntimeManager.PlayOneShotAttached(biteSound, gameObject);
+		// make sure it has health to be damaged
+		Damageable targetHealth = target.GetComponent<Damageable>();
+		if (targetHealth != null)
+		{
+			FMODUnity.RuntimeManager.PlayOneShotAttached(biteSound, gameObject);
 
-        //check if its an EnemyAI base. If it doesnt have this, damage using the damagable class
-        if(target.GetComponent<EnemyAI>() == null)
-        {
-            if (blackSheepDamage)
-            {
-                //subtract 1 from health
-                TakeDamage(selfDamage, transform.forward);
+			// set attack
+			Attack activeAtk = theAttack;
+			// if black sheep, use that attack instead
+			if (blackSheepDamage)
+			{
+				activeAtk = theAttack.BSAttack;
 
-                if (sheepType == 1) //if ram, use ram damage/knockback variables
-                {
-                    Instantiate(theAttack.explosionEffect, transform.position, transform.rotation);
-                    target?.GetComponent<Damageable>().TakeDamage(theAttack.BSAttack, transform.forward,
-                        WorldState.instance.passiveValues.ramDamage, WorldState.instance.passiveValues.ramKnockback);
-                }
-                else
-                {
-                    Instantiate(theAttack.explosionEffect, transform.position, transform.rotation);
-                    target?.GetComponent<Damageable>().TakeDamage(theAttack.BSAttack, transform.forward);
-                }
-            }
-            else
-            {
-                if (sheepType == 1) //if ram, use ram damage/knockback variables
-                {
-                    Instantiate(theAttack.explosionEffect, transform.position, transform.rotation);
-                    target?.GetComponent<Damageable>().TakeDamage(theAttack, transform.forward,
-                        WorldState.instance.passiveValues.ramDamage, WorldState.instance.passiveValues.ramKnockback);
-                }
-                else
-                {
-                    target?.GetComponent<Damageable>().TakeDamage(theAttack, transform.forward);
-                }
-            }
-        }
-        else
-        {
-            if (blackSheepDamage)
-            {
-                //subtract 1 from health
-                TakeDamage(selfDamage, transform.forward);
+				// Take self damage
+				TakeDamage(selfDamage, transform.forward);
+			}
 
-                if (sheepType == 1) //if ram, use ram damage/knockback variables
-                {
-                    Instantiate(theAttack.explosionEffect, transform.position, transform.rotation);
-                    target?.GetComponent<EnemyAI>().TakeDamage(theAttack.BSAttack, transform.forward,
-                        WorldState.instance.passiveValues.ramDamage, WorldState.instance.passiveValues.ramKnockback);
-                }
-                else
-                {
-                    Instantiate(theAttack.explosionEffect, transform.position, transform.rotation);
-                    target?.GetComponent<EnemyAI>().TakeDamage(theAttack.BSAttack, transform.forward);
-                }
-            }
-            else
-            {
-                if (sheepType == 1) //if ram, use ram damage/knockback variables
-                {
-                    Instantiate(theAttack.explosionEffect, transform.position, transform.rotation);
-                    target?.GetComponent<EnemyAI>().TakeDamage(theAttack, transform.forward,
-                        WorldState.instance.passiveValues.ramDamage, WorldState.instance.passiveValues.ramKnockback);
-                }
-                else
-                {
-                    target?.GetComponent<EnemyAI>().TakeDamage(theAttack, transform.forward);
-                }
-            }
-        }
+			// damage effect
+			if (blackSheepDamage || sheepType == 1)
+				Instantiate(theAttack.explosionEffect, transform.position, transform.rotation);
 
-		
+			if (sheepType == 1) //if ram, use ram damage/knockback variables
+				targetHealth.TakeDamage(activeAtk, transform.forward,
+					WorldState.instance.passiveValues.ramDamage, WorldState.instance.passiveValues.ramKnockback);
+			else
+				targetHealth.TakeDamage(activeAtk, transform.forward);
+		}
 	}
+        
+		
+	
     private void OnTriggerEnter(Collider other)
     {
         switch (currentSheepState)
@@ -471,7 +418,7 @@ public enum SheepStates
     public void RecallSheep()
     {
         // sheep cant be recalled when stunned OR DEFENDING
-        if (currentSheepState == SheepStates.STUN || currentSheepState == SheepStates.ABILITY)
+        if (currentSheepState == SheepStates.STUN || (currentSheepState == SheepStates.ABILITY && !ability.IsRecallable(this)))
             return;
 
         // if the sheep is too high up, stun it first so that it gets closer to the ground
@@ -748,7 +695,7 @@ public enum SheepStates
         if (canAttack)
         {
             //first check if we have a target and are in range
-            if (attackTargetCurrent != null && Vector3.Distance(transform.position, attackTargetCurrent.transform.position) <= distanceToAttack)
+            if (attackTargetCurrent != null && Vector3.Distance(transform.position, attackTargetCurrent.transform.position) - attackTargetCurrent.GetRadius() <= distanceToAttack)
             {
                 //if the target is executable, remove them from the list
                 if (attackTargetCurrent is EnemyAI && ((EnemyAI)attackTargetCurrent).GetState() == EnemyStates.EXECUTABLE)

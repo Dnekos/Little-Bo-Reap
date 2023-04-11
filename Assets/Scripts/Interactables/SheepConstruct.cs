@@ -46,7 +46,8 @@ public class SheepConstruct : SheepHolder
 	}
 	protected override void Update()
 	{
-		// TODO: messy implementation
+		containedSheep.RemoveAll(item => item == null || !item.gameObject.activeInHierarchy);
+
 		if (containedSheep.Count == 0 && obs.enabled)
 		{
 			obs.enabled = false;

@@ -23,10 +23,8 @@ Material:
   m_Name: DropletTrail
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_Parent: {fileID: 2100000, guid: e31399484e46aa148a9ba7d669154c4e, type: 2}
-  m_ModifiedSerializedProperties: 8
+  m_ModifiedSerializedProperties: 10
   m_ValidKeywords:
-  - _ALPHAPREMULTIPLY_ON
-  - _ALPHATEST_ON
   - _SURFACE_TYPE_TRANSPARENT
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -52,13 +50,19 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _AlphaClip: 0
     - _Blend: 0
+    - _BlendModePreserveSpecular: 0
     - _Cull: 2
-    - _Cutoff: 0.916
+    - _Cutoff: 0
     - _DstBlend: 10
     - _DstBlendAlpha: 10
-    - _Smoothness: 0.124
-    - _SrcBlend: 1
+    - _EnvironmentReflections: 1
+    - _Metallic: 0
+    - _ReceiveShadows: 1
+    - _Smoothness: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 5
     - _SrcBlendAlpha: 1
     m_Colors:
     - _BaseColor: {r: 0.49056602, g: 0, b: 0, a: 1}

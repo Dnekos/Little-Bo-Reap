@@ -182,11 +182,18 @@ MonoBehaviour:
   SpawnParticlePrefab: {fileID: 6246327466764470281, guid: 817debac214ef9f4ba98b6f41baf3376,
     type: 3}
   SpawnWaitTime: 2
+  minSpawnStagger: 0
+  maxSpawnStagger: 5
   suckResistant: 1
   Range: 150
   flowerBody: {fileID: 8013975394260683513}
   attackPoint: {fileID: 6513694864031768658}
   activeAttack: {fileID: 11400000, guid: 126e11f85732c5b40a62955f7c980fb2, type: 2}
+  cooldownRange: 0.2
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 64
+  startpointOffset: 15
   attackSound:
     Guid:
       Data1: 305399217

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class BattleArena : PuzzleDoor
 {
@@ -38,6 +39,7 @@ public class BattleArena : PuzzleDoor
 	//soul spawning variables - might make this a struct later but it's only 2 varibles so it could be unnecessary.
 	[SerializeField] Transform SoulSpawnPoint;
 	[SerializeField] GameObject SoulReward;
+	[SerializeField] GameObject spawnDelayParticle;
 
 	[Header("Resetting"), SerializeField]
 	GameEvent RespawnPlayer;
@@ -120,7 +122,7 @@ public class BattleArena : PuzzleDoor
 			Instantiate(SoulReward, SoulSpawnPoint.position, SoulSpawnPoint.rotation, SpawnedEnemiesFolder); //spawn soul reward
 
 			//REVIEW: Looks good! Clear and efficient
-			var cam = Instantiate(finalCamera, finalEnemyPosition, Quaternion.identity) as GameObject;
+			var cam = Instantiate(finalCamera, finalEnemyPosition + yOffset, Quaternion.identity) as GameObject;
 			lookPoint.position = finalEnemyPosition;
 			cam.GetComponent<ArenaEndCamera>().InitCamera(lookPoint, finalEnemyPosition);
 			
@@ -130,17 +132,49 @@ public class BattleArena : PuzzleDoor
 			// spawn each enemy
 			foreach (EnemySpawn enemy in waves[CurrentWave].Enemies)
 			{
+				EnemyBase currEnemyPrefab = enemy.EnemyPrefab.GetComponent<EnemyBase>();
 				for (int i = 0; i < enemy.NumEnemies; i++)
 				{
+					// get point from struct
 					Vector3 SpawnPoint = (enemy.SpawnPoint == null) ? enemy.AlternateSpawn : enemy.SpawnPoint.position;
-					SpawnPoint = SpawnPoint + new Vector3(Random.Range(-enemy.RandomRadius, enemy.RandomRadius), 0, Random.Range(-enemy.RandomRadius, enemy.RandomRadius));
-					StartCoroutine(SpawnEnemy(enemy.EnemyPrefab, enemy.EnemyPrefab.GetComponent<EnemyBase>().SpawnParticlePrefab, SpawnPoint));
 
+					// get stagger time
+					float stagger = Random.Range(currEnemyPrefab.minSpawnStagger, currEnemyPrefab.maxSpawnStagger);
+
+					SpawnPoint = (currEnemyPrefab is FlyingEnemyAI) ? SpawnPoint : FindSpawnPoint(enemy, SpawnPoint);
+
+					// if we have a point, spawn the enemy
+					if (SpawnPoint != Vector3.negativeInfinity)
+						StartCoroutine(SpawnEnemy(enemy.EnemyPrefab, currEnemyPrefab.SpawnParticlePrefab, SpawnPoint, stagger));
 				}
 			}
 	}
 
-    public override void OpenDoor()
+	Vector3 FindSpawnPoint(EnemySpawn enemy, Vector3 baseSpawnPoint)
+	{
+		NavMeshHit hit;
+
+		Vector3 SpawnPoint;
+		float redundancy = 20;
+		// do checks to find a valid spawnpoint
+		do
+		{
+			Vector2 rand = Random.insideUnitCircle;
+			SpawnPoint = baseSpawnPoint + new Vector3(rand.x * enemy.RandomRadius, 0, rand.y * enemy.RandomRadius);
+
+		} while (!NavMesh.SamplePosition(SpawnPoint, out hit, 5, NavMesh.AllAreas) && --redundancy > 0);
+
+		// if we found a point, set the spawnpoint
+		if (hit.hit)
+			return hit.position;
+		else
+		{
+			Debug.LogError("Could not find a valid point to spawn " + enemy.EnemyPrefab.name + " at " + baseSpawnPoint);
+			return Vector3.negativeInfinity;
+		}
+	}
+
+	public override void OpenDoor()
     {
 		//for now, destroy door. can have an animation or something more pretty later
 		isOpened = true;
@@ -149,14 +183,26 @@ public class BattleArena : PuzzleDoor
 	}
 
 
-    protected IEnumerator SpawnEnemy(GameObject enemy, GameObject particle, Vector3 pos)
+    protected IEnumerator SpawnEnemy(GameObject enemy, GameObject particle, Vector3 pos, float staggerDelay)
 	{
+
+
+		//delay
+		var staggerParticle = Instantiate(spawnDelayParticle, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder) as GameObject;
+		var module = staggerParticle.GetComponent<ParticleSystem>().main;
+		module.duration = staggerDelay + 1;
+		module.startLifetime = staggerDelay;
+		staggerParticle.GetComponent<ParticleSystem>().Play(true);
+
+		yield return new WaitForSeconds(staggerDelay);
 
 		Instantiate(particle, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder);
 		yield return new WaitForSeconds(enemy.GetComponent<EnemyBase>().SpawnWaitTime);
-        //Instantiate(enemy, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder).GetComponent<EnemyAI>().ToChase();
-				//I see "ToChase()" is just an empty function so I commented it out
-        GameObject newEnemy = Instantiate(enemy, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder);
+		//Instantiate(enemy, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder).GetComponent<EnemyAI>().ToChase();
+		//I see "ToChase()" is just an empty function so I commented it out
+
+		
+		GameObject newEnemy = Instantiate(enemy, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder);
 
 		//if the enemy has a spline follower script(that means it is a flying enemy)
 		//then find the index the flying enemy has and attach it to the corresponding flight path in this script's array

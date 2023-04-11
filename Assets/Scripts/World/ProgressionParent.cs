@@ -27,6 +27,8 @@ public class ProgressionParent : MonoBehaviour
     [SerializeField] float[] upgrade3Values = { 10f, 20f, 50000f };
 
     int currentCostIndex;
+    bool altAbilityUnlocked = false;
+    int abilitySoulCost = 1;
     // Start is called before the first frame update
     void Start()
     {
@@ -40,32 +42,34 @@ public class ProgressionParent : MonoBehaviour
 
     void Upgrade(int index)
     {
-		// we use bit shifting to get the correct bit at the flag we're looking for
-		int flagindex = 1 << (((int)thisType + 1) * 3 + index + 1);//REVIEW: 'flagindex' --> 'flagIndex' to keep with camelCase standard
+        // we use bit shifting to get the correct bit at the flag we're looking for
+        int exponent = index + (thisType * 3 + 1) - 1;
+        int flagIndex = 1 << exponent;//(((int)thisType + 1) * 3 + index);//REVIEW: 'flagindex' --> 'flagIndex' to keep with camelCase standard
 
-		Debug.Log("upgrading path:" + index);
 
-		if (WorldState.instance.PersistentData.soulsCount >= costs[currentCostIndex] &&
-			!WorldState.instance.PersistentData.boughtUpgrades.HasFlag((SaveData.Upgrades)flagindex))
-		{
-			//turn on light
-			//TODO make this for all uptions
-			ActivateUI(index);
-			WorldState.instance.PersistentData.soulsCount -= costs[currentCostIndex];
-            WorldState.instance.HUD.UpdateSoulCount();
+        if (WorldState.instance.PersistentData.soulsCount >= costs[0])
+        {
+            if (!WorldState.instance.PersistentData.boughtUpgrades.HasFlag((SaveData.Upgrades)flagIndex))
+            {
+                //turn on light
+                //TODO make this for all uptions
+                ActivateUI(index);
+                WorldState.instance.PersistentData.soulsCount -= costs[0];
+                WorldState.instance.HUD.UpdateSoulCount();
 
-            // TODO: make this not done every time, put it in start
-            List<float[]> upgradesAllValues = new List<float[]>();
-			upgradesAllValues.Add(upgrade1Values);
-			upgradesAllValues.Add(upgrade2Values);
-			upgradesAllValues.Add(upgrade3Values);
+                // TODO: make this not done every time, put it in start
+                List<float[]> upgradesAllValues = new List<float[]>();
+                upgradesAllValues.Add(upgrade1Values);
+                upgradesAllValues.Add(upgrade2Values);
+                upgradesAllValues.Add(upgrade3Values);
 
-			// hard coding in 0, TODO: make them not arrays, unneeded now
-			Upgrade(thisType, index, upgradesAllValues[index][0]);
-			currentCostIndex++;
-		}
-		else
-			Debug.Log("not enough money");
+                // hard coding in 0, TODO: make them not arrays, unneeded now
+                Upgrade(thisType, index, upgradesAllValues[index][0]);
+                currentCostIndex++;
+            }
+        }
+        else
+            Debug.Log("not enough money");
             //REVIEW: Maybe we can have a visual representation for the player to know they don't have enough souls
     }
 
@@ -74,9 +78,9 @@ public class ProgressionParent : MonoBehaviour
 	/// </summary>
 	public void ActivateUI(int index)
 	{
-		for (int i = 0; i < upgrades[index].transform.childCount; i++)
+		for (int i = 0; i < upgrades[index].transform.parent.childCount; i++)
 		{
-			Image childimage = upgrades[index].transform.GetChild(i).GetComponent<Image>();
+			Image childimage = upgrades[index].transform.parent.Find("notch").GetComponent<Image>();
 			if (childimage != null && childimage.color != Color.green)
 				childimage.color = Color.green;
 		}
@@ -86,18 +90,48 @@ public class ProgressionParent : MonoBehaviour
         switch (thisType)
         {
             case 0:
-                WorldState.instance.PersistentData.activeBuilderAbility = (ActiveUpgrade)(index);
+                if (index == 0 || AbilityUnlock())
+                {
+                    WorldState.instance.PersistentData.activeBuilderAbility = (ActiveUpgrade)(index);
+                    abilities[index].transform.parent.Find("notch").GetComponent<Image>().color = Color.green;
+                    abilities[(index + 1) % 2].transform.parent.Find("notch").GetComponent<Image>().color = Color.white;
+                }
                 break;
             case 1:
-                WorldState.instance.PersistentData.activeRamAbility = (ActiveUpgrade)(index);
+                if (index == 0 || AbilityUnlock())
+                {
+                    WorldState.instance.PersistentData.activeRamAbility = (ActiveUpgrade)(index);
+                    abilities[index].transform.parent.Find("notch").GetComponent<Image>().color = Color.green;
+                    abilities[(index + 1) % 2].transform.parent.Find("notch").GetComponent<Image>().color = Color.white;
+                }
                 break;
             case 2:
-                WorldState.instance.PersistentData.activeFluffyAbility = (ActiveUpgrade)(index);
+                if (index == 0 || AbilityUnlock())
+                {
+                    WorldState.instance.PersistentData.activeFluffyAbility = (ActiveUpgrade)(index);
+                    abilities[index].transform.parent.Find("notch").GetComponent<Image>().color = Color.green;
+                    abilities[(index + 1) % 2].transform.parent.Find("notch").GetComponent<Image>().color = Color.white;
+                }
                 break;
         }
-        
     }
-	public void CheckLoadedUpgrades()
+    bool AbilityUnlock()
+    {
+        if (altAbilityUnlocked)
+        {
+            return true;
+        }
+        //if we have not unlocked already lets try to unlock.
+        if (WorldState.instance.PersistentData.soulsCount >= abilitySoulCost)
+        {
+            WorldState.instance.PersistentData.soulsCount -= abilitySoulCost;
+            altAbilityUnlocked = true;
+            //add visual for unlocking alt ability here
+            return true;
+        }
+        return false;
+    }
+    public void CheckLoadedUpgrades()
 	{
 		List<float[]> upgradesAllValues = new List<float[]>();
 		upgradesAllValues.Add(upgrade1Values);

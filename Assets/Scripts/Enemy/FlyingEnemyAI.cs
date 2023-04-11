@@ -22,16 +22,17 @@ public class FlyingEnemyAI : EnemyBase
     [HideInInspector]public Transform player;
     [HideInInspector]public bool attacking;//checks animator to see if we are attacking
 
- 
-
+    [Header("Health")]
+    [SerializeField] LayerMask groundMask;
+    [SerializeField] float fallForce = 30;
+    [SerializeField] float pauseBeforeSpiral = 1;
 
     // Start is called before the first frame update
-    void Start()
+    override protected void Start()
     {
         base.Start();
         Cooldowns = new Dictionary<int, float>();
         player = WorldState.instance.player.transform;
-
     }
 
     // Update is called once per frame
@@ -54,7 +55,7 @@ public class FlyingEnemyAI : EnemyBase
         //fires a raycast down, then at the point of collision with the ground
         //(or any other terrain) we create an overlap sphere which checks 
         //if the player is in that sphere, and if true, then execute attack
-        if(attacking == true)
+        if(attacking == true || Health <= 0)
         {
             return;
         }
@@ -62,7 +63,8 @@ public class FlyingEnemyAI : EnemyBase
         RaycastHit hit;
         if(Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, Mathf.Infinity))
         {
-            if(hit.collider.gameObject.layer == 6)//ground layer
+            //if((groundMask & 1 << hit.collider.gameObject.layer) == 1)//ground layer
+            if (6 == hit.collider.gameObject.layer && Health >= 0)
             {
                 Vector3 point = hit.point;
                 Collider[] hitColliders = Physics.OverlapSphere(point, attackRadius);
@@ -72,16 +74,18 @@ public class FlyingEnemyAI : EnemyBase
                     if(collider.gameObject.tag == "Player" || collider.gameObject.tag == "Sheep")
                     {
                         RunAttack(activeAttack);
+                        attacking = true;
                         return;
                     }
                 }
             }
-            else
-            {
-                return;
-            }
         }
 
+    }
+
+    public void NotAttacking()
+    {
+        attacking = false;
     }
 
     public void SpawnFrog()
@@ -103,4 +107,40 @@ public class FlyingEnemyAI : EnemyBase
     //    //newFrog.transform.localScale = new Vector3(0.33f, 0.33f, 0.33f);//temporary
     //}
 
+
+    #region Health
+    protected override void OnDeath()
+    {
+        anim.SetTrigger("Death");
+        GetComponent<SplineFollower>().enabled = false;
+        rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+        StartCoroutine(DeathSpiral());
+    }
+
+	public override void ForceKill()
+	{
+		base.OnDeath();
+	}
+
+	IEnumerator DeathSpiral()
+    {
+        yield return new WaitForSeconds(pauseBeforeSpiral);
+
+        while (gameObject != null || !gameObject.activeInHierarchy)
+        {
+            yield return new WaitForFixedUpdate();
+            rb.AddForce(Vector3.down * fallForce, ForceMode.Acceleration);
+
+        }
+    }
+
+
+    private void OnCollisionStay(Collision collision)
+    {
+        if (6 == collision.gameObject.layer && Health <= 0)
+        {
+            base.OnDeath();
+        }
+    }
+    #endregion
 }

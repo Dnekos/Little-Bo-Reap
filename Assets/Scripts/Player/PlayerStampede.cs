@@ -176,9 +176,15 @@ public class PlayerStampede : MonoBehaviour
 			{
 				if (flocks.GetActiveSheep(flockType)[i].IsCommandable() &&
 					Vector3.Distance(transform.position, flocks.GetActiveSheep(flockType)[i].transform.position) <= distanceToUse)
-					flocks.GetActiveSheep(flockType)[i]?.BeginAbility((hit.point - transform.position).normalized);
+				{
+					//flocks.GetActiveSheep(flockType)[i]?.BeginAbility((hit.point - transform.position).normalized);
+					//flocks.GetActiveSheep(flockType)[i]?.BeginAbility(new Vector3(0, Vector3.SignedAngle(Vector3.forward, (hit.point - transform.position), Vector3.forward),0));
+					flocks.GetActiveSheep(flockType)[i]?.BeginAbility(GetComponent<PlayerMovement>().playerOrientation.transform.eulerAngles);
+				}
 			}
-			if(WorldState.instance.PersistentData.activeRamAbility == ActiveUpgrade.Ability2)
+			Debug.Log("angle is " + GetComponent<PlayerMovement>().playerOrientation.transform.eulerAngles);
+			
+			if (WorldState.instance.PersistentData.activeRamAbility == ActiveUpgrade.Ability2)
 			{
 				this.GetComponent<BoPeepCharge>().Begin((hit.point - transform.position).normalized);
 			}

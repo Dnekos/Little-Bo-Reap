@@ -12,6 +12,7 @@ public class ArenaEndCamera : MonoBehaviour
     [SerializeField] float ySpawnOffsetMax = 6;
     [SerializeField] float collideCheckRadius = 0.25f;
     [SerializeField] LayerMask groundLayer;
+    [SerializeField] Vector3 lookYOffset;
     int currentChecks;
     [SerializeField] int maxChecks = 10;
     Vector3 lookPosition;
@@ -43,6 +44,7 @@ public class ArenaEndCamera : MonoBehaviour
         Vector3 newPos = new Vector3(x, y, z);
 
         transform.position = newPos;
+        look.transform.position += lookYOffset;
         transform.LookAt(look);
 
         if(Physics.CheckSphere(transform.position, collideCheckRadius, groundLayer) && currentChecks < maxChecks)

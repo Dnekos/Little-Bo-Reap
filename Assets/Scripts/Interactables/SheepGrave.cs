@@ -64,15 +64,17 @@ public class SheepGrave : Interactable
 		base.Interact();
 	}
 
+	/*
 	protected override void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject == WorldState.instance.player && canInteract)
+        if (other.gameObject == WorldState.instance.player && inputIcon != null && canInteract)
             inputIcon.gameObject.SetActive(true);
 
     }
 	protected override void OnTriggerExit(Collider other)
     {
-        if (other.gameObject == WorldState.instance.player)
+        if (other.gameObject == WorldState.instance.player && inputIcon != null && canInteract)
             inputIcon.gameObject.SetActive(false);
     }
+	*/
 }

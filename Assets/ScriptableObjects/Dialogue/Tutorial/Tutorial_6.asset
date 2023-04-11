@@ -13,20 +13,22 @@ MonoBehaviour:
   m_Name: Tutorial_6
   m_EditorClassIdentifier: 
   script:
-  - body: HEY! Scary sheep girl! It's dangerous out there.
+  - body: HEY! YOU THERE! SHEEP GIRL!
     changeCamera: 0
     CameraTransitionSpeed: 0
     CameraPos: {x: 0, y: 0, z: 0}
     CameraEuler: {x: 0, y: 0, z: 0}
-  - body: Use <SheepAttack> to send your flock to attack!
+  - body: 'DON''T JUST LET THOSE SHEEP STAND AROUND DOING NOTHING! '
     changeCamera: 1
     CameraTransitionSpeed: 1
     CameraPos: {x: 139.48364, y: 30.96745, z: 172.58884}
     CameraEuler: {x: 16.260153, y: 163.37485, z: 359.78824}
-  - body: 'Use <RecallSheep> to recall your flock.
-
-      Step back from me first
-      though, otherwise we''ll just chat again.'
+  - body: USE <SheepAttack> TO TELL THEM TO ATTACK THOSE TARGETS!
+    changeCamera: 0
+    CameraTransitionSpeed: 0
+    CameraPos: {x: 0, y: 0, z: 0}
+    CameraEuler: {x: 0, y: 0, z: 0}
+  - body: USE <RecallSheep> TO BRING THEM BACK TO YOU WHEN YOU'RE DONE!
     changeCamera: 0
     CameraTransitionSpeed: 0
     CameraPos: {x: 0, y: 0, z: 0}

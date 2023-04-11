@@ -28,9 +28,9 @@ public class ArmoredBigGuyAI : BigGuyAI
     {
         if(armorBroken == true)
         {
-            base.TakeDamage(atk, attackForward);
+            base.TakeDamage(atk, attackForward, damageAmp, 0.0f);//no knockback
             //REVIEW: I would use >= for the health execution if check
-            if (Health != MaxHealth || Health > executionHealthThreshhold)
+            if (Health != MaxHealth || Health >= executionHealthThreshhold)
             {
                 HealthBarCanvas.SetActive(true);
                 float healthbarScale = (Health / MaxHealth);

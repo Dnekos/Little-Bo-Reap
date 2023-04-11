@@ -11,21 +11,37 @@ public class descManager : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI descTextBox;
     [SerializeField] GameObject panel;
+    [SerializeField] Vector3 panelOffset;
 
     [SerializeField] string desc;
     // Start is called before the first frame update
 
     public void MouseOver()
     {
-        descTextBox.gameObject.SetActive(true);
-        panel.SetActive(true);
+        descTextBox.enabled = true;
+        panel.GetComponent<Image>().enabled = true;
         descTextBox.text = desc;
     }
 
     public void MouseExit()
     {
-        descTextBox.gameObject.SetActive(false);
-        panel.SetActive(false);
+        descTextBox.enabled = false;
+        panel.GetComponent<Image>().enabled = false;
+        descTextBox.text = "";
+    }
+
+    public void OnSelect()
+    {
+        descTextBox.enabled = true;
+        panel.GetComponent<Image>().enabled = true;
+        panel.transform.position = transform.position + panelOffset;
+        descTextBox.text = desc;
+    }
+
+    public void OnDeselect()
+    {
+        descTextBox.enabled = false;
+        panel.GetComponent<Image>().enabled = false;
         descTextBox.text = "";
     }
 }

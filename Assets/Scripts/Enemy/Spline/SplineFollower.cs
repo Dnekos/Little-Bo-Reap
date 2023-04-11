@@ -26,7 +26,6 @@ public class SplineFollower : MonoBehaviour
         {
 			soundDelay = soundDelay + 1f + Time.deltaTime;
 			FMODUnity.RuntimeManager.PlayOneShot(flying, transform.position);
-			Debug.Log("Flying time delay: " + soundDelay);
         }
 		
 	}

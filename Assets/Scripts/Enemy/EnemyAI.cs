@@ -7,11 +7,9 @@ using XNode.Examples.StateGraph;
 
 public enum EnemyStates
 {
-	WANDER = 0,
-	CHASE_PLAYER = 1,
-	HITSTUN = 2,
-	IDLE = 3,
-	EXECUTABLE = 4,
+	ACTIVE = 0,
+	HITSTUN = 1,
+	EXECUTABLE = 2,
 }
 public class EnemyAI : EnemyBase
 {
@@ -27,7 +25,7 @@ public class EnemyAI : EnemyBase
 	[Header("Enemy State")]
 	[SerializeField] protected EnemyStates currentEnemyState;
 	[SerializeField] float StunTime = 0.3f;
-	[SerializeField] LayerMask playerLayer;					 
+	[SerializeField] LayerMask playerLayer;
 
 	[Header("Attacking")]
 	public List<Transform> NearbyGuys;
@@ -78,7 +76,7 @@ public class EnemyAI : EnemyBase
 	}
 	void RunBehaviorTree()
 	{
-		NearbyGuys.RemoveAll(item => item == null);
+		NearbyGuys.RemoveAll(item => item == null || !item.gameObject.activeInHierarchy);
 		graph.AnalyzeGraph(this);
 	}
 	// Update is called once per frame
@@ -94,12 +92,6 @@ public class EnemyAI : EnemyBase
 		}
 		foreach (var key in Cooldowns.Keys.ToList())
 			Cooldowns[key] -= Time.deltaTime;
-
-		if(currentEnemyState == EnemyStates.EXECUTABLE)
-        {
-			timeTillGib -= Time.deltaTime;
-			if (timeTillGib <= 0) ForceKill();
-        }
 	}
 	private void FixedUpdate()
 	{
@@ -137,6 +129,7 @@ public class EnemyAI : EnemyBase
 		else
 		{
 			agent.SetDestination(dest);
+			Debug.Log(dest);
 
 			// if on offmeshlink, no mdification needed, if the mesh link is too tall they may through an error
 			if (agent.isOnOffMeshLink)
@@ -247,26 +240,13 @@ public class EnemyAI : EnemyBase
 		// shamelessly stolen from playermovement TODO: combine groundchecks
 		bool frontCheck = false;
 		bool backCheck = false;
-		Vector3 frontNormal;
-		Vector3 backNormal;
+
 		//set ground check
-		RaycastHit hitFront;
-		frontCheck = Physics.Raycast(groundCheckOriginFront.position, Vector3.down, out hitFront, groundCheckDistance, groundLayer);
-		//if canJump, groundNormal = hit.normal, else groudnnormal = vector3.up  v ternary operater
-		frontNormal = frontCheck ? hitFront.normal : Vector3.up;
-		RaycastHit hitBack;
-		backCheck = Physics.Raycast(groundCheckOriginBack.position, Vector3.down, out hitBack, groundCheckDistance, groundLayer);
-		backNormal = backCheck ? hitBack.normal : Vector3.up;
+		frontCheck = Physics.Raycast(groundCheckOriginFront.position, Vector3.down, groundCheckDistance, groundLayer);
+
+		backCheck = Physics.Raycast(groundCheckOriginBack.position, Vector3.down, groundCheckDistance, groundLayer);
+
 		isGrounded = frontCheck || backCheck;
-		if (!agent.enabled && isGrounded)
-		{
-			//rb.isKinematic = true;
-			agent.enabled = true;
-			//freeze
-			rb.constraints = RigidbodyConstraints.FreezeAll;
-			rb.velocity = Vector3.zero;
-			rb.angularVelocity = Vector3.zero;
-		}
 	}
 	#endregion
 
@@ -307,9 +287,15 @@ public class EnemyAI : EnemyBase
 		agent.enabled = false;
 		rb.isKinematic = false;
 		gameObject.layer = LayerMask.NameToLayer("EnemyExecute");
-		rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+		rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
 		currentEnemyState = EnemyStates.EXECUTABLE;
 		executeTrigger.SetActive(true);
+	}
+
+	IEnumerator ForceGibTimer()
+	{
+		yield return new WaitForSeconds(timeTillGib);
+		ForceKill();
 	}
 
 	public override void ForceKill()
@@ -360,10 +346,15 @@ public class EnemyAI : EnemyBase
 			yield return new WaitForSeconds(0.01f);
 			GroundCheck();
 		} while (!isGrounded);
+
 		//reset if not in execute stage
 		//Demetri this is a quick n dirty fix might need to move around execute stuff eventually
 		if (currentEnemyState != EnemyStates.EXECUTABLE)
 			currentEnemyState = stunState;
+
+		//rb.isKinematic = true;
+		agent.enabled = true;
+
 		// freeze dammit
 		rb.constraints = RigidbodyConstraints.FreezeAll;
 		rb.velocity = Vector3.zero;

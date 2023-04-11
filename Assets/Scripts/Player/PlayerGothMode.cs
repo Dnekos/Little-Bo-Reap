@@ -23,7 +23,7 @@ public class PlayerGothMode : MonoBehaviour
 	[SerializeField] FMODUnity.EventReference gothMusic;
 	FMOD.Studio.Bus music;
 	[SerializeField] FillBar gothMeter;
-	[SerializeField] float GothMeterCount = 0;
+	[Range(0,1), SerializeField] float GothMeterCount = 0;
 	[SerializeField] float gothMeterChargeTime;
 	[SerializeField] float gothMeterDuration;
 	public GothState gothMode = GothState.Normal;
@@ -129,16 +129,13 @@ public class PlayerGothMode : MonoBehaviour
 		}
 		else if (gothMode == GothState.Hammer && !anim.GetCurrentAnimatorStateInfo(0).IsName(hammerAnimation))
 		{
-			SetGothVisual();
-
 			// reenable controls
 			input.SwitchCurrentActionMap("PlayerMovement");
 
 			// turn off hammer
 			sheepHammer.Interact();
 
-
-			playerSheep.GoGothMode();
+			gothMode = GothState.Goth;
 		}
 		else if (gothMode == GothState.Goth)
 		{
@@ -182,7 +179,7 @@ public class PlayerGothMode : MonoBehaviour
 			else
 			{
 				// stop player
-				input.SwitchCurrentActionMap("Disabled");
+				input.SwitchCurrentActionMap("PauseMenu");
 				movement.HaltPlayer();
 
 				// start up hammer
@@ -193,6 +190,16 @@ public class PlayerGothMode : MonoBehaviour
 			}
 
 		}
+	}
+
+	/// <summary>
+	/// triggered by animation
+	/// </summary>
+	public void OnHammerSlam()
+	{
+		SetGothVisual();
+
+		playerSheep.GoGothMode();
 	}
 
 
@@ -211,8 +218,6 @@ public class PlayerGothMode : MonoBehaviour
 			mesh.material = gothMat;
 		}
 
-
-		gothMode = GothState.Goth;
 		gothParticles.SetActive(true);
 	}
 	private void GothSounds()
