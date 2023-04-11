@@ -9,9 +9,9 @@ using UnityEngine.UI;
 public class ProgressionParent : MonoBehaviour
 {
     [SerializeField]
-    Button[] upgrades;
+	ButtonClickToggle[] upgrades;
 
-    [SerializeField] Button[] abilities;
+	[SerializeField] ButtonClickToggle abilities;
 
     [SerializeField] int[] costs = { 10, 25, 30, 40, 50, 80, 90, 124, 200 };
 
@@ -26,96 +26,102 @@ public class ProgressionParent : MonoBehaviour
     //Sheep Construct DR, Ram Knockback, Fluffy Vortex Duration
     [SerializeField] float[] upgrade3Values = { 10f, 20f, 50000f };
 
+	// ingame used things
     int currentCostIndex;
     bool altAbilityUnlocked = false;
     int abilitySoulCost = 1;
-    // Start is called before the first frame update
-    void Start()
+	SaveData.Upgrades abilityFlag = SaveData.Upgrades.None;
+	List<float[]> upgradesAllValues;
+
+	// Start is called before the first frame update
+	void Start()
     {
-        upgrades[0].onClick.AddListener(delegate { Upgrade(0); });
-        upgrades[1].onClick.AddListener(delegate { Upgrade(1); });
-        upgrades[2].onClick.AddListener(delegate { Upgrade(2); });
+		Initialize();
+		upgrades[0].button.onClick.AddListener(delegate { Upgrade(0); });
+        upgrades[1].button.onClick.AddListener(delegate { Upgrade(1); });
+        upgrades[2].button.onClick.AddListener(delegate { Upgrade(2); });
         
-        abilities[0].onClick.AddListener(delegate { AbilityChange(0); });
-        abilities[1].onClick.AddListener(delegate { AbilityChange(1); });
+        abilities.button.onClick.AddListener(delegate { AbilityChange(); });
+        //abilities[1].onClick.AddListener(delegate { AbilityChange(1); });
     }
 
-    void Upgrade(int index)
-    {
-        // we use bit shifting to get the correct bit at the flag we're looking for
-        int exponent = index + (thisType * 3 + 1) - 1;
-        int flagIndex = 1 << exponent;//(((int)thisType + 1) * 3 + index);//REVIEW: 'flagindex' --> 'flagIndex' to keep with camelCase standard
+	void Initialize()
+	{
+		abilityFlag = (SaveData.Upgrades)(1 << thisType + 9);
+		upgradesAllValues = new List<float[]>();
+		upgradesAllValues.Add(upgrade1Values);
+		upgradesAllValues.Add(upgrade2Values);
+		upgradesAllValues.Add(upgrade3Values);
+	}
+
+	void Upgrade(int index)
+	{
+		// we use bit shifting to get the correct bit at the flag we're looking for
+		int exponent = index + (thisType * 3);
+		int flagIndex = 1 << exponent; //REVIEW: 'flagindex' --> 'flagIndex' to keep with camelCase standard
+
+		if (!WorldState.instance.PersistentData.boughtUpgrades.HasFlag((SaveData.Upgrades)flagIndex))
+		{
+			if (WorldState.instance.PersistentData.soulsCount >= costs[0])
+			{
+				WorldState.instance.PersistentData.soulsCount -= costs[0];
+				WorldState.instance.HUD.UpdateSoulCount();
+			}
+			else
+			{
+				Debug.Log("not enough money");
+				return;
+			}
+		}
+
+		// hard coding in 0, TODO: make them not arrays, unneeded now
+		Upgrade(thisType, index, upgradesAllValues[index][0]);
+
+		ActivateUpgradeUI(index, flagIndex);
+
+		currentCostIndex++;
 
 
-        if (WorldState.instance.PersistentData.soulsCount >= costs[0])
-        {
-            if (!WorldState.instance.PersistentData.boughtUpgrades.HasFlag((SaveData.Upgrades)flagIndex))
-            {
-                //turn on light
-                //TODO make this for all uptions
-                ActivateUI(index);
-                WorldState.instance.PersistentData.soulsCount -= costs[0];
-                WorldState.instance.HUD.UpdateSoulCount();
-
-                // TODO: make this not done every time, put it in start
-                List<float[]> upgradesAllValues = new List<float[]>();
-                upgradesAllValues.Add(upgrade1Values);
-                upgradesAllValues.Add(upgrade2Values);
-                upgradesAllValues.Add(upgrade3Values);
-
-                // hard coding in 0, TODO: make them not arrays, unneeded now
-                Upgrade(thisType, index, upgradesAllValues[index][0]);
-                currentCostIndex++;
-            }
-        }
-        else
-            Debug.Log("not enough money");
-            //REVIEW: Maybe we can have a visual representation for the player to know they don't have enough souls
-    }
+		//REVIEW: Maybe we can have a visual representation for the player to know they don't have enough souls
+	}
 
 	/// <summary>
 	/// sets aesthetic change for a specific upgrade
 	/// </summary>
-	public void ActivateUI(int index)
+	public void ActivateUpgradeUI(int index, int flagIndex)
 	{
-		for (int i = 0; i < upgrades[index].transform.parent.childCount; i++)
-		{
-			Image childimage = upgrades[index].transform.parent.Find("notch").GetComponent<Image>();
-			if (childimage != null && childimage.color != Color.green)
-				childimage.color = Color.green;
-		}
+		if (WorldState.instance.PersistentData.activeUpgrades.HasFlag((SaveData.Upgrades)flagIndex))
+			upgrades[index].SetState(ButtonState.Enabled);
+		else if (WorldState.instance.PersistentData.boughtUpgrades.HasFlag((SaveData.Upgrades)flagIndex))
+			upgrades[index].SetState(ButtonState.Disabled);
+		else
+			upgrades[index].SetState(ButtonState.Locked);
+
 	}
-    void AbilityChange(int index)
+	public void ActivateAbilityUI()
+	{
+		if (WorldState.instance.PersistentData.activeUpgrades.HasFlag(abilityFlag))
+			abilities.SetState(ButtonState.Enabled);
+		else if (WorldState.instance.PersistentData.boughtUpgrades.HasFlag(abilityFlag))
+			abilities.SetState(ButtonState.Disabled);
+		else
+			abilities.SetState(ButtonState.Locked);
+
+	}
+	void AbilityChange()
     {
-        switch (thisType)
-        {
-            case 0:
-                if (index == 0 || AbilityUnlock())
-                {
-                    WorldState.instance.PersistentData.activeBuilderAbility = (ActiveUpgrade)(index);
-                    abilities[index].transform.parent.Find("notch").GetComponent<Image>().color = Color.green;
-                    abilities[(index + 1) % 2].transform.parent.Find("notch").GetComponent<Image>().color = Color.white;
-                }
-                break;
-            case 1:
-                if (index == 0 || AbilityUnlock())
-                {
-                    WorldState.instance.PersistentData.activeRamAbility = (ActiveUpgrade)(index);
-                    abilities[index].transform.parent.Find("notch").GetComponent<Image>().color = Color.green;
-                    abilities[(index + 1) % 2].transform.parent.Find("notch").GetComponent<Image>().color = Color.white;
-                }
-                break;
-            case 2:
-                if (index == 0 || AbilityUnlock())
-                {
-                    WorldState.instance.PersistentData.activeFluffyAbility = (ActiveUpgrade)(index);
-                    abilities[index].transform.parent.Find("notch").GetComponent<Image>().color = Color.green;
-                    abilities[(index + 1) % 2].transform.parent.Find("notch").GetComponent<Image>().color = Color.white;
-                }
-                break;
-        }
+		if (UnlockAbility())
+		{
+			WorldState.instance.PersistentData.boughtUpgrades |= abilityFlag;
+			WorldState.instance.PersistentData.activeUpgrades ^= abilityFlag;
+
+			ActivateAbilityUI();
+		}
     }
-    bool AbilityUnlock()
+	/// <summary>
+	/// subtracts soulcount from worldstate and returns if ability is already unlocked or was purchased
+	/// </summary>
+    bool UnlockAbility()
     {
         if (altAbilityUnlocked)
         {
@@ -131,24 +137,37 @@ public class ProgressionParent : MonoBehaviour
         }
         return false;
     }
+
     public void CheckLoadedUpgrades()
 	{
-		List<float[]> upgradesAllValues = new List<float[]>();
-		upgradesAllValues.Add(upgrade1Values);
-		upgradesAllValues.Add(upgrade2Values);
-		upgradesAllValues.Add(upgrade3Values);
+		if (abilityFlag == SaveData.Upgrades.None)
+			Initialize();
 
 		for (int i = 0; i < upgrades.Length; i++)
 		{
 			// we use bit shifting to get the correct bit at the flag we're looking for
-			int flagindex = 1 << (thisType * 3 + i);
-			if (WorldState.instance.PersistentData.boughtUpgrades.HasFlag((SaveData.Upgrades)flagindex))
+			SaveData.Upgrades flagindex = (SaveData.Upgrades)(1 << i + (thisType * 3));
+			if (WorldState.instance.PersistentData.activeUpgrades.HasFlag(flagindex))
 			{
-				ActivateUI(i);
 				Upgrade(thisType, i, upgradesAllValues[i][0]);
+				upgrades[i].SetState(ButtonState.Enabled);
 			}
+			else if (WorldState.instance.PersistentData.boughtUpgrades.HasFlag(flagindex))
+			{
+				upgrades[i].SetState(ButtonState.Disabled);
+				Debug.Log("disabled " + flagindex);
+
+			}
+			else
+			{ 
+				upgrades[i].SetState(ButtonState.Locked);
+				Debug.Log("locked "+flagindex);
+	}
 		}
 
+		// active abilities
+		altAbilityUnlocked = WorldState.instance.PersistentData.boughtUpgrades.HasFlag(abilityFlag);
+		ActivateAbilityUI();
 	}
 
 	public void Upgrade(int type, int index, float newValue)
@@ -173,16 +192,37 @@ public class ProgressionParent : MonoBehaviour
         switch (index)
         {
             case 0:
-                WorldState.instance.passiveValues.builderLaunchDam = newValue;
 				WorldState.instance.PersistentData.boughtUpgrades |= SaveData.Upgrades.BuilderLaunchDam;
-                break;
+				WorldState.instance.PersistentData.activeUpgrades ^= SaveData.Upgrades.BuilderLaunchDam; // toggle it being active
+
+				// set value
+				if (WorldState.instance.PersistentData.activeUpgrades.HasFlag(SaveData.Upgrades.BuilderLaunchDam))
+					WorldState.instance.passiveValues.builderLaunchDam = newValue;
+				else
+					WorldState.instance.passiveValues.builderLaunchDam = 0;
+
+				break;
             case 1:
-                WorldState.instance.passiveValues.builderCorruptChance = newValue;
 				WorldState.instance.PersistentData.boughtUpgrades |= SaveData.Upgrades.BuilderCorruptChance;
+				WorldState.instance.PersistentData.activeUpgrades ^= SaveData.Upgrades.BuilderCorruptChance; // toggle it being active
+
+				// set value
+				if (WorldState.instance.PersistentData.activeUpgrades.HasFlag(SaveData.Upgrades.BuilderCorruptChance))
+					WorldState.instance.passiveValues.builderCorruptChance = newValue;
+				else
+					WorldState.instance.passiveValues.builderCorruptChance = 0;
+
 				break;
             case 2:
-                WorldState.instance.passiveValues.builderConstructDR = newValue;
 				WorldState.instance.PersistentData.boughtUpgrades |= SaveData.Upgrades.BuilderConstructDR;
+				WorldState.instance.PersistentData.activeUpgrades ^= SaveData.Upgrades.BuilderConstructDR; // toggle it being active
+
+				// set value
+				if (WorldState.instance.PersistentData.activeUpgrades.HasFlag(SaveData.Upgrades.BuilderConstructDR))
+					WorldState.instance.passiveValues.builderConstructDR = newValue;
+				else
+					WorldState.instance.passiveValues.builderConstructDR = 0;
+
 				break;
         }
     }
@@ -192,16 +232,37 @@ public class ProgressionParent : MonoBehaviour
         switch (index)
         {
             case 0:
-                WorldState.instance.passiveValues.ramChargeDR = newValue;
 				WorldState.instance.PersistentData.boughtUpgrades |= SaveData.Upgrades.RamChargeDR;
+				WorldState.instance.PersistentData.activeUpgrades ^= SaveData.Upgrades.RamChargeDR; // toggle it being active
+
+				// set value
+				if (WorldState.instance.PersistentData.activeUpgrades.HasFlag(SaveData.Upgrades.RamChargeDR))
+					WorldState.instance.passiveValues.ramChargeDR = newValue;
+				else
+					WorldState.instance.passiveValues.ramChargeDR = 0;
+
 				break;
             case 1:
-                WorldState.instance.passiveValues.ramDamage = newValue;
 				WorldState.instance.PersistentData.boughtUpgrades |= SaveData.Upgrades.RamDamage;
+				WorldState.instance.PersistentData.activeUpgrades ^= SaveData.Upgrades.RamDamage; // toggle it being active
+
+				// set value
+				if (WorldState.instance.PersistentData.activeUpgrades.HasFlag(SaveData.Upgrades.RamDamage))
+					WorldState.instance.passiveValues.ramDamage = newValue;
+				else
+					WorldState.instance.passiveValues.ramDamage = 0;
+
 				break;
             case 2:
-                WorldState.instance.passiveValues.ramKnockback = newValue;
 				WorldState.instance.PersistentData.boughtUpgrades |= SaveData.Upgrades.RamKnockback;
+				WorldState.instance.PersistentData.activeUpgrades ^= SaveData.Upgrades.RamKnockback; // toggle it being active
+
+				// set value
+				if (WorldState.instance.PersistentData.activeUpgrades.HasFlag(SaveData.Upgrades.RamKnockback))
+					WorldState.instance.passiveValues.ramKnockback = newValue;
+				else
+					WorldState.instance.passiveValues.ramKnockback = 0;
+
 				break;
         }
     }
@@ -211,16 +272,37 @@ public class ProgressionParent : MonoBehaviour
         switch (index)
         {
             case 0:
-                WorldState.instance.passiveValues.fluffyHealth = newValue;
 				WorldState.instance.PersistentData.boughtUpgrades |= SaveData.Upgrades.FluffyHealth;
+				WorldState.instance.PersistentData.activeUpgrades ^= SaveData.Upgrades.FluffyHealth; // toggle it being active
+
+				// set value
+				if (WorldState.instance.PersistentData.activeUpgrades.HasFlag(SaveData.Upgrades.FluffyHealth))
+					WorldState.instance.passiveValues.fluffyHealth = newValue;
+				else
+					WorldState.instance.passiveValues.fluffyHealth = 0;
+
 				break;
             case 1:
-                WorldState.instance.passiveValues.fluffyKnockResist = newValue;
 				WorldState.instance.PersistentData.boughtUpgrades |= SaveData.Upgrades.FluffyKnockResist;
+				WorldState.instance.PersistentData.activeUpgrades ^= SaveData.Upgrades.FluffyKnockResist; // toggle it being active
+
+				// set value
+				if (WorldState.instance.PersistentData.activeUpgrades.HasFlag(SaveData.Upgrades.FluffyKnockResist))
+					WorldState.instance.passiveValues.fluffyKnockResist = newValue;
+				else
+					WorldState.instance.passiveValues.fluffyKnockResist = 0;
+
 				break;
             case 2:
-                WorldState.instance.passiveValues.fluffyVortexDuration = newValue;
 				WorldState.instance.PersistentData.boughtUpgrades |= SaveData.Upgrades.FluffyVortexDuration;
+				WorldState.instance.PersistentData.activeUpgrades ^= SaveData.Upgrades.FluffyVortexDuration; // toggle it being active
+
+				// set value
+				if (WorldState.instance.PersistentData.activeUpgrades.HasFlag(SaveData.Upgrades.FluffyVortexDuration))
+					WorldState.instance.passiveValues.fluffyVortexDuration = newValue;
+				else
+					WorldState.instance.passiveValues.fluffyVortexDuration = 0;
+
 				break;
         }
     }
