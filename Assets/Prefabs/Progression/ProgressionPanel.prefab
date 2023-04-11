@@ -397,9 +397,8 @@ GameObject:
   - component: {fileID: 4978282788497983780}
   - component: {fileID: 5698043451262269324}
   - component: {fileID: 3135628291629790218}
-  - component: {fileID: 3508375843698614476}
   m_Layer: 0
-  m_Name: Choice
+  m_Name: Choice 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -535,38 +534,6 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4615369913981348459}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3508375843698614476}
-        m_TargetAssemblyTypeName: ClickToggle, Assembly-CSharp
-        m_MethodName: OnButtonClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &3508375843698614476
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 629353635157637470}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac79e2e290ef6f24b95accfa78bc7e90, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  iconImage: {fileID: 2425937893411811908}
-  iconCheck: {fileID: 8133536992294251719}
-  greyedColor: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
-  buttonState: 0
-  buttonType: 7
-  onStateChanged:
-    m_PersistentCalls:
       m_Calls: []
 --- !u!1 &694153327512167263
 GameObject:
@@ -581,9 +548,8 @@ GameObject:
   - component: {fileID: 450048595476848915}
   - component: {fileID: 8091571456716932812}
   - component: {fileID: 8601882858173603424}
-  - component: {fileID: 6117806773042953032}
   m_Layer: 0
-  m_Name: Choice
+  m_Name: Active Choice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -719,38 +685,6 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2405627059946801869}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6117806773042953032}
-        m_TargetAssemblyTypeName: ClickToggle, Assembly-CSharp
-        m_MethodName: OnButtonClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &6117806773042953032
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 694153327512167263}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac79e2e290ef6f24b95accfa78bc7e90, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  iconImage: {fileID: 2405627059946801869}
-  iconCheck: {fileID: 7688861545674572435}
-  greyedColor: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
-  buttonState: 0
-  buttonType: 8
-  onStateChanged:
-    m_PersistentCalls:
       m_Calls: []
 --- !u!1 &727695510175586871
 GameObject:
@@ -841,9 +775,8 @@ GameObject:
   - component: {fileID: 624655784455266047}
   - component: {fileID: 6950033038159363304}
   - component: {fileID: 2596791416416785569}
-  - component: {fileID: 2488003381018016664}
   m_Layer: 0
-  m_Name: Choice
+  m_Name: Active Choice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -978,38 +911,6 @@ MonoBehaviour:
   m_Interactable: 1
   m_TargetGraphic: {fileID: 2405627059818782624}
   m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2488003381018016664}
-        m_TargetAssemblyTypeName: ClickToggle, Assembly-CSharp
-        m_MethodName: OnButtonClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &2488003381018016664
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 801807705875267485}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac79e2e290ef6f24b95accfa78bc7e90, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  iconImage: {fileID: 2405627059818782624}
-  iconCheck: {fileID: 1700543498282717478}
-  greyedColor: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
-  buttonState: 0
-  buttonType: 0
-  onStateChanged:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &920514478664580775
@@ -1650,9 +1551,8 @@ GameObject:
   - component: {fileID: 6955853911978727089}
   - component: {fileID: 8158239304193174100}
   - component: {fileID: 3509708156254355337}
-  - component: {fileID: 9162770942819290264}
   m_Layer: 0
-  m_Name: Choice
+  m_Name: Active Choice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1787,38 +1687,6 @@ MonoBehaviour:
   m_Interactable: 1
   m_TargetGraphic: {fileID: 2425937893578972953}
   m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 9162770942819290264}
-        m_TargetAssemblyTypeName: ClickToggle, Assembly-CSharp
-        m_MethodName: OnButtonClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &9162770942819290264
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1498930887539648384}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac79e2e290ef6f24b95accfa78bc7e90, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  iconImage: {fileID: 2425937893578972953}
-  iconCheck: {fileID: 2504900699796529413}
-  greyedColor: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
-  buttonState: 0
-  buttonType: 4
-  onStateChanged:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &1700543498282717478
@@ -2187,7 +2055,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3508375843698614476}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ClickToggle, Assembly-CSharp
         m_MethodName: OnButtonClick
         m_Mode: 1
@@ -2570,7 +2438,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2601,6 +2469,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   descTextBox: {fileID: 3694544522795333873}
   panel: {fileID: 8359060244565142963}
+  panelOffset: {x: 0, y: 0, z: 0}
   desc: Double the damage dealt by launched builder sheep.
 --- !u!114 &6805056854551099090
 MonoBehaviour:
@@ -2785,7 +2654,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2816,6 +2685,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   descTextBox: {fileID: 3694544522795333873}
   panel: {fileID: 8359060244565142963}
+  panelOffset: {x: 0, y: 0, z: 0}
   desc: 'Fluffy sheep negate 75% of all knockback. '
 --- !u!114 &8930478514152877143
 MonoBehaviour:
@@ -2876,6 +2746,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   descTextBox: {fileID: 0}
   panel: {fileID: 0}
+  panelOffset: {x: 0, y: 0, z: 0}
   desc: 
 --- !u!1 &2405627059583300347
 GameObject:
@@ -2938,7 +2809,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2969,6 +2840,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   descTextBox: {fileID: 3694544522795333873}
   panel: {fileID: 8359060244565142963}
+  panelOffset: {x: 0, y: 0, z: 0}
   desc: Halves damage taken by builder sheep in construct form. (Lift/Wall)
 --- !u!114 &8589618561509621579
 MonoBehaviour:
@@ -3076,7 +2948,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3107,6 +2979,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   descTextBox: {fileID: 3694544522795333873}
   panel: {fileID: 8359060244565142963}
+  panelOffset: {x: 0, y: 0, z: 0}
   desc: idk does something dif
 --- !u!114 &4370613973423009459
 MonoBehaviour:
@@ -3214,7 +3087,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3245,6 +3118,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   descTextBox: {fileID: 3694544522795333873}
   panel: {fileID: 8359060244565142963}
+  panelOffset: {x: 0, y: 0, z: 0}
   desc: Sheep vortex now draws in enemies during the duration, anything remaining
     gets sent flying afterward.
 --- !u!114 &4370613974637362142
@@ -3354,7 +3228,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3385,6 +3259,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   descTextBox: {fileID: 3694544522795333873}
   panel: {fileID: 8359060244565142963}
+  panelOffset: {x: 0, y: 0, z: 0}
   desc: The duration of the vortex ability is increased by 75%.
 --- !u!114 &8589618560022833702
 MonoBehaviour:
@@ -3445,6 +3320,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   descTextBox: {fileID: 0}
   panel: {fileID: 0}
+  panelOffset: {x: 0, y: 0, z: 0}
   desc: 
 --- !u!1 &2405627060570810283
 GameObject:
@@ -3507,7 +3383,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3538,6 +3414,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   descTextBox: {fileID: 3694544522795333873}
   panel: {fileID: 8359060244565142963}
+  panelOffset: {x: 0, y: 0, z: 0}
   desc: The odds of summoning Black builder sheep increases to 35%.
 --- !u!114 &8930478515639662906
 MonoBehaviour:
@@ -3645,7 +3522,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3676,6 +3553,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   descTextBox: {fileID: 3694544522795333873}
   panel: {fileID: 8359060244565142963}
+  panelOffset: {x: 0, y: 0, z: 0}
   desc: Increases the max health of Fluffy Sheep by 75%.
 --- !u!114 &6805056856289469375
 MonoBehaviour:
@@ -4008,7 +3886,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4039,6 +3917,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   descTextBox: {fileID: 3694544522795333873}
   panel: {fileID: 8359060244565142963}
+  panelOffset: {x: 0, y: 0, z: 0}
   desc: Halves damage taken by rams when stampeding.
 --- !u!114 &6825279581308925547
 MonoBehaviour:
@@ -4282,7 +4161,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4313,6 +4192,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   descTextBox: {fileID: 3694544522795333873}
   panel: {fileID: 8359060244565142963}
+  panelOffset: {x: 0, y: 0, z: 0}
   desc: Doubles knockback of ALL ram attacks.
 --- !u!114 &8645886728317321202
 MonoBehaviour:
@@ -4373,6 +4253,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   descTextBox: {fileID: 0}
   panel: {fileID: 0}
+  panelOffset: {x: 0, y: 0, z: 0}
   desc: 
 --- !u!1 &2425937893578972951
 GameObject:
@@ -4435,7 +4316,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4466,6 +4347,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   descTextBox: {fileID: 3694544522795333873}
   panel: {fileID: 8359060244565142963}
+  panelOffset: {x: 0, y: 0, z: 0}
   desc: Bo Peep now charges with her flock
 --- !u!114 &4354878555478519306
 MonoBehaviour:
@@ -4712,7 +4594,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4743,6 +4625,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   descTextBox: {fileID: 3694544522795333873}
   panel: {fileID: 8359060244565142963}
+  panelOffset: {x: 0, y: 0, z: 0}
   desc: Increases the damage of ALL ram attacks/abilities by 50%.
 --- !u!114 &8874138957840546179
 MonoBehaviour:
@@ -4803,6 +4686,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   descTextBox: {fileID: 0}
   panel: {fileID: 0}
+  panelOffset: {x: 0, y: 0, z: 0}
   desc: 
 --- !u!1 &2425937894446575261
 GameObject:
@@ -5570,7 +5454,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3508375843698614476}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ClickToggle, Assembly-CSharp
         m_MethodName: OnButtonClick
         m_Mode: 1
@@ -6198,9 +6082,8 @@ GameObject:
   - component: {fileID: 174396847212857309}
   - component: {fileID: 3822083937938368685}
   - component: {fileID: 6667503008215237523}
-  - component: {fileID: 7911191978380620636}
   m_Layer: 0
-  m_Name: Choice
+  m_Name: Choice 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6335,38 +6218,6 @@ MonoBehaviour:
   m_Interactable: 1
   m_TargetGraphic: {fileID: 2405627060755176344}
   m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7911191978380620636}
-        m_TargetAssemblyTypeName: ClickToggle, Assembly-CSharp
-        m_MethodName: OnButtonClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &7911191978380620636
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4059449939279839563}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac79e2e290ef6f24b95accfa78bc7e90, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  iconImage: {fileID: 2405627060755176344}
-  iconCheck: {fileID: 2800951063330119481}
-  greyedColor: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
-  buttonState: 0
-  buttonType: 9
-  onStateChanged:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &4123723042300612213
@@ -6506,6 +6357,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   descTextBox: {fileID: 3694544522795333873}
   panel: {fileID: 8359060244565142963}
+  panelOffset: {x: 0, y: 0, z: 0}
   desc: Your sheep form into a vortex dealing damage to close enemies and acting
     as a defensive barrier.
 --- !u!114 &7814256928469610887
@@ -6566,9 +6418,8 @@ GameObject:
   - component: {fileID: 497197858241325069}
   - component: {fileID: 6450703306323408734}
   - component: {fileID: 3694046566067294802}
-  - component: {fileID: 1664175457558364098}
   m_Layer: 0
-  m_Name: Choice
+  m_Name: Choice 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6703,38 +6554,6 @@ MonoBehaviour:
   m_Interactable: 1
   m_TargetGraphic: {fileID: 2405627060570810285}
   m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1664175457558364098}
-        m_TargetAssemblyTypeName: ClickToggle, Assembly-CSharp
-        m_MethodName: OnButtonClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &1664175457558364098
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4242292233856330362}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac79e2e290ef6f24b95accfa78bc7e90, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  iconImage: {fileID: 2405627060570810285}
-  iconCheck: {fileID: 6628378966015564930}
-  greyedColor: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
-  buttonState: 0
-  buttonType: 2
-  onStateChanged:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &4456619265270964124
@@ -6965,7 +6784,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3508375843698614476}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ClickToggle, Assembly-CSharp
         m_MethodName: OnButtonClick
         m_Mode: 1
@@ -7558,6 +7377,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   descTextBox: {fileID: 3694544522795333873}
   panel: {fileID: 8359060244565142963}
+  panelOffset: {x: 0, y: 0, z: 0}
   desc: Your sheep form a wall forcing enemies to go around and blocking projectiles.
 --- !u!114 &4467280670966391926
 MonoBehaviour:
@@ -7693,9 +7513,8 @@ GameObject:
   - component: {fileID: 8919601326864157638}
   - component: {fileID: 2444545764956457416}
   - component: {fileID: 2489216324569068128}
-  - component: {fileID: 204288647768943807}
   m_Layer: 0
-  m_Name: Choice
+  m_Name: Choice 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7830,38 +7649,6 @@ MonoBehaviour:
   m_Interactable: 1
   m_TargetGraphic: {fileID: 2425937894286567188}
   m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 204288647768943807}
-        m_TargetAssemblyTypeName: ClickToggle, Assembly-CSharp
-        m_MethodName: OnButtonClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &204288647768943807
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5409190780687280994}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac79e2e290ef6f24b95accfa78bc7e90, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  iconImage: {fileID: 2425937894286567188}
-  iconCheck: {fileID: 3634861352617294874}
-  greyedColor: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
-  buttonState: 0
-  buttonType: 6
-  onStateChanged:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &5433106165403929470
@@ -8090,12 +7877,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   upgrades:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - iconImage: {fileID: 2405627059016797941}
+    iconCheck: {fileID: 3626727913389577877}
+    greyedColor: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
+    button: {fileID: 8206423374380091755}
+  - iconImage: {fileID: 2405627060570810285}
+    iconCheck: {fileID: 6628378966015564930}
+    greyedColor: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
+    button: {fileID: 3694046566067294802}
+  - iconImage: {fileID: 2405627059583300349}
+    iconCheck: {fileID: 6592692051206089932}
+    greyedColor: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
+    button: {fileID: 4877260072788931389}
   abilities:
-  - {fileID: 73725502555251504}
-  - {fileID: 0}
+    iconImage: {fileID: 2405627059818782624}
+    iconCheck: {fileID: 1700543498282717478}
+    greyedColor: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
+    button: {fileID: 2596791416416785569}
   costs: 010000000100000001000000
   thisType: 0
   upgrade1Values:
@@ -8392,6 +8190,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   descTextBox: {fileID: 3694544522795333873}
   panel: {fileID: 8359060244565142963}
+  panelOffset: {x: 0, y: 0, z: 0}
   desc: Your rams now charge forward dealing large damage.
 --- !u!114 &735204721060203615
 MonoBehaviour:
@@ -8816,9 +8615,8 @@ GameObject:
   - component: {fileID: 9215186587052862881}
   - component: {fileID: 1379013417630467258}
   - component: {fileID: 8206423374380091755}
-  - component: {fileID: 2193237174609745590}
   m_Layer: 0
-  m_Name: Choice
+  m_Name: Choice 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8954,38 +8752,6 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2405627059016797941}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2193237174609745590}
-        m_TargetAssemblyTypeName: ClickToggle, Assembly-CSharp
-        m_MethodName: OnButtonClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &2193237174609745590
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6211577400116175591}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac79e2e290ef6f24b95accfa78bc7e90, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  iconImage: {fileID: 2405627059016797941}
-  iconCheck: {fileID: 3626727913389577877}
-  greyedColor: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
-  buttonState: 0
-  buttonType: 1
-  onStateChanged:
-    m_PersistentCalls:
       m_Calls: []
 --- !u!1 &6399096810755581687
 GameObject:
@@ -9000,9 +8766,8 @@ GameObject:
   - component: {fileID: 6466552027471075152}
   - component: {fileID: 8512678352002521141}
   - component: {fileID: 10375640998888557}
-  - component: {fileID: 561137123184446199}
   m_Layer: 0
-  m_Name: Choice
+  m_Name: Choice 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9137,38 +8902,6 @@ MonoBehaviour:
   m_Interactable: 1
   m_TargetGraphic: {fileID: 2405627059368981184}
   m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 561137123184446199}
-        m_TargetAssemblyTypeName: ClickToggle, Assembly-CSharp
-        m_MethodName: OnButtonClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &561137123184446199
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6399096810755581687}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac79e2e290ef6f24b95accfa78bc7e90, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  iconImage: {fileID: 2405627059368981184}
-  iconCheck: {fileID: 5285849196652847381}
-  greyedColor: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
-  buttonState: 0
-  buttonType: 10
-  onStateChanged:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &6455998281589683646
@@ -9473,12 +9206,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   upgrades:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - iconImage: {fileID: 2405627060755176344}
+    iconCheck: {fileID: 2800951063330119481}
+    greyedColor: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
+    button: {fileID: 6667503008215237523}
+  - iconImage: {fileID: 2405627059368981184}
+    iconCheck: {fileID: 5285849196652847381}
+    greyedColor: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
+    button: {fileID: 10375640998888557}
+  - iconImage: {fileID: 2405627060247930768}
+    iconCheck: {fileID: 3670313923159589878}
+    greyedColor: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
+    button: {fileID: 5601890514291291009}
   abilities:
-  - {fileID: 2467998360040219962}
-  - {fileID: 0}
+    iconImage: {fileID: 2405627059946801869}
+    iconCheck: {fileID: 7688861545674572435}
+    greyedColor: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
+    button: {fileID: 8601882858173603424}
   costs: 010000000100000001000000
   thisType: 2
   upgrade1Values:
@@ -10489,9 +10233,8 @@ GameObject:
   - component: {fileID: 9207725202238479703}
   - component: {fileID: 686194310567400458}
   - component: {fileID: 5601890514291291009}
-  - component: {fileID: 3305211403936575414}
   m_Layer: 0
-  m_Name: Choice
+  m_Name: Choice 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10626,38 +10369,6 @@ MonoBehaviour:
   m_Interactable: 1
   m_TargetGraphic: {fileID: 2405627060247930768}
   m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3305211403936575414}
-        m_TargetAssemblyTypeName: ClickToggle, Assembly-CSharp
-        m_MethodName: OnButtonClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &3305211403936575414
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8063547907719949825}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac79e2e290ef6f24b95accfa78bc7e90, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  iconImage: {fileID: 2405627060247930768}
-  iconCheck: {fileID: 3670313923159589878}
-  greyedColor: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
-  buttonState: 0
-  buttonType: 11
-  onStateChanged:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &8073579999206933932
@@ -10961,9 +10672,8 @@ GameObject:
   - component: {fileID: 7491935539051007432}
   - component: {fileID: 1911244451977525093}
   - component: {fileID: 1177163499215722603}
-  - component: {fileID: 8485800297650374249}
   m_Layer: 0
-  m_Name: Choice
+  m_Name: Choice 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11098,38 +10808,6 @@ MonoBehaviour:
   m_Interactable: 1
   m_TargetGraphic: {fileID: 2425937892770336332}
   m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8485800297650374249}
-        m_TargetAssemblyTypeName: ClickToggle, Assembly-CSharp
-        m_MethodName: OnButtonClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &8485800297650374249
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8229749292186577584}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac79e2e290ef6f24b95accfa78bc7e90, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  iconImage: {fileID: 2425937892770336332}
-  iconCheck: {fileID: 4524709404162518061}
-  greyedColor: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
-  buttonState: 0
-  buttonType: 5
-  onStateChanged:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &8249595619641901541
@@ -11359,6 +11037,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: {x: 200, y: 0, z: 0}
+  followMouse: 0
 --- !u!1 &8436452531502869658
 GameObject:
   m_ObjectHideFlags: 0
@@ -11602,12 +11281,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   upgrades:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - iconImage: {fileID: 2425937892770336332}
+    iconCheck: {fileID: 4524709404162518061}
+    greyedColor: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
+    button: {fileID: 1177163499215722603}
+  - iconImage: {fileID: 2425937894286567188}
+    iconCheck: {fileID: 3634861352617294874}
+    greyedColor: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
+    button: {fileID: 2489216324569068128}
+  - iconImage: {fileID: 2425937893411811908}
+    iconCheck: {fileID: 8133536992294251719}
+    greyedColor: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
+    button: {fileID: 3135628291629790218}
   abilities:
-  - {fileID: 5871095448580379721}
-  - {fileID: 0}
+    iconImage: {fileID: 2425937893578972953}
+    iconCheck: {fileID: 2504900699796529413}
+    greyedColor: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
+    button: {fileID: 3509708156254355337}
   costs: 010000000100000001000000
   thisType: 1
   upgrade1Values:
@@ -12265,9 +11955,8 @@ GameObject:
   - component: {fileID: 7401144131489366227}
   - component: {fileID: 6817025646571935368}
   - component: {fileID: 4877260072788931389}
-  - component: {fileID: 1023100976440836540}
   m_Layer: 0
-  m_Name: Choice
+  m_Name: Choice 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12402,38 +12091,6 @@ MonoBehaviour:
   m_Interactable: 1
   m_TargetGraphic: {fileID: 2405627059583300349}
   m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1023100976440836540}
-        m_TargetAssemblyTypeName: ClickToggle, Assembly-CSharp
-        m_MethodName: OnButtonClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &1023100976440836540
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9113565210793315759}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac79e2e290ef6f24b95accfa78bc7e90, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  iconImage: {fileID: 2405627059583300349}
-  iconCheck: {fileID: 6592692051206089932}
-  greyedColor: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
-  buttonState: 0
-  buttonType: 3
-  onStateChanged:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &9181600219676598041

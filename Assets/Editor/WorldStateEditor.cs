@@ -12,6 +12,10 @@ public class WorldStateEditor : Editor
 		DrawDefaultInspector();
 		serializedObject.Update();
 
+		// dont show buttons or mark dirty in play mode
+		if (Application.isPlaying)
+			return;
+
 		WorldState myScript = (WorldState)target;
 
 		if (GUILayout.Button("List Graves"))

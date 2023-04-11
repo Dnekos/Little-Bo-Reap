@@ -49,15 +49,30 @@ public class ClickToggle : MonoBehaviour
 		}
 	}
 }
+[System.Serializable]
+public class ButtonClickToggle
+{
+	[SerializeField] Image iconImage;
+	[SerializeField] GameObject iconCheck;
+	[SerializeField] Color greyedColor = Color.gray;
+	public Button button;
 
+	public void SetState(ButtonState buttonState)
+	{
+		iconImage.color = Color.white;
+		iconCheck.SetActive(false);
+		if (buttonState == ButtonState.Locked) iconImage.color = greyedColor;
+		if (buttonState == ButtonState.Enabled) iconCheck.SetActive(true);
+	}
+}
 [System.Serializable]
 public class StateChangeEvent : UnityEvent<ButtonState, ButtonType> { }
 
 public enum ButtonState
 {
-	Locked,
-	Disabled,
-	Enabled
+	Locked = -1,
+	Disabled = 0,
+	Enabled = 1
 }
 
 public enum ButtonType
