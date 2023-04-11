@@ -46,8 +46,9 @@ public class Damageable : MonoBehaviour
 	{
 		if (!isInvulnerable || Health <= 0)
 		{
+			float damage = atk.damage * ((damageAmp <= 0) ? 1 : damageAmp);
 			// deal damage
-			Health -= atk.damage * ((damageAmp <= 0) ? 1 : damageAmp);
+			Health -= damage;
 
 			// knockback
 			DealKnockback(attackForward, atk.forwardKnockback, atk.upwardKnockback, knockbackMultiplier);
@@ -61,13 +62,13 @@ public class Damageable : MonoBehaviour
                 {
 					//create damage number
 					GameObject number = Instantiate(damageNumber, transform.position, transform.rotation);
-					number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)atk.damage).ToString();
+					number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)damage).ToString();
 				}
 				else
                 {
 					//create damage number
 					GameObject number = Instantiate(damageNumberGoth, transform.position, transform.rotation);
-					number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)atk.damage).ToString();
+					number.GetComponentInChildren<TextMeshProUGUI>().text = ((int)damage).ToString();
 				}
 
 				
@@ -77,7 +78,7 @@ public class Damageable : MonoBehaviour
 			if (Health <= 0)
 				OnDeath();
 			else // don't play hurt sound when dying smh
-				FMODUnity.RuntimeManager.PlayOneShotAttached(hurtSound, gameObject);
+				FMODUnity.RuntimeManager.PlayOneShot(hurtSound, transform.position);
 
 		}
 	}
@@ -128,16 +129,16 @@ public class Damageable : MonoBehaviour
 			//rb.AddForce((knockbackForce - rb.velocity) * knockbackMult, ForceMode.Impulse
 			//rb.AddForce((knockbackForce.normalized * knockbackForce.magnitude), ForceMode.Impulse);
 
-			rb.AddForce(knockbackForce - rb.velocity, ForceMode.VelocityChange);
+			rb.AddForce(knockbackForce - rb.velocity, ForceMode.Impulse);
 			//this worked the best
 
-			Debug.Log("before vel: " + rb.velocity + " " + rb.velocity.magnitude);
+			//Debug.Log("before vel: " + rb.velocity + " " + rb.velocity.magnitude);
 		}
 		if (rb.velocity.sqrMagnitude > knockbackForce.sqrMagnitude)
 		{
 			rb.AddForce(- rb.velocity, ForceMode.Impulse);
 			//this only works Using impulse, changing it to velocity change bugs it out
-			Debug.Log("MAX VEL: " + rb.velocity.sqrMagnitude);
+			//Debug.Log("MAX VEL: " + rb.velocity.sqrMagnitude);
 		}
 	}
 
@@ -217,5 +218,18 @@ public class Damageable : MonoBehaviour
 			Debug.Log("SoulDropped");
 			healthToDrop--;
 		}
+	}
+
+	// used for constructs and sheep knowing how to far they can attack
+	public float GetRadius()
+	{
+		// find out how big a sheep is
+		Collider scol = GetComponent<Collider>();
+		if (scol is SphereCollider)
+			return ((SphereCollider)scol).radius * transform.localScale.x;
+		else if (scol is CapsuleCollider)
+			return Mathf.Max(((CapsuleCollider)scol).radius, ((CapsuleCollider)scol).height * 0.5f) * transform.lossyScale.y;
+		else
+			return scol.bounds.size.y * 0.5f;
 	}
 }

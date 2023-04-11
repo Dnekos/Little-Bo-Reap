@@ -7,11 +7,9 @@ using XNode.Examples.StateGraph;
 
 public enum EnemyStates
 {
-	WANDER = 0,
-	CHASE_PLAYER = 1,
-	HITSTUN = 2,
-	IDLE = 3,
-	EXECUTABLE = 4
+	ACTIVE = 0,
+	HITSTUN = 1,
+	EXECUTABLE = 2,
 }
 public class EnemyAI : EnemyBase
 {
@@ -36,6 +34,10 @@ public class EnemyAI : EnemyBase
 	[SerializeField] Collider StickCollider;
 	[SerializeField] Animator anim;
 
+	[Header("Bell")]
+	public bool distracted;
+	public Vector3 bellLoc;
+
 	[Header("Execution Variables")]
 	public bool isExecutable;
 	public bool mustBeExecuted;
@@ -43,6 +45,7 @@ public class EnemyAI : EnemyBase
 	[SerializeField] protected GameObject executeTrigger;
 	public Transform executePlayerPos;
 	public Execution execution;
+	[SerializeField] float timeTillGib = 10f;
 	EnemyStates stunState;
 
 	[Header("Ground Check")]
@@ -54,12 +57,11 @@ public class EnemyAI : EnemyBase
 	[SerializeField] float fallRate = 50;
 
 	[Header("Sounds")]
-	[SerializeField]  FMODUnity.EventReference swingSound;
+	[SerializeField] FMODUnity.EventReference swingSound;
 	[SerializeField] FMODUnity.EventReference clubHitSound;
 
 
-	[HideInInspector]
-	public Transform player;
+	[HideInInspector] public Transform player;
 	NavMeshAgent agent;
 
 	// Start is called before the first frame update
@@ -74,7 +76,7 @@ public class EnemyAI : EnemyBase
 	}
 	void RunBehaviorTree()
 	{
-		NearbyGuys.RemoveAll(item => item == null);
+		NearbyGuys.RemoveAll(item => item == null || !item.gameObject.activeInHierarchy);
 		graph.AnalyzeGraph(this);
 	}
 	// Update is called once per frame
@@ -94,7 +96,7 @@ public class EnemyAI : EnemyBase
 	private void FixedUpdate()
 	{
 		//apply gravity if falling
-		if (currentEnemyState == EnemyStates.HITSTUN)
+		if (currentEnemyState == EnemyStates.HITSTUN || currentEnemyState == EnemyStates.EXECUTABLE)
 			rb.AddForce(Vector3.down * fallRate);
 	}
 	#region UtilityFunctions
@@ -106,10 +108,14 @@ public class EnemyAI : EnemyBase
 	{
 		return currentEnemyState;
 	}
+	public Animator GetAnimator()
+	{
+		return anim;
+	}
 	public virtual bool SetDestination(Vector3 dest)
 	{
 		// dont pathfind bad destinations
-		if (dest == null || float.IsNaN(dest.x))
+		if (dest == null || float.IsNaN(dest.x) || dest == Vector3.negativeInfinity || dest == Vector3.positiveInfinity)
 		{
 			Debug.LogWarning("tried giving " + gameObject + " invalid destination");
 			return false;
@@ -123,7 +129,12 @@ public class EnemyAI : EnemyBase
 		else
 		{
 			agent.SetDestination(dest);
-			if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 5, 1) || agent.isOnOffMeshLink)
+			Debug.Log(dest);
+
+			// if on offmeshlink, no mdification needed, if the mesh link is too tall they may through an error
+			if (agent.isOnOffMeshLink)
+				return true;
+			if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 5, 1))
 			{
 				transform.position = hit.position;
 			}
@@ -139,15 +150,7 @@ public class EnemyAI : EnemyBase
 		return true;
 	}
 	#endregion
-	void DoIdle()
-	{
-		//debug idle state TODO: maybe make this not every frame?
-		if (Vector3.Distance(transform.position, player.position) <= 20)
-			currentEnemyState = EnemyStates.CHASE_PLAYER;
-	}
-	public void ToChase()
-	{
-	}
+
 	#region Execution 
 	public void Execute()
 	{
@@ -211,7 +214,7 @@ public class EnemyAI : EnemyBase
 	private void OnTriggerEnter(Collider other)
 	{
 		Damageable target = other.GetComponent<Damageable>();
-		if (target != null && !(target is EnemyAI) && !NearbyGuys.Contains(other.transform))
+		if (target != null && !(target is EnemyBase) && !other.isTrigger && !NearbyGuys.Contains(other.transform))
 		{
 			NearbyGuys.Add(other.transform);
 		}
@@ -219,7 +222,7 @@ public class EnemyAI : EnemyBase
 	private void OnTriggerExit(Collider other)
 	{
 		Damageable target = other.GetComponent<Damageable>();
-		if (target != null && !(target is EnemyAI) && NearbyGuys.Contains(other.transform))
+		if (target != null && !(target is EnemyBase) && !other.isTrigger && NearbyGuys.Contains(other.transform))
 		{
 			NearbyGuys.Remove(other.transform);
 		}
@@ -237,26 +240,13 @@ public class EnemyAI : EnemyBase
 		// shamelessly stolen from playermovement TODO: combine groundchecks
 		bool frontCheck = false;
 		bool backCheck = false;
-		Vector3 frontNormal;
-		Vector3 backNormal;
+
 		//set ground check
-		RaycastHit hitFront;
-		frontCheck = Physics.Raycast(groundCheckOriginFront.position, Vector3.down, out hitFront, groundCheckDistance, groundLayer);
-		//if canJump, groundNormal = hit.normal, else groudnnormal = vector3.up  v ternary operater
-		frontNormal = frontCheck ? hitFront.normal : Vector3.up;
-		RaycastHit hitBack;
-		backCheck = Physics.Raycast(groundCheckOriginBack.position, Vector3.down, out hitBack, groundCheckDistance, groundLayer);
-		backNormal = backCheck ? hitBack.normal : Vector3.up;
+		frontCheck = Physics.Raycast(groundCheckOriginFront.position, Vector3.down, groundCheckDistance, groundLayer);
+
+		backCheck = Physics.Raycast(groundCheckOriginBack.position, Vector3.down, groundCheckDistance, groundLayer);
+
 		isGrounded = frontCheck || backCheck;
-		if (!agent.enabled && isGrounded)
-		{
-			//rb.isKinematic = true;
-			agent.enabled = true;
-			//freeze
-			rb.constraints = RigidbodyConstraints.FreezeAll;
-			rb.velocity = Vector3.zero;
-			rb.angularVelocity = Vector3.zero;
-		}
 	}
 	#endregion
 
@@ -277,32 +267,37 @@ public class EnemyAI : EnemyBase
 		base.TakeDamage(atk, attackForward, damageAmp, knockbackMultiplier);
 
 		if (isExecutable && Health <= executionHealthThreshhold)
-		{
-			rb.mass = 100f;
-			rb.velocity = Vector3.zero;
-			agent.enabled = false;
-			gameObject.layer = LayerMask.NameToLayer("EnemyExecute");
-			rb.constraints = RigidbodyConstraints.FreezeAll;
-			currentEnemyState = EnemyStates.EXECUTABLE;
-			executeTrigger.SetActive(true);
-		}
+			ToExecutionState();
 	}
 
 	protected override void OnDeath()
 	{
 		if (isExecutable)
-		{
-			rb.mass = 100f;
-			rb.velocity = Vector3.zero;
-			agent.enabled = false;
-			gameObject.layer = LayerMask.NameToLayer("EnemyExecute");
-			rb.constraints = RigidbodyConstraints.FreezeAll;
-			currentEnemyState = EnemyStates.EXECUTABLE;
-			executeTrigger.SetActive(true);
-		}
+			ToExecutionState();
 		else
 			base.OnDeath();
 	}
+
+	void ToExecutionState()
+	{
+		suckResistant = true;
+		rb.mass = 1f;
+		rb.velocity = Vector3.zero;
+		rb.useGravity = true;
+		agent.enabled = false;
+		rb.isKinematic = false;
+		gameObject.layer = LayerMask.NameToLayer("EnemyExecute");
+		rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+		currentEnemyState = EnemyStates.EXECUTABLE;
+		executeTrigger.SetActive(true);
+	}
+
+	IEnumerator ForceGibTimer()
+	{
+		yield return new WaitForSeconds(timeTillGib);
+		ForceKill();
+	}
+
 	public override void ForceKill()
 	{
 		isExecutable = false;
@@ -351,10 +346,15 @@ public class EnemyAI : EnemyBase
 			yield return new WaitForSeconds(0.01f);
 			GroundCheck();
 		} while (!isGrounded);
+
 		//reset if not in execute stage
 		//Demetri this is a quick n dirty fix might need to move around execute stuff eventually
 		if (currentEnemyState != EnemyStates.EXECUTABLE)
 			currentEnemyState = stunState;
+
+		//rb.isKinematic = true;
+		agent.enabled = true;
+
 		// freeze dammit
 		rb.constraints = RigidbodyConstraints.FreezeAll;
 		rb.velocity = Vector3.zero;

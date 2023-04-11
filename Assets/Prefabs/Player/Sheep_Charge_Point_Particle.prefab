@@ -4883,6 +4883,7 @@ GameObject:
   - component: {fileID: 1751060722446382382}
   - component: {fileID: 1751060722446382381}
   - component: {fileID: 1751060722446382380}
+  - component: {fileID: 5151876648246298751}
   m_Layer: 0
   m_Name: Sheep_Charge_Point_Particle
   m_TagString: Untagged
@@ -9749,6 +9750,25 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &5151876648246298751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751060722446382379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c36973e8c5cc1324182b209ff355f1aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particles:
+  - {fileID: 1751060722446382381}
+  - {fileID: 5207901792204418164}
+  - {fileID: 1751060722757502716}
+  - {fileID: 3129066737950974795}
+  - {fileID: 2848238295208893473}
+  - {fileID: 8117609895358598941}
 --- !u!1 &1751060722757502713
 GameObject:
   m_ObjectHideFlags: 0

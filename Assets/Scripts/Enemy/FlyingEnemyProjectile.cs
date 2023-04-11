@@ -45,13 +45,15 @@ public class FlyingEnemyProjectile : MonoBehaviour
 
         Vector3 flattenedOtherPos = new Vector3(other.transform.position.x, transform.position.y, other.transform.position.z);
         Damageable targetHealth = other.GetComponent<Damageable>();
+		if (targetHealth != null && !other.isTrigger)
+		{
+			//hit target takes damage
+			hitTargets.Add(targetHealth);
+			Debug.Log(other.gameObject.name + "hit by Flying Enemy Projectile Attack");
+			targetHealth.TakeDamage(FlyingEnemyProjectileAttack, (flattenedOtherPos - origPos).normalized);
 
-        //hit target takes damage
-        hitTargets.Add(targetHealth);
-        Debug.Log(other.gameObject.name + "hit by Flying Enemy Projectile Attack");
-        targetHealth.TakeDamage(FlyingEnemyProjectileAttack, (flattenedOtherPos - origPos).normalized);
-        
-        RunAttack(activeAttack);
+			RunAttack(activeAttack);
+		}
 
     }
 

@@ -11,8 +11,10 @@ public class BabaYagasHouseAI : EnemyAI
 
 	[Header("Spawning Enemies")]
 	[SerializeField] bool enemiesSpawned = false;
+    [HideInInspector] public bool spawningEnemies = false;
 	[SerializeField] int numEnemiesSpawned;
 	[SerializeField] Transform enemySpawnPoint;
+    [HideInInspector] GameObject enemySpawnerPlaceholder = null;//this will be filled in when it gets created
 	//include which enemies will spawn 
 
 	[Header("Fire Breath")]
@@ -23,12 +25,28 @@ public class BabaYagasHouseAI : EnemyAI
 	[SerializeField] float rangedAttackDamage;
     [SerializeField] Transform rangedAttackSpawnPoint;
 
+	[Header("Healthbar")]
+	[SerializeField] GameObject ArmorBarCanvas;
+	[SerializeField] Transform ArmorBar;
+	[SerializeField] GameObject HealthBarCanvas;
+	[SerializeField] Transform HealthBar;
+
+    [Header("Stun Objects")]
+	[SerializeField] GameObject armorObject;
+	[SerializeField] GameObject pinwheelObjectLeft;
+	[SerializeField] GameObject pinwheelObjectRight;
+	[SerializeField] ParticleSystem destroyParticles;
+	private bool armorBroken = false;
+
 	[Header("Game End Stuff")]
 	[SerializeField] GameObject endGameObject;
 
 	bool isSuspended = false;
 
 	float bossFallRate = 2000;
+
+	public Vector3 spawnPoint;
+	public float movementRadius = 100f;
  
 
 	// Start is called before the first frame update
@@ -36,15 +54,32 @@ public class BabaYagasHouseAI : EnemyAI
 	{
 		base.Start();
 
+		spawnPoint = transform.position;
 
+		ArmorBarCanvas.SetActive(true);
+
+		float armorBarScale = (Health / MaxHealth);
+		HealthBar.localScale = new Vector3(armorBarScale * -1, 1, 1);
 	}
 
 	private void FixedUpdate()
     {
 		rb.AddForce(Vector3.down * bossFallRate);
+
+		//base the armor on bool so it can be easliy turned on and off
+		if(armorBroken == false)
+        {
+			armorObject.SetActive(true);
+			ArmorBarCanvas.SetActive(true);
+		}
+
+		if(GetAnimator().GetBool("isMoving") == true)
+        {
+			GetAnimator().Play("Baba_Yagas_House_Move");
+		}
+
+		CheckPinwheels();
 	}
-
-
 
 	protected override void OnDeath()
     {
@@ -61,6 +96,7 @@ public class BabaYagasHouseAI : EnemyAI
 		{
 			activeAttack.SpawnObject(StompSpawnPoint.position, StompSpawnPoint.rotation);
 			activeAttack.damage = StompDamage;
+			//StartCoroutine(DelayMovement());
 		}
 
 	}
@@ -83,17 +119,40 @@ public class BabaYagasHouseAI : EnemyAI
 	{
 		if (activeAttack != null)
 		{
-			activeAttack.SpawnObject(enemySpawnPoint.position, enemySpawnPoint.rotation);
+			//activeAttack.SpawnObject(enemySpawnPoint.position, enemySpawnPoint.rotation);
+			GameObject enemySpawner = Instantiate(activeAttack.hitboxPrefab, enemySpawnPoint.position, enemySpawnPoint.rotation);
+			enemySpawner.transform.SetParent(transform);
+			enemySpawner.transform.SetAsLastSibling();
 			enemiesSpawned = true;
+			spawningEnemies = true;//check to make sure it doesnt take damage while in this state
+			enemySpawnerPlaceholder = enemySpawner;
+
+			armorBroken = false;
 		}
 
 	}
+
+	public void NotSpawningEnemies()//this will get called by animation so it can be damaged again
+    {
+		spawningEnemies = false;
+    }
+
+	public void NotAttacking()
+    {
+		//GetAnimator().SetBool("isAttacking", false);
+    }
+
+	public GameObject getEnemySpawner()
+    {
+		return enemySpawnerPlaceholder;
+    }
 	public void BreatheFire()
     {
 		if (activeAttack != null)
 		{
 			activeAttack.SpawnObject(fireBreathSpawnPoint.position, fireBreathSpawnPoint.rotation);
 			activeAttack.damage = fireBreathDamage;
+			//StartCoroutine(DelayMovement());
 		}
 	}
 
@@ -103,17 +162,46 @@ public class BabaYagasHouseAI : EnemyAI
 		{
 			activeAttack.SpawnObject(rangedAttackSpawnPoint.position, rangedAttackSpawnPoint.rotation);
 			activeAttack.damage = rangedAttackDamage;
+			//StartCoroutine(DelayMovement());
 		}
 
 	}
 
+
     public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
     {
-        base.TakeDamage(atk, attackForward, damageAmp, 0.0f);//no knockback
-    }
+		if (armorBroken == true && !spawningEnemies)
+		{
+			base.TakeDamage(atk, attackForward, damageAmp, 0.0f);//no knockback
+			if (Health != MaxHealth || Health >= executionHealthThreshhold)
+			{
+				HealthBarCanvas.SetActive(true);
+				float healthbarScale = (Health / MaxHealth);
+				HealthBar.localScale = new Vector3(healthbarScale * -1, 1, 1);
+			}
+			else
+				HealthBarCanvas.SetActive(false);
+		}
+		if (atk.name == "Ram_Attack_Charge" && armorBroken == false)
+		{
+			ArmorBarCanvas.SetActive(false);
+			HealthBarCanvas.SetActive(true);
+			armorObject.SetActive(false);
+			destroyParticles.Play(true);
+			armorBroken = true;
+			//GetAnimator().Play("BBYGH_Stun 1");
+		}
+
+	}
+
+	public void StopMovement()
+    {
+		GetAgent().SetDestination(transform.position);
+	}
 
 	public override bool SetDestination(Vector3 dest)
     {
+		GetAgent().enabled = true;//dont know why I have to do this, but for some reason, attacking the boss turns off the agent
 		// dont pathfind bad destinations
 		if (dest == null || float.IsNaN(dest.x))
 		{
@@ -129,27 +217,65 @@ public class BabaYagasHouseAI : EnemyAI
 		else
 		{
 			GetAgent().SetDestination(dest);
+			Debug.Log(dest);
+			//GetAnimator().Play("Baba_Yagas_House_Move");
 			if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 5, 1) || GetAgent().isOnOffMeshLink)
 			{
 				transform.position = hit.position;
 			}
 			else
 			{
-				print(gameObject + " tried finding a destination while not on a valid point");
+				Debug.Log(gameObject + " tried finding a destination while not on a valid point");
 				//base.OnDeath();
 				return false;
 			}
 		}
-		
-		//StartCoroutine(PauseMovement());
+
+		//StartCoroutine(DelayMovement());
+		//GetAnimator().Play("Boss_Idle");//return to idle once movement is done
 		return true;
 	}
 	
-	IEnumerator PauseMovement()
+	//IEnumerator DelayMovement()
+ //   {
+	//	yield return new WaitForSeconds(0);
+	//	MoveBoss();
+	//	yield return new WaitForSeconds(0);
+
+	//}
+
+	//public void MoveBoss()
+ //   {
+	//	//for now, a predetermined vector
+	//	Vector3 moveToPos = RandomPointInCircle(spawnPoint, 100f);
+
+	//	SetDestination(moveToPos);
+
+ //   }
+
+	public void CheckPinwheels()//if they are spinning, boss gets stunned
     {
-		isSuspended = true;
-		yield return new WaitForSeconds(5);
-		isSuspended = false;
-    }
-	
+		if (pinwheelObjectLeft.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Pinwheel_Spin"))
+		{
+			GetAnimator().Play("BBYGH_Stun1");
+		}
+
+		if (pinwheelObjectRight.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Pinwheel_Spin"))
+		{
+			GetAnimator().Play("BBYGH_Stun1");
+		}
+	}
+
+	Vector3 RandomPointInCircle(Vector3 center, float radius)
+    {
+		Vector3 randomPosition = UnityEngine.Random.insideUnitCircle * radius;
+		Vector3 destinationPosition = new Vector3(randomPosition.x + center.x, center.y, randomPosition.z + center.z);
+
+		Vector3 result = destinationPosition;
+		//calculate
+		//Debug.Log(result);
+
+		return result;
+
+	}
 }

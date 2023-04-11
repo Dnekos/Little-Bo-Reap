@@ -5,14 +5,13 @@ using UnityEngine.InputSystem;
 
 public class PlayerLaunch : MonoBehaviour
 {
-	[SerializeField] GameObject reticle;
+	[SerializeField] GameEvent ResetAimMode, EndAimMode;
 
 	[Header("Sheep Launch Variables")]
 
 	[SerializeField] Transform launchOrigin;
 	[SerializeField] float minDistanceToLaunch = 10f;
 	[SerializeField] string launchAnimation;
-	[SerializeField] AbilityIcon launchIcon;
 	[SerializeField] float launchCooldown = 1f;
 	int flockIndex;
 	int sheepIndex;
@@ -92,7 +91,8 @@ public class PlayerLaunch : MonoBehaviour
 							Instantiate(flocks.GetSheepFlock(flockType).SheepProjectilePrefab, launchOrigin.position, launchOrigin.rotation)
 							.GetComponent<PlayerSheepProjectile>();
 
-						reticle.GetComponent<ReticleControls>().ResetReticle();
+						// do reticle stuff
+						ResetAimMode.Raise();
 
 						launchSheep.isBlackSheep = flocks.GetActiveSheep(flockType)[i].isBlackSheep;
 						launchSheep.LaunchProjectile();
@@ -109,7 +109,6 @@ public class PlayerLaunch : MonoBehaviour
 
 			//start cooldown
 			canLaunch = false;
-			//launchIcon.CooldownUIEffect(launchCooldown);
 			StartCoroutine(SheepLaunchCooldown());
 		}
 	}

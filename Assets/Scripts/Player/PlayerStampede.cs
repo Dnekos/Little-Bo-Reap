@@ -10,6 +10,14 @@ public class PlayerStampede : MonoBehaviour
 	[SerializeField] GameObject sheepChargePointPrefab;
 	[SerializeField] GameObject sheepChargeConfirmPrefab;
 	[SerializeField] LayerMask chargeTargetLayers;
+	[SerializeField, Tooltip("how steep the point can be placed")] float maxSlope = 30;
+
+	[Header("Charge Point Scaling and Color")]
+	[SerializeField] float minPointScale = 0.5f;
+	[SerializeField] float maxPointScale = 1.5f;
+	[SerializeField] float pointRatio = 0;
+	[SerializeField] Color defaultColor;
+	[SerializeField] Color redColor;
 
 	[Header("Bo Peep")]
 	[SerializeField] string chargeAnimation;
@@ -49,9 +57,47 @@ public class PlayerStampede : MonoBehaviour
 			RaycastHit hit;
 			if (Physics.Raycast(Camera.main.transform.position + chargePointOffset, Camera.main.transform.forward, out hit, Mathf.Infinity, chargeTargetLayers))
 			{
+				// if it hits a wall, try going through it
+				if (Vector3.Angle(hit.normal, Vector3.up) > maxSlope && !Physics.Raycast(Camera.main.transform.position + Camera.main.transform.forward * hit.distance * 1.1f, Camera.main.transform.forward, out hit, Mathf.Infinity, chargeTargetLayers))
+				{   //draw it way the fuck down so it isnt seen
+					sheepChargePoint.transform.position = new Vector3(0f, -1000f, 0f);
+					return;
+				}
+
 				//draw charge point
 				sheepChargePoint.transform.position = hit.point;
 				sheepChargePoint.transform.rotation = GetComponent<PlayerMovement>().playerOrientation.transform.rotation;
+
+				float nearbySheep = 0;
+				//update charge point size based on nearby sheepy!
+				for (int i = 0; i < flocks.GetActiveSheep(SheepTypes.RAM).Count; i++)
+				{
+					if (flocks.GetActiveSheep(SheepTypes.RAM)[i].IsCommandable() &&
+						Vector3.Distance(transform.position, flocks.GetActiveSheep(SheepTypes.RAM)[i].transform.position) <= distanceToUse)
+                    {
+						nearbySheep++;
+                    }
+				}
+
+				if(nearbySheep == 0)
+                {
+					Debug.Log("no sheep?");
+					sheepChargePoint.transform.localScale = new Vector3(minPointScale, minPointScale, minPointScale);
+					sheepChargePoint.GetComponent<SheepChargePointParticle>().ChangeParticleColors(redColor);
+                }
+				else
+                {
+					sheepChargePoint.GetComponent<SheepChargePointParticle>().ChangeParticleColors(defaultColor);
+					pointRatio = nearbySheep / (float)flocks.GetActiveSheep(SheepTypes.RAM).Count;
+
+					float newScale = pointRatio * maxPointScale;
+
+					if (newScale < minPointScale) sheepChargePoint.transform.localScale = new Vector3(minPointScale, minPointScale, minPointScale);
+					else sheepChargePoint.transform.localScale = new Vector3(newScale, newScale, newScale);
+				}
+				
+
+
 			}
 			else
 			{
@@ -68,6 +114,14 @@ public class PlayerStampede : MonoBehaviour
 	{
 		SheepTypes flockType = flocks.currentFlockType;
 		List<PlayerSheepAI> sheep = flocks.GetActiveSheep(flockType);
+
+		// no sheep?
+		if (flocks.GetActiveSheep(flockType).Count <= 0)
+		{
+			WorldState.instance.HUD.SheepErrorAnimation();
+			return;
+		}
+
 
 		if (context.started && canCharge && !attack.isPreparingAttack && !isPreparingCharge
 			&& sheep.Count > 0
@@ -122,9 +176,18 @@ public class PlayerStampede : MonoBehaviour
 			{
 				if (flocks.GetActiveSheep(flockType)[i].IsCommandable() &&
 					Vector3.Distance(transform.position, flocks.GetActiveSheep(flockType)[i].transform.position) <= distanceToUse)
-					flocks.GetActiveSheep(flockType)[i]?.BeginAbility((hit.point - transform.position).normalized);
+				{
+					//flocks.GetActiveSheep(flockType)[i]?.BeginAbility((hit.point - transform.position).normalized);
+					//flocks.GetActiveSheep(flockType)[i]?.BeginAbility(new Vector3(0, Vector3.SignedAngle(Vector3.forward, (hit.point - transform.position), Vector3.forward),0));
+					flocks.GetActiveSheep(flockType)[i]?.BeginAbility(GetComponent<PlayerMovement>().playerOrientation.transform.eulerAngles);
+				}
 			}
-
+			Debug.Log("angle is " + GetComponent<PlayerMovement>().playerOrientation.transform.eulerAngles);
+			
+			if (WorldState.instance.PersistentData.activeRamAbility == ActiveUpgrade.Ability2)
+			{
+				this.GetComponent<BoPeepCharge>().Begin((hit.point - transform.position).normalized);
+			}
 			Instantiate(sheepChargeConfirmPrefab, hit.point, GetComponent<PlayerMovement>().playerOrientation.transform.rotation);
 		}
 

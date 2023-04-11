@@ -29,12 +29,20 @@ namespace XNode.Examples.StateGraph
 				{
 					case BossVariables.NUM_CURRENT_ENEMIES:
                     {
-						Debug.Log(user.transform.parent.childCount);
-						return user.transform.parent.childCount;
+						int numEnemies = user.transform.parent.childCount;
+						GameObject bossSpawner = ((BabaYagasHouseAI)user).getEnemySpawner();
+						if(bossSpawner != null)
+                        {
+							int numEnemiesInSpawner = bossSpawner.transform.GetChild(1).childCount;
+							numEnemies += numEnemiesInSpawner;
+						}
+
+						Debug.Log(numEnemies);
+						return numEnemies;
 					}
 
 					case BossVariables.CURRENT_HEATH:
-						return ((BabaYagasHouseAI)user).GetHeath();//is this the best way to do this?
+						return ((BabaYagasHouseAI)user).GetHeath();//is this the best way to do this? idk maybe
 
 					case BossVariables.MAX_HEALTH:
 						return ((BabaYagasHouseAI)user).GetMaxHeath();

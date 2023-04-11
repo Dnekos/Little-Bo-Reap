@@ -27,7 +27,6 @@ public class SheepVortexBehavior : SheepBehavior
 	{
 
 		Transform player = WorldState.instance.player.transform;
-		Debug.Log("following player");
 
 		if (Vector3.Distance(player.transform.position, ps.transform.position) < vortexRadius + 2)//defendRotateDistance - 2f)
 		{
@@ -68,8 +67,14 @@ public class SheepVortexBehavior : SheepBehavior
 
 	public override void End(PlayerSheepAI ps, GameObject fluffyProjectile)
 	{
-		if (fluffyProjectile == null)
+		// ending early, such as in hammer
+		if (fluffyProjectile == null) 
+		{
+			// reset animation
+			ps.GetAnimator().speed = 1;
+			ps.GetAnimator().SetBool("isDefending", false);
 			return;
+		}
 
 		PlayerSheepProjectile launchSheep = Instantiate(fluffyProjectile, ps.transform.position, ps.transform.rotation).GetComponent<PlayerSheepProjectile>();
 		if (ps.isBlackSheep)
@@ -86,9 +91,13 @@ public class SheepVortexBehavior : SheepBehavior
 		if (other.CompareTag("Pinwheel"))
 		{
 			Pinwheel pinwheel = other.GetComponent<Pinwheel>();
-			if (!pinwheel.isSpinning)
+			if (!pinwheel.isOpened)
 				pinwheel.StartCoroutine(pinwheel.SpinPinwheel());
 		}
+	}
+	public override bool IsRecallable(PlayerSheepAI ps)
+	{
+		return false;
 	}
 }
 

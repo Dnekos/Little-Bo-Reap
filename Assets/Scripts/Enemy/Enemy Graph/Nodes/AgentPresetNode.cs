@@ -17,6 +17,12 @@ namespace XNode.Examples.StateGraph {
 			agent.speed = speed;
 			agent.acceleration = acceleration;
 			agent.stoppingDistance = stoppingDist;
+
+			// make sure agent is NOT moving if we want them to stop
+			agent.isStopped = speed == 0;
+			if (agent.isStopped)
+				agent.velocity = Vector3.zero;
+
 			return true;
 		}
 	}

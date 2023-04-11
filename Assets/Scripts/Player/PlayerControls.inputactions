@@ -305,17 +305,6 @@
                 },
                 {
                     "name": "",
-                    "id": "a717a504-8138-41c0-8854-a8b8d641ab26",
-                    "path": "<Gamepad>/buttonWest",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "RecallSheep",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "ac34c561-c24a-44b3-b75c-97244558153c",
                     "path": "<Keyboard>/2",
                     "interactions": "",
@@ -580,17 +569,6 @@
                 },
                 {
                     "name": "",
-                    "id": "19d10705-39b8-4c4c-9e9e-8e79bc98d0c2",
-                    "path": "<Gamepad>/rightTrigger",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "SheepActiveAbility",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "47a2db1d-6e65-48f0-97e3-fe7aa5be21cb",
                     "path": "<Keyboard>/1",
                     "interactions": "",
@@ -613,8 +591,8 @@
                 },
                 {
                     "name": "",
-                    "id": "d9ed73cd-fa15-4b2e-88a9-d7429af7e2ab",
-                    "path": "<Gamepad>/rightStickPress",
+                    "id": "dca8d299-baa6-4e12-870a-496516f15786",
+                    "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -641,6 +619,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "PauseMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d9ed73cd-fa15-4b2e-88a9-d7429af7e2ab",
+                    "path": "<Gamepad>/rightStickPress",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PetSheep",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "19d10705-39b8-4c4c-9e9e-8e79bc98d0c2",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SheepActiveAbility",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -714,17 +714,6 @@
                 },
                 {
                     "name": "",
-                    "id": "545ba2cb-6eeb-4aa3-bfc9-f7c991a937fd",
-                    "path": "<Gamepad>/select",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "DEBUG_Restart_Scene",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "b9f1fe2e-0a98-4d5a-abd1-e5d964931502",
                     "path": "<Keyboard>/equals",
                     "interactions": "",
@@ -771,6 +760,15 @@
                     "name": "JumpCheckpoint",
                     "type": "Button",
                     "id": "c91e9761-51bb-4a02-b792-3aeeb97af856",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SkipToBoss",
+                    "type": "Button",
+                    "id": "c3d59674-4a77-48c0-90bd-ac3e75b598f7",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -898,6 +896,17 @@
                     "action": "JumpCheckpoint",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "eeea979d-46da-49c5-9724-aca50307edaa",
+                    "path": "<Keyboard>/i",
+                    "interactions": "Hold(duration=1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SkipToBoss",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -990,6 +999,115 @@
                     "processors": "",
                     "groups": "",
                     "action": "AdvanceText",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "RamCharge",
+            "id": "a0a3e0f8-df9d-4eff-af3c-47a37b8fdfc4",
+            "actions": [
+                {
+                    "name": "PauseMenu",
+                    "type": "Button",
+                    "id": "ea74ad52-c969-4048-8f0a-0d381f8ce4e5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "StopCharge",
+                    "type": "Button",
+                    "id": "edf51ad9-0a69-4032-882d-34963427bd32",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "b3bc699f-7630-477d-b522-f3f02cc30ef9",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PauseMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "810d7c74-8517-488b-aae7-801ed4619d84",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PauseMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fb3ef137-1408-4fe2-b03c-d3a9df1a7cbb",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "StopCharge",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0178bb34-0ee0-4de3-8216-92436c8499a3",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "StopCharge",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "PauseMenu",
+            "id": "feb3c9ba-759f-40c3-aaa7-799818468bc9",
+            "actions": [
+                {
+                    "name": "PauseMenu",
+                    "type": "Button",
+                    "id": "e19019e0-1817-4f3f-a348-f80bab023c93",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "ab67deec-a6ba-46fc-a2f2-2fdb80927ad6",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PauseMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "42e538e1-88a9-454c-ba46-066cec74b25e",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PauseMenu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

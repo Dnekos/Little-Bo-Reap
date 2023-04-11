@@ -67,6 +67,13 @@ MonoBehaviour:
   bounceCooldown: 0.2
   bounceAnim: Shroom_Bounce
   bounceParticles: {fileID: 3436477878469188809}
+  bounceSFX:
+    Guid:
+      Data1: -1022740775
+      Data2: 1085228702
+      Data3: 333156276
+      Data4: 606145248
+    Path: event:/Other/MushroomBounce
 --- !u!95 &194261516193918989
 Animator:
   serializedVersion: 4
@@ -9882,6 +9889,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -5754084199372789682, guid: 0462bc8ad90d84142a1a4fdafa818131,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -2414020269725637686, guid: 2efe48746a603ad4297750f8f013aaf4,
+        type: 3}
     - target: {fileID: 919132149155446097, guid: 0462bc8ad90d84142a1a4fdafa818131,
         type: 3}
       propertyPath: m_Name

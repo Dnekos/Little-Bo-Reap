@@ -13,12 +13,16 @@ public class RangedAttack : MonoBehaviour
     [SerializeField]float maxTimeAlive = 2.5f;
     float currentTimeAlive = 0;
 
+    //small cheat
+    public Transform player;
+
     // Start is called before the first frame update
     void Start()
     {
         hitTargets = new List<Damageable>();
 
         origPos = transform.position;
+        player = WorldState.instance.player.transform;
 
         FireProjectile();
     }
@@ -39,7 +43,7 @@ public class RangedAttack : MonoBehaviour
 
         Vector3 flattenedOtherPos = new Vector3(other.transform.position.x, transform.position.y, other.transform.position.z);
         Damageable targetHealth = other.GetComponent<Damageable>();
-        if (targetHealth != null)
+        if (targetHealth != null && !other.isTrigger)
         {
             //hit target takes damage
             hitTargets.Add(targetHealth);
@@ -50,6 +54,7 @@ public class RangedAttack : MonoBehaviour
 
     private void FireProjectile()
     {
-        this.GetComponent<Rigidbody>().AddForce(-this.transform.right * 2000f);
+        Vector3 fireDirection = new Vector3(player.position.x, player.position.y + 10f, player.position.z) - transform.position;
+        this.GetComponent<Rigidbody>().AddForce(fireDirection.normalized * (70f * fireDirection.magnitude));
     }
 }

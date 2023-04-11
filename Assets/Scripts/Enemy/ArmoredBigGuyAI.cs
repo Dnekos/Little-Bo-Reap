@@ -8,6 +8,8 @@ public class ArmoredBigGuyAI : BigGuyAI
     [Header("Armor")]
 	[SerializeField] GameObject ArmorBarCanvas;
 	[SerializeField] Transform[] ArmorBars;
+    [SerializeField] GameObject armorObject;
+    [SerializeField] ParticleSystem destroyParticles;
     private bool armorBroken = false;
 
     protected override void Start()
@@ -26,11 +28,24 @@ public class ArmoredBigGuyAI : BigGuyAI
     {
         if(armorBroken == true)
         {
-            base.TakeDamage(atk, attackForward, damageAmp, knockbackMultiplier);
+            base.TakeDamage(atk, attackForward, damageAmp, 0.0f);//no knockback
+            //REVIEW: I would use >= for the health execution if check
+            if (Health != MaxHealth || Health >= executionHealthThreshhold)
+            {
+                HealthBarCanvas.SetActive(true);
+                float healthbarScale = (Health / MaxHealth);
+                HPBars[0].localScale = new Vector3(healthbarScale, 1, 1);
+                HPBars[1].localScale = new Vector3(healthbarScale * -1, 1, 1);
+            }
+            else
+                HealthBarCanvas.SetActive(false);
         }
-        if(atk.name == "Ram_Attack_Charge" && armorBroken == false)
+        if (atk.name == "Ram_Attack_Charge" && armorBroken == false)
         {
             ArmorBarCanvas.SetActive(false);
+            HealthBarCanvas.SetActive(true);
+            armorObject.SetActive(false);
+            destroyParticles.Play(true);
             armorBroken = true;
         }
     }

@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class PlayerSheepLift : MonoBehaviour
 {
+	[Header("Settings")]
 	[SerializeField] int AllowedSurvivingSheep = 5;
 	[SerializeField] float SheepSpacingMod = 0.5f;
-	[Tooltip("this should be the primary collider on the player"), SerializeField] CapsuleCollider mainCollider;
+	[Tooltip("this should be the primary collider on the player"), SerializeField] 
+	CapsuleCollider mainCollider;
+	[SerializeField,Min(1)] int maxSheep = 15;
 	float sheepHeight;
 
+	[Header("Juice")]
 	[SerializeField] FMODUnity.EventReference placeSound;
+	[SerializeField] FMODUnity.EventReference failSound;
+	[SerializeField] ParticleSystem liftFailParticle;
 
 	[SerializeField] float SheepLerpSpeed = 0.5f;
 
@@ -69,7 +75,12 @@ public class PlayerSheepLift : MonoBehaviour
 		
 		// not enough sheep to make the ladder
 		if (!hitGround || info.distance * SheepSpacingMod > sheepHeight * flocks.GetActiveSheep(SheepTypes.BUILD).Count || info.collider.CompareTag("Sheep") || info.collider.gameObject == platform)
+        {
+			liftFailParticle.Play(true);
+			FMODUnity.RuntimeManager.PlayOneShot(failSound, transform.position);
 			return false;
+		}
+			
 
 
 		shouldCollapseTower = false;
@@ -108,7 +119,7 @@ public class PlayerSheepLift : MonoBehaviour
 	// returns false if you cannot place a sheep
 	bool PlacePoint(Vector3 newPos, bool PlaceAtTop)
 	{
-		if (usedSheep >= flocks.GetActiveSheep(SheepTypes.BUILD).Count)
+		if (usedSheep >= flocks.GetActiveSheep(SheepTypes.BUILD).Count || usedSheep > maxSheep)
 		{
 			player.isLifting = false;
 			return false;
@@ -192,7 +203,10 @@ public class PlayerSheepLift : MonoBehaviour
 			player.CanLift = false;
 			//CollapseTower();
 		}
-		else if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+	}
+	private void OnCollisionEnter(Collision collision)
+	{
+		if (platform != null && collision.gameObject != platform && collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
 			CollapseTower();
 	}
 }

@@ -53,7 +53,7 @@ public class SheepBezier : SheepHolder
 
 		col.sharedMesh = null;
 
-		containedSheep = new List<Transform>();
+		containedSheep = new List<PlayerSheepAI>();
 		mesh = new Mesh();
 		newVertices = new List<Vector3>();
 		newTriangles = new List<int>();
@@ -139,8 +139,13 @@ public class SheepBezier : SheepHolder
 	}
 	IEnumerator AddAllSheep(List<PlayerSheepAI> flock, float delay)
 	{
+		// if no sheep, dont even bother trying
+
 		RemoveAll(false);
 		RemoveAllSheep();
+
+		if (flock.Count <= 0)
+			yield break;
 
 		yield return new WaitForSeconds(delay);
 		
@@ -165,7 +170,7 @@ public class SheepBezier : SheepHolder
 			}
 
 			// add the little guy
-			AddSheep(flock[i].transform);
+			AddSheep(flock[i]);
 
 			// delay if the sheep increment is right (if bars is two it does sheep 2 at a time)
 			if (i % SheepBars == 0 && delay > 0)
@@ -188,7 +193,7 @@ public class SheepBezier : SheepHolder
 #endif
 	}
 
-	void AddSheep(Transform newSheep)
+	void AddSheep(PlayerSheepAI newSheep)
 	{
 		float RandomCount = 0;
 
@@ -230,7 +235,7 @@ public class SheepBezier : SheepHolder
 				// set state of AI
 				newSheep.GetComponent<PlayerSheepAI>()?.DoConstruct(sheepPlacement);
 
-				StartCoroutine(LerpSheep(newSheep, sheepPlacement));
+				StartCoroutine(LerpSheep(newSheep.transform, sheepPlacement));
 
 				return;
 			}
@@ -376,8 +381,10 @@ public class SheepBezier : SheepHolder
 	void SetMesh()
 	{
 		mesh.Clear();
-		mesh.vertices = newVertices.ToArray();
-		mesh.triangles = newTriangles.ToArray();
+		if (newVertices.Count > 0)
+			mesh.vertices = newVertices.ToArray();
+		if (newTriangles.Count > 0)
+			mesh.triangles = newTriangles.ToArray();
 		mesh.Optimize();
 		mesh.RecalculateBounds();
 

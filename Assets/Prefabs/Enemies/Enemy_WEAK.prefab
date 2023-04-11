@@ -288,9 +288,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4de3925a6fab897459dbb71af2ab3b07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Health: 35
-  MaxHealth: 35
-  gibs: {fileID: 1095515628264178047, guid: 8b735b699a109b044ad08a09a3c97878, type: 3}
+  Health: 30
+  MaxHealth: 30
+  gibs: {fileID: 8039274497699848023, guid: c149dc1e77ba2b3409f557bd827b3191, type: 3}
   damageNumber: {fileID: 758784450076825086, guid: 917e1ac09e21f3f499d8aa30f802b69e,
     type: 3}
   damageNumberGoth: {fileID: 758784450076825086, guid: 0a7b484cc73c2c047b45b91fd1f75b6d,
@@ -311,7 +311,7 @@ MonoBehaviour:
       Data4: 2067519149
     Path: event:/Little Guy/Death
   soulValue: 0
-  healthValue: 3
+  healthValue: 5
   soulSpeed: 4
   soulSpawnHeight: 4
   soulCollectables:
@@ -321,10 +321,10 @@ MonoBehaviour:
   - {fileID: 4645614311413259885, guid: 2ea8437ad6787b049b56c5883a68aae6, type: 3}
   - {fileID: 4645614311413259885, guid: 484308373c7ce7249b0a2955d5de5e32, type: 3}
   - {fileID: 6060198684946403098, guid: 4b17e9d88b42899429f3f7846d72d21d, type: 3}
-  graph: {fileID: 11400000, guid: 118cb8cae2d2c3446bad753040c4c172, type: 2}
   SpawnParticlePrefab: {fileID: 2684900647289607401, guid: b47d97f3181406b40a873ad78d950bd9,
     type: 3}
   SpawnWaitTime: 0
+  graph: {fileID: 11400000, guid: 118cb8cae2d2c3446bad753040c4c172, type: 2}
   currentEnemyState: 3
   StunTime: 0.3
   playerLayer:
@@ -334,12 +334,15 @@ MonoBehaviour:
   delayBetweenAttacks: 1
   StickCollider: {fileID: 5292186470773176089}
   anim: {fileID: 4268591538955714863}
+  distracted: 0
+  bellLoc: {x: 0, y: 0, z: 0}
   isExecutable: 0
   mustBeExecuted: 0
   executionHealthThreshhold: 0
   executeTrigger: {fileID: 0}
   executePlayerPos: {fileID: 0}
   execution: {fileID: 0}
+  timeTillGib: 10
   groundLayer:
     serializedVersion: 2
     m_Bits: 64

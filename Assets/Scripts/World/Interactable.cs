@@ -9,16 +9,17 @@ public abstract class Interactable : MonoBehaviour
     public bool onlyInteractableOnce;
 
 	[Header("Input Canvas"), SerializeField]
-	protected Transform inputIcon;
+	protected Canvas inputIcon;
 	protected Transform maincam;
 
 	virtual protected void Start()
 	{
 		if (inputIcon != null)
 		{
-			inputIcon.gameObject.SetActive(false);
+			inputIcon.enabled = false;
 			maincam = Camera.main.transform;
-		}
+            //Debug.Log("Disabled This " + inputIcon.name);
+        }
 	}
 
 	public virtual void Interact()
@@ -29,22 +30,32 @@ public abstract class Interactable : MonoBehaviour
 			canInteract = false;
     }
 
+	/// <summary>
+	/// A second Interact function, to be used for things that dont need player feedback, like playing single use interactions when loading
+	/// </summary>
+	public virtual void InteractBackend()
+	{
+		if (onlyInteractableOnce)
+			canInteract = false;
+	}
+
+
 	virtual protected void Update()
 	{
 		if (inputIcon != null)
-			inputIcon.rotation = maincam.rotation;
+			inputIcon.transform.rotation = maincam.rotation;
 	}
 
 	virtual protected void OnTriggerEnter(Collider other)
 	{
 		// if entered on the forced
-		if (other.gameObject == WorldState.instance.player && inputIcon != null)
-			inputIcon.gameObject.SetActive(true);
+		if (other.gameObject == WorldState.instance.player && inputIcon != null && canInteract)
+			inputIcon.enabled = true;
 
 	}
 	virtual protected void OnTriggerExit(Collider other)
 	{
-		if (other.gameObject == WorldState.instance.player && inputIcon != null)
-			inputIcon.gameObject.SetActive(false);
+		if (other.gameObject == WorldState.instance.player && inputIcon != null && canInteract)
+			inputIcon.enabled = false;
 	}
 }

@@ -8,6 +8,8 @@ public class QuitButton : MonoBehaviour
     [SerializeField] GameObject quitConfirmMenu;
     public void QuitGame()
     {
+		if (WorldState.instance != null)
+			WorldState.instance.SaveGame();
         Application.Quit();
     }
 

@@ -30,6 +30,10 @@ public class DialogBox : MonoBehaviour
 
 	[Header("Looking"), SerializeField]
 	CameraOffsetAdjuster player;
+	[SerializeField] GameEvent EndAimMode;
+
+	[Header("Text"),SerializeField]
+	ControlSpriteEvent SpriteChangeEvent;
 
 	[Header("Components")]
 	[SerializeField]
@@ -38,7 +42,8 @@ public class DialogBox : MonoBehaviour
 	TextMeshProUGUI TextBody;
 	[SerializeField]
 	PlayerInput inputs;
-
+	[SerializeField]
+	GameEvent RespawnEvent;
 
 	private void Awake()
 	{
@@ -53,11 +58,15 @@ public class DialogBox : MonoBehaviour
 		cinematicCamera.enabled = false;
 
 		inputs ??= WorldState.instance.player.GetComponent<PlayerInput>();
+
+		// register listener for if player skips/dies in dialog
+		RespawnEvent.Add(CloseUI);
+		SpriteChangeEvent.Add(ChangeSprite);
 	}
 
 	/// <summary>
-	/// apply defaults to most local variables, turn on AdvancingText
-	/// </summary>
+		/// apply defaults to most local variables, turn on AdvancingText
+		/// </summary>
 	void ResetText()
 	{
 		textIndex = 0;
@@ -66,6 +75,7 @@ public class DialogBox : MonoBehaviour
 		TextBody.text = "";
 	}
 
+	#region starting and stopping
 	/// <summary>
 	/// Turns on the UI gameobjects
 	/// </summary>
@@ -73,6 +83,10 @@ public class DialogBox : MonoBehaviour
 	{
 		// disable HUD
 		WorldState.instance.HUD.ToggleHud(false);
+
+		// stop player
+		WorldState.instance.player.GetComponent<PlayerMovement>().HaltPlayer();
+		EndAimMode.Raise();
 
 		// set up speaker vars
 		currentspeaker = active_conversation;
@@ -95,6 +109,36 @@ public class DialogBox : MonoBehaviour
 		//ResetText();
 	}
 
+	/// <summary>
+	/// close the conversation visuals
+	/// </summary>
+	public void CloseUI()
+	{
+
+		// turn off dialog
+		TextBody.text = "";
+		DialoguePanel.SetActive(false);
+
+		// switch cameras
+		gameCamera.enabled = true;
+		cinematicCamera.enabled = false;
+
+		// enable HUD and world
+		WorldState.instance.HUD.ToggleHud(true);
+		if (WorldState.instance.gameState == WorldState.State.Dialog) // if statement needed in case it conflicts with respawn
+			WorldState.instance.gameState = WorldState.State.Play;
+
+		// sometimes its not??
+		if (inputs.isActiveAndEnabled)
+			inputs.SwitchCurrentActionMap("PlayerMovement");
+
+		// player look
+		if (player != null)
+			player.StopLooking();
+
+	}
+	#endregion
+
 	public void OnAdvanceDialog(InputAction.CallbackContext context)
 	{
 		if (context.performed)
@@ -103,7 +147,8 @@ public class DialogBox : MonoBehaviour
 
 	public void ReadNextLine()
 	{
-		if (WorldState.instance.gameState != WorldState.State.Dialog || IsCountingText()) // dont continue if not looking at dialogue or its still counting
+		// dont continue if not looking at dialogue or its still counting
+		if (WorldState.instance.gameState != WorldState.State.Dialog || IsCountingText() || currentspeaker == null) 
 			return;
 		else if (lineIndex < activeCon.script.Length)
 		{
@@ -153,34 +198,7 @@ public class DialogBox : MonoBehaviour
 	}
 
 
-	/// <summary>
-	/// close the conversation visuals
-	/// </summary>
-	public void CloseUI()
-	{
-
-		// turn off dialog
-		TextBody.text = "";
-		DialoguePanel.SetActive(false);
-
-		// switch cameras
-		gameCamera.enabled = true;
-		cinematicCamera.enabled = false;
-
-
-		// enable HUD and world
-		WorldState.instance.HUD.ToggleHud(true);
-		WorldState.instance.gameState = WorldState.State.Play;
-		inputs.SwitchCurrentActionMap("PlayerMovement");
-
-		// player look
-		if (player != null)
-			player.LookTarget = null;
-
-
-		// reset back to last state
-		WorldState.instance.gameState = WorldState.State.Play; // switch to whatever state it was before dialogue started
-	}
+	
 
 	/// <summary>
 	/// If still counting out text, fill in the rest of the line and return true.
@@ -191,7 +209,8 @@ public class DialogBox : MonoBehaviour
 		if (AdvancingText) // if still showing dialogue, fully complete dialogue but do not advance
 		{
 			AdvancingText = false;
-			TextBody.text = Line;
+			while (textIndex != Line.Length)
+				IncrementCurrentLine();
 			return true;
 		}
 		return false;
@@ -204,20 +223,17 @@ public class DialogBox : MonoBehaviour
 		switch (WorldState.instance.gameState)
 		{
 			case WorldState.State.Dialog:
+				if (currentspeaker == null)
+					return;
+
 				textTimer += textSpeed * Time.deltaTime; // increment time
 				currentspeaker.SetTalking(AdvancingText);
 
 				if (AdvancingText && textTimer > 1) // incrementing text
 				{
-					TextBody.text += Line[textIndex]; // add next letter and increment
 
-					// make sure we do any TMPro tags in one go
-					if (Line[textIndex] == '<')
-						do
-						{
-							TextBody.text += Line[++textIndex];
-						} while (Line[textIndex] != '>' && textIndex < Line.Length);
-					textIndex++;
+					IncrementCurrentLine();
+
 					//SoundManager.PlaySound(Sound.TextScroll); // sound effect
 
 					textTimer = 0; // reset timer
@@ -233,5 +249,26 @@ public class DialogBox : MonoBehaviour
 		}
 	}
 
+	void IncrementCurrentLine()
+	{
+		// make sure we do any TMPro tags in one go
+		if (Line[textIndex] == '<')
+		{
+			string temp = "";
+			do
+			{
+				temp += Line[textIndex++];
+			} while (Line[textIndex - 1] != '>' && textIndex < Line.Length);
+
+			TextBody.text += PlayerControlSwitcher.getTextFromAction(temp);
+		}
+		else
+			TextBody.text += Line[textIndex++]; // add next letter and increment
+	}
+
+	void ChangeSprite(TMP_SpriteAsset newAsset)
+	{
+		TextBody.spriteAsset = newAsset;
+	}
 
 }

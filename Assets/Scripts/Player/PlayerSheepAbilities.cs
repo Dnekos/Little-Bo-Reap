@@ -55,6 +55,8 @@ public class PlayerSheepAbilities : MonoBehaviour
 	[Header("Sheep Swap Variables")]
 	[SerializeField] List<ParticleSystem> bellParticles;
 	[SerializeField] ParticleSystem bellParticleBurst;
+    [SerializeField] ReticleControls reticleControls;
+	[SerializeField] List<ParticleSystem> failSummonParticles;
 
 	Vector2 WheelOpenMousePos;
 	bool isInFlockMenu = false;
@@ -85,7 +87,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 		// needed to prevent gamepad from opening debuggers, comment out if you want the SRP debug window
 		UnityEngine.Rendering.DebugManager.instance.enableRuntimeUI = false;
 
-		respawnEvent.listener.AddListener(DeleteAllSheep);
+		respawnEvent.Add(DeleteAllSheep);
 
 		summonResource = GetComponent<PlayerSummoningResource>();
 		animator = GetComponent<PlayerAnimationController>().playerAnimator;
@@ -93,8 +95,26 @@ public class PlayerSheepAbilities : MonoBehaviour
 		gothMode = GetComponent<PlayerGothMode>();
 		spawnParticles = new List<GameObject>();
 
-		Invoke("UpdateFlockUI", Time.deltaTime); // slow but prevents this being called before HUD is set up
+		StartCoroutine(Initialize()); // slow but prevents this being called before HUD is set up
 	}
+
+	/// <summary>
+	/// needed for set up that may have blockers (other things in start)
+	/// </summary>
+	private IEnumerator Initialize()
+	{
+		yield return new WaitForEndOfFrame();
+		// get flock totals from save data
+		SaveData sd = WorldState.instance.PersistentData;
+		if (sd.currentCheckpoint > -1) // only set sheep if we are past the first checkpoint, so as to not overwrite starting sheep
+		{
+			sheepFlocks[0].MaxSize = sd.totalBuilder;
+			sheepFlocks[1].MaxSize = sd.totalRam;
+			sheepFlocks[2].MaxSize = sd.totalFluffy;
+		}
+		UpdateFlockUI();
+	}
+
 	private void Update()
 	{
 		// set leader
@@ -108,6 +128,11 @@ public class PlayerSheepAbilities : MonoBehaviour
 	{
 		playerCam.ShakeCamera(true);
 	}
+	public int GetTotalSheepCount()
+	{
+		return sheepFlocks[0].activeSheep.Count + sheepFlocks[1].activeSheep.Count + sheepFlocks[2].activeSheep.Count;
+	}
+
 	#endregion
 
 	#region Sheep Flock Functions
@@ -320,6 +345,8 @@ public class PlayerSheepAbilities : MonoBehaviour
 		hud.UpdateActiveFlockUI(currentFlockIndex,
 			sheepFlocks[currentFlockIndex].activeSheep.Count + "/" + sheepFlocks[currentFlockIndex].MaxSize,
 			sheepFlocks[currentFlockIndex].UIColor);
+
+		reticleControls.SetReticule(currentFlockType);
 	}
 
 	bool CheckIfCloseToLeader(SheepTypes theSheepType)
@@ -361,7 +388,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 			animator.Play(racallAnimation);
 
 			// stop constructs
-			endConstructsEvent.listener.Invoke();
+			endConstructsEvent.Raise();
 
 			//TEMP SOUND
 			FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound, gameObject);
@@ -435,7 +462,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 			sheepFlocks[(int)flockType].spellParticle.Play(true);
 
 			// stop constructs
-			endConstructsEvent.listener.Invoke();
+			endConstructsEvent.Raise();
 
 			for (int i = spawnParticles.Count - 1; i >= 0; i--)
 			{
@@ -477,6 +504,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 
 			//TEMP SOUND
 			FMODUnity.RuntimeManager.PlayOneShotAttached(summonSound, gameObject);
+			//Debug.Log("summon sound play");
 
 			//in case we summon all at once
 			#region old stuff
@@ -512,7 +540,10 @@ public class PlayerSheepAbilities : MonoBehaviour
             summonIcon.CooldownUIEffect(summonCooldown);
 			*/
 		}
-
+		else if(context.started && canSummonSheep && sheepFlocks[currentFlockIndex].MaxSize > 0 && summonResource.GetCurrentBlood() <= summonBloodCost)
+        {
+			failSummonParticles[(int)currentFlockType].Play(true);
+        }
 
 
 		//KEEP THIS IN CASE WE GO BACK LATER

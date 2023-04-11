@@ -9,8 +9,11 @@ public class PlayerBuildWall : MonoBehaviour
 	[SerializeField] Vector3 raycastOffset;
 	[SerializeField] Vector3 prefabSpawnOffset;
 	[SerializeField] GameObject wallPrefab;
+	[SerializeField] GameObject bellPrefab;
 	[SerializeField] GameObject confirmPrefab;
 	[SerializeField] LayerMask targetLayers;
+	[SerializeField, Tooltip("likely depricated, rotates raycast around x axix")] float xAngleOffset = 0;
+	[SerializeField, Tooltip("how steep the wall can be built")] float maxSlope = 30;
 
 	[Header("Bo Peep")]
 	[SerializeField] string confirmAnimation;
@@ -47,7 +50,8 @@ public class PlayerBuildWall : MonoBehaviour
 		{
 			//draw ray from camera forward to point
 			RaycastHit hit;
-			if (Physics.Raycast(Camera.main.transform.position + prefabSpawnOffset, Camera.main.transform.forward, out hit, Mathf.Infinity, targetLayers))
+			if (Physics.Raycast(Camera.main.transform.position + raycastOffset, Quaternion.AngleAxis(xAngleOffset,Camera.main.transform.right)  * Camera.main.transform.forward , out hit, Mathf.Infinity, targetLayers) 
+				&& Vector3.Angle(hit.normal,Vector3.up) < maxSlope)
 			{
 				//draw charge point
 				sheepChargePoint.transform.position = hit.point + prefabSpawnOffset;
@@ -70,6 +74,14 @@ public class PlayerBuildWall : MonoBehaviour
 		SheepTypes flockType = flocks.currentFlockType;
 		List<PlayerSheepAI> sheep = flocks.GetActiveSheep(flockType);
 
+		// no sheep?
+		if (flocks.GetActiveSheep(flockType).Count <= 0)
+		{
+			WorldState.instance.HUD.SheepErrorAnimation();
+			return;
+		}
+
+
 		if (context.started && canCharge && !attack.isPreparingAttack && !isPreparing
 			&& sheep.Count > 0
 			&& !(sheep[0].ability is SheepStampedeBehavior || sheep[0].ability is SheepVortexBehavior))
@@ -80,8 +92,18 @@ public class PlayerBuildWall : MonoBehaviour
 				Debug.Log("whoops");
 				Destroy(sheepChargePoint);
 			}
+			GameObject constructPrefab;
 			// spawn wall
-			var chargePoint = Instantiate(wallPrefab, transform.position, Quaternion.identity) as GameObject;
+			if(WorldState.instance.PersistentData.activeBuilderAbility == ActiveUpgrade.Ability2)
+			{
+				constructPrefab = bellPrefab;
+			}
+			else
+			{
+				constructPrefab = wallPrefab;
+			}
+
+			var chargePoint = Instantiate(constructPrefab, transform.position, Quaternion.identity) as GameObject;
 			sheepChargePoint = chargePoint;
 
 			//prepare to charge
@@ -100,7 +122,9 @@ public class PlayerBuildWall : MonoBehaviour
 			if (sheepChargePoint.transform.position == new Vector3(0f, -1000f, 0f))
 			{
 				Destroy(sheepChargePoint);
-				StartCooldown();
+				isPreparing = false;
+
+				//StartCooldown(); // seems too much to do cooldown on a bad input
 			}
 			else
 				DoWall();

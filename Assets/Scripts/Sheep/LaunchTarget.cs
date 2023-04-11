@@ -2,17 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LaunchTarget : MonoBehaviour
+public class LaunchTarget : PuzzleKey
 {
     [SerializeField] string hitAnimation;
-    public bool targetHit = false;
-    public void DoThing()
+    public void OpenKey()
     {
-        if (!targetHit)
+        if (!isOpened)
         {
             GetComponent<Animator>().Play(hitAnimation);
-            targetHit = true;
-            Debug.Log("launch target did a thing!");
+			isOpened = true;
+            Debug.Log(gameObject.name+ " was hit!");
         }
     }
 }

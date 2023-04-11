@@ -25,6 +25,7 @@ public class PlayerVortex : MonoBehaviour
 	[Header("Blackhole Variables")]
 	[SerializeField] bool blackHole;
 	[SerializeField] GameObject blackHoleObj;
+	[SerializeField] GameObject vfxObject;
 	// components
 	PlayerSheepAbilities flocks;
 	Animator animator;
@@ -76,9 +77,9 @@ public class PlayerVortex : MonoBehaviour
 	void EndSheepDefend()
 	{
 		//if (blackHole)
-		if(WorldState.instance.passiveValues.activeFluffyAbility == "Ability 1")
+		if(WorldState.instance.PersistentData.activeFluffyAbility == ActiveUpgrade.Ability2)
 		{
-			blackHoleObj.GetComponent<SuckEnemies>().stopSucking();
+			blackHoleObj.GetComponent<SuckEnemies>().BlackHoleChuckALL();
 		}
 
 		if (!isDefending)
@@ -117,6 +118,8 @@ public class PlayerVortex : MonoBehaviour
 			defendPoints[i].gameObject.SetActive(false);
 		}
 
+		if (blackHole) vfxObject.SetActive(false);
+
 		//start cooldown
 		canDefend = false;
 		defendIcon.CooldownUIEffect(defendCooldown);
@@ -126,7 +129,15 @@ public class PlayerVortex : MonoBehaviour
 	{
 		//switching to be only useable by fluffy sheep, keep same architecture in case we change our minds (we probably won't)
 		SheepTypes flockType = flocks.currentFlockType;
+
 		
+		// no sheep?
+		if (context.started && flocks.GetActiveSheep(flockType).Count <= 0)
+		{
+			WorldState.instance.HUD.SheepErrorAnimation();
+			return;
+		}
+
 		// command sheep and check if we have the right sheep ability
 		List<PlayerSheepAI> sheep = flocks.GetActiveSheep(flockType);
 
@@ -145,7 +156,7 @@ public class PlayerVortex : MonoBehaviour
 				isDefending = true;
 
 				//if (blackHole)
-				if (WorldState.instance.passiveValues.activeFluffyAbility == "Ability 1")
+				if (WorldState.instance.PersistentData.activeFluffyAbility == ActiveUpgrade.Ability2)
 				{
 					blackHoleObj.SetActive(true);
 				}
@@ -166,6 +177,8 @@ public class PlayerVortex : MonoBehaviour
 					defendPoints[i].gameObject.SetActive(true);
 				}
 
+				if (blackHole) vfxObject.SetActive(true);
+
 				//start timer
 				currentDefendTime = 0;
 			}
@@ -175,6 +188,8 @@ public class PlayerVortex : MonoBehaviour
 			}
 
 		}
+
+	
 	}
 
 	IEnumerator DefendCooldown()

@@ -25,6 +25,8 @@ public class SheepStampedeBehavior : SheepBehavior
 		//set destination
 		//get random point inside radius
 		Vector3 chargePosition = ps.transform.position + ps.transform.forward * destinationDist;
+		if (ps.leaderSheep == ps)
+			Debug.Log(ps.transform.eulerAngles);
 
 		//if inside navmesh, charge!
 		if (NavMesh.SamplePosition(chargePosition, out NavMeshHit hit, chargePointRadius, 1))
@@ -57,7 +59,9 @@ public class SheepStampedeBehavior : SheepBehavior
 
 		//set destination
 		//targettedPos.y = ps.transform.position.y;
-		ps.transform.LookAt(targettedPos + ps.transform.position);
+		//ps.transform.LookAt((targettedPos + ps.transform.position) * 3);
+		ps.transform.eulerAngles = targettedPos;
+		Debug.Log("starting angle: " + ps.gameObject.name + ps.transform.eulerAngles);
 		AbilityUpdate(ps);
 
 		//set charge speed
@@ -110,5 +114,9 @@ public class SheepStampedeBehavior : SheepBehavior
 		ps.SetSheepState(SheepStates.WANDER);
 		ps.chargeParticles.SetActive(false);
 		ps.agent.obstacleAvoidanceType = ObstacleAvoidanceType.MedQualityObstacleAvoidance;
+	}
+	public override bool IsRecallable(PlayerSheepAI ps)
+	{
+		return false;
 	}
 }

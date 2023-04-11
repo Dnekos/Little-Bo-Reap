@@ -2,26 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Pinwheel : MonoBehaviour
+public class Pinwheel : PuzzleKey
 {
     [SerializeField] ParticleSystem tempParticles;
     [SerializeField] float spinTime = 5f;
     [SerializeField] string idleAnim;
     [SerializeField] string spinAnim;
-    public bool isSpinning;
 
     public IEnumerator SpinPinwheel()
     {
-        if (!isSpinning)
+        if (!isOpened)
         {
-            isSpinning = true;
+			isOpened = true;
             tempParticles.Play(true);
             GetComponent<Animator>().Play(spinAnim);
             yield return new WaitForSeconds(spinTime);
             tempParticles.Stop(true);
-            isSpinning = false;
+			isOpened = false;
             GetComponent<Animator>().Play(idleAnim);
         }
         else yield return null;
+    }
+
+    public bool GetOpened()
+    {
+        return isOpened;
     }
 }

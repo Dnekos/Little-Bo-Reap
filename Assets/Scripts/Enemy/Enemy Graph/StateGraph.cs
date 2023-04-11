@@ -16,13 +16,15 @@ namespace XNode.Examples.StateGraph {
 		public void AnalyzeGraph(EnemyAI caller)
 		{
 			currentUser = caller;
-
-			FindLeftmostNode().Evaluate();
+			
+			FindLeftmostNode()?.Evaluate();
 		}
 
 		// TODO: make this only run once on compile
 		StateNode FindLeftmostNode()
 		{
+			if (nodes.Count <= 0)
+				Debug.LogError("Stategraph " + this.name + " has no nodes!");
 			Node currentleftmost = nodes[0];
 			for (int i = 0; i < nodes.Count; i++)
 			{

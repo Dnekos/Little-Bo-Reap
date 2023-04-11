@@ -7,7 +7,6 @@ public class PlayerPauseMenu : MonoBehaviour
 {
     [SerializeField] GameObject pauseMenu;
     [SerializeField] GameObject controlMenu;
-    [SerializeField] FMODUnity.EventReference pauseSFX;
     public PlayerInput inputs;
     bool isPaused = false;
 
@@ -17,7 +16,6 @@ public class PlayerPauseMenu : MonoBehaviour
     {
         if(context.started)
         {
-            FMODUnity.RuntimeManager.PlayOneShot(pauseSFX, transform.position);
             PauseGame();
         }
     }
@@ -27,14 +25,12 @@ public class PlayerPauseMenu : MonoBehaviour
         Debug.Log("pause");
         isPaused = !isPaused;
 
-		FMOD.Studio.Bus sfxBus = FMODUnity.RuntimeManager.GetBus("bus:/SFX/Gameplay");
-        FMOD.Studio.Bus musicBus = FMODUnity.RuntimeManager.GetBus("bus:/Music");
+		FMOD.Studio.Bus myBus = FMODUnity.RuntimeManager.GetBus("bus:/SFX/Gameplay");
 
 		if (isPaused)
         {
-			sfxBus.setPaused(true);
-            musicBus.setPaused(true);
-			inputs.currentActionMap.Disable();
+			myBus.setPaused(true);
+			inputs.SwitchCurrentActionMap("PauseMenu");
             pauseMenu.SetActive(true);
             Time.timeScale = 0f;
             Cursor.visible = true;
@@ -42,11 +38,10 @@ public class PlayerPauseMenu : MonoBehaviour
         }
         else
         {
-			sfxBus.setPaused(false);
-            musicBus.setPaused(false);
+			myBus.setPaused(false);
 
-			inputs.currentActionMap.Enable();
-            controlMenu.SetActive(false);
+			inputs.SwitchCurrentActionMap("PlayerMovement");
+			controlMenu.SetActive(false);
             pauseMenu.SetActive(false);
             Time.timeScale = 1f;
             Cursor.visible = false;

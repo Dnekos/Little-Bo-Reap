@@ -40,9 +40,14 @@ public class HUDManager : MonoBehaviour
 	[Header("Progression")]
 	[SerializeField] GameObject ProgressionMenu;
 	[SerializeField] GameObject ProgressionFirstSelected;
-	[SerializeField] FMODUnity.EventReference progressionOpen;
-	[SerializeField] FMODUnity.EventReference progressionClose;
 	public event Action<GameObject> activePanelChange;
+	[SerializeField] ProgressionParent[] upgradeTrees;
+	[SerializeField] TextMeshProUGUI SoulNumber;
+    [SerializeField] Animator SoulUIAnimator;
+    [SerializeField] string soulCollectAnimation;
+
+    [Header("Death")]
+	[SerializeField] GameObject deathUI;
 
 
 	public void ToggleHud()
@@ -53,9 +58,25 @@ public class HUDManager : MonoBehaviour
 	{
 		HUD.SetActive(value);
 	}
+
+	public void OpenDeathMenu()
+	{
+		HUD.SetActive(false);
+		deathUI.SetActive(true);
+	}
+	public void CloseDeathMenu()
+	{
+		HUD.SetActive(true);
+		deathUI.SetActive(false);
+	}
+
 	public void ToggleProgressionMenu(bool value)
 	{
 		ProgressionMenu.SetActive(value);
+
+		// pause sounds
+		FMODUnity.RuntimeManager.GetBus("bus:/SFX/Gameplay").setPaused(value);
+
 		if (value)
 		{
 			// set active button
@@ -70,8 +91,6 @@ public class HUDManager : MonoBehaviour
 			WorldState.instance.gameState = WorldState.State.Dialog;
 			inputs.SwitchCurrentActionMap("Dialog");
 			Time.timeScale = 0;
-			FMODUnity.RuntimeManager.PlayOneShot(progressionOpen);
-
 		}
 		else
 		{
@@ -85,14 +104,22 @@ public class HUDManager : MonoBehaviour
 			ToggleHud(true);
 			WorldState.instance.gameState = WorldState.State.Play;
 			inputs.SwitchCurrentActionMap("PlayerMovement");
-			FMODUnity.RuntimeManager.PlayOneShot(progressionClose);
 		}
 	}
 	private void Start()
 	{
 		WorldState.instance.HUD = this;
+		StartCoroutine(Initialize());
 	}
-
+	/// <summary>
+	/// needed for set up that may have blockers (other things in start)
+	/// </summary>
+	private IEnumerator Initialize()
+	{
+		yield return new WaitForEndOfFrame();
+		for (int i = 0; i < upgradeTrees.Length; i++)
+			upgradeTrees[i].CheckLoadedUpgrades();
+	}
 	public void UpdateActiveFlockUI(int currentFlock, string number, Color uiColor)
 	{
 		SetSheepPositions(currentFlock);
@@ -102,7 +129,14 @@ public class HUDManager : MonoBehaviour
 		flockNumber.color = uiColor;
 	}
 
-	private void SetSheepPositions(int currentFlock)
+    public void UpdateSoulCount()
+    {
+		string currentSouls = WorldState.instance.PersistentData.soulsCount.ToString();
+        SoulNumber.text = currentSouls + " Souls";
+		SoulCollectAnimation();
+    }
+
+    private void SetSheepPositions(int currentFlock)
 	{
 		for(int i = 0; i < sheepIcons.Length; i++)
 		{
@@ -187,4 +221,10 @@ public class HUDManager : MonoBehaviour
 		if (SwapUIAnimator.gameObject.activeSelf)
 			SwapUIAnimator.Play(noSheepAnimUI);
 	}
+    public void SoulCollectAnimation()
+    {
+        if (SoulUIAnimator.gameObject.activeSelf)
+            SoulUIAnimator.Play(soulCollectAnimation);
+    }
 }
+	

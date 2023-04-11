@@ -5,13 +5,14 @@ using UnityEngine;
 public class FlowerProjectile : MonoBehaviour
 {
     [SerializeField] Attack FlowerProjectileAttack;
-
+	[SerializeField] float projectileInitialForce = 2000f;
+	[SerializeField] ForceMode launchType = ForceMode.Force;
+	[SerializeField] ParticleSystem explosion;
     List<Damageable> hitTargets;
 
     Vector3 origPos;
 
     [SerializeField] float maxTimeAlive = 2.5f;
-    float currentTimeAlive = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -21,22 +22,15 @@ public class FlowerProjectile : MonoBehaviour
         origPos = transform.position;
 
         FireProjectile();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        currentTimeAlive += Time.deltaTime;
-
-        if (currentTimeAlive >= maxTimeAlive)
-            Destroy(gameObject);
+		Destroy(gameObject, maxTimeAlive);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        //if not damageable
-        //    return;
+		if (other.isTrigger)
+			return;
 
+		// im sorry what is this
         Vector3 flattenedOtherPos = new Vector3(other.transform.position.x, transform.position.y, other.transform.position.z);
         Damageable targetHealth = other.GetComponent<Damageable>();
 		if (targetHealth != null)
@@ -46,12 +40,20 @@ public class FlowerProjectile : MonoBehaviour
 			Debug.Log(other.gameObject.name + "hit by Flower Projectile Attack");
 			targetHealth.TakeDamage(FlowerProjectileAttack, (flattenedOtherPos - origPos).normalized);
 		}
-    }
+
+		// kill yourself
+		Destroy(gameObject);
+	}
+	private void OnDestroy()
+	{
+		explosion.transform.parent = null;
+		explosion.Play();
+	}
 
 
-    private void FireProjectile()
+	private void FireProjectile()
     {
-        this.GetComponentInChildren<Rigidbody>().AddForce(this.transform.forward * 2000f);
+        this.GetComponentInChildren<Rigidbody>().AddForce(this.transform.forward * projectileInitialForce, launchType);
     }
 
 }

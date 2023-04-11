@@ -19,6 +19,8 @@ public class PlayerExecution : MonoBehaviour
     [SerializeField] float petMaxDistance = 7.5f;
     float currentPetDistance;
 
+	[Header("General Need-to-knows")]
+	[SerializeField] GameEvent EndAim;
     EnemyAI enemyToExecute;
    // Transform targetPos;
     public PlayerInput inputs;
@@ -104,6 +106,7 @@ public class PlayerExecution : MonoBehaviour
 
 					Debug.Log(enemyToExecute.execution.executionLength);
 					StartCoroutine(ExecuteEnemy(enemyToExecute.execution.executionLength));
+					EndAim.Raise();
 
 					return;
 				}

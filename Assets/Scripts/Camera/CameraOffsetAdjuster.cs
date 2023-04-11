@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 /// <summary>
 /// this guys is put on the player rig so that camera can be changed by animations
@@ -14,7 +15,10 @@ public class CameraOffsetAdjuster : MonoBehaviour
 	[Header("Conditions")]
 	[SerializeField] float constraint = 120;
 	[SerializeField] float inSpeed = 2, outSpeed = 4;
-	
+
+	[Header("Events"),Tooltip("Used so that player animations can fire events outside of this gameobject"),SerializeField]
+	UnityEvent[] events;
+
 	// local vars
 	float lerptime = 0;
 	Quaternion targetRot; // save last rotation to lerp out
@@ -26,6 +30,11 @@ public class CameraOffsetAdjuster : MonoBehaviour
 	{
 		anim = GetComponent<Animator>();
 		targetRot = HeadBone.rotation;
+	}
+
+	public void RunEvent(int index)
+	{
+		events[index].Invoke();
 	}
 
 	private void LateUpdate()
@@ -51,10 +60,14 @@ public class CameraOffsetAdjuster : MonoBehaviour
 		}
 
 		// keep it clamped
-		Mathf.Clamp01(lerptime);
+		lerptime = Mathf.Clamp01(lerptime);
+	}
+	public void StopLooking()
+	{
+		LookTarget = null;
 	}
 	/*
-	 * doesnt work with a generic rig, so sad
+	// doesnt work with a generic rig, so sad
 	private void OnAnimatorIK(int layerIndex)
 	{
 		Debug.Log("checking");
