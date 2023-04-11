@@ -8,7 +8,7 @@ public class ButtonSounds : MonoBehaviour
     [SerializeField] FMODUnity.EventReference clickSound;
     public void OnHover()
     {
-        Debug.Log(Input.mousePosition.x / Screen.currentResolution.width);
+        //Debug.Log(Input.mousePosition.x / Screen.currentResolution.width);
         FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Mouse", Input.mousePosition.x/ Screen.currentResolution.width);
         FMODUnity.RuntimeManager.PlayOneShot(hoverSound, transform.position);
     }

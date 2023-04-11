@@ -5,7 +5,7 @@ using UnityEngine;
 public class FlowerProjectile : MonoBehaviour
 {
     [SerializeField] Attack FlowerProjectileAttack;
-	[SerializeField] float projectileInitialForce =2000f;
+	[SerializeField] float projectileInitialForce = 2000f;
 	[SerializeField] ForceMode launchType = ForceMode.Force;
 	[SerializeField] ParticleSystem explosion;
     List<Damageable> hitTargets;
@@ -53,7 +53,7 @@ public class FlowerProjectile : MonoBehaviour
 
 	private void FireProjectile()
     {
-        this.GetComponentInChildren<Rigidbody>().AddForce(this.transform.forward * 2000f, launchType);
+        this.GetComponentInChildren<Rigidbody>().AddForce(this.transform.forward * projectileInitialForce, launchType);
     }
 
 }
