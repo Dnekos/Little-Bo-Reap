@@ -248,26 +248,13 @@ public class EnemyAI : EnemyBase
 		// shamelessly stolen from playermovement TODO: combine groundchecks
 		bool frontCheck = false;
 		bool backCheck = false;
-		Vector3 frontNormal;
-		Vector3 backNormal;
+
 		//set ground check
-		RaycastHit hitFront;
-		frontCheck = Physics.Raycast(groundCheckOriginFront.position, Vector3.down, out hitFront, groundCheckDistance, groundLayer);
-		//if canJump, groundNormal = hit.normal, else groudnnormal = vector3.up  v ternary operater
-		frontNormal = frontCheck ? hitFront.normal : Vector3.up;
-		RaycastHit hitBack;
-		backCheck = Physics.Raycast(groundCheckOriginBack.position, Vector3.down, out hitBack, groundCheckDistance, groundLayer);
-		backNormal = backCheck ? hitBack.normal : Vector3.up;
+		frontCheck = Physics.Raycast(groundCheckOriginFront.position, Vector3.down, groundCheckDistance, groundLayer);
+
+		backCheck = Physics.Raycast(groundCheckOriginBack.position, Vector3.down, groundCheckDistance, groundLayer);
+
 		isGrounded = frontCheck || backCheck;
-		if (!agent.enabled && isGrounded)
-		{
-			//rb.isKinematic = true;
-			agent.enabled = true;
-			//freeze
-			rb.constraints = RigidbodyConstraints.FreezeAll;
-			rb.velocity = Vector3.zero;
-			rb.angularVelocity = Vector3.zero;
-		}
 	}
 	#endregion
 
@@ -361,10 +348,15 @@ public class EnemyAI : EnemyBase
 			yield return new WaitForSeconds(0.01f);
 			GroundCheck();
 		} while (!isGrounded);
+
 		//reset if not in execute stage
 		//Demetri this is a quick n dirty fix might need to move around execute stuff eventually
 		if (currentEnemyState != EnemyStates.EXECUTABLE)
 			currentEnemyState = stunState;
+
+		//rb.isKinematic = true;
+		agent.enabled = true;
+
 		// freeze dammit
 		rb.constraints = RigidbodyConstraints.FreezeAll;
 		rb.velocity = Vector3.zero;
