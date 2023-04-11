@@ -184,7 +184,7 @@ public class PlayerStampede : MonoBehaviour
 			}
 			Debug.Log("angle is " + GetComponent<PlayerMovement>().playerOrientation.transform.eulerAngles);
 			
-			if (WorldState.instance.PersistentData.activeRamAbility == ActiveUpgrade.Ability2)
+			if (WorldState.instance.PersistentData.activeUpgrades.HasFlag(SaveData.Upgrades.RamActive))
 			{
 				this.GetComponent<BoPeepCharge>().Begin((hit.point - transform.position).normalized);
 			}

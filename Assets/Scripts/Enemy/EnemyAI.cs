@@ -237,6 +237,7 @@ public class EnemyAI : EnemyBase
 	#region Movement
 	void GroundCheck()
 	{
+		Debug.Log("ground checking");
 		// shamelessly stolen from playermovement TODO: combine groundchecks
 		bool frontCheck = false;
 		bool backCheck = false;

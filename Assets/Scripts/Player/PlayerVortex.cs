@@ -77,7 +77,7 @@ public class PlayerVortex : MonoBehaviour
 	void EndSheepDefend()
 	{
 		//if (blackHole)
-		if(WorldState.instance.PersistentData.activeFluffyAbility == ActiveUpgrade.Ability2)
+		if(WorldState.instance.PersistentData.activeUpgrades.HasFlag(SaveData.Upgrades.FluffyActive))
 		{
 			blackHoleObj.GetComponent<SuckEnemies>().BlackHoleChuckALL();
 		}
@@ -156,7 +156,7 @@ public class PlayerVortex : MonoBehaviour
 				isDefending = true;
 
 				//if (blackHole)
-				if (WorldState.instance.PersistentData.activeFluffyAbility == ActiveUpgrade.Ability2)
+				if (WorldState.instance.PersistentData.activeUpgrades.HasFlag(SaveData.Upgrades.FluffyActive))
 				{
 					blackHoleObj.SetActive(true);
 				}

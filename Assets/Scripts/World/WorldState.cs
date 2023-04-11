@@ -45,9 +45,14 @@ public struct SaveData
 
 		FluffyHealth = 64,
 		FluffyKnockResist = 128,
-		FluffyVortexDuration = 256
+		FluffyVortexDuration = 256,
+
+		BuilderActive = 512,
+		RamActive = 1024,
+		FluffyActive = 2048
 	}
 	public Upgrades boughtUpgrades;
+	public Upgrades activeUpgrades;
 
 	[Header("Soul Count")]
 	public int soulsCount;
@@ -61,11 +66,6 @@ public struct SaveData
 	public List<int> graveIndexes;
 	public List<int> doorIndexes;
 
-	[Header("Active Abilities")]
-	public ActiveUpgrade activeBuilderAbility;
-	public ActiveUpgrade activeRamAbility;
-	public ActiveUpgrade activeFluffyAbility;
-
 	[Header("SheepTotals")]
 	public int totalBuilder;
 	public int totalRam;
@@ -73,6 +73,7 @@ public struct SaveData
 	public SaveData(int x)
 	{
 		boughtUpgrades = Upgrades.None;
+		activeUpgrades = Upgrades.None;
 
 		soulsCount = 0;
 		bossSoulsCount = 0;
@@ -84,10 +85,6 @@ public struct SaveData
 
 		graveIndexes = new List<int>();
 		doorIndexes = new List<int>();
-
-		activeBuilderAbility = ActiveUpgrade.Ability1;
-		activeRamAbility = ActiveUpgrade.Ability1;
-		activeFluffyAbility = ActiveUpgrade.Ability1;
 
 		totalBuilder = 0;
 		totalRam = 0;
