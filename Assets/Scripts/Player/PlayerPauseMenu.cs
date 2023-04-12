@@ -27,11 +27,13 @@ public class PlayerPauseMenu : MonoBehaviour
         Debug.Log("pause");
         isPaused = !isPaused;
 
-		FMOD.Studio.Bus myBus = FMODUnity.RuntimeManager.GetBus("bus:/SFX/Gameplay");
+		FMOD.Studio.Bus sfxBus = FMODUnity.RuntimeManager.GetBus("bus:/SFX/Gameplay");
+        FMOD.Studio.Bus musicBus = FMODUnity.RuntimeManager.GetBus("Bus:/Music");
 
 		if (isPaused)
         {
-			myBus.setPaused(true);
+			sfxBus.setPaused(true);
+            musicBus.setPaused(true);
 			inputs.SwitchCurrentActionMap("PauseMenu");
             pauseMenu.SetActive(true);
             Time.timeScale = 0f;
@@ -41,8 +43,8 @@ public class PlayerPauseMenu : MonoBehaviour
         }
         else
         {
-			myBus.setPaused(false);
-
+			sfxBus.setPaused(false);
+            musicBus.setPaused(false);
 			inputs.SwitchCurrentActionMap("PlayerMovement");
 			controlMenu.SetActive(false);
             pauseMenu.SetActive(false);
