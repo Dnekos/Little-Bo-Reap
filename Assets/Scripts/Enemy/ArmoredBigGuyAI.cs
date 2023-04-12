@@ -10,6 +10,7 @@ public class ArmoredBigGuyAI : BigGuyAI
 	[SerializeField] Transform[] ArmorBars;
     [SerializeField] GameObject armorObject;
     [SerializeField] ParticleSystem destroyParticles;
+    [SerializeField] FMODUnity.EventReference armorBreakSFX;
     private bool armorBroken = false;
 
     protected override void Start()
@@ -47,6 +48,7 @@ public class ArmoredBigGuyAI : BigGuyAI
             armorObject.SetActive(false);
             destroyParticles.Play(true);
             armorBroken = true;
+            FMODUnity.RuntimeManager.PlayOneShot(armorBreakSFX, transform.position);
         }
     }
 }

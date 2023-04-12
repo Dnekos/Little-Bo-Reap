@@ -32,7 +32,7 @@ public class BabaYagasHouseAI : EnemyAI
 	[SerializeField] Transform HealthBar;
 
     [Header("Stun Objects")]
-	[SerializeField] GameObject armorObject;
+	[SerializeField] GameObject[] armorObjects;
 	[SerializeField] GameObject pinwheelObjectLeft;
 	[SerializeField] GameObject pinwheelObjectRight;
 	[SerializeField] ParticleSystem destroyParticles;
@@ -40,6 +40,13 @@ public class BabaYagasHouseAI : EnemyAI
 
 	[Header("Game End Stuff")]
 	[SerializeField] GameObject endGameObject;
+
+	[Header("Sounds")]
+	[SerializeField]FMODUnity.EventReference fire;
+	[SerializeField] FMODUnity.EventReference creaking;
+	[SerializeField] FMODUnity.EventReference stomp;
+	[SerializeField] FMODUnity.EventReference doorOpen;
+	[SerializeField] FMODUnity.EventReference doorClose;
 
 	bool isSuspended = false;
 
@@ -69,7 +76,10 @@ public class BabaYagasHouseAI : EnemyAI
 		//base the armor on bool so it can be easliy turned on and off
 		if(armorBroken == false)
         {
-			armorObject.SetActive(true);
+			foreach(GameObject armor in armorObjects)
+            {
+				armor.SetActive(true);
+            }
 			ArmorBarCanvas.SetActive(true);
 		}
 
@@ -186,7 +196,10 @@ public class BabaYagasHouseAI : EnemyAI
 		{
 			ArmorBarCanvas.SetActive(false);
 			HealthBarCanvas.SetActive(true);
-			armorObject.SetActive(false);
+			foreach (GameObject armor in armorObjects)
+			{
+				armor.SetActive(false);
+			}
 			destroyParticles.Play(true);
 			armorBroken = true;
 			//GetAnimator().Play("BBYGH_Stun 1");
