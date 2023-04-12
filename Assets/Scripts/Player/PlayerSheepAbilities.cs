@@ -33,6 +33,7 @@ public class PlayerSheepAbilities : MonoBehaviour
 	[Header("Sounds")]
 	[SerializeField] FMODUnity.EventReference abilitySound;
 	[SerializeField] FMODUnity.EventReference summonSound;
+	[SerializeField] FMODUnity.EventReference failSound;
 
 	[Header("Camera Access")]
 	[SerializeField] PlayerCameraFollow playerCam;
@@ -543,6 +544,8 @@ public class PlayerSheepAbilities : MonoBehaviour
 		else if(context.started && canSummonSheep && sheepFlocks[currentFlockIndex].MaxSize > 0 && summonResource.GetCurrentBlood() <= summonBloodCost)
         {
 			failSummonParticles[(int)currentFlockType].Play(true);
+			FMODUnity.RuntimeManager.PlayOneShot(failSound, transform.position);
+			
         }
 
 
