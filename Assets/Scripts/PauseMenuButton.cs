@@ -8,12 +8,11 @@ public class PauseMenuButton : MonoBehaviour
     [SerializeField] PlayerPauseMenu pp; //hehe
     [SerializeField] GameObject panel;
 	[SerializeField] GameObject FirstSelected;
-	[Header("Sounds")]
-	[SerializeField] FMODUnity.EventReference resumeSound;
+
+	
 
 	public void ResumeGame()
 	{
-		FMODUnity.RuntimeManager.PlayOneShot(resumeSound);
 		pp.PauseGame();
 		FMOD.Studio.Bus sfxBus = FMODUnity.RuntimeManager.GetBus("bus:/SFX/Gameplay");
 		FMOD.Studio.Bus musicBus = FMODUnity.RuntimeManager.GetBus("bus:/Music");

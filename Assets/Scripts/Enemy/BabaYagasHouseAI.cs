@@ -41,6 +41,13 @@ public class BabaYagasHouseAI : EnemyAI
 	[Header("Game End Stuff")]
 	[SerializeField] GameObject endGameObject;
 
+	[Header("Sounds")]
+	[SerializeField]FMODUnity.EventReference fire;
+	[SerializeField] FMODUnity.EventReference creaking;
+	[SerializeField] FMODUnity.EventReference stomp;
+	[SerializeField] FMODUnity.EventReference doorOpen;
+	[SerializeField] FMODUnity.EventReference doorClose;
+
 	bool isSuspended = false;
 
 	float bossFallRate = 2000;
