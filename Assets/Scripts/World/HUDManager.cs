@@ -45,6 +45,8 @@ public class HUDManager : MonoBehaviour
 	[SerializeField] TextMeshProUGUI SoulNumber;
     [SerializeField] Animator SoulUIAnimator;
     [SerializeField] string soulCollectAnimation;
+	[SerializeField] FMODUnity.EventReference openMenuSFX;
+	[SerializeField] FMODUnity.EventReference closeMenuSFX;
 
     [Header("Death")]
 	[SerializeField] GameObject deathUI;
@@ -76,6 +78,7 @@ public class HUDManager : MonoBehaviour
 
 		// pause sounds
 		FMODUnity.RuntimeManager.GetBus("bus:/SFX/Gameplay").setPaused(value);
+		FMODUnity.RuntimeManager.GetBus("bus:/Music").setPaused(value);
 
 		if (value)
 		{
@@ -88,6 +91,7 @@ public class HUDManager : MonoBehaviour
 
 			// disable HUD and pause
 			ToggleHud(false);
+			FMODUnity.RuntimeManager.PlayOneShot(openMenuSFX);
 			WorldState.instance.gameState = WorldState.State.Dialog;
 			inputs.SwitchCurrentActionMap("Dialog");
 			Time.timeScale = 0;
@@ -102,6 +106,7 @@ public class HUDManager : MonoBehaviour
 
 			// return to normal gameplay
 			ToggleHud(true);
+			FMODUnity.RuntimeManager.PlayOneShot(closeMenuSFX);
 			WorldState.instance.gameState = WorldState.State.Play;
 			inputs.SwitchCurrentActionMap("PlayerMovement");
 		}

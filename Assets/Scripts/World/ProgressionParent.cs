@@ -32,6 +32,9 @@ public class ProgressionParent : MonoBehaviour
     int abilitySoulCost = 1;
 	SaveData.Upgrades abilityFlag = SaveData.Upgrades.None;
 	List<float[]> upgradesAllValues;
+	[Header("Sound")]
+	[SerializeField] FMODUnity.EventReference activatedSFX;
+	[SerializeField] FMODUnity.EventReference deactivatedSFX;
 
 	// Start is called before the first frame update
 	void Start()
@@ -91,9 +94,15 @@ public class ProgressionParent : MonoBehaviour
 	public void ActivateUpgradeUI(int index, int flagIndex)
 	{
 		if (WorldState.instance.PersistentData.activeUpgrades.HasFlag((SaveData.Upgrades)flagIndex))
+		{
 			upgrades[index].SetState(ButtonState.Enabled);
+			FMODUnity.RuntimeManager.PlayOneShot(activatedSFX);
+		}
 		else if (WorldState.instance.PersistentData.boughtUpgrades.HasFlag((SaveData.Upgrades)flagIndex))
+		{
 			upgrades[index].SetState(ButtonState.Disabled);
+			FMODUnity.RuntimeManager.PlayOneShot(deactivatedSFX);
+		}
 		else
 			upgrades[index].SetState(ButtonState.Locked);
 
@@ -101,9 +110,15 @@ public class ProgressionParent : MonoBehaviour
 	public void ActivateAbilityUI()
 	{
 		if (WorldState.instance.PersistentData.activeUpgrades.HasFlag(abilityFlag))
+		{
 			abilities.SetState(ButtonState.Enabled);
+			FMODUnity.RuntimeManager.PlayOneShot(activatedSFX);
+		}
 		else if (WorldState.instance.PersistentData.boughtUpgrades.HasFlag(abilityFlag))
+		{
 			abilities.SetState(ButtonState.Disabled);
+			FMODUnity.RuntimeManager.PlayOneShot(deactivatedSFX);
+		}
 		else
 			abilities.SetState(ButtonState.Locked);
 
