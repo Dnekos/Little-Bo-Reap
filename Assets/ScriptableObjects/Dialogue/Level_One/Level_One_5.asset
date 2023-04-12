@@ -13,26 +13,30 @@ MonoBehaviour:
   m_Name: Level_One_5
   m_EditorClassIdentifier: 
   script:
-  - body: This door only opens if you whack two targets.
+  - body: 'Hey, figured you''d want to know: that door over there? Only opens if
+      you hit 2 different switches.'
     changeCamera: 1
     CameraTransitionSpeed: 1
     CameraPos: {x: -494.05075, y: 48.513134, z: -606.0837}
     CameraEuler: {x: 14.369251, y: 156.08005, z: 0.038987182}
-  - body: One above...
+  - body: One's above us...
     changeCamera: 1
     CameraTransitionSpeed: 1
     CameraPos: {x: -495.23163, y: 57.470905, z: -542.22766}
     CameraEuler: {x: 345.49216, y: 126.672745, z: 0.030386988}
-  - body: And one below...
+  - body: And another one's below us...
     changeCamera: 1
     CameraTransitionSpeed: 1
     CameraPos: {x: -488.28003, y: 52.734005, z: -567.2874}
     CameraEuler: {x: 14.369229, y: 256.633, z: 0.02283213}
-  - body: 'Watch out. There''s some dangerous things here.
-
-      Its not like the
-      place you came from.'
+  - body: It's pretty dangerous around here, so I'd be careful if I were you.
     changeCamera: 1
+    CameraTransitionSpeed: 1
+    CameraPos: {x: -494.0508, y: 48.51313, z: -606.0837}
+    CameraEuler: {x: 14.36925, y: 156.08, z: 0.03898718}
+  - body: Then again, the swamp is full of freshly dead things... that might make
+      your necromancy more powerful.
+    changeCamera: 0
     CameraTransitionSpeed: 1
     CameraPos: {x: -494.0508, y: 48.51313, z: -606.0837}
     CameraEuler: {x: 14.36925, y: 156.08, z: 0.03898718}
