@@ -20,6 +20,7 @@ public class descManager : MonoBehaviour
     {
         descTextBox.enabled = true;
         panel.GetComponent<Image>().enabled = true;
+        panel.transform.position = transform.position + panelOffset;
         descTextBox.text = desc;
     }
 
