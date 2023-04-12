@@ -28,6 +28,9 @@ public class SuckEnemies : MonoBehaviour
     [SerializeField] float spinTime;
     [SerializeField] float suckResistDuration;
 
+    [Header("VFX")]
+    [SerializeField] ParticleSystem particleEnd;
+
     List<KeyValuePair<GameObject, float>> enemiesStuck = new List<KeyValuePair<GameObject,float>>();
                 //REVIEW: just a suggestion, but I recently learned about Hash Sets, which have more optimal lookup time than lists,
                 //      maybe they could work here since we are using a lot of Count() and Contains() commands, but I haven't used them before so I'm not 100% sure on it
@@ -51,6 +54,10 @@ public class SuckEnemies : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, suckDistance);
     }
 
+    private void OnDisable()
+    {
+        particleEnd.Play(true);
+    }
     public void Suck()
     {
         foreach (KeyValuePair<GameObject, float> enemy in enemiesStuck)
