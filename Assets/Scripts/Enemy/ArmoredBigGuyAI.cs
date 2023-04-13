@@ -54,8 +54,9 @@ public class ArmoredBigGuyAI : BigGuyAI
             StartCoroutine(ShieldRecentlyBroken());
 
             //armor break sound
-
         }
+        //add a section for attacks that dont break shield for the sound 
+
     }
 
     public IEnumerator ShieldRecentlyBroken()

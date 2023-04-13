@@ -209,6 +209,7 @@ public class BabaYagasHouseAI : EnemyAI
 
 			//armor break sound
 		}
+		//add a section for attacks that dont break shield for the sound 
 
 	}
 
