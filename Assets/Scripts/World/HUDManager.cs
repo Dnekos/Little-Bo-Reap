@@ -39,7 +39,6 @@ public class HUDManager : MonoBehaviour
 
 	[Header("Progression")]
 	[SerializeField] GameObject ProgressionMenu;
-	[SerializeField] GameObject ProgressionFirstSelected;
 	public event Action<GameObject> activePanelChange;
 	[SerializeField] ProgressionParent[] upgradeTrees;
 	[SerializeField] TextMeshProUGUI SoulNumber;
@@ -82,9 +81,6 @@ public class HUDManager : MonoBehaviour
 
 		if (value)
 		{
-			// set active button
-			EventSystem.current.SetSelectedGameObject(ProgressionFirstSelected);
-
 			// mouse 
 			Cursor.visible = true;
 			Cursor.lockState = CursorLockMode.None;
