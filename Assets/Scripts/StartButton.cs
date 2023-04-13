@@ -14,6 +14,9 @@ public class StartButton : MonoBehaviour
 	[SerializeField]
 	Button NewGame;
 
+	[Header("SaveData")]
+	[SerializeField] TextAsset BossSaveData;
+
     [Header("Effects"), SerializeField] List<PlayerSheepAI> menuSheep;
     [SerializeField] GameObject gothExplosion;
     [SerializeField] GameObject gothVolume;
@@ -90,8 +93,7 @@ public class StartButton : MonoBehaviour
 
 	public void LoadBoss()
     {
-		StartEffects();
-		levelToLoad = bossLevel;
-		Invoke("LoadScene", 2f);
+		WorldState.OverwriteSave(BossSaveData);
+		StartGame();
 	}
 }

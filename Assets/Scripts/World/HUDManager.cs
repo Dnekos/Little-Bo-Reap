@@ -122,8 +122,11 @@ public class HUDManager : MonoBehaviour
 	private IEnumerator Initialize()
 	{
 		yield return new WaitForEndOfFrame();
+		yield return new WaitForEndOfFrame();
+
 		for (int i = 0; i < upgradeTrees.Length; i++)
 			upgradeTrees[i].CheckLoadedUpgrades();
+		UpdateSoulCount(false);
 	}
 	public void UpdateActiveFlockUI(int currentFlock, string number, Color uiColor)
 	{
@@ -134,11 +137,12 @@ public class HUDManager : MonoBehaviour
 		flockNumber.color = uiColor;
 	}
 
-    public void UpdateSoulCount()
+    public void UpdateSoulCount(bool playAnimation = true)
     {
 		string currentSouls = WorldState.instance.PersistentData.soulsCount.ToString();
         SoulNumber.text = currentSouls + " Souls";
-		SoulCollectAnimation();
+		if (playAnimation)
+			SoulCollectAnimation();
     }
 
     private void SetSheepPositions(int currentFlock)
