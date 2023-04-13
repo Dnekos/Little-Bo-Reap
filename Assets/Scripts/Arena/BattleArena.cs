@@ -185,10 +185,8 @@ public class BattleArena : PuzzleDoor
 
     protected IEnumerator SpawnEnemy(GameObject enemy, GameObject particle, Vector3 pos, float staggerDelay)
 	{
-
-
 		//delay
-		var staggerParticle = Instantiate(spawnDelayParticle, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder) as GameObject;
+		var staggerParticle = Instantiate(spawnDelayParticle, pos, Quaternion.identity, SpawnedEnemiesFolder) as GameObject;
 		var module = staggerParticle.GetComponent<ParticleSystem>().main;
 		module.duration = staggerDelay + 1;
 		module.startLifetime = staggerDelay;
@@ -196,13 +194,13 @@ public class BattleArena : PuzzleDoor
 
 		yield return new WaitForSeconds(staggerDelay);
 
-		Instantiate(particle, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder);
+		Instantiate(particle, pos, Quaternion.identity, SpawnedEnemiesFolder);
 		yield return new WaitForSeconds(enemy.GetComponent<EnemyBase>().SpawnWaitTime);
 		//Instantiate(enemy, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder).GetComponent<EnemyAI>().ToChase();
 		//I see "ToChase()" is just an empty function so I commented it out
 
 		
-		GameObject newEnemy = Instantiate(enemy, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder);
+		GameObject newEnemy = Instantiate(enemy, pos, Quaternion.identity, SpawnedEnemiesFolder);
 
 		//if the enemy has a spline follower script(that means it is a flying enemy)
 		//then find the index the flying enemy has and attach it to the corresponding flight path in this script's array
