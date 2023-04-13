@@ -21,12 +21,21 @@ public class Speaker : Interactable
 
 	Animator anim;
 
+	[SerializeField] bool isFinalDialogue;
+
 	protected override void Start()
 	{
 		base.Start();
 
 		anim = GetComponentInChildren<Animator>();
 		emitter = GetComponent<FMODUnity.StudioEventEmitter>();
+		if (DB == null) //Dialogue box wasn't properly set/this object was spawned later and needs to find one
+		{
+			//Debug.Log("Attempted to get Dialogue Box. Number of Children = " + WorldState.instance.player.transform.parent.gameObject.transform.GetChild(6).name.ToString());
+            //this is such fucking bad implementation I'm so sorry Demetri
+            DB = WorldState.instance.player.transform.parent.gameObject.transform.GetChild(6).GetChild(0).GetComponent<DialogBox>();
+			DB.SetFinalDialogue(isFinalDialogue);
+		}
 	}
 	public override void Interact()
 	{
