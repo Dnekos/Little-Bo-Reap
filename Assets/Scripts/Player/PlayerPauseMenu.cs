@@ -30,7 +30,7 @@ public class PlayerPauseMenu : MonoBehaviour
 		FMOD.Studio.Bus sfxBus = FMODUnity.RuntimeManager.GetBus("bus:/SFX/Gameplay");
         FMOD.Studio.Bus musicBus = FMODUnity.RuntimeManager.GetBus("Bus:/Music");
 
-		if (isPaused)
+        if (isPaused)
         {
 			sfxBus.setPaused(true);
             musicBus.setPaused(true);
