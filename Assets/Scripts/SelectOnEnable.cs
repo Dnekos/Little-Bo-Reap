@@ -12,6 +12,8 @@ public class SelectOnEnable : MonoBehaviour
 	{
 		if (focusStack == null)
 			focusStack = new Stack<GameObject>();
+
+		Debug.Log("pushing " + UIPiece + " from UI Stack");
 		focusStack.Push(UIPiece);
 		EventSystem.current.SetSelectedGameObject(UIPiece);
 	}
@@ -19,7 +21,7 @@ public class SelectOnEnable : MonoBehaviour
 	{
 		do
 		{
-			focusStack.Pop();
+			Debug.Log("popping "+ focusStack.Pop()+" from UI Stack");
 
 		} while (focusStack.Count > 0 && (focusStack.Peek() == null || !focusStack.Peek().activeInHierarchy));
 

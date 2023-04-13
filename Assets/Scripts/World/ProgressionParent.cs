@@ -170,13 +170,13 @@ public class ProgressionParent : MonoBehaviour
 			else if (WorldState.instance.PersistentData.boughtUpgrades.HasFlag(flagindex))
 			{
 				upgrades[i].SetState(ButtonState.Disabled);
-				Debug.Log("disabled " + flagindex);
+				//Debug.Log("disabled " + flagindex);
 
 			}
 			else
 			{ 
 				upgrades[i].SetState(ButtonState.Locked);
-				Debug.Log("locked "+flagindex);
+				//Debug.Log("locked "+flagindex);
 	}
 		}
 

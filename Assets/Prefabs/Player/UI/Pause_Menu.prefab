@@ -338,7 +338,6 @@ GameObject:
   - component: {fileID: 964821696593699727}
   - component: {fileID: 2936007926685091595}
   - component: {fileID: 714364959560108618}
-  - component: {fileID: 6612828171517620885}
   - component: {fileID: 583048080982565207}
   - component: {fileID: 2170753401286946351}
   m_Layer: 5
@@ -420,18 +419,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 0
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
+    m_SelectOnUp: {fileID: 1539027279343184469}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 2
+  m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.754717, g: 0.754717, b: 0.754717, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9254902, g: 0.67058825, b: 0.21568628, a: 1}
+    m_HighlightedColor: {r: 1, g: 0.76711166, b: 0, a: 1}
+    m_PressedColor: {r: 0.7254902, g: 0.4117647, b: 0.7529412, a: 1}
+    m_SelectedColor: {r: 1, g: 0.76711166, b: 0, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -464,19 +463,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &6612828171517620885
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 680580456911865674}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 029a303440b26a04d99a05112a3731c6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  UIPiece: {fileID: 680580456911865674}
 --- !u!114 &583048080982565207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -978,7 +964,6 @@ GameObject:
   - component: {fileID: 2781505732160781962}
   - component: {fileID: 8393399936386329737}
   - component: {fileID: 5226701755368630298}
-  - component: {fileID: 5614196811402769383}
   m_Layer: 5
   m_Name: Resume
   m_TagString: Untagged
@@ -1058,18 +1043,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnUp: {fileID: 7045686859155927689}
+    m_SelectOnDown: {fileID: 6475310315065808793}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 2
+  m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.754717, g: 0.754717, b: 0.754717, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9254902, g: 0.67058825, b: 0.21568628, a: 1}
+    m_HighlightedColor: {r: 1, g: 0.76711166, b: 0, a: 1}
+    m_PressedColor: {r: 0.7254902, g: 0.4117647, b: 0.7529412, a: 1}
+    m_SelectedColor: {r: 1, g: 0.76711166, b: 0, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -1119,7 +1104,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 5614196811402769383}
+        - m_Target: {fileID: 8530395852962313956}
           m_TargetAssemblyTypeName: ButtonSounds, Assembly-CSharp
           m_MethodName: OnHover
           m_Mode: 1
@@ -1135,7 +1120,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 5614196811402769383}
+        - m_Target: {fileID: 8530395852962313956}
           m_TargetAssemblyTypeName: ButtonSounds, Assembly-CSharp
           m_MethodName: OnHover
           m_Mode: 1
@@ -1147,32 +1132,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
---- !u!114 &5614196811402769383
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 870063187199004289}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d00e4203f56ffd942aa83f8482b2147b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hoverSound:
-    Guid:
-      Data1: -1900385176
-      Data2: 1163783009
-      Data3: 218467739
-      Data4: -1358589343
-    Path: event:/UI/Hover
-  clickSound:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
 --- !u!1 &887891757653863746
 GameObject:
   m_ObjectHideFlags: 0
@@ -2874,7 +2833,6 @@ GameObject:
   - component: {fileID: 8698612265191855901}
   - component: {fileID: 8232668879667699669}
   - component: {fileID: 5735665608959366747}
-  - component: {fileID: 4568656347727417119}
   m_Layer: 5
   m_Name: Options_Panel
   m_TagString: Untagged
@@ -2966,19 +2924,6 @@ MonoBehaviour:
   Credits: {fileID: 1037488740645213371}
   SelectedGameObject: {fileID: 1711766044105284708}
   currentTab: {fileID: 0}
---- !u!114 &4568656347727417119
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2618228423240048239}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 029a303440b26a04d99a05112a3731c6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  UIPiece: {fileID: 0}
 --- !u!1 &2774393248505668098
 GameObject:
   m_ObjectHideFlags: 0
@@ -3183,6 +3128,7 @@ GameObject:
   - component: {fileID: 8661262570487497033}
   - component: {fileID: 2434111044000279008}
   - component: {fileID: 3583048923945212009}
+  - component: {fileID: 8530395852962313956}
   m_Layer: 5
   m_Name: Pause_Menu
   m_TagString: Untagged
@@ -3268,13 +3214,6 @@ MonoBehaviour:
   pp: {fileID: 0}
   panel: {fileID: 2618228423240048239}
   FirstSelected: {fileID: 870063187199004289}
-  resumeSound:
-    Guid:
-      Data1: -293773461
-      Data2: 1173559068
-      Data3: -2005751134
-      Data4: 1627192529
-    Path: event:/UI/UnPause
 --- !u!114 &3583048923945212009
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3288,6 +3227,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UIPiece: {fileID: 870063187199004289}
+--- !u!114 &8530395852962313956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3050605773849751864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d00e4203f56ffd942aa83f8482b2147b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSound:
+    Guid:
+      Data1: -1900385176
+      Data2: 1163783009
+      Data3: 218467739
+      Data4: -1358589343
+    Path: event:/UI/Hover
+  clickSound:
+    Guid:
+      Data1: -908050737
+      Data2: 1229417201
+      Data3: -500619861
+      Data4: 1883780285
+    Path: event:/UI/ButtonClick
 --- !u!1 &3096932178294926360
 GameObject:
   m_ObjectHideFlags: 0
@@ -3958,7 +3923,6 @@ GameObject:
   - component: {fileID: 1428489325566394007}
   - component: {fileID: 7045686859155927689}
   - component: {fileID: 2684966007762543767}
-  - component: {fileID: 5685315900335950904}
   - component: {fileID: 5946620715599171811}
   m_Layer: 5
   m_Name: Quit_Button
@@ -4039,18 +4003,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnUp: {fileID: 673083085218548131}
+    m_SelectOnDown: {fileID: 8393399936386329737}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 2
+  m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 1, g: 0.4292453, b: 0.4292453, a: 1}
-    m_PressedColor: {r: 1, g: 0, b: 0, a: 1}
-    m_SelectedColor: {r: 0.4339623, g: 0.01842292, b: 0.01842292, a: 1}
+    m_HighlightedColor: {r: 1, g: 0.76711166, b: 0, a: 1}
+    m_PressedColor: {r: 0.7254902, g: 0.4117647, b: 0.7529412, a: 1}
+    m_SelectedColor: {r: 1, g: 0.76711166, b: 0, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -4096,32 +4060,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   quitConfirmMenu: {fileID: 0}
---- !u!114 &5685315900335950904
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3544775523649282966}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d00e4203f56ffd942aa83f8482b2147b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hoverSound:
-    Guid:
-      Data1: -1900385176
-      Data2: 1163783009
-      Data3: 218467739
-      Data4: -1358589343
-    Path: event:/UI/Hover
-  clickSound:
-    Guid:
-      Data1: -908050737
-      Data2: 1229417201
-      Data3: -500619861
-      Data4: 1883780285
-    Path: event:/UI/ButtonClick
 --- !u!114 &5946620715599171811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4139,7 +4077,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 5685315900335950904}
+        - m_Target: {fileID: 8530395852962313956}
           m_TargetAssemblyTypeName: ButtonSounds, Assembly-CSharp
           m_MethodName: OnHover
           m_Mode: 1
@@ -4155,7 +4093,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 5685315900335950904}
+        - m_Target: {fileID: 8530395852962313956}
           m_TargetAssemblyTypeName: ButtonSounds, Assembly-CSharp
           m_MethodName: OnHover
           m_Mode: 1
@@ -4171,7 +4109,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 5685315900335950904}
+        - m_Target: {fileID: 8530395852962313956}
           m_TargetAssemblyTypeName: ButtonSounds, Assembly-CSharp
           m_MethodName: OnClick
           m_Mode: 1
@@ -4187,7 +4125,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 5685315900335950904}
+        - m_Target: {fileID: 8530395852962313956}
           m_TargetAssemblyTypeName: ButtonSounds, Assembly-CSharp
           m_MethodName: OnClick
           m_Mode: 1
@@ -4425,18 +4363,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 2
+    m_Mode: 4
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnDown: {fileID: 2533474702044450656}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 0
+  m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 1, g: 0.76711166, b: 0, a: 1}
+    m_PressedColor: {r: 0.7254902, g: 0.4117647, b: 0.7529412, a: 1}
+    m_SelectedColor: {r: 1, g: 0.76711166, b: 0, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -7039,7 +6977,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 029a303440b26a04d99a05112a3731c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UIPiece: {fileID: 2147389484340445608}
+  UIPiece: {fileID: 3882189642800031777}
 --- !u!1 &6107835873789227433
 GameObject:
   m_ObjectHideFlags: 0
@@ -7096,15 +7034,15 @@ MonoBehaviour:
     m_Mode: 4
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 2533474702044450656}
-    m_SelectOnDown: {fileID: 673083085218548131}
+    m_SelectOnDown: {fileID: 714364959560108618}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 0
+  m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9254902, g: 0.67058825, b: 0.21568628, a: 1}
+    m_HighlightedColor: {r: 1, g: 0.76711166, b: 0, a: 1}
+    m_PressedColor: {r: 0.7254902, g: 0.4117647, b: 0.7529412, a: 1}
+    m_SelectedColor: {r: 1, g: 0.76711166, b: 0, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -8799,7 +8737,6 @@ GameObject:
   - component: {fileID: 673083085218548131}
   - component: {fileID: 4331280986266705949}
   - component: {fileID: 7969664709955973709}
-  - component: {fileID: 8507096286259560411}
   m_Layer: 5
   m_Name: MainMenu
   m_TagString: Untagged
@@ -8881,16 +8818,16 @@ MonoBehaviour:
   m_Navigation:
     m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 1539027279343184469}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnUp: {fileID: 6475310315065808793}
+    m_SelectOnDown: {fileID: 7045686859155927689}
     m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 7045686859155927689}
-  m_Transition: 2
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.8301887, g: 0.8301887, b: 0.8301887, a: 1}
-    m_PressedColor: {r: 0.7924528, g: 0.7924528, b: 0.7924528, a: 1}
-    m_SelectedColor: {r: 0.9254902, g: 0.67058825, b: 0.21568628, a: 1}
+    m_HighlightedColor: {r: 1, g: 0.76711166, b: 0, a: 1}
+    m_PressedColor: {r: 0.7254902, g: 0.4117647, b: 0.7529412, a: 1}
+    m_SelectedColor: {r: 1, g: 0.76711166, b: 0, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -8960,7 +8897,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 8507096286259560411}
+        - m_Target: {fileID: 8530395852962313956}
           m_TargetAssemblyTypeName: ButtonSounds, Assembly-CSharp
           m_MethodName: OnHover
           m_Mode: 1
@@ -8976,7 +8913,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 8507096286259560411}
+        - m_Target: {fileID: 8530395852962313956}
           m_TargetAssemblyTypeName: ButtonSounds, Assembly-CSharp
           m_MethodName: OnHover
           m_Mode: 1
@@ -8992,7 +8929,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 8507096286259560411}
+        - m_Target: {fileID: 8530395852962313956}
           m_TargetAssemblyTypeName: ButtonSounds, Assembly-CSharp
           m_MethodName: OnClick
           m_Mode: 1
@@ -9008,7 +8945,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 8507096286259560411}
+        - m_Target: {fileID: 8530395852962313956}
           m_TargetAssemblyTypeName: ButtonSounds, Assembly-CSharp
           m_MethodName: OnClick
           m_Mode: 1
@@ -9020,32 +8957,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
---- !u!114 &8507096286259560411
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7289439883684575425}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d00e4203f56ffd942aa83f8482b2147b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hoverSound:
-    Guid:
-      Data1: -1900385176
-      Data2: 1163783009
-      Data3: 218467739
-      Data4: -1358589343
-    Path: event:/UI/Hover
-  clickSound:
-    Guid:
-      Data1: -908050737
-      Data2: 1229417201
-      Data3: -500619861
-      Data4: 1883780285
-    Path: event:/UI/ButtonClick
 --- !u!1 &7294621664402102918
 GameObject:
   m_ObjectHideFlags: 0
@@ -9307,7 +9218,6 @@ GameObject:
   - component: {fileID: 136811882990464333}
   - component: {fileID: 1947287872140137190}
   - component: {fileID: 6475310315065808793}
-  - component: {fileID: 4230563020580519173}
   - component: {fileID: 4653085730885103279}
   m_Layer: 5
   m_Name: Options Button
@@ -9388,18 +9298,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 2
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnUp: {fileID: 8393399936386329737}
+    m_SelectOnDown: {fileID: 673083085218548131}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 2
+  m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.754717, g: 0.754717, b: 0.754717, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9254902, g: 0.67058825, b: 0.21568628, a: 1}
+    m_HighlightedColor: {r: 1, g: 0.76711166, b: 0, a: 1}
+    m_PressedColor: {r: 0.7254902, g: 0.4117647, b: 0.7529412, a: 1}
+    m_SelectedColor: {r: 1, g: 0.76711166, b: 0, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -9432,32 +9342,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &4230563020580519173
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7534064580364598194}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d00e4203f56ffd942aa83f8482b2147b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hoverSound:
-    Guid:
-      Data1: -1900385176
-      Data2: 1163783009
-      Data3: 218467739
-      Data4: -1358589343
-    Path: event:/UI/Hover
-  clickSound:
-    Guid:
-      Data1: -908050737
-      Data2: 1229417201
-      Data3: -500619861
-      Data4: 1883780285
-    Path: event:/UI/ButtonClick
 --- !u!114 &4653085730885103279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9475,7 +9359,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 4230563020580519173}
+        - m_Target: {fileID: 8530395852962313956}
           m_TargetAssemblyTypeName: ButtonSounds, Assembly-CSharp
           m_MethodName: OnHover
           m_Mode: 1
@@ -9491,7 +9375,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 4230563020580519173}
+        - m_Target: {fileID: 8530395852962313956}
           m_TargetAssemblyTypeName: ButtonSounds, Assembly-CSharp
           m_MethodName: OnHover
           m_Mode: 1
@@ -9507,7 +9391,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 4230563020580519173}
+        - m_Target: {fileID: 8530395852962313956}
           m_TargetAssemblyTypeName: ButtonSounds, Assembly-CSharp
           m_MethodName: OnClick
           m_Mode: 1
@@ -9523,7 +9407,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 4230563020580519173}
+        - m_Target: {fileID: 8530395852962313956}
           m_TargetAssemblyTypeName: ButtonSounds, Assembly-CSharp
           m_MethodName: OnClick
           m_Mode: 1
@@ -10072,18 +9956,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnUp: {fileID: 9136602249172214600}
+    m_SelectOnDown: {fileID: 1539027279343184469}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 0
+  m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9254902, g: 0.67058825, b: 0.21568628, a: 1}
+    m_HighlightedColor: {r: 1, g: 0.76711166, b: 0, a: 1}
+    m_PressedColor: {r: 0.7254902, g: 0.4117647, b: 0.7529412, a: 1}
+    m_SelectedColor: {r: 1, g: 0.76711166, b: 0, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
