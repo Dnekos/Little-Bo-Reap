@@ -37,6 +37,7 @@ public class BabaYagasHouseAI : EnemyAI
 	[SerializeField] GameObject pinwheelObjectRight;
 	[SerializeField] ParticleSystem destroyParticles;
 	private bool armorBroken = false;
+	private bool armorRecentlyBroken = false;
 
 	[Header("Game End Stuff")]
 	[SerializeField] GameObject endGameObject;
@@ -180,7 +181,7 @@ public class BabaYagasHouseAI : EnemyAI
 
     public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
     {
-		if (armorBroken == true && !spawningEnemies)
+		if (armorBroken == true && !spawningEnemies && armorRecentlyBroken == false)
 		{
 			base.TakeDamage(atk, attackForward, damageAmp, 0.0f);//no knockback
 			if (Health != MaxHealth || Health >= executionHealthThreshhold)
@@ -192,7 +193,7 @@ public class BabaYagasHouseAI : EnemyAI
 			else
 				HealthBarCanvas.SetActive(false);
 		}
-		if (atk.name == "Ram_Attack_Charge" && armorBroken == false)
+		else if (atk.name == "Ram_Attack_Charge" && armorBroken == false)
 		{
 			ArmorBarCanvas.SetActive(false);
 			HealthBarCanvas.SetActive(true);
@@ -202,9 +203,20 @@ public class BabaYagasHouseAI : EnemyAI
 			}
 			destroyParticles.Play(true);
 			armorBroken = true;
-			//GetAnimator().Play("BBYGH_Stun 1");
+			GetAnimator().Play("BBYGH_Stun 1");
+			//I-Frames
+			StartCoroutine(ShieldRecentlyBroken());
+
+			//armor break sound
 		}
 
+	}
+
+	public IEnumerator ShieldRecentlyBroken()
+	{
+		armorRecentlyBroken = true;
+		yield return new WaitForSeconds(0.5f);
+		armorRecentlyBroken = false;
 	}
 
 	public void StopMovement()

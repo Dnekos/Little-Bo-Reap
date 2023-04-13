@@ -12,6 +12,7 @@ public class ArmoredBigGuyAI : BigGuyAI
     [SerializeField] ParticleSystem destroyParticles;
     [SerializeField] FMODUnity.EventReference armorBreakSFX;
     private bool armorBroken = false;
+    private bool armorRecentlyBroken = false;
 
     protected override void Start()
     {
@@ -27,7 +28,7 @@ public class ArmoredBigGuyAI : BigGuyAI
 
     public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
     {
-        if(armorBroken == true)
+        if(armorBroken == true && armorRecentlyBroken == false)
         {
             base.TakeDamage(atk, attackForward, damageAmp, 0.0f);//no knockback
             //REVIEW: I would use >= for the health execution if check
@@ -41,7 +42,7 @@ public class ArmoredBigGuyAI : BigGuyAI
             else
                 HealthBarCanvas.SetActive(false);
         }
-        if (atk.name == "Ram_Attack_Charge" && armorBroken == false)
+        else if(atk.name == "Ram_Attack_Charge" && armorBroken == false)
         {
             ArmorBarCanvas.SetActive(false);
             HealthBarCanvas.SetActive(true);
@@ -49,6 +50,18 @@ public class ArmoredBigGuyAI : BigGuyAI
             destroyParticles.Play(true);
             armorBroken = true;
             FMODUnity.RuntimeManager.PlayOneShot(armorBreakSFX, transform.position);
+            //start I-Frames
+            StartCoroutine(ShieldRecentlyBroken());
+
+            //armor break sound
+
         }
+    }
+
+    public IEnumerator ShieldRecentlyBroken()
+    {
+        armorRecentlyBroken = true;
+        yield return new WaitForSeconds(0.5f);
+        armorRecentlyBroken = false;
     }
 }
