@@ -22,7 +22,7 @@ public class LookSensitivtySlider : MonoBehaviour
 	public void ChangeSensitivity(float value)
     {
         playerCam.mouseSensitivity = value * playerCam.mouseSensitivityMax;
-        sliderText.text = "Mouse Sensitivity: " + (int)playerCam.mouseSensitivity;
+       // sliderText.text = "Mouse Sensitivity: " + (int)playerCam.mouseSensitivity;
 		PlayerPrefs.SetFloat("sensitivity", value);
 	}
 	public void ChangeMusicVolume(float value)
