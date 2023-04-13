@@ -11,16 +11,26 @@ public class descManager : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI descTextBox;
     [SerializeField] GameObject panel;
-    [SerializeField] Vector3 panelOffset;
 
     [SerializeField] string desc;
-    // Start is called before the first frame update
+
+    Vector3 panelPosition;
+
+    private void Start()
+    {
+        RectTransform rt = GetComponent<RectTransform>();
+        Vector3[] corners = new Vector3[4];
+        rt.GetWorldCorners(corners);
+
+        panelPosition = (corners[3] + corners[2]) * 0.5f;
+    }
 
     public void MouseOver()
     {
         descTextBox.enabled = true;
         panel.GetComponent<Image>().enabled = true;
-        panel.transform.position = transform.position + panelOffset;
+
+        panel.transform.position = panelPosition;
         descTextBox.text = desc;
     }
 
@@ -35,7 +45,7 @@ public class descManager : MonoBehaviour
     {
         descTextBox.enabled = true;
         panel.GetComponent<Image>().enabled = true;
-        panel.transform.position = transform.position + panelOffset;
+        panel.transform.position = panelPosition;
         descTextBox.text = desc;
     }
 
