@@ -68,7 +68,7 @@ public class ProgressionParent : MonoBehaviour
 			if (WorldState.instance.PersistentData.soulsCount >= costs[0])
 			{
 				WorldState.instance.PersistentData.soulsCount -= costs[0];
-				WorldState.instance.HUD.UpdateSoulCount();
+				WorldState.instance.HUD.UpdateSoulCount(false);
 			}
 			else
 			{
@@ -83,9 +83,6 @@ public class ProgressionParent : MonoBehaviour
 		ActivateUpgradeUI(index, flagIndex);
 
 		currentCostIndex++;
-
-
-		//REVIEW: Maybe we can have a visual representation for the player to know they don't have enough souls
 	}
 
 	/// <summary>
@@ -146,6 +143,8 @@ public class ProgressionParent : MonoBehaviour
         if (WorldState.instance.PersistentData.soulsCount >= abilitySoulCost)
         {
             WorldState.instance.PersistentData.soulsCount -= abilitySoulCost;
+            WorldState.instance.HUD.UpdateSoulCount(false);
+
             altAbilityUnlocked = true;
             //add visual for unlocking alt ability here
             return true;
