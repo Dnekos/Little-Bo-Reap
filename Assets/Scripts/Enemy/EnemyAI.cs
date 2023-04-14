@@ -112,6 +112,11 @@ public class EnemyAI : EnemyBase
 	{
 		return anim;
 	}
+
+	public GameObject getExecuteTrigger()
+    {
+		return executeTrigger;
+    }
 	public virtual bool SetDestination(Vector3 dest)
 	{
 		// dont pathfind bad destinations
