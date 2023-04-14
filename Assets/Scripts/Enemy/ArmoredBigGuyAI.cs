@@ -56,7 +56,14 @@ public class ArmoredBigGuyAI : BigGuyAI
             //armor break sound
         }
         //add a section for attacks that dont break shield for the sound 
-
+        else if(armorBroken == false)
+        {
+            //this would be an attack that doesnt break the shield
+            if (Time.deltaTime % 10 == 0)
+            {
+                //Sparks and armor hit sound
+            }
+        }
     }
 
     public IEnumerator ShieldRecentlyBroken()
