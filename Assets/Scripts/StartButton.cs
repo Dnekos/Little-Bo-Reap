@@ -9,10 +9,9 @@ public class StartButton : MonoBehaviour
     [SerializeField] string levelToLoad;
 	[SerializeField] string endlessLevelToLoad;
 	[SerializeField] string bossLevel;
+
 	[Header("Buttons"), SerializeField]
 	Button Continue;
-	[SerializeField]
-	Button NewGame;
 
 	[Header("SaveData")]
 	[SerializeField] TextAsset BossSaveData;
@@ -70,8 +69,11 @@ public class StartButton : MonoBehaviour
 		}
 
 		// disable buttons to prevent doubleclicking
-		Continue.interactable = false;
-		NewGame.interactable = false;
+		Button[] buttons = GetComponentsInChildren<Button>();
+		for (int i = 0; i < buttons.Length;i++)
+		{
+			buttons[i].interactable = false;
+		}
 	}
 
 	void LoadScene()
