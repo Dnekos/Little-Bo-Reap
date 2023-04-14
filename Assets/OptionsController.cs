@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+
 
 public class OptionsController : MonoBehaviour
 {
@@ -26,20 +28,21 @@ public class OptionsController : MonoBehaviour
 		Credits.SetActive(false);
 	}
 
-	void Update()
+	public void OnTabLeft(InputAction.CallbackContext context)
 	{
-		if (Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.Joystick1Button4))
-		{
-			NavigateToNextTab();
-		}
-		else if (Input.GetKeyDown(KeyCode.Joystick1Button5))
-		{
+		if (context.performed)
 			NavigateToPreviousTab();
-		}
+	}
+	public void OnTabRight(InputAction.CallbackContext context)
+	{
+		if (context.performed)
+			NavigateToNextTab();
 	}
 
 	private void NavigateToNextTab()
 	{
+		if (!gameObject.activeInHierarchy)
+			return;
 		if (currentTab == Tab1)
 		{
 			currentTab = Tab2;
@@ -58,6 +61,9 @@ public class OptionsController : MonoBehaviour
 
 	private void NavigateToPreviousTab()
 	{
+		if (!gameObject.activeInHierarchy)
+			return;
+
 		if (currentTab == Tab1)
 		{
 			currentTab = Tab3;
