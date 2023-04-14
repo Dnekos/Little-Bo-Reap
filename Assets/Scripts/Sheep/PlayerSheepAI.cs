@@ -385,8 +385,9 @@ public enum SheepStates
 
     public void GibSheep()
     {
-        Instantiate(gibs, transform.position, transform.rotation);
-    }
+        //Instantiate(gibs, transform.position, transform.rotation);
+		WorldState.instance.pools.FetchPooledObject(gibs, transform.position + Vector3.up * 1.4f, Quaternion.identity);
+	}
 	public bool IsCommandable()
 	{
 		return currentSheepState == SheepStates.ABILITY || currentSheepState == SheepStates.FOLLOW_PLAYER || currentSheepState == SheepStates.WANDER;

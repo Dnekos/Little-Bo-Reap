@@ -60,6 +60,7 @@ public class HUDManager : MonoBehaviour
 		HUD.SetActive(value);
 	}
 
+	#region Opening and Closing menus
 	public void OpenDeathMenu()
 	{
 		HUD.SetActive(false);
@@ -70,7 +71,6 @@ public class HUDManager : MonoBehaviour
 		HUD.SetActive(true);
 		deathUI.SetActive(false);
 	}
-
 	public void ToggleProgressionMenu(bool value)
 	{
 		ProgressionMenu.SetActive(value);
@@ -107,16 +107,19 @@ public class HUDManager : MonoBehaviour
 			inputs.SwitchCurrentActionMap("PlayerMovement");
 		}
 	}
+	#endregion
 	private void Start()
 	{
 		WorldState.instance.HUD = this;
 		StartCoroutine(Initialize());
 	}
+
 	/// <summary>
 	/// needed for set up that may have blockers (other things in start)
 	/// </summary>
 	private IEnumerator Initialize()
 	{
+		// wait for two frames
 		yield return new WaitForEndOfFrame();
 		yield return new WaitForEndOfFrame();
 

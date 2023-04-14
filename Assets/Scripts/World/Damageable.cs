@@ -154,7 +154,8 @@ public class Damageable : MonoBehaviour
 
 		FMODUnity.RuntimeManager.PlayOneShot(deathSound, transform.position);
 
-		Instantiate(gibs, transform.position + Vector3.up * 1.4f, new Quaternion());
+		WorldState.instance.pools.FetchPooledObject(gibs, transform.position + Vector3.up * 1.4f, Quaternion.identity);
+		//Instantiate(gibs, transform.position + Vector3.up * 1.4f, new Quaternion());
 		Destroy(gameObject); // base effect is deleting object
 	}
 	//put it here because it wasn't overriding onDeath for non-executable enemies, likely because death was called in this function specifically

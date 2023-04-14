@@ -143,6 +143,8 @@ public class WorldState : MonoBehaviour
 	public GameObject player;
 	[HideInInspector]
 	public HUDManager HUD;
+	[HideInInspector]
+	public ParticleObjectPooler pools;
 
 	[Header("Booting player")]
 	public bool isInCombat;
@@ -157,6 +159,7 @@ public class WorldState : MonoBehaviour
 			instance = this;
 			Respawn.Add(RespawnPlayer);
 			player = GameObject.FindGameObjectWithTag("Player");
+			pools = GetComponent<ParticleObjectPooler>();
 
 			Debug.Log("made World Instance");
 

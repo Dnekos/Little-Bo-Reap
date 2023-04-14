@@ -83,7 +83,7 @@ public class BattleArena : PuzzleDoor
 		{
 			if (!finalEnemyConfirmed && SpawnedEnemiesFolder.childCount == 1)
 				finalEnemyConfirmed = true;
-			else
+			else if (SpawnedEnemiesFolder.childCount > 1)
 				finalEnemyPosition = SpawnedEnemiesFolder.GetChild(0).transform.position;
 		}
 	}
@@ -186,20 +186,18 @@ public class BattleArena : PuzzleDoor
     protected IEnumerator SpawnEnemy(GameObject enemy, GameObject particle, Vector3 pos, float staggerDelay)
 	{
 		//delay
-		var staggerParticle = Instantiate(spawnDelayParticle, pos, Quaternion.identity, SpawnedEnemiesFolder) as GameObject;
-		var module = staggerParticle.GetComponent<ParticleSystem>().main;
+		GameObject staggerParticle = Instantiate(spawnDelayParticle, pos, Quaternion.identity, SpawnedEnemiesFolder);
+		ParticleSystem.MainModule module = staggerParticle.GetComponent<ParticleSystem>().main;
 		module.duration = staggerDelay + 1;
 		module.startLifetime = staggerDelay;
 		staggerParticle.GetComponent<ParticleSystem>().Play(true);
 
 		yield return new WaitForSeconds(staggerDelay);
 
-		Instantiate(particle, pos, Quaternion.identity, SpawnedEnemiesFolder);
-		yield return new WaitForSeconds(enemy.GetComponent<EnemyBase>().SpawnWaitTime);
-		//Instantiate(enemy, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder).GetComponent<EnemyAI>().ToChase();
-		//I see "ToChase()" is just an empty function so I commented it out
+		WorldState.instance.pools.FetchPooledObject(particle, pos, Quaternion.identity);
 
-		
+		yield return new WaitForSeconds(enemy.GetComponent<EnemyBase>().SpawnWaitTime);
+
 		GameObject newEnemy = Instantiate(enemy, pos, Quaternion.identity, SpawnedEnemiesFolder);
 
 		//if the enemy has a spline follower script(that means it is a flying enemy)
@@ -209,13 +207,14 @@ public class BattleArena : PuzzleDoor
 
 	private void AttachToSpline(GameObject enemy)
 	{
-		if(enemy.GetComponent<SplineFollower>() != null)
+		SplineFollower sf = enemy.GetComponent<SplineFollower>();
+		if (sf != null)
 		{
-			enemy.GetComponent<SplineFollower>().path = FlightPaths[enemy.GetComponent<FlyingEnemyAI>().flightPathIndex];
+			sf.path = FlightPaths[enemy.GetComponent<FlyingEnemyAI>().flightPathIndex];
 
 			//add a random position offset. without this, they all stack up on top of each other
 			float rand = Random.Range(0f, flightPathMaxDisplacement);
-			enemy.GetComponent<SplineFollower>().SplinePosition += rand;
+			sf.SplinePosition += rand;
 		}
 	}
 
