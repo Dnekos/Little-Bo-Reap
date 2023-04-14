@@ -338,6 +338,7 @@ public class WorldState : MonoBehaviour
 		PersistentData.goingToBoss = true;
 		SaveGame(levelIndex);
     }
+
 	#region saving
 	// https://www.red-gate.com/simple-talk/development/dotnet-development/saving-game-data-with-unity/
 	/// <summary>
