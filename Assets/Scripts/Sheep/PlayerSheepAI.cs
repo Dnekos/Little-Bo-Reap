@@ -621,7 +621,7 @@ public enum SheepStates
 
 		rb.angularVelocity = Vector3.zero;
 		rb.velocity = Vector3.zero;
-		Debug.Log(gameObject.name + " ending stunn");
+		//Debug.Log(gameObject.name + " ending stunn");
 		// if sheep were attacking, they can resume attacking 
 		// the condition is needed because actions like vortex and construct should not be resumed
 		SetSheepState(stateAfterStun);//(origState == SheepStates.ATTACK) ? origState : SheepStates.WANDER);

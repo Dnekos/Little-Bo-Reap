@@ -97,7 +97,7 @@ public class EnemyAI : EnemyBase
 	{
 		//apply gravity if falling
 		if (currentEnemyState == EnemyStates.HITSTUN || currentEnemyState == EnemyStates.EXECUTABLE)
-			rb.AddForce(Vector3.down * fallRate);
+			rb.AddForce(Vector3.down * fallRate,ForceMode.Acceleration);
 	}
 	#region UtilityFunctions
 	public NavMeshAgent GetAgent()
