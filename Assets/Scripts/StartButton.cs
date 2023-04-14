@@ -80,6 +80,13 @@ public class StartButton : MonoBehaviour
     {
         SceneManager.LoadScene(levelToLoad);
     }
+	public void LoadSceneByName(string name)
+	{
+		levelToLoad = name;
+		StartEffects();
+		Invoke("LoadScene", 2f);
+
+	}
 	IEnumerator LoadSceneByIndex(int index)
 	{
 		yield return new WaitForSeconds(2);
