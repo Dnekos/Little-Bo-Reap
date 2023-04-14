@@ -55,7 +55,7 @@ public class BattleArena : PuzzleDoor
 	[SerializeField] Vector3 yOffset;
 	[SerializeField] Transform lookPoint;
 	[SerializeField] float camSpawnSphereRadius = 5f;
-	Vector3 finalEnemyPosition = Vector3.zero;
+	public Vector3 finalEnemyPosition = Vector3.zero;
 	bool finalEnemyConfirmed;
 
 
@@ -81,9 +81,9 @@ public class BattleArena : PuzzleDoor
 		//if in the final wave, watch for the last enemy!
 		if (CurrentWave == waves.Length - 1)
 		{
-			if (!finalEnemyConfirmed && SpawnedEnemiesFolder.childCount == 1)
-				finalEnemyConfirmed = true;
-			else if (SpawnedEnemiesFolder.childCount > 1)
+			//if (!finalEnemyConfirmed && SpawnedEnemiesFolder.childCount == 1)
+			//	finalEnemyConfirmed = true;
+			//else if (SpawnedEnemiesFolder.childCount > 1)
 				finalEnemyPosition = SpawnedEnemiesFolder.GetChild(0).transform.position;
 		}
 	}
