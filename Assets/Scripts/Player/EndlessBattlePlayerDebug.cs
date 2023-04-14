@@ -22,7 +22,7 @@ public class EndlessBattlePlayerDebug : MonoBehaviour
         sheepAbilities.sheepFlocks[2].MaxSize = fluffySize;
         sheepAbilities.UpdateFlockUI();
 
-        WorldState.instance.PersistentData.soulsCount += 999;
-        WorldState.instance.PersistentData.bossSoulsCount += 999;
+        WorldState.instance.PersistentData.soulsCount += 54;
+        WorldState.instance.PersistentData.bossSoulsCount += 54;
     }
 }
