@@ -153,9 +153,15 @@ public enum SheepStates
 		//make sure off mesh link is null
 		link = null;
 
-		//get random follow stopping distance
-		//this prevents sheep from clumping up and getting jittery when in a flock behind player
-		agentStoppingDistance = Random.Range(followStoppingDistanceMin, followStoppingDistanceMax);
+        Debug.Log("init sheep");
+        //clear attack data
+        canAttack = true;
+        attackTargetCurrent = null;
+        attackTargets.Clear();
+
+        //get random follow stopping distance
+        //this prevents sheep from clumping up and getting jittery when in a flock behind player
+        agentStoppingDistance = Random.Range(followStoppingDistanceMin, followStoppingDistanceMax);
 
 		isInvulnerable = true;
 		Invoke("DisableSpawnInvuln", invulnTimeOnSpawn);
