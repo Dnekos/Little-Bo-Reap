@@ -14863,7 +14863,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &799240454356266182
 Transform:
   m_ObjectHideFlags: 0
@@ -28963,10 +28963,11 @@ GameObject:
   m_Component:
   - component: {fileID: 6442876334591913550}
   - component: {fileID: 6442876334591913551}
+  - component: {fileID: 5583211507680044576}
+  - component: {fileID: 3736555405604690714}
   - component: {fileID: 3332191420307321854}
   - component: {fileID: 6442876334591913545}
   - component: {fileID: 724469627602778665}
-  - component: {fileID: 5943297945161382545}
   m_Layer: 12
   m_Name: Baba_Yagas_House
   m_TagString: Enemy
@@ -29013,7 +29014,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 6442876334591913538}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.75
+  m_Radius: 8
   m_Speed: 7
   m_Acceleration: 100
   avoidancePriority: 50
@@ -29022,10 +29023,37 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 3
+  m_Height: 36
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 0
+--- !u!65 &5583211507680044576
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6442876334591913538}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 20.80349, y: 7.558735, z: 20.716732}
+  m_Center: {x: 0.5479037, y: 3.2793674, z: -1.3732828}
+--- !u!136 &3736555405604690714
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6442876334591913538}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 8
+  m_Height: 44.38491
+  m_Direction: 1
+  m_Center: {x: 0, y: 16.192425, z: -0}
 --- !u!114 &3332191420307321854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29085,7 +29113,7 @@ MonoBehaviour:
     m_Bits: 128
   NearbyGuys: []
   delayBetweenAttacks: 1
-  StickCollider: {fileID: 9042595787843843793}
+  StickCollider: {fileID: 0}
   anim: {fileID: 724469627602778665}
   distracted: 0
   bellLoc: {x: 0, y: 0, z: 0}
@@ -29180,6 +29208,7 @@ MonoBehaviour:
     Path: 
   spawnPoint: {x: 0, y: 0, z: 0}
   movementRadius: 0
+  stompAtk: {fileID: 11400000, guid: ce2d4d1c327ce564ebb6f9e7d2f8fd96, type: 2}
 --- !u!54 &6442876334591913545
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -29216,19 +29245,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!65 &5943297945161382545
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6442876334591913538}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 12, y: 36, z: 12}
-  m_Center: {x: 0, y: 17.8748, z: 1.83532}
 --- !u!1 &6513762199316502392
 GameObject:
   m_ObjectHideFlags: 0

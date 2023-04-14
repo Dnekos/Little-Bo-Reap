@@ -48,14 +48,16 @@ public class BabaYagasHouseAI : EnemyAI
 	[SerializeField] FMODUnity.EventReference stomp;
 	[SerializeField] FMODUnity.EventReference doorOpen;
 	[SerializeField] FMODUnity.EventReference doorClose;
-
+	
 	bool isSuspended = false;
 
 	float bossFallRate = 2000;
 
 	public Vector3 spawnPoint;
 	public float movementRadius = 100f;
- 
+
+	[SerializeField] EnemyAttack stompAtk;
+
 
 	// Start is called before the first frame update
 	override protected void Start()
@@ -68,6 +70,8 @@ public class BabaYagasHouseAI : EnemyAI
 
 		float armorBarScale = (Health / MaxHealth);
 		HealthBar.localScale = new Vector3(armorBarScale * -1, 1, 1);
+
+		GetAnimator().Play("BBYGH_Reveal_01 1");
 	}
 
 	private void FixedUpdate()
@@ -84,9 +88,11 @@ public class BabaYagasHouseAI : EnemyAI
 			ArmorBarCanvas.SetActive(true);
 		}
 
-		if(GetAnimator().GetBool("isMoving") == true)
+		if(GetAnimator().GetBool("isMoving"))
         {
 			GetAnimator().Play("Baba_Yagas_House_Move");
+			//GetAgent().velocity = -GetAgent().velocity;
+			//RunAttack(stompAtk);
 		}
 
 		CheckPinwheels();
