@@ -40,8 +40,7 @@ public class ParticleObjectPooler : MonoBehaviour
 		}
 
 		// instantiate new object
-		Debug.Log("new " + prefab.name + " pooled");
-		if (MaxInstancesPerPool < pool.Count)
+		if (MaxInstancesPerPool > pool.Count)
 		{
 			GameObject newPooledParticle = Instantiate(prefab, pos, rot, transform);
 			pool.Add(newPooledParticle);
