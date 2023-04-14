@@ -52,6 +52,7 @@ public enum SheepStates
     [SerializeField] float maxSize;
     [SerializeField] float minSize;
     [SerializeField] GameObject meshParent;
+    public float currentSize;
 
 	[Header("Sounds")]
 	[SerializeField] FMODUnity.EventReference biteSound;
@@ -116,6 +117,7 @@ public enum SheepStates
 
         float size = Random.Range(minSize, maxSize);
         meshParent.transform.localScale = new Vector3(size, size, size);
+        currentSize = size;
 
         if (sheepType == 2)
         {
