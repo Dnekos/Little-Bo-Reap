@@ -144,7 +144,7 @@ public class PlayerHealth : Damageable
 
 	public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
 	{
-		if(!isHurt)
+		if(!isHurt && Health > 0)
         {
 			StartCoroutine(HurtCooldown());
 
