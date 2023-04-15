@@ -64,6 +64,8 @@ public class BabaYagasHouseAI : EnemyAI
 	{
 		base.Start();
 
+		isBoss = true;
+
 		spawnPoint = transform.position;
 
 		ArmorBarCanvas.SetActive(true);

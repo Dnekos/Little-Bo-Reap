@@ -63,6 +63,7 @@ public class EnemyAI : EnemyBase
 
 	[HideInInspector] public Transform player;
 	NavMeshAgent agent;
+	[SerializeField] public bool isBoss = false;
 
 	// Start is called before the first frame update
 	override protected void Start()
@@ -264,7 +265,7 @@ public class EnemyAI : EnemyBase
 		if (mustBeExecuted && Health < executionHealthThreshhold)
 			return;
 		// give them hitstun
-		if (atk.DealsHitstun)
+		if (atk.DealsHitstun && isBoss == false)
 		{
 			StopAllCoroutines();
 			StartCoroutine("OnHitStun");
