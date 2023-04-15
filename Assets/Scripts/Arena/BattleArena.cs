@@ -78,13 +78,22 @@ public class BattleArena : PuzzleDoor
 		if (SpawnedEnemiesFolder.childCount == 0 && CurrentWave >= 0 && CurrentWave < waves.Length) // if killed all enemies AND waves started
 			AdvanceWave(); // advance wave
 
+		
+
 		//if in the final wave, watch for the last enemy!
 		if (CurrentWave == waves.Length - 1)
 		{
+			Debug.Log(SpawnedEnemiesFolder.GetChild(0));
+
 			//if (!finalEnemyConfirmed && SpawnedEnemiesFolder.childCount == 1)
 			//	finalEnemyConfirmed = true;
 			//else if (SpawnedEnemiesFolder.childCount > 1)
+			if(SpawnedEnemiesFolder.GetChild(0).GetComponent<EnemyBase>()!=null || SpawnedEnemiesFolder.GetChild(0).GetComponent<BabaYagasHouseAI>() != null)
+            {
+				finalEnemyConfirmed = true;
 				finalEnemyPosition = SpawnedEnemiesFolder.GetChild(0).transform.position;
+			}
+				
 		}
 	}
 
@@ -110,7 +119,7 @@ public class BattleArena : PuzzleDoor
 	virtual protected void AdvanceWave()
 	{
 		IncrementWaveNumber();
-		if (CurrentWave == waves.Length)
+		if (CurrentWave == waves.Length && finalEnemyConfirmed)
 		{
 			WorldState.instance.isInCombat = false;
 
@@ -139,7 +148,7 @@ public class BattleArena : PuzzleDoor
 					Vector3 SpawnPoint = (enemy.SpawnPoint == null) ? enemy.AlternateSpawn : enemy.SpawnPoint.position;
 
 					// get stagger time
-					float stagger = Random.Range(currEnemyPrefab.minSpawnStagger, currEnemyPrefab.maxSpawnStagger);
+					float stagger = Random.Range(currEnemyPrefab.minSpawnStagger, currEnemyPrefab.maxSpawnStagger) + currEnemyPrefab.SpawnWaitTime;
 
 					SpawnPoint = (currEnemyPrefab is FlyingEnemyAI) ? SpawnPoint : FindSpawnPoint(enemy, SpawnPoint);
 
