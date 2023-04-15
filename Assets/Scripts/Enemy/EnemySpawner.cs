@@ -53,9 +53,10 @@ public class EnemySpawner : MonoBehaviour
 
 	protected IEnumerator SpawnEnemy(GameObject enemy, GameObject particle, Vector3 pos)
 	{
-		Instantiate(particle, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder);
+		GameObject spawnPart = Instantiate(particle, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder);
 		yield return new WaitForSeconds(enemy.GetComponent<EnemyAI>().SpawnWaitTime);
 		Instantiate(enemy, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder);
+		Destroy(spawnPart);
 	}
 
 }

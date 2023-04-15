@@ -22,7 +22,6 @@ namespace XNode.Examples.StateGraph
 							anim.GetCurrentAnimatorStateInfo(0).IsName("BBYGH_Fire_Start 1")	||
 							anim.GetCurrentAnimatorStateInfo(0).IsName("BBYGH_Fire_Cycle 1")||
 							anim.GetCurrentAnimatorStateInfo(0).IsName("BBYGH_Spawn_Start 1") || 
-							anim.GetCurrentAnimatorStateInfo(0).IsName("BBYGH_Spawn_Cycle 1") ||
 							anim.GetCurrentAnimatorStateInfo(0).IsName("BBYGH_Reveal_01 1") &&
 							anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f));
 
