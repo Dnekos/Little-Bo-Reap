@@ -51,6 +51,8 @@ public enum SheepStates
     [SerializeField] string petAnimation;
     [SerializeField] float maxSize;
     [SerializeField] float minSize;
+    [SerializeField] GameObject meshParent;
+    public float currentSize;
 
 	[Header("Sounds")]
 	[SerializeField] FMODUnity.EventReference biteSound;
@@ -114,7 +116,8 @@ public enum SheepStates
         base.Start();
 
         float size = Random.Range(minSize, maxSize);
-        transform.localScale = new Vector3(size, size, size);
+        meshParent.transform.localScale = new Vector3(size, size, size);
+        currentSize = size;
 
         if (sheepType == 2)
         {
@@ -152,9 +155,15 @@ public enum SheepStates
 		//make sure off mesh link is null
 		link = null;
 
-		//get random follow stopping distance
-		//this prevents sheep from clumping up and getting jittery when in a flock behind player
-		agentStoppingDistance = Random.Range(followStoppingDistanceMin, followStoppingDistanceMax);
+        Debug.Log("init sheep");
+        //clear attack data
+        canAttack = true;
+        attackTargetCurrent = null;
+        attackTargets.Clear();
+
+        //get random follow stopping distance
+        //this prevents sheep from clumping up and getting jittery when in a flock behind player
+        agentStoppingDistance = Random.Range(followStoppingDistanceMin, followStoppingDistanceMax);
 
 		isInvulnerable = true;
 		Invoke("DisableSpawnInvuln", invulnTimeOnSpawn);
@@ -384,8 +393,9 @@ public enum SheepStates
 
     public void GibSheep()
     {
-        Instantiate(gibs, transform.position, transform.rotation);
-    }
+        //Instantiate(gibs, transform.position, transform.rotation);
+		WorldState.instance.pools.FetchPooledObject(gibs, transform.position + Vector3.up * 1.4f, Quaternion.identity);
+	}
 	public bool IsCommandable()
 	{
 		return currentSheepState == SheepStates.ABILITY || currentSheepState == SheepStates.FOLLOW_PLAYER || currentSheepState == SheepStates.WANDER;
@@ -613,7 +623,7 @@ public enum SheepStates
 
 		rb.angularVelocity = Vector3.zero;
 		rb.velocity = Vector3.zero;
-		Debug.Log(gameObject.name + " ending stunn");
+		//Debug.Log(gameObject.name + " ending stunn");
 		// if sheep were attacking, they can resume attacking 
 		// the condition is needed because actions like vortex and construct should not be resumed
 		SetSheepState(stateAfterStun);//(origState == SheepStates.ATTACK) ? origState : SheepStates.WANDER);

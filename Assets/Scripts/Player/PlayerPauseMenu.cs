@@ -12,6 +12,8 @@ public class PlayerPauseMenu : MonoBehaviour
     public PlayerInput inputs;
     bool isPaused = false;
 
+	string lastActionMap;
+
     //TODO
     //make this better, fix edge cases, prevent inputs in game etc bla bla bla
     public void OnPauseMenu(InputAction.CallbackContext context)
@@ -34,6 +36,7 @@ public class PlayerPauseMenu : MonoBehaviour
         {
 			sfxBus.setPaused(true);
             musicBus.setPaused(true);
+			lastActionMap = inputs.currentActionMap.name;
 			inputs.SwitchCurrentActionMap("PauseMenu");
             pauseMenu.SetActive(true);
             Time.timeScale = 0f;
@@ -45,7 +48,7 @@ public class PlayerPauseMenu : MonoBehaviour
         {
 			sfxBus.setPaused(false);
             musicBus.setPaused(false);
-			inputs.SwitchCurrentActionMap("PlayerMovement");
+			inputs.SwitchCurrentActionMap(lastActionMap);
 			controlMenu.SetActive(false);
             pauseMenu.SetActive(false);
             Time.timeScale = 1f;

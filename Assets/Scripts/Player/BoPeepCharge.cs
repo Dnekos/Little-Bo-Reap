@@ -16,16 +16,23 @@ public class BoPeepCharge : MonoBehaviour
 
 	[Header("End Condition")]
 	[SerializeField] float chargeDuration = 1.5f;
-
 	[SerializeField] PlayerMovement moveController;
-	bool charging;//REVIEW: mentioned this on another review, but I like 'isCharging' more as a name for bools(I'm nitpicking)
+
+	[Header("Stop Killing Yourself")]
+	[SerializeField] LayerMask groundLayer;
+	[SerializeField] float forwardCliffOffset = 5;
+	[SerializeField] float forwardCliffCheckDistance = 3;
+	[SerializeField] float wallCheckDistance = 2;
+	[SerializeField] float wallCheckOffset = 1.3f;
+	bool isGoingToDie;
+	bool isCharging;
 
 	//hold reg max move speed to set it back after.
 	float maxMoveSpeedTemp;
 
 	private void Update()
 	{
-		if(charging)
+		if(isCharging)
 		{
 			AbilityUpdate();
 		}
@@ -36,6 +43,11 @@ public class BoPeepCharge : MonoBehaviour
 		Vector2 MovementVector = new Vector2(0, 1);//REVIEW: maybe make this Vector2 a variable that can be modified in engine
 															//Or, Im guessing you just want to move forward, so maybe you just want to use the player's forward vector
 		moveController.SetMovementVector(MovementVector);
+		LedgeCheck();
+		if (isGoingToDie)
+		{
+			End();
+		}
 		//DEPRECATED
 		/*
 		//set destination
@@ -65,7 +77,7 @@ public class BoPeepCharge : MonoBehaviour
 	public void Begin(Vector3 targettedPos)
 	{
 		Debug.Log("triggering bo peep charge");
-		charging = true;
+		isCharging = true;
 		//set timer to 0
 		this.StartCoroutine(ChargeTimer());
 
@@ -93,7 +105,7 @@ public class BoPeepCharge : MonoBehaviour
 	IEnumerator ChargeTimer()
 	{
 		yield return new WaitForSeconds(chargeDuration);
-		if (charging)
+		if (isCharging)
 			End();
 	}
 
@@ -102,7 +114,7 @@ public class BoPeepCharge : MonoBehaviour
 		GetComponent<PlayerInput>().SwitchCurrentActionMap("PlayerMovement");
 		moveController.SetMovementVector(Vector2.zero);
 		moveController.SetMaxMoveSpeed(maxMoveSpeedTemp);
-		charging = false;
+		isCharging = false;
 		//agent.enabled = false;
 		//rb.isKinematic = false;
 	}
@@ -111,4 +123,27 @@ public class BoPeepCharge : MonoBehaviour
 		End();
 		moveController.OnJump(context);
 	}
+
+	void LedgeCheck()
+	{
+		Debug.Log("ledgeChecking");
+		// shamelessly stolen from enemy ai which was shamelessly stolen from playermovement TODO: combine groundchecks
+		bool ledgeCheck = false;
+		bool wallCheck = false;
+
+		//set ground check
+		ledgeCheck = Physics.Raycast(transform.position + transform.forward * forwardCliffOffset, Vector3.down, forwardCliffCheckDistance, groundLayer);
+
+		wallCheck = Physics.Raycast(transform.position + transform.forward * 1.3f, transform.forward, wallCheckDistance, groundLayer);
+
+		isGoingToDie = !ledgeCheck || wallCheck;
+	}
+	/*
+	private void OnDrawGizmos()
+	{
+		Gizmos.DrawLine(transform.position + transform.forward * forwardCliffOffset, transform.position + (transform.forward * forwardCliffOffset) + Vector3.down * forwardCliffCheckDistance);
+		Gizmos.DrawLine(transform.position + transform.forward * wallCheckOffset, transform.position + transform.forward * wallCheckOffset + transform.forward * wallCheckDistance);
+	}
+	*/
+
 }

@@ -6,6 +6,7 @@ public class FlyingEnemyAI : EnemyBase
 {
     Dictionary<int, float> Cooldowns;
 
+	[Header("Flight")]
     [SerializeField] public int flightPathIndex = 0;
     [SerializeField] Transform frogPrefab;
     [SerializeField] Transform attackPoint;
@@ -22,10 +23,10 @@ public class FlyingEnemyAI : EnemyBase
     [HideInInspector]public Transform player;
     [HideInInspector]public bool attacking;//checks animator to see if we are attacking
 
-    [Header("Health")]
+    [Header("Death")]
     [SerializeField] LayerMask groundMask;
     [SerializeField] float fallForce = 30;
-    [SerializeField] float pauseBeforeSpiral = 1;
+    [SerializeField] float pauseBeforeSpiral = 2;
 
     // Start is called before the first frame update
     override protected void Start()
@@ -113,7 +114,6 @@ public class FlyingEnemyAI : EnemyBase
     {
         anim.SetTrigger("Death");
         GetComponent<SplineFollower>().enabled = false;
-        rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
         StartCoroutine(DeathSpiral());
     }
 
@@ -124,13 +124,18 @@ public class FlyingEnemyAI : EnemyBase
 
 	IEnumerator DeathSpiral()
     {
+		// reset velocity from any hits
+		rb.AddForce(-rb.velocity, ForceMode.VelocityChange);
+
         yield return new WaitForSeconds(pauseBeforeSpiral);
 
-        while (gameObject != null || !gameObject.activeInHierarchy)
+		rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+
+		while (gameObject != null || !gameObject.activeInHierarchy)
         {
             yield return new WaitForFixedUpdate();
-            rb.AddForce(Vector3.down * fallForce, ForceMode.Acceleration);
 
+            rb.AddForce(Vector3.down * fallForce, ForceMode.Acceleration);
         }
     }
 

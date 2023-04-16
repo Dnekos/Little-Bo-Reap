@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4016259675076083572}
   - component: {fileID: 3365873462784824161}
   - component: {fileID: 4042317859643986266}
+  - component: {fileID: 418804483615716531}
   m_Layer: 0
   m_Name: WorldState
   m_TagString: Untagged
@@ -61,6 +62,7 @@ MonoBehaviour:
     fluffyVortexDuration: 0
   PersistentData:
     boughtUpgrades: 0
+    activeUpgrades: 0
     soulsCount: 0
     bossSoulsCount: 0
     currentLevelIndex: 0
@@ -68,9 +70,6 @@ MonoBehaviour:
     goingToBoss: 0
     graveIndexes: 
     doorIndexes: 
-    activeBuilderAbility: 0
-    activeRamAbility: 0
-    activeFluffyAbility: 0
     totalBuilder: 0
     totalRam: 0
     totalFluffy: 0
@@ -81,9 +80,6 @@ MonoBehaviour:
   MusicToggle: {fileID: 11400000, guid: 9bd00c9cd9464204d8a6799a3e7142d3, type: 2}
   currentWorldTheme: 0
   biomeTheme: 0
-  kick:
-    Name: 
-    Value: 0
   player: {fileID: 0}
   HUD: {fileID: 0}
   isInCombat: 0
@@ -278,6 +274,14 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: e19019e0-1817-4f3f-a348-f80bab023c93
     m_ActionName: PauseMenu/PauseMenu[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d7b64118-8f58-430d-9a82-13f456b72760
+    m_ActionName: PauseMenu/TabLeft[/DualSenseGamepadHID/leftShoulder]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 96367a1a-9ff0-4721-81b3-7928ec828724
+    m_ActionName: PauseMenu/TabRight[/DualSenseGamepadHID/rightShoulder,/Keyboard/tab]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: CinematicCameras
@@ -298,3 +302,15 @@ MonoBehaviour:
   cse: {fileID: 11400000, guid: 4de8823a48db57946be67c4bec6bd4c8, type: 2}
   playstation: {fileID: 11400000, guid: d3f6dbb121f04534c89e0fb0aa233573, type: 2}
   xbox: {fileID: 11400000, guid: de0255a6de4fdac4dbbc45400de71296, type: 2}
+--- !u!114 &418804483615716531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4016259675076083575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dbd55fdedcf76a43bafc111476a0f1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -17,8 +17,13 @@ public class KillAllSheep : MonoBehaviour
 			PlayerSheepAbilities player = other.GetComponent<PlayerSheepAbilities>();
 
 			player.DeleteAllSheep();
-            player.sheepFlocks[(int)sheepToSubtract].MaxSize = Mathf.Max(player.sheepFlocks[(int)sheepToSubtract].MaxSize - subtractAmount, MinimumSheep);
-            player.UpdateFlockUI();
+			player.sheepFlocks[(int)sheepToSubtract].MaxSize = Mathf.Max(player.sheepFlocks[(int)sheepToSubtract].MaxSize - subtractAmount, MinimumSheep);
+			player.UpdateFlockUI();
+
+			// set save data
+			WorldState.instance.PersistentData.totalBuilder = player.sheepFlocks[(int)SheepTypes.BUILD].MaxSize;
+			WorldState.instance.PersistentData.totalRam = player.sheepFlocks[(int)SheepTypes.RAM].MaxSize;
+			WorldState.instance.PersistentData.totalFluffy = player.sheepFlocks[(int)SheepTypes.FLUFFY].MaxSize;
         }
     }
 }

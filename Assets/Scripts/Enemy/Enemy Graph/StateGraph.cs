@@ -10,18 +10,23 @@ namespace XNode.Examples.StateGraph {
 		//public StateNode current;
 
 		public EnemyAI currentUser = null;
-
+		public StateNode LeftMost = null;
 
 
 		public void AnalyzeGraph(EnemyAI caller)
 		{
 			currentUser = caller;
-			
-			FindLeftmostNode()?.Evaluate();
+
+			if (LeftMost == null)
+				FindLeftmostNode();
+			if (LeftMost != null)
+				LeftMost.Evaluate();
+			else
+				Debug.LogError("Missing LeftMost!");
 		}
 
 		// TODO: make this only run once on compile
-		StateNode FindLeftmostNode()
+		public StateNode FindLeftmostNode()
 		{
 			if (nodes.Count <= 0)
 				Debug.LogError("Stategraph " + this.name + " has no nodes!");

@@ -16,10 +16,7 @@ public class CheckpointDebugSkip : MonoBehaviour
         {
 			hasAdded = true;
 			PlayerSheepAbilities player = WorldState.instance.player.GetComponent<PlayerSheepAbilities>();
-			player.sheepFlocks[(int)SheepTypes.BUILD].MaxSize += buildToAdd;
-			player.sheepFlocks[(int)SheepTypes.RAM].MaxSize += ramToAdd;
-			player.sheepFlocks[(int)SheepTypes.FLUFFY].MaxSize += fluffyToAdd;
-			player.UpdateFlockUI();
+			player.AddToFlock(buildToAdd, ramToAdd, fluffyToAdd);
 		}
 		
 	}

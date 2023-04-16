@@ -16,18 +16,22 @@ public class CinematicCameras : MonoBehaviour
     {
 		Cameras[0].enabled = true;
 		for (int i = 1; i < Cameras.Length; i++)
-			Cameras[i].enabled = false;
+			if (Cameras[i] != null)
+				Cameras[i].enabled = false;
 	}
 
 	public void OnCamChange(InputAction.CallbackContext context)
 	{
 		if (context.performed)
 		{
-			Cameras[activeCam].enabled = false;
-			activeCam = (int)context.ReadValue<float>();
-			Debug.Log(activeCam + " " + Cameras[activeCam].gameObject);
-			Cameras[activeCam].enabled = true;
-
+			int value = (int)context.ReadValue<float>();
+			if (value < Cameras.Length && Cameras[value] != null)
+			{
+				Cameras[activeCam].enabled = false;
+				activeCam = value;
+				Debug.Log(activeCam + " " + Cameras[activeCam].gameObject);
+				Cameras[activeCam].enabled = true;
+			}
 			// dunno if this is needed lmao
 			//Camera.SetupCurrent(Cameras[activeCam]);
 		}

@@ -143,6 +143,8 @@ public class WorldState : MonoBehaviour
 	public GameObject player;
 	[HideInInspector]
 	public HUDManager HUD;
+	[HideInInspector]
+	public ParticleObjectPooler pools;
 
 	[Header("Booting player")]
 	public bool isInCombat;
@@ -157,6 +159,7 @@ public class WorldState : MonoBehaviour
 			instance = this;
 			Respawn.Add(RespawnPlayer);
 			player = GameObject.FindGameObjectWithTag("Player");
+			pools = GetComponent<ParticleObjectPooler>();
 
 			Debug.Log("made World Instance");
 
@@ -338,6 +341,7 @@ public class WorldState : MonoBehaviour
 		PersistentData.goingToBoss = true;
 		SaveGame(levelIndex);
     }
+
 	#region saving
 	// https://www.red-gate.com/simple-talk/development/dotnet-development/saving-game-data-with-unity/
 	/// <summary>
@@ -369,31 +373,75 @@ public class WorldState : MonoBehaviour
 		if (File.Exists(filepath))
 		{
 			// open file
-			BinaryFormatter bf = new BinaryFormatter();
 			FileStream file = File.Open(filepath, FileMode.Open);
-			PersistentData = (SaveData)bf.Deserialize(file);
+			LoadDataFromSave(LoadFromStream(file));
 			file.Close();
-
-			// set up interactables (targets, pinwheels, arenas, graves)
-			for (int i = 0; i < PersistentData.doorIndexes.Count; i++)
-				doors[PersistentData.doorIndexes[i]].OpenDoor();
-			Debug.Log("graves:"+PersistentData.graveIndexes);
-			Debug.Log(SheepGraves.Length);
-			for (int i = 0; i < PersistentData.graveIndexes.Count; i++)
-				SheepGraves[PersistentData.graveIndexes[i]].InteractBackend();
-			Debug.Log("checkpoint:" + PersistentData.currentCheckpoint + " level:" + PersistentData.currentLevelIndex);
-
-			// check if correct scene
-			if (PersistentData.currentLevelIndex != SceneManager.GetActiveScene().buildIndex)
-				PersistentData.currentCheckpoint = -1;
-
-			// move player if found loaded stuff
-			if (PersistentData.currentCheckpoint > -1)
-				Respawn.Raise();
-			Debug.Log("Game data loaded!");
 		}
 		else
-			Debug.LogError("There is no save data!");
+			Debug.LogWarning("There is no save data!");
+	}
+	public void LoadGame(TextAsset savefile)
+	{
+		if (savefile != null)
+		{
+			// open file
+			LoadDataFromSave(LoadFromStream(new MemoryStream(savefile.bytes)));
+		}
+		else
+			Debug.LogWarning("There is no save data!");
+	}
+	void LoadDataFromSave(SaveData data)
+	{
+		PersistentData = data;
+
+		// set up interactables (targets, pinwheels, arenas, graves)
+		for (int i = 0; i < PersistentData.doorIndexes.Count; i++)
+			doors[PersistentData.doorIndexes[i]].OpenDoor();
+		Debug.Log("graves:" + PersistentData.graveIndexes);
+		Debug.Log(SheepGraves.Length);
+		for (int i = 0; i < PersistentData.graveIndexes.Count; i++)
+			SheepGraves[PersistentData.graveIndexes[i]].InteractBackend();
+		Debug.Log("checkpoint:" + PersistentData.currentCheckpoint + " level:" + PersistentData.currentLevelIndex);
+
+		// check if correct scene
+		if (PersistentData.currentLevelIndex != SceneManager.GetActiveScene().buildIndex)
+			PersistentData.currentCheckpoint = -1;
+
+		// move player if found loaded stuff
+		if (PersistentData.currentCheckpoint > -1)
+			Respawn.Raise();
+	}
+
+
+	static SaveData LoadFromStream(Stream stream)
+	{
+		if (stream != null)
+		{
+			// open file
+
+			BinaryFormatter bf = new BinaryFormatter();
+			SaveData data = (SaveData)bf.Deserialize(stream);
+
+			// set up interactables (targets, pinwheels, arenas, graves)
+			Debug.Log("Game data loaded!");
+			return data;
+		}
+
+		Debug.LogWarning("There is no save data!");
+		return new SaveData();
+	}
+
+	static public void OverwriteSave(TextAsset textAsset)
+	{
+		SaveData newdata = LoadFromStream(new MemoryStream(textAsset.bytes));
+
+		BinaryFormatter bf = new BinaryFormatter();
+		FileStream file = File.Create(Application.persistentDataPath
+					 + "/SaveData.dat");
+		bf.Serialize(file, newdata);
+		file.Close();
+		Debug.Log("Game data saved! Saved to " + Application.persistentDataPath
+					 + "/SaveData.dat");
 	}
 
 	static public int GetLastLevel()
@@ -410,7 +458,7 @@ public class WorldState : MonoBehaviour
 			Debug.Log("Game data loaded! last level was " + sp.currentLevelIndex);
 			return sp.currentLevelIndex;
 		}
-		Debug.LogError("There is no save data!");
+		Debug.LogWarning("There is no save data!");
 		return -1;
 	}
 

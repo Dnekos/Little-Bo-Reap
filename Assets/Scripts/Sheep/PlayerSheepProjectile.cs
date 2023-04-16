@@ -16,6 +16,7 @@ public class PlayerSheepProjectile : MonoBehaviour
     [SerializeField] SheepAttack launchAttack;
     [SerializeField] GameObject blackSheepParticles;
     [SerializeField] GameObject gibs;
+	[SerializeField] GameObject sheepMesh;
     public bool isBlackSheep = false;
 	public int SheepType;
     Rigidbody rb;
@@ -42,6 +43,11 @@ public class PlayerSheepProjectile : MonoBehaviour
 		FMODUnity.RuntimeManager.AttachInstanceToGameObject(eventInst, this.transform, rb);
 		eventInst.start();
 	}
+
+	public void SetMeshScale(float size)
+    {
+		sheepMesh.transform.localScale = new Vector3(size, size, size);
+    }
 
 	public void LaunchProjectile()
     {

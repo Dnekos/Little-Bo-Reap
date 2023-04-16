@@ -37,6 +37,7 @@ public class BabaYagasHouseAI : EnemyAI
 	[SerializeField] GameObject pinwheelObjectRight;
 	[SerializeField] ParticleSystem destroyParticles;
 	private bool armorBroken = false;
+	private bool armorRecentlyBroken = false;
 
 	[Header("Game End Stuff")]
 	[SerializeField] GameObject endGameObject;
@@ -47,19 +48,23 @@ public class BabaYagasHouseAI : EnemyAI
 	[SerializeField] FMODUnity.EventReference stomp;
 	[SerializeField] FMODUnity.EventReference doorOpen;
 	[SerializeField] FMODUnity.EventReference doorClose;
-
+	
 	bool isSuspended = false;
 
 	float bossFallRate = 2000;
 
 	public Vector3 spawnPoint;
 	public float movementRadius = 100f;
- 
+
+	[SerializeField] EnemyAttack stompAtk;
+
 
 	// Start is called before the first frame update
 	override protected void Start()
 	{
 		base.Start();
+
+		isBoss = true;
 
 		spawnPoint = transform.position;
 
@@ -67,6 +72,8 @@ public class BabaYagasHouseAI : EnemyAI
 
 		float armorBarScale = (Health / MaxHealth);
 		HealthBar.localScale = new Vector3(armorBarScale * -1, 1, 1);
+
+		GetAnimator().Play("BBYGH_Reveal_01 1");
 	}
 
 	private void FixedUpdate()
@@ -83,10 +90,13 @@ public class BabaYagasHouseAI : EnemyAI
 			ArmorBarCanvas.SetActive(true);
 		}
 
-		if(GetAnimator().GetBool("isMoving") == true)
+		if(GetAnimator().GetBool("isMoving"))
         {
 			GetAnimator().Play("Baba_Yagas_House_Move");
+			//GetAgent().velocity = -GetAgent().velocity;
+			//RunAttack(stompAtk);
 		}
+
 
 		CheckPinwheels();
 	}
@@ -180,7 +190,7 @@ public class BabaYagasHouseAI : EnemyAI
 
     public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
     {
-		if (armorBroken == true && !spawningEnemies)
+		if (armorBroken == true && !spawningEnemies && armorRecentlyBroken == false)
 		{
 			base.TakeDamage(atk, attackForward, damageAmp, 0.0f);//no knockback
 			if (Health != MaxHealth || Health >= executionHealthThreshhold)
@@ -192,7 +202,7 @@ public class BabaYagasHouseAI : EnemyAI
 			else
 				HealthBarCanvas.SetActive(false);
 		}
-		if (atk.name == "Ram_Attack_Charge" && armorBroken == false)
+		else if (atk.name == "Ram_Attack_Charge" && armorBroken == false)
 		{
 			ArmorBarCanvas.SetActive(false);
 			HealthBarCanvas.SetActive(true);
@@ -202,9 +212,21 @@ public class BabaYagasHouseAI : EnemyAI
 			}
 			destroyParticles.Play(true);
 			armorBroken = true;
-			//GetAnimator().Play("BBYGH_Stun 1");
-		}
+			GetAnimator().Play("BBYGH_Stun 1");
+			//I-Frames
+			StartCoroutine(ShieldRecentlyBroken());
 
+			//armor break sound
+		}
+		//add a section for attacks that dont break shield for the sound 
+
+	}
+
+	public IEnumerator ShieldRecentlyBroken()
+	{
+		armorRecentlyBroken = true;
+		yield return new WaitForSeconds(0.5f);
+		armorRecentlyBroken = false;
 	}
 
 	public void StopMovement()

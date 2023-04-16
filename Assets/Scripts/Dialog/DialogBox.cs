@@ -5,6 +5,7 @@ using System.Data;
 using TMPro;
 using UnityEngine.InputSystem;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class DialogBox : MonoBehaviour
 {
@@ -44,6 +45,8 @@ public class DialogBox : MonoBehaviour
 	PlayerInput inputs;
 	[SerializeField]
 	GameEvent RespawnEvent;
+
+	[SerializeField] bool isFinalConvo = false;
 
 	private void Awake()
 	{
@@ -135,6 +138,19 @@ public class DialogBox : MonoBehaviour
 		// player look
 		if (player != null)
 			player.StopLooking();
+
+		if (isFinalConvo == true)
+		{
+            // save game
+            if (WorldState.instance != null)
+            {
+                WorldState.instance.SetSaveNextLevel(SceneManager.GetSceneByName("Main_Menu").buildIndex);
+            }
+
+            FMOD.Studio.Bus myBus = FMODUnity.RuntimeManager.GetBus("bus:/SFX");
+            myBus.stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            SceneManager.LoadScene("Main_Menu");
+        }
 
 	}
 	#endregion
@@ -271,4 +287,8 @@ public class DialogBox : MonoBehaviour
 		TextBody.spriteAsset = newAsset;
 	}
 
+	public void SetFinalDialogue(bool setting) //hacky and stupid way to make the final ending work
+	{
+		isFinalConvo = setting;
+	}
 }

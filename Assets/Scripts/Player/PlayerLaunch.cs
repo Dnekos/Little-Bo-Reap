@@ -97,6 +97,7 @@ public class PlayerLaunch : MonoBehaviour
 						launchSheep.isBlackSheep = flocks.GetActiveSheep(flockType)[i].isBlackSheep;
 						launchSheep.LaunchProjectile();
 						launchSheep.SheepType = (int)flockType;
+						launchSheep.SetMeshScale(flocks.GetActiveSheep(flockType)[i].currentSize);
 
 						flocks.GetActiveSheep(flockType)[i].KillSheep();
 

@@ -19,9 +19,12 @@ public class SelectOnEnable : MonoBehaviour
 	}
 	private void OnDisable()
 	{
+		if (focusStack.Count <= 0) // edge case basically only happeneings when things go out of memory (like quitting the game)
+			return;
+
 		do
 		{
-			Debug.Log("popping "+ focusStack.Pop()+" from UI Stack");
+			Debug.Log("popping " + focusStack.Pop() + " from UI Stack");
 
 		} while (focusStack.Count > 0 && (focusStack.Peek() == null || !focusStack.Peek().activeInHierarchy));
 

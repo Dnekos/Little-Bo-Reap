@@ -172,8 +172,10 @@ public class PlayerGothMode : MonoBehaviour
 			GothSounds();
 			if (playerSheep.GetTotalSheepCount() < MinSheep)
 			{
-				playerSheep.GoGothMode();
+				gothMode = GothState.Goth;
 				SetGothVisual();
+				playerSheep.GoGothMode();
+				
 
 			}
 			else
