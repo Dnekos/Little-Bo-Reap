@@ -43,20 +43,22 @@ public class OptionsController : MonoBehaviour
 	{
 		if (!gameObject.activeInHierarchy)
 			return;
+
 		if (currentTab == Tab1)
 		{
 			currentTab = Tab2;
+			SwitchToTab(Controls);
 		}
 		else if (currentTab == Tab2)
 		{
 			currentTab = Tab3;
+			SwitchToTab(Credits);
 		}
 		else if (currentTab == Tab3)
 		{
 			currentTab = Tab1;
+			SwitchToTab(Options);
 		}
-
-		SwitchToTab(currentTab);
 	}
 
 	private void NavigateToPreviousTab()
@@ -67,30 +69,35 @@ public class OptionsController : MonoBehaviour
 		if (currentTab == Tab1)
 		{
 			currentTab = Tab3;
+			SwitchToTab(Credits);
 		}
 		else if (currentTab == Tab2)
 		{
 			currentTab = Tab1;
+			SwitchToTab(Options);
 		}
 		else if (currentTab == Tab3)
 		{
 			currentTab = Tab2;
+			SwitchToTab(Controls);
 		}
 
-		SwitchToTab(currentTab);
+		//SwitchToTab(currentTab);
 	}
 
-	private void SwitchToTab(GameObject tab)
+	public void SwitchToTab(GameObject tab)
 	{
 		Options.SetActive(false);
 		Controls.SetActive(false);
 		Credits.SetActive(false);
 
+		tab.SetActive(true);
+		/*
 		if (tab == Tab1) Options.SetActive(true);
 		else if (tab == Tab2) Controls.SetActive(true);
 		else if (tab == Tab3) Credits.SetActive(true);
-
-		SelectedGameObject.transform.SetParent(tab.transform);
-		SelectedGameObject.transform.localPosition = new Vector2(0, 0);
+		*/
+		//SelectedGameObject.transform.SetParent(tab.transform);
+		//SelectedGameObject.transform.localPosition = new Vector2(0, 0);
 	}
 }
