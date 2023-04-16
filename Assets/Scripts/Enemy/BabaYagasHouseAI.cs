@@ -43,11 +43,8 @@ public class BabaYagasHouseAI : EnemyAI
 	[SerializeField] GameObject endGameObject;
 
 	[Header("Sounds")]
-	[SerializeField]FMODUnity.EventReference fire;
-	[SerializeField] FMODUnity.EventReference creaking;
-	[SerializeField] FMODUnity.EventReference stomp;
-	[SerializeField] FMODUnity.EventReference doorOpen;
-	[SerializeField] FMODUnity.EventReference doorClose;
+	[SerializeField] FMODUnity.EventReference armorBreakingSFX;
+	[SerializeField] FMODUnity.EventReference armorBlockingSFX;
 	
 	bool isSuspended = false;
 
@@ -216,7 +213,7 @@ public class BabaYagasHouseAI : EnemyAI
 			//I-Frames
 			StartCoroutine(ShieldRecentlyBroken());
 
-			//armor break sound
+			FMODUnity.RuntimeManager.PlayOneShot(armorBreakingSFX,transform.position);
 		}
 		//add a section for attacks that dont break shield for the sound 
 
