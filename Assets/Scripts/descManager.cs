@@ -14,45 +14,50 @@ public class descManager : MonoBehaviour
 
     [SerializeField] string desc;
 
-    Vector3 panelPosition;
+	Image panelImage;
+	RectTransform rt;
+	Vector3[] corners;
 
-    private void Start()
+	private void Start()
     {
-        RectTransform rt = GetComponent<RectTransform>();
-        Vector3[] corners = new Vector3[4];
-        rt.GetWorldCorners(corners);
+        rt = GetComponent<RectTransform>();
+        corners = new Vector3[4];
+		panelImage = panel.GetComponent<Image>();
+	}
 
-        panelPosition = (corners[3] + corners[2]) * 0.5f;
-    }
+	void OpenTooltip()
+	{
+		descTextBox.enabled = true;
+		panelImage.enabled = true;
 
-    public void MouseOver()
+		rt.GetWorldCorners(corners);
+		panel.transform.position = (corners[3] + corners[2]) * 0.5f;
+		descTextBox.text = desc;
+	}
+	void CloseTooltip()
+	{
+		descTextBox.enabled = false;
+		panelImage.enabled = false;
+		descTextBox.text = "";
+	}
+
+	public void MouseOver()
     {
-        descTextBox.enabled = true;
-        panel.GetComponent<Image>().enabled = true;
-
-        panel.transform.position = panelPosition;
-        descTextBox.text = desc;
+		OpenTooltip();
     }
 
     public void MouseExit()
     {
-        descTextBox.enabled = false;
-        panel.GetComponent<Image>().enabled = false;
-        descTextBox.text = "";
+		CloseTooltip();
     }
 
     public void OnSelect()
     {
-        descTextBox.enabled = true;
-        panel.GetComponent<Image>().enabled = true;
-        panel.transform.position = panelPosition;
-        descTextBox.text = desc;
+		OpenTooltip();
     }
 
     public void OnDeselect()
     {
-        descTextBox.enabled = false;
-        panel.GetComponent<Image>().enabled = false;
-        descTextBox.text = "";
+		CloseTooltip();
     }
 }
