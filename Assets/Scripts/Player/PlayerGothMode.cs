@@ -58,6 +58,7 @@ public class PlayerGothMode : MonoBehaviour
 
 	PlayerSheepAbilities playerSheep;
 	PlayerMovement movement;
+	PlayerBuildWall wall;
 	int previousMusic;
 	bool musicMute, visualsOn = false;
 
@@ -86,7 +87,7 @@ public class PlayerGothMode : MonoBehaviour
 		ws = FindObjectOfType<WorldState>();
 		previousMusic = ws.currentWorldTheme;
 		music = FMODUnity.RuntimeManager.GetBus("bus:/Music/Non-Goth");
-		
+		Debug.LogError(music.isValid());
 
 	}
 
@@ -170,13 +171,13 @@ public class PlayerGothMode : MonoBehaviour
 		if (context.started && GothMeterCount == 1f && gothMode == GothState.Normal)
 		{
 			GothSounds();
+			wall.CancelWall();
+
 			if (playerSheep.GetTotalSheepCount() < MinSheep)
 			{
 				gothMode = GothState.Goth;
 				SetGothVisual();
 				playerSheep.GoGothMode();
-				
-
 			}
 			else
 			{
