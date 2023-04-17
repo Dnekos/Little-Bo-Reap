@@ -130,6 +130,7 @@ public class FlyingEnemyAI : EnemyBase
         yield return new WaitForSeconds(pauseBeforeSpiral);
 
 		rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+		gameObject.layer = 21;
 
 		while (gameObject != null || !gameObject.activeInHierarchy)
         {
