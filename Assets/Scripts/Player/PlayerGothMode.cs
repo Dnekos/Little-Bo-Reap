@@ -84,11 +84,10 @@ public class PlayerGothMode : MonoBehaviour
 		anim = GetComponent<PlayerAnimationController>().playerAnimator;
 		input = GetComponent<PlayerInput>();
 		movement = GetComponent<PlayerMovement>();
+		wall = GetComponent<PlayerBuildWall>();
 		ws = FindObjectOfType<WorldState>();
 		previousMusic = ws.currentWorldTheme;
 		music = FMODUnity.RuntimeManager.GetBus("bus:/Music/Non-Goth");
-		Debug.LogError(music.isValid());
-
 	}
 
 	void ResetGoth()
@@ -126,6 +125,10 @@ public class PlayerGothMode : MonoBehaviour
 			gothMode = GothState.Normal;
 			gothParticles.SetActive(false);
 
+			musicMute = false;
+			visualsOn = false;
+			music.setMute(false);
+
 
 		}
 		else if (gothMode == GothState.Hammer && !anim.GetCurrentAnimatorStateInfo(0).IsName(hammerAnimation))
@@ -155,14 +158,15 @@ public class PlayerGothMode : MonoBehaviour
 		{
 			GothMeterCount = Mathf.Clamp01(GothMeterCount + (chargeTimeInverse * Time.deltaTime));
 			gothMeter.ChangeFill(GothMeterCount);
-			if (musicMute && visualsOn)
+
+			/*if (musicMute && visualsOn)
 			{
 				musicMute = false;
 				visualsOn = false;
 				music.setMute(false);
 
 			}
-
+			*/
 		}
 	}
 

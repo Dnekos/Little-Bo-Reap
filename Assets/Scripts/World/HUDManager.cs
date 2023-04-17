@@ -156,7 +156,7 @@ public class HUDManager : MonoBehaviour
 			}
 			else if(currentPosition == 0)
 			{
-				activePanelChange.Invoke(sheepIcons[currentFlock].Marker);
+				//activePanelChange.Invoke(sheepIcons[currentFlock].Marker);
 			}
 
 			//You can either use the instant move or the lower one which lerps between the points
