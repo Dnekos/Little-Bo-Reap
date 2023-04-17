@@ -13,8 +13,12 @@ MonoBehaviour:
   m_Name: Tutorial_3
   m_EditorClassIdentifier: 
   script:
-  - body: Oh, hey there... That gap's too big to cross with a jump. You could try
-      dashing with <Dash>, though...
+  - body: Oh, hey there... That gap's too big to cross with a jump.
+    changeCamera: 0
+    CameraTransitionSpeed: 0
+    CameraPos: {x: 0, y: 0, z: 0}
+    CameraEuler: {x: 0, y: 0, z: 0}
+  - body: You could try dashing with <Dash>, though...
     changeCamera: 0
     CameraTransitionSpeed: 0
     CameraPos: {x: 0, y: 0, z: 0}

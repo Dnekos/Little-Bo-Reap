@@ -13,14 +13,23 @@ MonoBehaviour:
   m_Name: Tutorial_5 1
   m_EditorClassIdentifier: 
   script:
-  - body: Say, aren't you that prodigy girl from the village? Makes sense, considering
-      how quickly you figured out necromancy.
+  - body: Say, aren't you that prodigy girl from the village?
+    changeCamera: 0
+    CameraTransitionSpeed: 0
+    CameraPos: {x: 0, y: 0, z: 0}
+    CameraEuler: {x: 0, y: 0, z: 0}
+  - body: Makes sense, considering how quickly you figured out necromancy.
     changeCamera: 0
     CameraTransitionSpeed: 0
     CameraPos: {x: 0, y: 0, z: 0}
     CameraEuler: {x: 0, y: 0, z: 0}
   - body: Y'know, I died because I wanted to go learn magic from Baba Yaga just like
-      you. Got too excited, and fell off a cliff.
+      you.
+    changeCamera: 0
+    CameraTransitionSpeed: 0
+    CameraPos: {x: 0, y: 0, z: 0}
+    CameraEuler: {x: 0, y: 0, z: 0}
+  - body: I got too excited, and fell off a cliff.
     changeCamera: 0
     CameraTransitionSpeed: 0
     CameraPos: {x: 0, y: 0, z: 0}
