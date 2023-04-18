@@ -50,12 +50,18 @@ public class KioskMode : MonoBehaviour
 
     public void OnMouseMove(InputAction.CallbackContext context)
     {
-        currentTime = 0f;
-        if(uiHidden)
+        Debug.Log("onmousemove");
+
+        if(context.performed)
         {
-            uiHidden = false;
-            UI.SetActive(false);
+            currentTime = 0f;
+            if (uiHidden)
+            {
+                uiHidden = false;
+                UI.SetActive(true);
+            }
         }
+   
     }
 
     IEnumerator StartSpin()
