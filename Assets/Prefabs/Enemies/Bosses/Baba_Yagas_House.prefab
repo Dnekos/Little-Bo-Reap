@@ -28605,6 +28605,7 @@ MonoBehaviour:
       Data4: 0
     Path: 
   player: {fileID: 0}
+  isBoss: 0
   StompSpawnPoint: {fileID: 1124950815098991842}
   StompDamage: 20
   enemiesSpawned: 0
@@ -28615,6 +28616,8 @@ MonoBehaviour:
   fireBreathSpawnPoint: {fileID: 5779326986050035076}
   rangedAttackDamage: 20
   rangedAttackSpawnPoint: {fileID: 4790186272744044975}
+  rangedAttackIndicator: {fileID: 1029507160715448039, guid: 9631e9957d58d8e4eac04ffac6127216,
+    type: 3}
   ArmorBarCanvas: {fileID: 8049784747517496648}
   ArmorBar: {fileID: 3376745280503848290}
   HealthBarCanvas: {fileID: 5712815411957654900}
@@ -38461,7 +38464,7 @@ PrefabInstance:
     - target: {fileID: 8376771597097552927, guid: e53d236ee4445d846bc10c7d16ba59a0,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8683270704364512665, guid: e53d236ee4445d846bc10c7d16ba59a0,
         type: 3}
@@ -38899,7 +38902,7 @@ PrefabInstance:
     - target: {fileID: 8376771597097552927, guid: e53d236ee4445d846bc10c7d16ba59a0,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8683270704364512665, guid: e53d236ee4445d846bc10c7d16ba59a0,
         type: 3}

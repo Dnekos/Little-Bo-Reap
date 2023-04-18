@@ -24,8 +24,10 @@ public class BabaYagasHouseAI : EnemyAI
 	[Header("Ranged Attack")]
 	[SerializeField] float rangedAttackDamage;
     [SerializeField] Transform rangedAttackSpawnPoint;
+	[SerializeField] ParticleSystem rangedAttackIndicator;
 
-	[Header("Healthbar")]
+
+[Header("Healthbar")]
 	[SerializeField] GameObject ArmorBarCanvas;
 	[SerializeField] Transform ArmorBar;
 	[SerializeField] GameObject HealthBarCanvas;
@@ -187,9 +189,29 @@ public class BabaYagasHouseAI : EnemyAI
 
 	}
 
-
-    public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
+	public void CreateAttackIndicator()
     {
+		//indicator
+		//at the player position, raycast down until you hit the floor, and instantiate the particle system 
+
+		RaycastHit hit;
+		if (Physics.Raycast(player.transform.position, transform.TransformDirection(Vector3.down), out hit, Mathf.Infinity))
+		{
+			//if((groundMask & 1 << hit.collider.gameObject.layer) == 1)//ground layer
+			if (6 == hit.collider.gameObject.layer && Health >= 0)
+			{
+				ParticleSystem indicator = Instantiate(rangedAttackIndicator, (hit.point + new Vector3(0f,0.1f,0f)), player.rotation);//that vector3 is to prevent z-fighting
+			}
+		}
+
+	}
+
+	public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
+    {
+		if(GetAnimator().GetCurrentAnimatorStateInfo(0).IsName("BBYGH_Reveal_01 1"))
+        {
+			return;
+        }
 		if (armorBroken == true && !spawningEnemies && armorRecentlyBroken == false)
 		{
 			base.TakeDamage(atk, attackForward, damageAmp, 0.0f);//no knockback
@@ -202,7 +224,7 @@ public class BabaYagasHouseAI : EnemyAI
 			else
 				HealthBarCanvas.SetActive(false);
 		}
-		else if (atk.name == "Ram_Attack_Charge" && armorBroken == false)
+		else if ((atk.name == "Ram_Attack_Charge" || atk.name == "HammerAttack") && armorBroken == false)
 		{
 			ArmorBarCanvas.SetActive(false);
 			HealthBarCanvas.SetActive(true);
