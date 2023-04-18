@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class BigGuyAI : EnemyAI
 {
 	[Header("HealthBar")]
 	[SerializeField] public GameObject HealthBarCanvas;
-	[SerializeField] public Transform[] HPBars;
+	[SerializeField] public Image HPBar;
 
 	[Header("Shockwave")]
 	[SerializeField] Transform ShockwaveSpawnPoint;
@@ -22,7 +23,7 @@ public class BigGuyAI : EnemyAI
 
 	void FixedUpdate()
     {
-		if (currentEnemyState == EnemyStates.HITSTUN || executeTrigger.active == true)
+		if (currentEnemyState == EnemyStates.HITSTUN || executeTrigger.activeInHierarchy == true)
         {
 			GetAnimator().Play("BigGuy_Stun");
         }
@@ -58,9 +59,9 @@ public class BigGuyAI : EnemyAI
 		if (Health != MaxHealth && Health > executionHealthThreshhold)
 		{
 			HealthBarCanvas.SetActive(true);
-			float healthbarScale = 1 - (Health / MaxHealth);
-			HPBars[0].localScale = new Vector3(healthbarScale, 1, 1);
-			HPBars[1].localScale = new Vector3(healthbarScale * -1, 1, 1);
+			float healthbarScale = (Health / MaxHealth);
+			HPBar.fillAmount = healthbarScale;
+			//HPBars[1].localScale = new Vector3(healthbarScale * -1, 1, 1);
 		}
 		else
 			HealthBarCanvas.SetActive(false);

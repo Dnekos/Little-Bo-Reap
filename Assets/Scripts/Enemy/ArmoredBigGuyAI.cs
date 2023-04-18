@@ -6,8 +6,7 @@ using UnityEngine.AI;
 public class ArmoredBigGuyAI : BigGuyAI
 {
     [Header("Armor")]
-	[SerializeField] GameObject ArmorBarCanvas;
-	[SerializeField] Transform[] ArmorBars;
+	[SerializeField] GameObject ArmorBarUI;
     [SerializeField] GameObject armorObject;
     [SerializeField] ParticleSystem destroyParticles;
     [SerializeField] FMODUnity.EventReference armorBreakSFX;
@@ -18,15 +17,11 @@ public class ArmoredBigGuyAI : BigGuyAI
     {
         base.Start();
 
-        ArmorBarCanvas.SetActive(true);
+		ArmorBarUI.SetActive(true);
+		HealthBarCanvas.SetActive(false);
+	}
 
-        float armorBarScale = (Health / MaxHealth);
-        ArmorBars[0].localScale = new Vector3(armorBarScale, 1, 1);
-        ArmorBars[1].localScale = new Vector3(armorBarScale * -1, 1, 1);
-
-    }
-
-    public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
+	public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
     {
         if(armorBroken == true && armorRecentlyBroken == false)
         {
@@ -36,15 +31,15 @@ public class ArmoredBigGuyAI : BigGuyAI
             {
                 HealthBarCanvas.SetActive(true);
                 float healthbarScale = (Health / MaxHealth);
-                HPBars[0].localScale = new Vector3(healthbarScale, 1, 1);
-                HPBars[1].localScale = new Vector3(healthbarScale * -1, 1, 1);
-            }
-            else
+				HPBar.fillAmount = healthbarScale;
+
+			}
+			else
                 HealthBarCanvas.SetActive(false);
         }
         else if((atk.name == "Ram_Attack_Charge" || atk.name == "HammerAttack") && armorBroken == false)
         {
-            ArmorBarCanvas.SetActive(false);
+			ArmorBarUI.SetActive(false);
             HealthBarCanvas.SetActive(true);
             armorObject.SetActive(false);
             destroyParticles.Play(true);
