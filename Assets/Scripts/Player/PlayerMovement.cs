@@ -387,12 +387,12 @@ public class PlayerMovement : MonoBehaviour
             //apply the dash
             if (moveDirection.magnitude == 0)
             {
-                rb.AddForce(playerOrientation.forward * dashForce);
+				Vector3 tempDir = (playerOrientation.forward);
+				transform.rotation = Quaternion.LookRotation(tempDir);
+				rb.AddForce(tempDir * dashForce);
             }
-            else
-            {
-                rb.AddForce(moveDirection * dashForce);
-            }
+			else
+				rb.AddForce(moveDirection * dashForce);
 
             dashChargesCurrent--;
             dashCurrentFillTime = 0f;
@@ -412,7 +412,8 @@ public class PlayerMovement : MonoBehaviour
         dashTrail.Play();
         canDash = false;
         yield return new WaitForSeconds(dashCooldown);
-        dashTrail.Stop();
+
+		dashTrail.Stop();
         canDash = true;
     }
     IEnumerator DashChargeCooldown()

@@ -20,6 +20,15 @@ public class BigGuyAI : EnemyAI
 		HealthBarCanvas.SetActive(false);
 	}
 
+	void FixedUpdate()
+    {
+		if (currentEnemyState == EnemyStates.HITSTUN || executeTrigger.active == true)
+        {
+			GetAnimator().Play("BigGuy_Stun");
+        }
+
+	}		
+
 	// for animation trigger
 	public void SpawnShockwave()
 	{

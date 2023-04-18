@@ -63,6 +63,7 @@ public class EnemyAI : EnemyBase
 
 	[HideInInspector] public Transform player;
 	NavMeshAgent agent;
+	[SerializeField] public bool isBoss = false;
 
 	// Start is called before the first frame update
 	override protected void Start()
@@ -97,7 +98,7 @@ public class EnemyAI : EnemyBase
 	{
 		//apply gravity if falling
 		if (currentEnemyState == EnemyStates.HITSTUN || currentEnemyState == EnemyStates.EXECUTABLE)
-			rb.AddForce(Vector3.down * fallRate);
+			rb.AddForce(Vector3.down * fallRate,ForceMode.Impulse);//was previously acceleration
 	}
 	#region UtilityFunctions
 	public NavMeshAgent GetAgent()
@@ -112,6 +113,11 @@ public class EnemyAI : EnemyBase
 	{
 		return anim;
 	}
+
+	public GameObject getExecuteTrigger()
+    {
+		return executeTrigger;
+    }
 	public virtual bool SetDestination(Vector3 dest)
 	{
 		// dont pathfind bad destinations
@@ -129,7 +135,7 @@ public class EnemyAI : EnemyBase
 		else
 		{
 			agent.SetDestination(dest);
-			Debug.Log(dest);
+			//Debug.Log(dest);
 
 			// if on offmeshlink, no mdification needed, if the mesh link is too tall they may through an error
 			if (agent.isOnOffMeshLink)
@@ -259,7 +265,7 @@ public class EnemyAI : EnemyBase
 		if (mustBeExecuted && Health < executionHealthThreshhold)
 			return;
 		// give them hitstun
-		if (atk.DealsHitstun)
+		if (atk.DealsHitstun && isBoss == false)
 		{
 			StopAllCoroutines();
 			StartCoroutine("OnHitStun");

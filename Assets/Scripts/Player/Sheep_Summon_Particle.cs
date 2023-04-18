@@ -42,7 +42,7 @@ public class Sheep_Summon_Particle : MonoBehaviour
 
 			// only spawn particles if we have low numbers of sheep
 			if (player.sheepFlocks[(int)sheepType].activeSheep.Count < maxSheepBeforeIgnoreParticle)
-				Instantiate(crackAndPoof, spawnPoint, Quaternion.identity);
+				WorldState.instance.pools.FetchPooledObject(crackAndPoof, spawnPoint, Quaternion.identity);
 
 			//spawn sheep
 			PlayerSheepAI sheep;

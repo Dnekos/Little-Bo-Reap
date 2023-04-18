@@ -29,7 +29,7 @@ public abstract class Collectable : MonoBehaviour
 				playerBody = WorldState.instance.player;
             isPulled = true;
             gameObject.layer = LayerMask.NameToLayer("Collectables");
-            Debug.Log("GrabRadiusTriggered");
+           // Debug.Log("GrabRadiusTriggered");
         }
         
     }

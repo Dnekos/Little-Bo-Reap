@@ -11,38 +11,53 @@ public class descManager : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI descTextBox;
     [SerializeField] GameObject panel;
-    [SerializeField] Vector3 panelOffset;
 
     [SerializeField] string desc;
-    // Start is called before the first frame update
 
-    public void MouseOver()
+	Image panelImage;
+	RectTransform rt;
+	Vector3[] corners;
+
+	private void Start()
     {
-        descTextBox.enabled = true;
-        panel.GetComponent<Image>().enabled = true;
-        panel.transform.position = transform.position + panelOffset;
-        descTextBox.text = desc;
+        rt = GetComponent<RectTransform>();
+        corners = new Vector3[4];
+		panelImage = panel.GetComponent<Image>();
+	}
+
+	void OpenTooltip()
+	{
+		descTextBox.enabled = true;
+		panelImage.enabled = true;
+
+		rt.GetWorldCorners(corners);
+		panel.transform.position = (corners[3] + corners[2]) * 0.5f;
+		descTextBox.text = desc;
+	}
+	void CloseTooltip()
+	{
+		descTextBox.enabled = false;
+		panelImage.enabled = false;
+		descTextBox.text = "";
+	}
+
+	public void MouseOver()
+    {
+		OpenTooltip();
     }
 
     public void MouseExit()
     {
-        descTextBox.enabled = false;
-        panel.GetComponent<Image>().enabled = false;
-        descTextBox.text = "";
+		CloseTooltip();
     }
 
     public void OnSelect()
     {
-        descTextBox.enabled = true;
-        panel.GetComponent<Image>().enabled = true;
-        panel.transform.position = transform.position + panelOffset;
-        descTextBox.text = desc;
+		OpenTooltip();
     }
 
     public void OnDeselect()
     {
-        descTextBox.enabled = false;
-        panel.GetComponent<Image>().enabled = false;
-        descTextBox.text = "";
+		CloseTooltip();
     }
 }

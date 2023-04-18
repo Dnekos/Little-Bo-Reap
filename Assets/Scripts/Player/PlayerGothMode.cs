@@ -58,6 +58,7 @@ public class PlayerGothMode : MonoBehaviour
 
 	PlayerSheepAbilities playerSheep;
 	PlayerMovement movement;
+	PlayerBuildWall wall;
 	int previousMusic;
 	bool musicMute, visualsOn = false;
 
@@ -83,11 +84,10 @@ public class PlayerGothMode : MonoBehaviour
 		anim = GetComponent<PlayerAnimationController>().playerAnimator;
 		input = GetComponent<PlayerInput>();
 		movement = GetComponent<PlayerMovement>();
+		wall = GetComponent<PlayerBuildWall>();
 		ws = FindObjectOfType<WorldState>();
 		previousMusic = ws.currentWorldTheme;
 		music = FMODUnity.RuntimeManager.GetBus("bus:/Music/Non-Goth");
-		
-
 	}
 
 	void ResetGoth()
@@ -125,6 +125,10 @@ public class PlayerGothMode : MonoBehaviour
 			gothMode = GothState.Normal;
 			gothParticles.SetActive(false);
 
+			musicMute = false;
+			visualsOn = false;
+			music.setMute(false);
+
 
 		}
 		else if (gothMode == GothState.Hammer && !anim.GetCurrentAnimatorStateInfo(0).IsName(hammerAnimation))
@@ -154,14 +158,15 @@ public class PlayerGothMode : MonoBehaviour
 		{
 			GothMeterCount = Mathf.Clamp01(GothMeterCount + (chargeTimeInverse * Time.deltaTime));
 			gothMeter.ChangeFill(GothMeterCount);
-			if (musicMute && visualsOn)
+
+			/*if (musicMute && visualsOn)
 			{
 				musicMute = false;
 				visualsOn = false;
 				music.setMute(false);
 
 			}
-
+			*/
 		}
 	}
 
@@ -170,11 +175,13 @@ public class PlayerGothMode : MonoBehaviour
 		if (context.started && GothMeterCount == 1f && gothMode == GothState.Normal)
 		{
 			GothSounds();
+			wall.CancelWall();
+
 			if (playerSheep.GetTotalSheepCount() < MinSheep)
 			{
-				playerSheep.GoGothMode();
+				gothMode = GothState.Goth;
 				SetGothVisual();
-
+				playerSheep.GoGothMode();
 			}
 			else
 			{

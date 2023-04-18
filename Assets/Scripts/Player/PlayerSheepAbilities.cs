@@ -172,7 +172,35 @@ public class PlayerSheepAbilities : MonoBehaviour
 				sheepFlocks[1].MaxSize +
 				sheepFlocks[2].MaxSize) * 0.33f;
 	}
+	public void AddToSingleFlock(SheepTypes type, int num)
+	{
+		switch (type)
+		{
+			case SheepTypes.BUILD:
+				AddToFlock(num, 0, 0);
+				break;
+			case SheepTypes.RAM:
+				AddToFlock(0, num, 0);
+				break;
+			case SheepTypes.FLUFFY:
+				AddToFlock(0, 0, num);
+				break;
+		}
+	}
+	public void AddToFlock(int buildToAdd, int ramToAdd, int fluffyToAdd)
+	{
+		sheepFlocks[(int)SheepTypes.BUILD].MaxSize += buildToAdd;
+		sheepFlocks[(int)SheepTypes.RAM].MaxSize += ramToAdd;
+		sheepFlocks[(int)SheepTypes.FLUFFY].MaxSize += fluffyToAdd;
+		WorldState.instance.PersistentData.totalBuilder = sheepFlocks[(int)SheepTypes.BUILD].MaxSize;
+		WorldState.instance.PersistentData.totalRam = sheepFlocks[(int)SheepTypes.RAM].MaxSize;
+		WorldState.instance.PersistentData.totalFluffy = sheepFlocks[(int)SheepTypes.FLUFFY].MaxSize;
 
+		UpdateFlockUI();
+	}
+	#endregion
+
+	#region Setting Active Flocks
 	public void OnSetActiveFlock(InputAction.CallbackContext context)
 	{
 		int newindex = Mathf.FloorToInt(context.ReadValue<float>()) - 1;

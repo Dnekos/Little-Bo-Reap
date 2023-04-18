@@ -26,20 +26,15 @@ public class SheepGrave : Interactable
     {
 		// increase flock size of player
 		PlayerSheepAbilities player = WorldState.instance.player.GetComponent<PlayerSheepAbilities>();
-		player.sheepFlocks[(int)sheepType].MaxSize += flockSizeIncrease;
-		player.UpdateFlockUI();
+		player.AddToSingleFlock(sheepType, flockSizeIncrease);
 
 		// show flock size increase
 		TextMeshProUGUI number = Instantiate(numberObject, numberSpawnPoint.position, numberSpawnPoint.rotation).GetComponentInChildren<TextMeshProUGUI>();
 		number.color = numberColor;
         number.text = "+" + (flockSizeIncrease).ToString();
 
-		// update save, just do all sheep as its easier
+		// update save
 		WorldState.instance.AddActivatedGrave(this);
-		WorldState.instance.PersistentData.totalBuilder = player.sheepFlocks[0].MaxSize;
-		WorldState.instance.PersistentData.totalRam = player.sheepFlocks[1].MaxSize;
-		WorldState.instance.PersistentData.totalFluffy = player.sheepFlocks[2].MaxSize;
-
 
 		// juice
 		FMODUnity.RuntimeManager.PlayOneShotAttached(Sound, gameObject);

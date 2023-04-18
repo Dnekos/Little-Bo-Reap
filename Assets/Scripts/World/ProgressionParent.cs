@@ -32,6 +32,9 @@ public class ProgressionParent : MonoBehaviour
     int abilitySoulCost = 1;
 	SaveData.Upgrades abilityFlag = SaveData.Upgrades.None;
 	List<float[]> upgradesAllValues;
+	[Header("Sound")]
+	[SerializeField] FMODUnity.EventReference activatedSFX;
+	[SerializeField] FMODUnity.EventReference deactivatedSFX;
 
 	// Start is called before the first frame update
 	void Start()
@@ -65,7 +68,7 @@ public class ProgressionParent : MonoBehaviour
 			if (WorldState.instance.PersistentData.soulsCount >= costs[0])
 			{
 				WorldState.instance.PersistentData.soulsCount -= costs[0];
-				WorldState.instance.HUD.UpdateSoulCount();
+				WorldState.instance.HUD.UpdateSoulCount(false);
 			}
 			else
 			{
@@ -80,9 +83,6 @@ public class ProgressionParent : MonoBehaviour
 		ActivateUpgradeUI(index, flagIndex);
 
 		currentCostIndex++;
-
-
-		//REVIEW: Maybe we can have a visual representation for the player to know they don't have enough souls
 	}
 
 	/// <summary>
@@ -91,9 +91,15 @@ public class ProgressionParent : MonoBehaviour
 	public void ActivateUpgradeUI(int index, int flagIndex)
 	{
 		if (WorldState.instance.PersistentData.activeUpgrades.HasFlag((SaveData.Upgrades)flagIndex))
+		{
 			upgrades[index].SetState(ButtonState.Enabled);
+			FMODUnity.RuntimeManager.PlayOneShot(activatedSFX);
+		}
 		else if (WorldState.instance.PersistentData.boughtUpgrades.HasFlag((SaveData.Upgrades)flagIndex))
+		{
 			upgrades[index].SetState(ButtonState.Disabled);
+			FMODUnity.RuntimeManager.PlayOneShot(deactivatedSFX);
+		}
 		else
 			upgrades[index].SetState(ButtonState.Locked);
 
@@ -101,9 +107,15 @@ public class ProgressionParent : MonoBehaviour
 	public void ActivateAbilityUI()
 	{
 		if (WorldState.instance.PersistentData.activeUpgrades.HasFlag(abilityFlag))
+		{
 			abilities.SetState(ButtonState.Enabled);
+			FMODUnity.RuntimeManager.PlayOneShot(activatedSFX);
+		}
 		else if (WorldState.instance.PersistentData.boughtUpgrades.HasFlag(abilityFlag))
+		{
 			abilities.SetState(ButtonState.Disabled);
+			FMODUnity.RuntimeManager.PlayOneShot(deactivatedSFX);
+		}
 		else
 			abilities.SetState(ButtonState.Locked);
 
@@ -131,6 +143,8 @@ public class ProgressionParent : MonoBehaviour
         if (WorldState.instance.PersistentData.soulsCount >= abilitySoulCost)
         {
             WorldState.instance.PersistentData.soulsCount -= abilitySoulCost;
+            WorldState.instance.HUD.UpdateSoulCount(false);
+
             altAbilityUnlocked = true;
             //add visual for unlocking alt ability here
             return true;
@@ -155,13 +169,13 @@ public class ProgressionParent : MonoBehaviour
 			else if (WorldState.instance.PersistentData.boughtUpgrades.HasFlag(flagindex))
 			{
 				upgrades[i].SetState(ButtonState.Disabled);
-				Debug.Log("disabled " + flagindex);
+				//Debug.Log("disabled " + flagindex);
 
 			}
 			else
 			{ 
 				upgrades[i].SetState(ButtonState.Locked);
-				Debug.Log("locked "+flagindex);
+				//Debug.Log("locked "+flagindex);
 	}
 		}
 

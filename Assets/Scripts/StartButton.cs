@@ -9,10 +9,12 @@ public class StartButton : MonoBehaviour
     [SerializeField] string levelToLoad;
 	[SerializeField] string endlessLevelToLoad;
 	[SerializeField] string bossLevel;
+
 	[Header("Buttons"), SerializeField]
 	Button Continue;
-	[SerializeField]
-	Button NewGame;
+
+	[Header("SaveData")]
+	[SerializeField] TextAsset BossSaveData;
 
     [Header("Effects"), SerializeField] List<PlayerSheepAI> menuSheep;
     [SerializeField] GameObject gothExplosion;
@@ -67,14 +69,24 @@ public class StartButton : MonoBehaviour
 		}
 
 		// disable buttons to prevent doubleclicking
-		Continue.interactable = false;
-		NewGame.interactable = false;
+		Button[] buttons = GetComponentsInChildren<Button>();
+		for (int i = 0; i < buttons.Length;i++)
+		{
+			buttons[i].interactable = false;
+		}
 	}
 
 	void LoadScene()
     {
         SceneManager.LoadScene(levelToLoad);
     }
+	public void LoadSceneByName(string name)
+	{
+		levelToLoad = name;
+		StartEffects();
+		Invoke("LoadScene", 2f);
+
+	}
 	IEnumerator LoadSceneByIndex(int index)
 	{
 		yield return new WaitForSeconds(2);
@@ -90,8 +102,7 @@ public class StartButton : MonoBehaviour
 
 	public void LoadBoss()
     {
-		StartEffects();
-		levelToLoad = bossLevel;
-		Invoke("LoadScene", 2f);
+		WorldState.OverwriteSave(BossSaveData);
+		StartGame();
 	}
 }
