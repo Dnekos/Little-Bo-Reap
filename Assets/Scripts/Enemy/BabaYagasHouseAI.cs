@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class BabaYagasHouseAI : EnemyAI
 {
@@ -27,11 +28,9 @@ public class BabaYagasHouseAI : EnemyAI
 	[SerializeField] ParticleSystem rangedAttackIndicator;
 
 
-[Header("Healthbar")]
-	[SerializeField] GameObject ArmorBarCanvas;
-	[SerializeField] Transform ArmorBar;
-	[SerializeField] GameObject HealthBarCanvas;
-	[SerializeField] Transform HealthBar;
+	[Header("Healthbar")]
+	[SerializeField] GameObject ArmorBar;
+	[SerializeField] Image HealthBar;
 
     [Header("Stun Objects")]
 	[SerializeField] GameObject[] armorObjects;
@@ -70,10 +69,10 @@ public class BabaYagasHouseAI : EnemyAI
 
 		spawnPoint = transform.position;
 
-		ArmorBarCanvas.SetActive(true);
+		ArmorBar.SetActive(true);
 
 		float armorBarScale = (Health / MaxHealth);
-		HealthBar.localScale = new Vector3(armorBarScale * -1, 1, 1);
+		HealthBar.fillAmount = 1;
 
 		GetAnimator().Play("BBYGH_Reveal_01 1");
 	}
@@ -89,7 +88,7 @@ public class BabaYagasHouseAI : EnemyAI
             {
 				armor.SetActive(true);
             }
-			ArmorBarCanvas.SetActive(true);
+			ArmorBar.SetActive(true);
 		}
 
 		if(GetAnimator().GetBool("isMoving"))
@@ -217,17 +216,17 @@ public class BabaYagasHouseAI : EnemyAI
 			base.TakeDamage(atk, attackForward, damageAmp, 0.0f);//no knockback
 			if (Health != MaxHealth || Health >= executionHealthThreshhold)
 			{
-				HealthBarCanvas.SetActive(true);
+				HealthBar.gameObject.SetActive(true);
 				float healthbarScale = (Health / MaxHealth);
-				HealthBar.localScale = new Vector3(healthbarScale * -1, 1, 1);
+				HealthBar.fillAmount = healthbarScale;
 			}
 			else
-				HealthBarCanvas.SetActive(false);
+				HealthBar.gameObject.SetActive(false);
 		}
 		else if ((atk.name == "Ram_Attack_Charge" || atk.name == "HammerAttack") && armorBroken == false)
 		{
-			ArmorBarCanvas.SetActive(false);
-			HealthBarCanvas.SetActive(true);
+			ArmorBar.SetActive(false);
+			HealthBar.gameObject.SetActive(true);
 			foreach (GameObject armor in armorObjects)
 			{
 				armor.SetActive(false);
