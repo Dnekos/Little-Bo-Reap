@@ -34,7 +34,7 @@ public class Speaker : Interactable
 			//Debug.Log("Attempted to get Dialogue Box. Number of Children = " + WorldState.instance.player.transform.parent.gameObject.transform.GetChild(6).name.ToString());
             //this is such fucking bad implementation I'm so sorry Demetri
             DB = WorldState.instance.player.transform.parent.gameObject.transform.GetChild(6).GetChild(0).GetComponent<DialogBox>();
-			//DB.SetFinalDialogue(isFinalDialogue);
+			DB.SetFinalDialogue(isFinalDialogue);
 		}
 	}
 	public override void Interact()
