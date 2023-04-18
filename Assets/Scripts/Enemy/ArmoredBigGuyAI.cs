@@ -42,7 +42,7 @@ public class ArmoredBigGuyAI : BigGuyAI
             else
                 HealthBarCanvas.SetActive(false);
         }
-        else if(atk.name == "Ram_Attack_Charge" && armorBroken == false)
+        else if((atk.name == "Ram_Attack_Charge" || atk.name == "HammerAttack") && armorBroken == false)
         {
             ArmorBarCanvas.SetActive(false);
             HealthBarCanvas.SetActive(true);
