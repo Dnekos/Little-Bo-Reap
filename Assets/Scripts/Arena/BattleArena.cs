@@ -48,6 +48,7 @@ public class BattleArena : PuzzleDoor
 	[SerializeField] Transform bootSpawnPoint;
 
 	[Header("Music")]
+	[SerializeField] int transitionCombat;
 	[SerializeField] int afterMusic;
 
 	[Header("End Effects")]
@@ -233,7 +234,7 @@ public class BattleArena : PuzzleDoor
 		{
 			door.SetActive(true);
 			AdvanceWave();
-			WorldState.instance.ChangeMusic(1);
+			WorldState.instance.ChangeMusic(transitionCombat);
 			WorldState.instance.InitCombatBootPoint(bootSpawnPoint);
 		}
 	}

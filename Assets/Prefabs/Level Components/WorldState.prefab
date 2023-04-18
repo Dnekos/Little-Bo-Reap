@@ -82,6 +82,7 @@ MonoBehaviour:
   biomeTheme: 0
   player: {fileID: 0}
   HUD: {fileID: 0}
+  pools: {fileID: 0}
   isInCombat: 0
   combatBootPoint: {fileID: 0}
 --- !u!114 &4016259675076083572
@@ -99,10 +100,10 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: -1270416703
-      Data2: 1313078803
-      Data3: -1246434936
-      Data4: -1463915353
+      Data1: 920840508
+      Data2: 1083187551
+      Data3: -1222027891
+      Data4: -1723130241
     Path: event:/Music/Music_Controls
   Event: 
   PlayEvent: 1
@@ -314,3 +315,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dbd55fdedcf76a43bafc111476a0f1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MaxInstancesPerPool: 40

@@ -208,9 +208,9 @@ public class WorldState : MonoBehaviour
 		FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Music", music);
 		currentWorldTheme = music;
 		Debug.Log("current theme: " + music);
-		if (music == 2)
-			biomeTheme = music;
-		if (music == 1)
+		if (music == 6)
+			biomeTheme = 2;
+		if (music == 3 || music == 4)
 		{
 			FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Kick Level", Random.Range(0, 2));
 			FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Bass Fades", Random.Range(0f, 2f));
