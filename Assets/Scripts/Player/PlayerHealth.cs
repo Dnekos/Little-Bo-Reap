@@ -72,7 +72,7 @@ public class PlayerHealth : Damageable
 
 	void ResetHealth()
 	{
-		FMOD.Studio.Bus sfxBus = FMODUnity.RuntimeManager.GetBus("bus:/ SFX / Gameplay / UponDeath");
+		FMOD.Studio.Bus sfxBus = FMODUnity.RuntimeManager.GetBus("bus:/SFX/Gameplay/UponDeath");
 		FMOD.Studio.Bus musicBus = FMODUnity.RuntimeManager.GetBus("Bus:/Music");
 		Health = MaxHealth;
 		healthBar.ChangeFill(1);
