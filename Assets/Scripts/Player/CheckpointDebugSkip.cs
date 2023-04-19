@@ -5,9 +5,9 @@ using UnityEngine;
 public class CheckpointDebugSkip : MonoBehaviour
 {
 	[Header("Skip Options")]
-	public int buildToAdd = 10;
-	public int ramToAdd = 10;
-	public int fluffyToAdd = 10;
+	public int buildToSet = 10;
+	public int ramToSet = 10;
+	public int fluffyToSet = 10;
 	bool hasAdded = false;
 
     private void OnEnable()
@@ -16,7 +16,7 @@ public class CheckpointDebugSkip : MonoBehaviour
         {
 			hasAdded = true;
 			PlayerSheepAbilities player = WorldState.instance.player.GetComponent<PlayerSheepAbilities>();
-			player.AddToFlock(buildToAdd, ramToAdd, fluffyToAdd);
+			player.SetFlock(buildToSet, ramToSet, fluffyToSet);
 		}
 		
 	}
