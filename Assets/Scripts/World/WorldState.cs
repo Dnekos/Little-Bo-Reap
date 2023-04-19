@@ -208,7 +208,7 @@ public class WorldState : MonoBehaviour
 		FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Music", music);
 		currentWorldTheme = music;
 		Debug.Log("current theme: " + music);
-		if (music == 6)
+		if (music == 6 || music == 2)
 			biomeTheme = 2;
 		if (music == 3 || music == 4)
 		{

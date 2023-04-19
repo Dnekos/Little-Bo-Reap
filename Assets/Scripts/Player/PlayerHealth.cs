@@ -72,14 +72,19 @@ public class PlayerHealth : Damageable
 
 	void ResetHealth()
 	{
+		FMOD.Studio.Bus sfxBus = FMODUnity.RuntimeManager.GetBus("bus:/ SFX / Gameplay / UponDeath");
+		FMOD.Studio.Bus musicBus = FMODUnity.RuntimeManager.GetBus("Bus:/Music");
 		Health = MaxHealth;
 		healthBar.ChangeFill(1);
+		sfxBus.setPaused(false);
+		musicBus.setPaused(false);
 
 		// resume collisions
 		rb.isKinematic = false;
 
 		WorldState.instance.HUD.CloseDeathMenu();
-
+		
+		
 		foreach (PlayerInput input in inputs)
 			input.enabled = true;
 
@@ -120,7 +125,9 @@ public class PlayerHealth : Damageable
 
 		FMODUnity.RuntimeManager.PlayOneShot(deathSound, transform.position);
 		WorldState.instance.ChangeMusic(WorldState.instance.biomeTheme);
-
+		FMOD.Studio.Bus sfxBus = FMODUnity.RuntimeManager.GetBus("bus:/SFX/Gameplay/UponDeath");
+		FMOD.Studio.Bus musicBus = FMODUnity.RuntimeManager.GetBus("Bus:/Music");
+		musicBus.setPaused(true);
 		// stop collisions
 		rb.isKinematic = true;
 
@@ -131,7 +138,7 @@ public class PlayerHealth : Damageable
 
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
-
+		sfxBus.setPaused(true);
 	}
 	#endregion
 	
