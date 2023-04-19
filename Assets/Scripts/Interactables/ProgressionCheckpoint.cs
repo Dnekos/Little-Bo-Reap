@@ -6,9 +6,16 @@ public class ProgressionCheckpoint : Interactable
 {
 	public override void Interact()
     {
-		WorldState.instance.HUD.ToggleProgressionMenu(true);
-		//WorldState.instance.player.GetComponent<PlayerPauseMenu>().PauseGame();
+		if (WorldState.instance.PersistentData.unlocks.HasFlag(SaveData.TutorialUnlocks.UpgradeMenu))
+		{
+			WorldState.instance.HUD.ToggleProgressionMenu(true);
 
-        base.Interact();
+			base.Interact();
+		}
     }
+	protected override void OnTriggerEnter(Collider other)
+	{
+		if (WorldState.instance.PersistentData.unlocks.HasFlag(SaveData.TutorialUnlocks.UpgradeMenu))
+			base.OnTriggerEnter(other);
+	}
 }

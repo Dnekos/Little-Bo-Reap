@@ -394,7 +394,7 @@ public enum SheepStates
     public void GibSheep()
     {
         //Instantiate(gibs, transform.position, transform.rotation);
-		WorldState.instance.pools.FetchPooledObject(gibs, transform.position + Vector3.up * 1.4f, Quaternion.identity);
+		WorldState.instance.pools.DequeuePooledObject(gibs, transform.position + Vector3.up * 1.4f, Quaternion.identity);
 	}
 	public bool IsCommandable()
 	{
@@ -494,7 +494,7 @@ public enum SheepStates
     {
 		FMODUnity.RuntimeManager.PlayOneShot(deathSound, transform.position);
 
-		Instantiate(gibs, transform.position, transform.rotation);
+		WorldState.instance.pools.DequeuePooledObject(gibs, transform.position, transform.rotation);
         KillSheep();
     }
     public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)

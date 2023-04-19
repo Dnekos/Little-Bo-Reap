@@ -204,7 +204,7 @@ public class BattleArena : PuzzleDoor
 
 		yield return new WaitForSeconds(staggerDelay);
 
-		WorldState.instance.pools.FetchPooledObject(particle, pos, Quaternion.identity);
+		WorldState.instance.pools.DequeuePooledObject(particle, pos, Quaternion.identity);
 
 		yield return new WaitForSeconds(enemy.GetComponent<EnemyBase>().SpawnWaitTime);
 

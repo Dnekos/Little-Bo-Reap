@@ -55,6 +55,7 @@ public class EnemyAI : EnemyBase
 	[SerializeField] float groundCheckDistance;
 	public bool isGrounded = false;
 	[SerializeField] float fallRate = 50;
+	Coroutine hitstunCoroutine = null;
 
 	[Header("Sounds")]
 	[SerializeField] FMODUnity.EventReference swingSound;
@@ -80,6 +81,7 @@ public class EnemyAI : EnemyBase
 		NearbyGuys.RemoveAll(item => item == null || !item.gameObject.activeInHierarchy);
 		graph.AnalyzeGraph(this);
 	}
+
 	// Update is called once per frame
 	protected virtual void Update()
 	{
@@ -91,6 +93,11 @@ public class EnemyAI : EnemyBase
 			transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(agent.desiredVelocity, Vector3.up), 0.2f);
 			transform.eulerAngles = new Vector3(0, transform.eulerAngles.y);
 		}
+
+		if (currentEnemyState == EnemyStates.HITSTUN && hitstunCoroutine == null)
+			hitstunCoroutine = StartCoroutine(OnHitStun());
+
+
 		foreach (var key in Cooldowns.Keys.ToList())
 			Cooldowns[key] -= Time.deltaTime;
 	}
@@ -100,6 +107,7 @@ public class EnemyAI : EnemyBase
 		if (currentEnemyState == EnemyStates.HITSTUN || currentEnemyState == EnemyStates.EXECUTABLE)
 			rb.AddForce(Vector3.down * fallRate,ForceMode.Impulse);//was previously acceleration
 	}
+
 	#region UtilityFunctions
 	public NavMeshAgent GetAgent()
 	{
@@ -154,6 +162,11 @@ public class EnemyAI : EnemyBase
 			//transform.eulerAngles = new Vector3(0, transform.eulerAngles.y);
 		}
 		return true;
+	}
+	int convert4(string key)
+	{
+		// https://stackoverflow.com/questions/3858908/convert-a-4-char-string-into-int32
+		return (key[3] << 24) + (key[2] << 16) + (key[1] << 8) + key[0];
 	}
 	#endregion
 
@@ -235,11 +248,6 @@ public class EnemyAI : EnemyBase
 	}
 	#endregion
 
-	int convert4(string key)
-	{
-		// https://stackoverflow.com/questions/3858908/convert-a-4-char-string-into-int32
-		return (key[3] << 24) + (key[2] << 16) + (key[1] << 8) + key[0];
-	}
 	#region Movement
 	void GroundCheck()
 	{
@@ -268,7 +276,7 @@ public class EnemyAI : EnemyBase
 		if (atk.DealsHitstun && isBoss == false)
 		{
 			StopAllCoroutines();
-			StartCoroutine("OnHitStun");
+			hitstunCoroutine = StartCoroutine(OnHitStun());
 		}
 		// subtract health
 		base.TakeDamage(atk, attackForward, damageAmp, knockbackMultiplier);
@@ -344,7 +352,6 @@ public class EnemyAI : EnemyBase
 		//turn on rb and turn off navmesh (turned on in GroundCheck (which cant be called when hitstunned))
 		//rb.isKinematic = false;
 		agent.enabled = false;
-		rb.constraints = RigidbodyConstraints.None;
 		rb.constraints = RigidbodyConstraints.FreezeRotation;
 		yield return new WaitForSeconds(StunTime);
 		// stay in stun until touching the ground
@@ -366,6 +373,8 @@ public class EnemyAI : EnemyBase
 		rb.constraints = RigidbodyConstraints.FreezeAll;
 		rb.velocity = Vector3.zero;
 		rb.angularVelocity = Vector3.zero;
+
+		hitstunCoroutine = null;
 	}
 	#endregion
 }

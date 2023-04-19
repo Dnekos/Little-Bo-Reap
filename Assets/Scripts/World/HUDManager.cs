@@ -138,7 +138,7 @@ public class HUDManager : MonoBehaviour
 
     public void UpdateSoulCount(bool playAnimation = true)
     {
-		string currentSouls = WorldState.instance.PersistentData.soulsCount.ToString();
+		string currentSouls = Mathf.Min(99, WorldState.instance.PersistentData.soulsCount).ToString();
         SoulNumber.text = currentSouls + " Souls";
 		if (playAnimation)
 			SoulCollectAnimation();

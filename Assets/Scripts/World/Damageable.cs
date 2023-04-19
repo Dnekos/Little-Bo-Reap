@@ -154,7 +154,9 @@ public class Damageable : MonoBehaviour
 
 		FMODUnity.RuntimeManager.PlayOneShot(deathSound, transform.position);
 
-		WorldState.instance.pools.FetchPooledObject(gibs, transform.position + Vector3.up * 1.4f, Quaternion.identity);
+		if (gibs != null)
+			WorldState.instance.pools.DequeuePooledObject(gibs, transform.position + Vector3.up * 1.4f, Quaternion.identity);
+
 		//Instantiate(gibs, transform.position + Vector3.up * 1.4f, new Quaternion());
 		Destroy(gameObject); // base effect is deleting object
 	}

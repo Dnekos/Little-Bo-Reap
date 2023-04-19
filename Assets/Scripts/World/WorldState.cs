@@ -51,8 +51,21 @@ public struct SaveData
 		RamActive = 1024,
 		FluffyActive = 2048
 	}
+
+	[System.Flags] public enum TutorialUnlocks
+	{
+		None = 0,
+		BuilderSheep = 1,
+		RamSheep = 2,
+		FluffySheep = 4,
+		DeadRinger = 8,
+		UpgradeMenu = 16
+	}
+
 	public Upgrades boughtUpgrades;
 	public Upgrades activeUpgrades;
+	public TutorialUnlocks unlocks;
+
 
 	[Header("Soul Count")]
 	public int soulsCount;
@@ -70,10 +83,13 @@ public struct SaveData
 	public int totalBuilder;
 	public int totalRam;
 	public int totalFluffy;
+
+
 	public SaveData(int x)
 	{
 		boughtUpgrades = Upgrades.None;
 		activeUpgrades = Upgrades.None;
+		unlocks = TutorialUnlocks.None;
 
 		soulsCount = 0;
 		bossSoulsCount = 0;
