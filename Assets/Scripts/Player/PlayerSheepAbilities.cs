@@ -187,34 +187,44 @@ public class PlayerSheepAbilities : MonoBehaviour
 				break;
 		}
 	}
+
 	public void AddToFlock(int buildToAdd, int ramToAdd, int fluffyToAdd)
 	{
 		sheepFlocks[(int)SheepTypes.BUILD].MaxSize += buildToAdd;
 		sheepFlocks[(int)SheepTypes.RAM].MaxSize += ramToAdd;
 		sheepFlocks[(int)SheepTypes.FLUFFY].MaxSize += fluffyToAdd;
-		WorldState.instance.PersistentData.totalBuilder = sheepFlocks[(int)SheepTypes.BUILD].MaxSize;
-		WorldState.instance.PersistentData.totalRam = sheepFlocks[(int)SheepTypes.RAM].MaxSize;
-		WorldState.instance.PersistentData.totalFluffy = sheepFlocks[(int)SheepTypes.FLUFFY].MaxSize;
 
+		UpdateFlockSizeSaveData(buildToAdd, ramToAdd, fluffyToAdd);
 		UpdateFlockUI();
 	}
-
     public void SetFlock(int buildToSet, int ramToSet, int fluffyToSet)
     {
         sheepFlocks[(int)SheepTypes.BUILD].MaxSize = buildToSet;
         sheepFlocks[(int)SheepTypes.RAM].MaxSize = ramToSet;
         sheepFlocks[(int)SheepTypes.FLUFFY].MaxSize = fluffyToSet;
-        WorldState.instance.PersistentData.totalBuilder = sheepFlocks[(int)SheepTypes.BUILD].MaxSize;
-        WorldState.instance.PersistentData.totalRam = sheepFlocks[(int)SheepTypes.RAM].MaxSize;
-        WorldState.instance.PersistentData.totalFluffy = sheepFlocks[(int)SheepTypes.FLUFFY].MaxSize;
 
-        UpdateFlockUI();
+		UpdateFlockSizeSaveData(buildToSet, ramToSet, fluffyToSet);
+		UpdateFlockUI();
     }
+	void UpdateFlockSizeSaveData(int newBuilder, int newRam, int newFluffy)
+	{
+		WorldState.instance.PersistentData.totalBuilder = sheepFlocks[(int)SheepTypes.BUILD].MaxSize;
+		WorldState.instance.PersistentData.totalRam = sheepFlocks[(int)SheepTypes.RAM].MaxSize;
+		WorldState.instance.PersistentData.totalFluffy = sheepFlocks[(int)SheepTypes.FLUFFY].MaxSize;
 
-    #endregion
 
-    #region Setting Active Flocks
-    public void OnSetActiveFlock(InputAction.CallbackContext context)
+		if (!WorldState.instance.PersistentData.unlocks.HasFlag(SaveData.TutorialUnlocks.BuilderSheep) && newBuilder > 0)
+			WorldState.instance.PersistentData.unlocks |= SaveData.TutorialUnlocks.BuilderSheep;
+		if (!WorldState.instance.PersistentData.unlocks.HasFlag(SaveData.TutorialUnlocks.RamSheep) && newRam > 0)
+			WorldState.instance.PersistentData.unlocks |= SaveData.TutorialUnlocks.RamSheep;
+		if (!WorldState.instance.PersistentData.unlocks.HasFlag(SaveData.TutorialUnlocks.FluffySheep) && newFluffy > 0)
+			WorldState.instance.PersistentData.unlocks |= SaveData.TutorialUnlocks.FluffySheep;
+	}
+
+	#endregion
+
+	#region Setting Active Flocks
+	public void OnSetActiveFlock(InputAction.CallbackContext context)
 	{
 		int newindex = Mathf.FloorToInt(context.ReadValue<float>()) - 1;
 		Debug.Log(newindex);

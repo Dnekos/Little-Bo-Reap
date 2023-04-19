@@ -154,7 +154,7 @@ public class PlayerGothMode : MonoBehaviour
 				gothSaturation.saturation.value += saturationIncreaseOverTime * Time.deltaTime;
 			}
 		}
-		else
+		else if (WorldState.instance.PersistentData.unlocks.HasFlag(SaveData.TutorialUnlocks.DeadRinger))
 		{
 			GothMeterCount = Mathf.Clamp01(GothMeterCount + (chargeTimeInverse * Time.deltaTime));
 			gothMeter.ChangeFill(GothMeterCount);
@@ -172,7 +172,7 @@ public class PlayerGothMode : MonoBehaviour
 
 	public void OnGothMode(InputAction.CallbackContext context)
 	{
-		if (context.started && GothMeterCount == 1f && gothMode == GothState.Normal)
+		if (context.started && WorldState.instance.PersistentData.unlocks.HasFlag(SaveData.TutorialUnlocks.DeadRinger) && GothMeterCount == 1f && gothMode == GothState.Normal)
 		{
 			GothSounds();
 			wall.CancelWall();

@@ -80,6 +80,7 @@ public class EnemyAI : EnemyBase
 		NearbyGuys.RemoveAll(item => item == null || !item.gameObject.activeInHierarchy);
 		graph.AnalyzeGraph(this);
 	}
+
 	// Update is called once per frame
 	protected virtual void Update()
 	{
@@ -100,6 +101,7 @@ public class EnemyAI : EnemyBase
 		if (currentEnemyState == EnemyStates.HITSTUN || currentEnemyState == EnemyStates.EXECUTABLE)
 			rb.AddForce(Vector3.down * fallRate,ForceMode.Impulse);//was previously acceleration
 	}
+
 	#region UtilityFunctions
 	public NavMeshAgent GetAgent()
 	{
@@ -154,6 +156,11 @@ public class EnemyAI : EnemyBase
 			//transform.eulerAngles = new Vector3(0, transform.eulerAngles.y);
 		}
 		return true;
+	}
+	int convert4(string key)
+	{
+		// https://stackoverflow.com/questions/3858908/convert-a-4-char-string-into-int32
+		return (key[3] << 24) + (key[2] << 16) + (key[1] << 8) + key[0];
 	}
 	#endregion
 
@@ -235,11 +242,6 @@ public class EnemyAI : EnemyBase
 	}
 	#endregion
 
-	int convert4(string key)
-	{
-		// https://stackoverflow.com/questions/3858908/convert-a-4-char-string-into-int32
-		return (key[3] << 24) + (key[2] << 16) + (key[1] << 8) + key[0];
-	}
 	#region Movement
 	void GroundCheck()
 	{
@@ -344,7 +346,6 @@ public class EnemyAI : EnemyBase
 		//turn on rb and turn off navmesh (turned on in GroundCheck (which cant be called when hitstunned))
 		//rb.isKinematic = false;
 		agent.enabled = false;
-		rb.constraints = RigidbodyConstraints.None;
 		rb.constraints = RigidbodyConstraints.FreezeRotation;
 		yield return new WaitForSeconds(StunTime);
 		// stay in stun until touching the ground
