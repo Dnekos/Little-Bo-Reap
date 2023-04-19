@@ -15,12 +15,16 @@ MonoBehaviour:
   script:
   - body: Hey there! I'm Wallace, in case you didn't know. I used to be a shepard
       myself, in fact!
+    changeCamera: 1
+    CameraTransitionSpeed: 1
+    CameraPos: {x: -128.3764, y: 18.871246, z: -3.1325383}
+    CameraEuler: {x: 11.208157, y: 250.26746, z: -0.000006092617}
+  - body: But then one of my sheep got lost.
     changeCamera: 0
     CameraTransitionSpeed: 0
     CameraPos: {x: 0, y: 0, z: 0}
     CameraEuler: {x: 0, y: 0, z: 0}
-  - body: But then one of my sheep got lost, I went to go find it, and well... let's
-      just say we both got lost!
+  - body: I went to go find it, and well... let's just say we both got lost!
     changeCamera: 0
     CameraTransitionSpeed: 0
     CameraPos: {x: 0, y: 0, z: 0}

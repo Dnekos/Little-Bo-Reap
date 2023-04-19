@@ -163,7 +163,7 @@ public class PlayerControlSwitcher : MonoBehaviour
 					// make sure to add on the tag to get the TMP_Sprite
 					returner += "<sprite name=\"" + InputControlPath.ToHumanReadableString(
 						action.bindings[i].effectivePath,
-						InputControlPath.HumanReadableStringOptions.OmitDevice) + "\" tint=1> ";
+						InputControlPath.HumanReadableStringOptions.OmitDevice) + "\" tint=1> / ";
 				}
 			}
 		}
@@ -177,7 +177,7 @@ public class PlayerControlSwitcher : MonoBehaviour
 				{
 					returner += InputControlPath.ToHumanReadableString(
 						action.bindings[i].effectivePath,
-						InputControlPath.HumanReadableStringOptions.OmitDevice) + " ";
+						InputControlPath.HumanReadableStringOptions.OmitDevice) + " / ";
 				}
 				// check for mouse as well
 				if (!action.bindings[i].isComposite && InputControlPath.TryFindControl(Mouse.current, action.bindings[i].effectivePath) != null)
@@ -192,16 +192,19 @@ public class PlayerControlSwitcher : MonoBehaviour
 					else if (mouseString.CompareTo("Scroll/Down") == 0) // ignore the other side of scrolling
 						continue;
 
-					returner += "<sprite name=\"" + mouseString + "\" tint=1> ";
+					returner += "<sprite name=\"" + mouseString + "\" tint=1> / ";
 				}
+				if (returner == "W / S / A / D / ")
+					returner = "WASD";
 			}
+
 		}
 
 		// return to current map
 		pi.SwitchCurrentActionMap(currentActionMap);
 
 		// return, with last space cut off
-		return returner.TrimEnd();
+		return returner.TrimEnd(new char[]{ ' ', '/'});
 	}
 
 }

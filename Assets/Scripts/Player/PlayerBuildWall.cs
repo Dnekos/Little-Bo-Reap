@@ -67,8 +67,16 @@ public class PlayerBuildWall : MonoBehaviour
 		}
 	}
 
+	public void CancelWall()
+	{
+		if (isPreparing)
+		{
+			Destroy(sheepChargePoint);
+			isPreparing = false;
+		}
+	}
 
-	#region Sheep Stampede
+	#region Sheep Wall
 	public void OnSheepWall(InputAction.CallbackContext context)
 	{
 		SheepTypes flockType = flocks.currentFlockType;
@@ -121,8 +129,7 @@ public class PlayerBuildWall : MonoBehaviour
 		{
 			if (sheepChargePoint.transform.position == new Vector3(0f, -1000f, 0f))
 			{
-				Destroy(sheepChargePoint);
-				isPreparing = false;
+				CancelWall();
 
 				//StartCooldown(); // seems too much to do cooldown on a bad input
 			}

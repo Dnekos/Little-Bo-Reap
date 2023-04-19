@@ -13,14 +13,22 @@ MonoBehaviour:
   m_Name: Tutorial_5
   m_EditorClassIdentifier: 
   script:
-  - body: Hey there! Looks like you found the souls of your dead sheep! Press <SummonSheep>
-      to bring them back!
+  - body: Hey there! Looks like you found the souls of your dead sheep!
+    changeCamera: 1
+    CameraTransitionSpeed: 1
+    CameraPos: {x: 115.269936, y: 10.842482, z: 190.47572}
+    CameraEuler: {x: 16.708538, y: 123.002884, z: 0.00017739042}
+  - body: Press <SummonSheep> to bring them back!
     changeCamera: 0
     CameraTransitionSpeed: 0
     CameraPos: {x: 0, y: 0, z: 0}
     CameraEuler: {x: 0, y: 0, z: 0}
-  - body: Those ones are Builder Sheep, by the way. They're pretty standard, but
-      you can stack them by holding <Jump>.
+  - body: Those ones are Builder Sheep, by the way. They're pretty standard.
+    changeCamera: 0
+    CameraTransitionSpeed: 0
+    CameraPos: {x: 0, y: 0, z: 0}
+    CameraEuler: {x: 0, y: 0, z: 0}
+  - body: But... you can stack them by holding <Jump> while you're in the air.
     changeCamera: 0
     CameraTransitionSpeed: 0
     CameraPos: {x: 0, y: 0, z: 0}

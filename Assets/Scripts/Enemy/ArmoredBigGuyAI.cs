@@ -6,10 +6,10 @@ using UnityEngine.AI;
 public class ArmoredBigGuyAI : BigGuyAI
 {
     [Header("Armor")]
-	[SerializeField] GameObject ArmorBarCanvas;
-	[SerializeField] Transform[] ArmorBars;
+	[SerializeField] GameObject ArmorBarUI;
     [SerializeField] GameObject armorObject;
     [SerializeField] ParticleSystem destroyParticles;
+    [SerializeField] ParticleSystem armorSparks;
     [SerializeField] FMODUnity.EventReference armorBreakSFX;
     private bool armorBroken = false;
     private bool armorRecentlyBroken = false;
@@ -18,15 +18,11 @@ public class ArmoredBigGuyAI : BigGuyAI
     {
         base.Start();
 
-        ArmorBarCanvas.SetActive(true);
+		ArmorBarUI.SetActive(true);
+		HealthBarCanvas.SetActive(true);
+	}
 
-        float armorBarScale = (Health / MaxHealth);
-        ArmorBars[0].localScale = new Vector3(armorBarScale, 1, 1);
-        ArmorBars[1].localScale = new Vector3(armorBarScale * -1, 1, 1);
-
-    }
-
-    public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
+	public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
     {
         if(armorBroken == true && armorRecentlyBroken == false)
         {
@@ -36,15 +32,15 @@ public class ArmoredBigGuyAI : BigGuyAI
             {
                 HealthBarCanvas.SetActive(true);
                 float healthbarScale = (Health / MaxHealth);
-                HPBars[0].localScale = new Vector3(healthbarScale, 1, 1);
-                HPBars[1].localScale = new Vector3(healthbarScale * -1, 1, 1);
-            }
-            else
+				HPBar.fillAmount = healthbarScale;
+
+			}
+			else
                 HealthBarCanvas.SetActive(false);
         }
-        else if(atk.name == "Ram_Attack_Charge" && armorBroken == false)
+        else if((atk.name == "Ram_Attack_Charge" || atk.name == "HammerAttack") && armorBroken == false)
         {
-            ArmorBarCanvas.SetActive(false);
+			ArmorBarUI.SetActive(false);
             HealthBarCanvas.SetActive(true);
             armorObject.SetActive(false);
             destroyParticles.Play(true);
@@ -58,11 +54,16 @@ public class ArmoredBigGuyAI : BigGuyAI
         //add a section for attacks that dont break shield for the sound 
         else if(armorBroken == false)
         {
+            //Sparks and armor hit sound
+            Instantiate(armorSparks, armorObject.transform);
+
             //this would be an attack that doesnt break the shield
-            if (Time.deltaTime % 10 == 0)
-            {
-                //Sparks and armor hit sound
-            }
+            //Debug.Log(Time.time % 10f);
+            //if (Time.deltaTime % 0.2f == 0)
+            //{
+            //    Debug.Log("armor hit");
+            //    
+            //}
         }
     }
 

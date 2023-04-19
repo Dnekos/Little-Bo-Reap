@@ -65,7 +65,7 @@ MonoBehaviour:
   inputIcon: {fileID: 173784402827191315}
   script: {fileID: 11400000, guid: e89e6d702c8b3744897bf7ce5c0d8805, type: 2}
   DB: {fileID: 0}
-  repeatingScript: {fileID: 11400000, guid: e89e6d702c8b3744897bf7ce5c0d8805, type: 2}
+  repeatingScript: {fileID: 0}
   isFinalDialogue: 1
 --- !u!1 &173784402827191319
 GameObject:
@@ -79,7 +79,7 @@ GameObject:
   - component: {fileID: 173784402827191315}
   - component: {fileID: 173784402827191314}
   - component: {fileID: 173784402827191317}
-  m_Layer: 6
+  m_Layer: 16
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -206,6 +206,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3455989860455129998, guid: f2f15446e120cc84a9f80c22bee93e5d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 4518551594550511836, guid: f2f15446e120cc84a9f80c22bee93e5d,
         type: 3}
@@ -337,10 +342,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6734095415643581491, guid: f2f15446e120cc84a9f80c22bee93e5d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 7664054079540671001, guid: f2f15446e120cc84a9f80c22bee93e5d,
         type: 3}
       propertyPath: m_Name
       value: Resizing KeyCap
+      objectReference: {fileID: 0}
+    - target: {fileID: 7664054079540671001, guid: f2f15446e120cc84a9f80c22bee93e5d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []

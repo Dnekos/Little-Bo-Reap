@@ -47,11 +47,14 @@ public class Speaker : Interactable
 	
 	public void SetTalking(bool value)
 	{
-		if (value && !emitter.IsPlaying())
-			emitter.Play();
-		else if (!value && emitter.IsPlaying())
-			emitter.Stop();
-		anim.SetBool("Talking", value);
+		if (emitter != null)
+		{
+            if (value && !emitter.IsPlaying())
+                emitter.Play();
+            else if (!value && emitter.IsPlaying())
+                emitter.Stop();
+            anim.SetBool("Talking", value);
+        }
 	}
 
 	// currently depricated

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class BabaYagasHouseAI : EnemyAI
 {
@@ -24,18 +25,19 @@ public class BabaYagasHouseAI : EnemyAI
 	[Header("Ranged Attack")]
 	[SerializeField] float rangedAttackDamage;
     [SerializeField] Transform rangedAttackSpawnPoint;
+	[SerializeField] ParticleSystem rangedAttackIndicator;
+
 
 	[Header("Healthbar")]
-	[SerializeField] GameObject ArmorBarCanvas;
-	[SerializeField] Transform ArmorBar;
-	[SerializeField] GameObject HealthBarCanvas;
-	[SerializeField] Transform HealthBar;
+	[SerializeField] GameObject ArmorBar;
+	[SerializeField] Image HealthBar;
 
     [Header("Stun Objects")]
 	[SerializeField] GameObject[] armorObjects;
 	[SerializeField] GameObject pinwheelObjectLeft;
 	[SerializeField] GameObject pinwheelObjectRight;
 	[SerializeField] ParticleSystem destroyParticles;
+	[SerializeField] ParticleSystem armorSparks;
 	private bool armorBroken = false;
 	private bool armorRecentlyBroken = false;
 
@@ -65,10 +67,10 @@ public class BabaYagasHouseAI : EnemyAI
 
 		spawnPoint = transform.position;
 
-		ArmorBarCanvas.SetActive(true);
+		ArmorBar.SetActive(true);
 
 		float armorBarScale = (Health / MaxHealth);
-		HealthBar.localScale = new Vector3(armorBarScale * -1, 1, 1);
+		HealthBar.fillAmount = 1;
 
 		GetAnimator().Play("BBYGH_Reveal_01 1");
 	}
@@ -84,7 +86,7 @@ public class BabaYagasHouseAI : EnemyAI
             {
 				armor.SetActive(true);
             }
-			ArmorBarCanvas.SetActive(true);
+			ArmorBar.SetActive(true);
 		}
 
 		if(GetAnimator().GetBool("isMoving"))
@@ -185,25 +187,45 @@ public class BabaYagasHouseAI : EnemyAI
 
 	}
 
-
-    public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
+	public void CreateAttackIndicator()
     {
+		//indicator
+		//at the player position, raycast down until you hit the floor, and instantiate the particle system 
+
+		RaycastHit hit;
+		if (Physics.Raycast(player.transform.position, transform.TransformDirection(Vector3.down), out hit, Mathf.Infinity))
+		{
+			//if((groundMask & 1 << hit.collider.gameObject.layer) == 1)//ground layer
+			if (6 == hit.collider.gameObject.layer && Health >= 0)
+			{
+				ParticleSystem indicator = Instantiate(rangedAttackIndicator, (hit.point + new Vector3(0f,0.1f,0f)), player.rotation);//that vector3 is to prevent z-fighting
+			}
+		}
+
+	}
+
+	public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
+    {
+		if(GetAnimator().GetCurrentAnimatorStateInfo(0).IsName("BBYGH_Reveal_01 1"))
+        {
+			return;
+        }
 		if (armorBroken == true && !spawningEnemies && armorRecentlyBroken == false)
 		{
 			base.TakeDamage(atk, attackForward, damageAmp, 0.0f);//no knockback
 			if (Health != MaxHealth || Health >= executionHealthThreshhold)
 			{
-				HealthBarCanvas.SetActive(true);
+				HealthBar.gameObject.SetActive(true);
 				float healthbarScale = (Health / MaxHealth);
-				HealthBar.localScale = new Vector3(healthbarScale * -1, 1, 1);
+				HealthBar.fillAmount = healthbarScale;
 			}
 			else
-				HealthBarCanvas.SetActive(false);
+				HealthBar.gameObject.SetActive(false);
 		}
-		else if (atk.name == "Ram_Attack_Charge" && armorBroken == false)
+		else if ((atk.name == "Ram_Attack_Charge" || atk.name == "HammerAttack") && armorBroken == false)
 		{
-			ArmorBarCanvas.SetActive(false);
-			HealthBarCanvas.SetActive(true);
+			ArmorBar.SetActive(false);
+			HealthBar.gameObject.SetActive(true);
 			foreach (GameObject armor in armorObjects)
 			{
 				armor.SetActive(false);
@@ -216,7 +238,19 @@ public class BabaYagasHouseAI : EnemyAI
 
 			FMODUnity.RuntimeManager.PlayOneShot(armorBreakingSFX,transform.position);
 		}
-		//add a section for attacks that dont break shield for the sound 
+		else if (armorBroken == false)
+		{
+			//Sparks and armor hit sound
+			Instantiate(armorSparks, armorObjects[1].transform);
+
+			//this would be an attack that doesnt break the shield
+			//Debug.Log(Time.time % 10f);
+			//if (Time.deltaTime % 0.2f == 0)
+			//{
+			//    Debug.Log("armor hit");
+			//    
+			//}
+		}
 
 	}
 

@@ -822,7 +822,7 @@ PrefabInstance:
     - target: {fileID: 3870380308813204384, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
         type: 3}
       propertyPath: m_DefaultActionMap
-      value: f42f6a86-4223-4a9c-89ad-1979079c41ff
+      value: PlayerMenu
       objectReference: {fileID: 0}
     - target: {fileID: 3870380308813204389, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
         type: 3}
@@ -998,6 +998,16 @@ PrefabInstance:
         type: 3}
       propertyPath: gothMeterChargeTime
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5378039617171210884, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 22.300293
+      objectReference: {fileID: 0}
+    - target: {fileID: 5378039617171210884, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -34.400024
       objectReference: {fileID: 0}
     - target: {fileID: 5389054988843330620, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
         type: 3}
@@ -1652,6 +1662,21 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 1090766147}
     m_Modifications:
+    - target: {fileID: 350440966531313492, guid: 60da3e05f5ca85a4cad90754d04b5270,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 95
+      objectReference: {fileID: 0}
+    - target: {fileID: 5978745514376763940, guid: 60da3e05f5ca85a4cad90754d04b5270,
+        type: 3}
+      propertyPath: m_Extents.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5978745514376763940, guid: 60da3e05f5ca85a4cad90754d04b5270,
+        type: 3}
+      propertyPath: m_Extents.z
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7805692773841599678, guid: 60da3e05f5ca85a4cad90754d04b5270,
         type: 3}
       propertyPath: m_RootOrder
@@ -4105,7 +4130,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh75938
+  m_Name: pb_Mesh481332
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -5212,6 +5237,7 @@ GameObject:
   m_Component:
   - component: {fileID: 457632377}
   - component: {fileID: 457632378}
+  - component: {fileID: 457632379}
   m_Layer: 0
   m_Name: Camera_Pivot
   m_TagString: Untagged
@@ -5248,7 +5274,176 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeBeforeCamSpin: 10
+  timeToHideUI: 60
+  UI: {fileID: 1580513198}
   camSpinRate: 10
+--- !u!114 &457632379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 457632376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 8fe16c4b43117424da9582a7a48789b4,
+    type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9aa03caf-92f3-44bc-9759-0f80adc7f3bd
+    m_ActionName: PlayerMovement/WASDMovement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 36abf3f6-e746-48a3-bd04-791a62adb8f1
+    m_ActionName: PlayerMovement/Jump[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e1211aa8-4046-4a8c-bf04-58603676129c
+    m_ActionName: PlayerMovement/Dash[/Keyboard/shift]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: a6eca5f5-b4ce-4f87-b4b0-67cbf3be8da7
+    m_ActionName: PlayerMovement/SummonSheep[/Keyboard/r]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 90d9266a-db84-4e15-a7a5-eb0ac7b38f73
+    m_ActionName: PlayerMovement/RecallSheep[/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b5e0f688-f74e-4c19-be91-ee2e61a3c217
+    m_ActionName: PlayerMovement/SheepAttack[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c00b0f8d-1ae7-4803-ac2f-1bfa7399fd8e
+    m_ActionName: PlayerMovement/SheepCharge[/Keyboard/1]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 4a884deb-20d3-4d2d-ad28-8b437cd7911d
+    m_ActionName: PlayerMovement/SheepDefend[/Keyboard/2]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 31bb77aa-fa27-4092-8373-921feaf5562f
+    m_ActionName: PlayerMovement/LaunchSheep[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 735a6ce6-7551-405d-a3a9-54ce15ed6fd0
+    m_ActionName: PlayerMovement/GroundPound[/Keyboard/ctrl,/Keyboard/c]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 4a6a57a9-3ec2-4a16-9344-e2f236e81c20
+    m_ActionName: PlayerMovement/ChangeFlock[/Mouse/scroll/down,/Mouse/scroll/up,/Keyboard/tab]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 80238228-5c71-489b-9d37-0b4210825d8b
+    m_ActionName: PlayerMovement/GothMode[/Keyboard/q]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: dba34b27-d5db-4088-9dfd-b9e8bbb33e1d
+    m_ActionName: PlayerMovement/Execute[/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d62e9d4b-30db-4c4b-9c78-0c3283829267
+    m_ActionName: PlayerMovement/SetFlock
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 05cc96a0-ad38-4dc6-bab2-63718e7b2600
+    m_ActionName: PlayerMovement/SheepActiveAbility[/Keyboard/1]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 56b0c570-cf82-4458-acdd-3c305d71e1d8
+    m_ActionName: PlayerMovement/PetSheep[/Keyboard/f]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f8511625-e0a9-4636-a07b-742a7b1aec96
+    m_ActionName: PlayerMovement/PauseMenu[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 69cc146f-1176-465e-8891-58ba71261dc3
+    m_ActionName: PlayerMenu/DEBUG_Quit_Game[/Keyboard/equals]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 4b3eee06-5db7-4006-a3b4-dc1b721ea95c
+    m_ActionName: PlayerMenu/DEBUG_Restart_Scene[/Keyboard/p]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 457632378}
+        m_TargetAssemblyTypeName: KioskMode, Assembly-CSharp
+        m_MethodName: OnMouseMove
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: c695fcfb-8769-4fb5-b8b8-9cbdc0cab715
+    m_ActionName: PlayerMenu/CameraMovement[/Mouse/delta]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0b8923f4-4cc2-443b-be5f-def5128f4988
+    m_ActionName: CinematicCameras/Cameras[/Keyboard/3,/Keyboard/4,/Keyboard/5,/Keyboard/6,/Keyboard/7,/Keyboard/8,/Keyboard/9]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 727a08d8-8b18-40e9-8c97-e1eeec386726
+    m_ActionName: CinematicCameras/ToggleUI[/Keyboard/0]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 421454de-18e2-4b3c-8d51-edd04bb6ccca
+    m_ActionName: CinematicCameras/ToggleMusic[/Keyboard/minus,/Keyboard/equals]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c91e9761-51bb-4a02-b792-3aeeb97af856
+    m_ActionName: CinematicCameras/JumpCheckpoint[/Keyboard/o]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c3d59674-4a77-48c0-90bd-ac3e75b598f7
+    m_ActionName: CinematicCameras/SkipToBoss[/Keyboard/i]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f98c3e5d-013f-49eb-a479-09fc6060d8d5
+    m_ActionName: Dialog/AdvanceText[/Mouse/leftButton,/Keyboard/space,/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ea74ad52-c969-4048-8f0a-0d381f8ce4e5
+    m_ActionName: RamCharge/PauseMenu[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: edf51ad9-0a69-4032-882d-34963427bd32
+    m_ActionName: RamCharge/StopCharge[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e19019e0-1817-4f3f-a348-f80bab023c93
+    m_ActionName: PauseMenu/PauseMenu[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d7b64118-8f58-430d-9a82-13f456b72760
+    m_ActionName: PauseMenu/TabLeft
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 96367a1a-9ff0-4721-81b3-7928ec828724
+    m_ActionName: PauseMenu/TabRight[/Keyboard/tab]
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: PlayerMenu
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1001 &466432064
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13269,7 +13464,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: e1d5af8d1c3835b48b09a23e9b764c77, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -16190,6 +16385,21 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 1090766147}
     m_Modifications:
+    - target: {fileID: 350440966531313492, guid: 60da3e05f5ca85a4cad90754d04b5270,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 95
+      objectReference: {fileID: 0}
+    - target: {fileID: 5978745514376763940, guid: 60da3e05f5ca85a4cad90754d04b5270,
+        type: 3}
+      propertyPath: m_Extents.x
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5978745514376763940, guid: 60da3e05f5ca85a4cad90754d04b5270,
+        type: 3}
+      propertyPath: m_Extents.z
+      value: 2.5
+      objectReference: {fileID: 0}
     - target: {fileID: 7805692773841599678, guid: 60da3e05f5ca85a4cad90754d04b5270,
         type: 3}
       propertyPath: m_RootOrder
@@ -23341,7 +23551,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh75732
+  m_Name: pb_Mesh481038
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -26942,6 +27152,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Prop_Rock_3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5577728564967039710, guid: 3232283442a4bf84abb9716f0d91ee9a,
+        type: 3}
+      propertyPath: m_Carve
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5577728564967039711, guid: 3232283442a4bf84abb9716f0d91ee9a,
         type: 3}
