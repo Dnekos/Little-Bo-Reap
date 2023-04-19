@@ -200,7 +200,9 @@ public class BabaYagasHouseAI : EnemyAI
 			//if((groundMask & 1 << hit.collider.gameObject.layer) == 1)//ground layer
 			if (6 == hit.collider.gameObject.layer && Health >= 0)
 			{
-				ParticleSystem indicator = Instantiate(rangedAttackIndicator, (hit.point + new Vector3(0f,0.1f,0f)), player.rotation);//that vector3 is to prevent z-fighting
+				//ParticleSystem indicator = Instantiate(rangedAttackIndicator, (hit.point + new Vector3(0f,0.1f,0f)), player.rotation);//that vector3 is to prevent z-fighting
+				WorldState.instance.pools.DequeuePooledObject(rangedAttackIndicator.gameObject, (hit.point + new Vector3(0f, 0.1f, 0f)), player.rotation);
+
 			}
 		}
 
@@ -243,7 +245,8 @@ public class BabaYagasHouseAI : EnemyAI
 		else if (armorBroken == false)
 		{
 			//Sparks and armor hit sound
-			Instantiate(armorSparks, armorObjects[1].transform);
+			//Instantiate(armorSparks, armorObjects[1].transform);
+			WorldState.instance.pools.DequeuePooledObject(armorSparks.gameObject, armorObjects[1].transform.position, armorObjects[1].transform.rotation);
 
 			//this would be an attack that doesnt break the shield
 			//Debug.Log(Time.time % 10f);

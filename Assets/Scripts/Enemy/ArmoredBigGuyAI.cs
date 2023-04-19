@@ -55,7 +55,8 @@ public class ArmoredBigGuyAI : BigGuyAI
         else if(armorBroken == false)
         {
             //Sparks and armor hit sound
-            Instantiate(armorSparks, armorObject.transform);
+            //Instantiate(armorSparks, armorObject.transform);
+            WorldState.instance.pools.DequeuePooledObject(armorSparks.gameObject, armorObject.transform.position, armorObject.transform.rotation);
 
             //this would be an attack that doesnt break the shield
             //Debug.Log(Time.time % 10f);
