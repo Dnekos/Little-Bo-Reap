@@ -29,7 +29,8 @@ public class PlayerSheepProjectile : MonoBehaviour
 
     void DestroySheepProjectile()
     {
-        Instantiate(gibs, transform.position, transform.rotation);
+		WorldState.instance.pools.DequeuePooledObject(gibs, transform.position, transform.rotation);
+        //Instantiate();
         Destroy(gameObject);
     }
 
