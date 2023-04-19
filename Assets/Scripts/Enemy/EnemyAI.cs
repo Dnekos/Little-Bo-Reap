@@ -55,6 +55,7 @@ public class EnemyAI : EnemyBase
 	[SerializeField] float groundCheckDistance;
 	public bool isGrounded = false;
 	[SerializeField] float fallRate = 50;
+	Coroutine hitstunCoroutine = null;
 
 	[Header("Sounds")]
 	[SerializeField] FMODUnity.EventReference swingSound;
@@ -92,6 +93,11 @@ public class EnemyAI : EnemyBase
 			transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(agent.desiredVelocity, Vector3.up), 0.2f);
 			transform.eulerAngles = new Vector3(0, transform.eulerAngles.y);
 		}
+
+		if (currentEnemyState == EnemyStates.HITSTUN && hitstunCoroutine == null)
+			hitstunCoroutine = StartCoroutine(OnHitStun());
+
+
 		foreach (var key in Cooldowns.Keys.ToList())
 			Cooldowns[key] -= Time.deltaTime;
 	}
@@ -270,7 +276,7 @@ public class EnemyAI : EnemyBase
 		if (atk.DealsHitstun && isBoss == false)
 		{
 			StopAllCoroutines();
-			StartCoroutine("OnHitStun");
+			hitstunCoroutine = StartCoroutine(OnHitStun());
 		}
 		// subtract health
 		base.TakeDamage(atk, attackForward, damageAmp, knockbackMultiplier);
@@ -367,6 +373,8 @@ public class EnemyAI : EnemyBase
 		rb.constraints = RigidbodyConstraints.FreezeAll;
 		rb.velocity = Vector3.zero;
 		rb.angularVelocity = Vector3.zero;
+
+		hitstunCoroutine = null;
 	}
 	#endregion
 }
