@@ -37,6 +37,7 @@ public class BabaYagasHouseAI : EnemyAI
 	[SerializeField] GameObject pinwheelObjectLeft;
 	[SerializeField] GameObject pinwheelObjectRight;
 	[SerializeField] ParticleSystem destroyParticles;
+	[SerializeField] ParticleSystem armorSparks;
 	private bool armorBroken = false;
 	private bool armorRecentlyBroken = false;
 
@@ -239,7 +240,19 @@ public class BabaYagasHouseAI : EnemyAI
 
 			//armor break sound
 		}
-		//add a section for attacks that dont break shield for the sound 
+		else if (armorBroken == false)
+		{
+			//Sparks and armor hit sound
+			Instantiate(armorSparks, armorObjects[1].transform);
+
+			//this would be an attack that doesnt break the shield
+			//Debug.Log(Time.time % 10f);
+			//if (Time.deltaTime % 0.2f == 0)
+			//{
+			//    Debug.Log("armor hit");
+			//    
+			//}
+		}
 
 	}
 

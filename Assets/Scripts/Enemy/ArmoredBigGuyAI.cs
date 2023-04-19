@@ -9,6 +9,7 @@ public class ArmoredBigGuyAI : BigGuyAI
 	[SerializeField] GameObject ArmorBarUI;
     [SerializeField] GameObject armorObject;
     [SerializeField] ParticleSystem destroyParticles;
+    [SerializeField] ParticleSystem armorSparks;
     [SerializeField] FMODUnity.EventReference armorBreakSFX;
     private bool armorBroken = false;
     private bool armorRecentlyBroken = false;
@@ -18,7 +19,7 @@ public class ArmoredBigGuyAI : BigGuyAI
         base.Start();
 
 		ArmorBarUI.SetActive(true);
-		HealthBarCanvas.SetActive(false);
+		HealthBarCanvas.SetActive(true);
 	}
 
 	public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
@@ -53,11 +54,16 @@ public class ArmoredBigGuyAI : BigGuyAI
         //add a section for attacks that dont break shield for the sound 
         else if(armorBroken == false)
         {
+            //Sparks and armor hit sound
+            Instantiate(armorSparks, armorObject.transform);
+
             //this would be an attack that doesnt break the shield
-            if (Time.deltaTime % 10 == 0)
-            {
-                //Sparks and armor hit sound
-            }
+            //Debug.Log(Time.time % 10f);
+            //if (Time.deltaTime % 0.2f == 0)
+            //{
+            //    Debug.Log("armor hit");
+            //    
+            //}
         }
     }
 
