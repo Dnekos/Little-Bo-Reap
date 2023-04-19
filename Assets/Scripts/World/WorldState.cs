@@ -204,8 +204,6 @@ public class WorldState : MonoBehaviour
 	{
 		FMOD.Studio.Bus musicBus = FMODUnity.RuntimeManager.GetBus("Bus:/Music");
 		musicBus.setPaused(false);
-		if (Loading != LoadState.None)
-			PersistentData = new SaveData(1);
 #if UNITY_EDITOR
 		if (Loading.HasFlag(LoadState.Editor))
 		{
