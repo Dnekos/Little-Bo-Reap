@@ -5,33 +5,37 @@ using UnityEngine;
 public class BellDistract : MonoBehaviour
 {
     [SerializeField] float range;
-    public bool distracting = false;//REVIEW: nitpicking and personal preference, but I like bool names to be action statements,
-                                        // so this would be named 'isDistracting' rather than just 'distracting'
+    public bool isDistracting = false;
     List<EnemyAI> distractedEnemies = new List<EnemyAI>();
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }//REVIEW: if we're not using it, we can get rid of it to clean up the script
 
-    // Update is called once per frame
-    void Update()
+	SheepConstruct construct;
+	// Start is called before the first frame update
+	void Start()
     {
-        float currentSheepCount = GetComponent<SheepConstruct>().GetSheepCount();
-        if (currentSheepCount <= 0)
-        {
-            EndDistract();
-        }
-        distracting = currentSheepCount > 0; 
-    }
+		construct = GetComponent<SheepConstruct>();
+
+	}//REVIEW: if we're not using it, we can get rid of it to clean up the script
+
+	// Update is called once per frame
+	void Update()
+	{
+		float currentSheepCount = construct.GetSheepCount();
+
+		isDistracting = currentSheepCount > 0;
+		if (!isDistracting)
+		{
+			EndDistract();
+		}
+	}
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.tag == "Enemy" && other.GetComponent<EnemyAI>() != null && other.GetComponent<EnemyAI>().distracted == false && distracting)
+		EnemyAI ai = other.GetComponent<EnemyAI>();
+		if (other.tag == "Enemy" && ai != null && other.GetComponent<EnemyAI>().distracted == false && isDistracting)
         {
-            other.GetComponent<EnemyAI>().distracted = true;
-            other.GetComponent<EnemyAI>().bellLoc = this.transform.position;
-            distractedEnemies.Add(other.GetComponent<EnemyAI>());
+            ai.distracted = true;
+			ai.bellLoc = this.transform.position;
+            distractedEnemies.Add(ai);
         }
     }
 

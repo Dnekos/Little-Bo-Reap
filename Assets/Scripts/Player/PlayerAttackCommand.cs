@@ -87,7 +87,7 @@ public class PlayerAttackCommand : MonoBehaviour
 			else if (context.started && sheepAttackPoint == null)
 			{
 				//spawn icon
-				var attackPoint = Instantiate(flocks.GetSheepFlock(flockType).reticleSustainPrefab, transform.position, Quaternion.identity) as GameObject;
+				var attackPoint = WorldState.instance.pools.DequeuePooledObject(flocks.GetSheepFlock(flockType).reticleSustainPrefab, transform.position, Quaternion.identity) as GameObject;
 				ParticleSystem[] particleSystems = attackPoint.GetComponentsInChildren<ParticleSystem>();
 				foreach (ParticleSystem particle in particleSystems)
 				{
@@ -119,7 +119,7 @@ public class PlayerAttackCommand : MonoBehaviour
 		FMODUnity.RuntimeManager.PlayOneShotAttached(abilitySound, gameObject);
 
 		//get rid of icon
-		Destroy(sheepAttackPoint);
+		sheepAttackPoint.SetActive(false);
 
 		// making sure its gone for input checking
 		sheepAttackPoint = null;
@@ -129,7 +129,7 @@ public class PlayerAttackCommand : MonoBehaviour
 		if (Physics.Raycast(Camera.main.transform.position + attackPointOffset, Camera.main.transform.forward, out hit, Mathf.Infinity, attackTargetLayers))
 		{
 			//instantiate confirm prefab
-			var attackConfirm = Instantiate(flocks.GetSheepFlock(flockType).reticleConfirmPrefab, hit.point, Quaternion.identity);
+			var attackConfirm = WorldState.instance.pools.DequeuePooledObject(flocks.GetSheepFlock(flockType).reticleConfirmPrefab, hit.point, Quaternion.identity);
 			ParticleSystem[] particleSystems = attackConfirm.GetComponentsInChildren<ParticleSystem>();
 			foreach (ParticleSystem particle in particleSystems)
 			{

@@ -10,14 +10,14 @@ public class SheepConstruct : SheepHolder
 	[SerializeField] int SheepBars = 2;
 	[SerializeField] float lerpSpeed = 1;
 
-	[Header("Sounds")]
+	[Header("Effects")]
 	[SerializeField] protected FMODUnity.EventReference placeSound;
-
-	Vector3 adjustedColExt; //adjusted collider extents, used for determining valid place positions
+	[SerializeField] bool disableChildrenOnBuild = false;
 
 	[Header("Shown for Debug Visibility")]
 	float SheepRadius = 1;
 	[SerializeField] int layerCount = 0;
+	Vector3 adjustedColExt; //adjusted collider extents, used for determining valid place positions
 
 	[Header("Settings")]
 	[SerializeField]
@@ -52,6 +52,7 @@ public class SheepConstruct : SheepHolder
 		{
 			obs.enabled = false;
 			col.enabled = false;
+			Destroy(gameObject);
 		}
 	}
 
@@ -87,6 +88,13 @@ public class SheepConstruct : SheepHolder
 	public override void Interact()
 	{
 		base.Interact();
+
+		if (disableChildrenOnBuild)
+		{
+			for (int i = 0; i < transform.childCount; i++)
+				transform.GetChild(i).gameObject.SetActive(false);
+		}
+
 		StopAllCoroutines();
 		StartCoroutine(AddAllSheep(WorldState.instance.player.GetComponent<PlayerSheepAbilities>().sheepFlocks[(int)SheepTypes.BUILD].activeSheep, delay));
 	}

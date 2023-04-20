@@ -58481,6 +58481,15 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7718855406479273, guid: e77e9bc22dd5e1a4982a66c4172e67e3, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1924897193698859292, guid: e77e9bc22dd5e1a4982a66c4172e67e3,
+        type: 3}
+      propertyPath: SheepRadiusMult
+      value: 0.8
+      objectReference: {fileID: 0}
     - target: {fileID: 3677815942122897683, guid: e77e9bc22dd5e1a4982a66c4172e67e3,
         type: 3}
       propertyPath: m_Name
@@ -58608,7 +58617,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 2
-  distracting: 0
+  isDistracting: 0
 --- !u!4 &6054836524043080406 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4025601284740827625, guid: e77e9bc22dd5e1a4982a66c4172e67e3,

@@ -225,6 +225,16 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 526527264}
     m_Modifications:
+    - target: {fileID: 37273368066672105, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 37273368066672105, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 74579788559516395, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
         type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -1644,6 +1654,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalRotation.z
       value: -8.7157646e-33
+      objectReference: {fileID: 0}
+    - target: {fileID: 4564239500253615673, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4564239500253615673, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4564239500253615673, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4564239500253615673, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4564239500253615673, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4564239500253615673, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4578441957860413894, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
         type: 3}
@@ -5022,7 +5062,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh55928
+  m_Name: pb_Mesh42158
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -7812,7 +7852,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh56532
+  m_Name: pb_Mesh42762
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -8986,7 +9026,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh56248
+  m_Name: pb_Mesh42478
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -9758,7 +9798,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh56772
+  m_Name: pb_Mesh43000
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -16085,7 +16125,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PolyMesh:
-    name: pb_Mesh56248
+    name: pb_Mesh42478
     vertices:
     - {x: 0.000016930668, y: 16.264933, z: 0.000000015180355}
     - {x: 54.625244, y: 16.264927, z: 50.1267}
@@ -25769,7 +25809,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh56708
+  m_Name: pb_Mesh42938
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -27383,6 +27423,11 @@ PrefabInstance:
         type: 3}
       propertyPath: doors.Array.data[3]
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4016259675076083573, guid: 22ebe845e0f71434a9d81ad160ddbe23,
+        type: 3}
+      propertyPath: PersistentData.unlocks
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 4016259675076083573, guid: 22ebe845e0f71434a9d81ad160ddbe23,
         type: 3}
@@ -32062,7 +32107,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PolyMesh:
-    name: pb_Mesh56708
+    name: pb_Mesh42938
     vertices:
     - {x: -625, y: -0.5, z: 500}
     - {x: 625, y: -0.5, z: 500}
@@ -43561,6 +43606,7 @@ MonoBehaviour:
   yOffset: {x: 0, y: 10, z: 0}
   lookPoint: {fileID: 306003753}
   camSpawnSphereRadius: 12
+  finalEnemyPosition: {x: 0, y: 0, z: 0}
 --- !u!1001 &1885033414
 PrefabInstance:
   m_ObjectHideFlags: 0

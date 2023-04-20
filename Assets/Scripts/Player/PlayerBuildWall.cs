@@ -111,8 +111,7 @@ public class PlayerBuildWall : MonoBehaviour
 				constructPrefab = wallPrefab;
 			}
 
-			var chargePoint = Instantiate(constructPrefab, transform.position, Quaternion.identity) as GameObject;
-			sheepChargePoint = chargePoint;
+			sheepChargePoint = Instantiate(constructPrefab, transform.position, Quaternion.identity);
 
 			//prepare to charge
 			isPreparing = true;
@@ -152,7 +151,7 @@ public class PlayerBuildWall : MonoBehaviour
 
 		// confirm juice
 		flocks.GetSheepFlock(SheepTypes.BUILD).spellParticle.Play(true);
-		Instantiate(confirmPrefab, sheepChargePoint.transform.position - prefabSpawnOffset, player.playerOrientation.transform.rotation);
+		WorldState.instance.pools.DequeuePooledObject(confirmPrefab, sheepChargePoint.transform.position - prefabSpawnOffset, player.playerOrientation.transform.rotation);
 	}
 
 	void StartCooldown()
