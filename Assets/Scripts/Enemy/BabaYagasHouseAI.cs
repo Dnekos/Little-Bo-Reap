@@ -71,7 +71,6 @@ public class BabaYagasHouseAI : EnemyAI
 
 		float armorBarScale = (Health / MaxHealth);
 		HealthBar.fillAmount = 1;
-
 		GetAnimator().Play("BBYGH_Reveal_01 1");
 	}
 

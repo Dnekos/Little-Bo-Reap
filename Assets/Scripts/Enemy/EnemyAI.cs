@@ -263,11 +263,12 @@ public class EnemyAI : EnemyBase
 
 		isGrounded = frontCheck || backCheck;
 	}
-	#endregion
 
-	#region Health Override and Hitstun
-	//to apply normal damage, use this overload
-	public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
+    #endregion
+
+    #region Health Override and Hitstun
+    //to apply normal damage, use this overload
+    public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
 	{
 		//if they must be executed, return
 		if (mustBeExecuted && Health < executionHealthThreshhold)
