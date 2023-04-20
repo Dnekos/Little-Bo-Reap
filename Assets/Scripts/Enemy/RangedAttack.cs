@@ -11,10 +11,12 @@ public class RangedAttack : MonoBehaviour
     Vector3 origPos;
 
     [SerializeField]float maxTimeAlive = 2.5f;
+    [SerializeField] FMODUnity.EventReference whistle;
     float currentTimeAlive = 0;
 
     //small cheat
     public Transform player;
+   
 
     // Start is called before the first frame update
     void Start()
@@ -56,5 +58,7 @@ public class RangedAttack : MonoBehaviour
     {
         Vector3 fireDirection = new Vector3(player.position.x, player.position.y + 10f, player.position.z) - transform.position;
         this.GetComponent<Rigidbody>().AddForce(fireDirection.normalized * (70f * fireDirection.magnitude));
+        FMODUnity.RuntimeManager.PlayOneShot(whistle, player.transform.position);
+        
     }
 }

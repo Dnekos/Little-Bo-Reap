@@ -25627,6 +25627,7 @@ MonoBehaviour:
   pinwheelObjectLeft: {fileID: 1423758968941448198}
   pinwheelObjectRight: {fileID: 6806401054972975225}
   destroyParticles: {fileID: 771594462963397056}
+  armorSparks: {fileID: 0}
   endGameObject: {fileID: 173784402656952475, guid: 5a028c30d3e44cd41b12b9b034a3068c,
     type: 3}
   armorBreakingSFX:
@@ -25638,11 +25639,11 @@ MonoBehaviour:
     Path: event:/Big Guy/Armorbreaking
   armorBlockingSFX:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: 146493172
+      Data2: 1103249201
+      Data3: 587839653
+      Data4: 1457420623
+    Path: event:/Big Guy/ArmorReflect
   spawnPoint: {x: 0, y: 0, z: 0}
   movementRadius: 0
   stompAtk: {fileID: 11400000, guid: ce2d4d1c327ce564ebb6f9e7d2f8fd96, type: 2}

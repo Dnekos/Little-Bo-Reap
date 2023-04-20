@@ -17,6 +17,8 @@ public class FlyingEnemyProjectile : MonoBehaviour
     [SerializeField] float ExplosionDamage;
     [SerializeField] protected EnemyAttack activeAttack;
     [SerializeField] Animator anim;
+    [SerializeField] FMODUnity.EventReference whistle;
+
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +26,7 @@ public class FlyingEnemyProjectile : MonoBehaviour
         hitTargets = new List<Damageable>();
 
         origPos = transform.position;
+        FMODUnity.RuntimeManager.PlayOneShot(whistle, origPos);
 
     }
 
@@ -59,6 +62,7 @@ public class FlyingEnemyProjectile : MonoBehaviour
 
     public void RunAttack(EnemyAttack atk)
     {
+       
         atk.PerformAttack(anim);
         activeAttack = atk;
     }
