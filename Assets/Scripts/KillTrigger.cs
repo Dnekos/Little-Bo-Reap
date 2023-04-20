@@ -8,6 +8,11 @@ public class KillTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-		other.GetComponent<Damageable>()?.ForceKill();
+        if (other.CompareTag("Player"))
+        {
+            other.GetComponent<PlayerHealth>().BootPlayerBack();
+            Debug.Log("player booted back up");
+        }
+        else other.GetComponent<Damageable>()?.ForceKill();
     }
 }

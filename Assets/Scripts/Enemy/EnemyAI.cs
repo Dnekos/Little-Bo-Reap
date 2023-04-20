@@ -4,23 +4,23 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 using XNode.Examples.StateGraph;
+
 public enum EnemyStates
 {
-	WANDER = 0,
-	CHASE_PLAYER = 1,
-	HITSTUN = 2,
-	IDLE = 3,
-	EXECUTABLE = 4
+	ACTIVE = 0,
+	HITSTUN = 1,
+	EXECUTABLE = 2,
 }
-public class EnemyAI : Damageable
+public class EnemyAI : EnemyBase
 {
 	[Header("AI"), SerializeField]
 	StateGraph graph;
 	Dictionary<int, float> Cooldowns;
 
-	[Header("Spawning")]
-	public GameObject SpawnParticlePrefab;
-	public float SpawnWaitTime = 2;
+	//This info is now in EnemyBase
+	//[Header("Spawning")]
+	//public GameObject SpawnParticlePrefab;
+	//public float SpawnWaitTime = 2;
 
 	[Header("Enemy State")]
 	[SerializeField] protected EnemyStates currentEnemyState;
@@ -34,6 +34,10 @@ public class EnemyAI : Damageable
 	[SerializeField] Collider StickCollider;
 	[SerializeField] Animator anim;
 
+	[Header("Bell")]
+	public bool distracted;
+	public Vector3 bellLoc;
+
 	[Header("Execution Variables")]
 	public bool isExecutable;
 	public bool mustBeExecuted;
@@ -41,6 +45,7 @@ public class EnemyAI : Damageable
 	[SerializeField] protected GameObject executeTrigger;
 	public Transform executePlayerPos;
 	public Execution execution;
+	[SerializeField] float timeTillGib = 10f;
 	EnemyStates stunState;
 
 	[Header("Ground Check")]
@@ -50,14 +55,16 @@ public class EnemyAI : Damageable
 	[SerializeField] float groundCheckDistance;
 	public bool isGrounded = false;
 	[SerializeField] float fallRate = 50;
+	Coroutine hitstunCoroutine = null;
 
 	[Header("Sounds")]
 	[SerializeField] FMODUnity.EventReference swingSound;
 	[SerializeField] FMODUnity.EventReference clubHitSound;
 
-	[HideInInspector]
-	public Transform player;
+
+	[HideInInspector] public Transform player;
 	NavMeshAgent agent;
+	[SerializeField] public bool isBoss = false;
 
 	// Start is called before the first frame update
 	override protected void Start()
@@ -71,29 +78,36 @@ public class EnemyAI : Damageable
 	}
 	void RunBehaviorTree()
 	{
-		NearbyGuys.RemoveAll(item => item == null);
+		NearbyGuys.RemoveAll(item => item == null || !item.gameObject.activeInHierarchy);
 		graph.AnalyzeGraph(this);
 	}
+
 	// Update is called once per frame
 	protected virtual void Update()
 	{
-		if (GetComponent<Animator>() != null)
-			GetComponent<Animator>().SetBool("isMoving", agent.velocity.magnitude > 1);
+		if (anim != null)
+			anim.SetBool("isMoving", agent.velocity.magnitude > 1);
 
 		if (agent.desiredVelocity.sqrMagnitude > 0.8f)
 		{
 			transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(agent.desiredVelocity, Vector3.up), 0.2f);
 			transform.eulerAngles = new Vector3(0, transform.eulerAngles.y);
 		}
+
+		if (currentEnemyState == EnemyStates.HITSTUN && hitstunCoroutine == null)
+			hitstunCoroutine = StartCoroutine(OnHitStun());
+
+
 		foreach (var key in Cooldowns.Keys.ToList())
 			Cooldowns[key] -= Time.deltaTime;
 	}
 	private void FixedUpdate()
 	{
 		//apply gravity if falling
-		if (currentEnemyState == EnemyStates.HITSTUN)
-			rb.AddForce(Vector3.down * fallRate);
+		if (currentEnemyState == EnemyStates.HITSTUN || currentEnemyState == EnemyStates.EXECUTABLE)
+			rb.AddForce(Vector3.down * fallRate,ForceMode.Impulse);//was previously acceleration
 	}
+
 	#region UtilityFunctions
 	public NavMeshAgent GetAgent()
 	{
@@ -103,10 +117,19 @@ public class EnemyAI : Damageable
 	{
 		return currentEnemyState;
 	}
-	public bool SetDestination(Vector3 dest)
+	public Animator GetAnimator()
+	{
+		return anim;
+	}
+
+	public GameObject getExecuteTrigger()
+    {
+		return executeTrigger;
+    }
+	public virtual bool SetDestination(Vector3 dest)
 	{
 		// dont pathfind bad destinations
-		if (dest == null || float.IsNaN(dest.x))
+		if (dest == null || float.IsNaN(dest.x) || dest == Vector3.negativeInfinity || dest == Vector3.positiveInfinity)
 		{
 			Debug.LogWarning("tried giving " + gameObject + " invalid destination");
 			return false;
@@ -120,6 +143,11 @@ public class EnemyAI : Damageable
 		else
 		{
 			agent.SetDestination(dest);
+			//Debug.Log(dest);
+
+			// if on offmeshlink, no mdification needed, if the mesh link is too tall they may through an error
+			if (agent.isOnOffMeshLink)
+				return true;
 			if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 5, 1))
 			{
 				transform.position = hit.position;
@@ -135,22 +163,20 @@ public class EnemyAI : Damageable
 		}
 		return true;
 	}
+	int convert4(string key)
+	{
+		// https://stackoverflow.com/questions/3858908/convert-a-4-char-string-into-int32
+		return (key[3] << 24) + (key[2] << 16) + (key[1] << 8) + key[0];
+	}
 	#endregion
-	void DoIdle()
-	{
-		//debug idle state TODO: maybe make this not every frame?
-		if (Vector3.Distance(transform.position, player.position) <= 20)
-			currentEnemyState = EnemyStates.CHASE_PLAYER;
-	}
-	public void ToChase()
-	{
-	}
+
 	#region Execution 
 	public void Execute()
 	{
 		base.OnDeath();
 	}
 	#endregion
+
 	#region Attacking
 	Vector3 ClosestGuy()
 	{
@@ -175,13 +201,20 @@ public class EnemyAI : Damageable
 		if (Cooldowns[index] < 0)
 		{
 			atk.PerformAttack(anim);
+			FMODUnity.RuntimeManager.PlayOneShotAttached(swingSound, gameObject);
 			Cooldowns[index] = atk.MaxCooldown;
 			activeAttack = atk;
 			return true;
 		}
 		return false;
 	}
+
+	public void PlaySound(string path)
+	{
+		FMODUnity.RuntimeManager.PlayOneShotAttached(path, gameObject);
+	}
 	#endregion
+
 	#region Collisions
 	private void OnCollisionEnter(Collision collision)
 	{
@@ -200,7 +233,7 @@ public class EnemyAI : Damageable
 	private void OnTriggerEnter(Collider other)
 	{
 		Damageable target = other.GetComponent<Damageable>();
-		if (target != null && !(target is EnemyAI) && !NearbyGuys.Contains(other.transform))
+		if (target != null && !(target is EnemyBase) && !other.isTrigger && !NearbyGuys.Contains(other.transform))
 		{
 			NearbyGuys.Add(other.transform);
 		}
@@ -208,92 +241,85 @@ public class EnemyAI : Damageable
 	private void OnTriggerExit(Collider other)
 	{
 		Damageable target = other.GetComponent<Damageable>();
-		if (target != null && !(target is EnemyAI) && NearbyGuys.Contains(other.transform))
+		if (target != null && !(target is EnemyBase) && !other.isTrigger && NearbyGuys.Contains(other.transform))
 		{
 			NearbyGuys.Remove(other.transform);
 		}
 	}
 	#endregion
-	int convert4(string key)
-	{
-		// https://stackoverflow.com/questions/3858908/convert-a-4-char-string-into-int32
-		return (key[3] << 24) + (key[2] << 16) + (key[1] << 8) + key[0];
-	}
+
 	#region Movement
 	void GroundCheck()
 	{
+		Debug.Log("ground checking");
 		// shamelessly stolen from playermovement TODO: combine groundchecks
 		bool frontCheck = false;
 		bool backCheck = false;
-		Vector3 frontNormal;
-		Vector3 backNormal;
+
 		//set ground check
-		RaycastHit hitFront;
-		frontCheck = Physics.Raycast(groundCheckOriginFront.position, Vector3.down, out hitFront, groundCheckDistance, groundLayer);
-		//if canJump, groundNormal = hit.normal, else groudnnormal = vector3.up  v ternary operater
-		frontNormal = frontCheck ? hitFront.normal : Vector3.up;
-		RaycastHit hitBack;
-		backCheck = Physics.Raycast(groundCheckOriginBack.position, Vector3.down, out hitBack, groundCheckDistance, groundLayer);
-		backNormal = backCheck ? hitBack.normal : Vector3.up;
+		frontCheck = Physics.Raycast(groundCheckOriginFront.position, Vector3.down, groundCheckDistance, groundLayer);
+
+		backCheck = Physics.Raycast(groundCheckOriginBack.position, Vector3.down, groundCheckDistance, groundLayer);
+
 		isGrounded = frontCheck || backCheck;
-		if (!agent.enabled && isGrounded)
-		{
-			//rb.isKinematic = true;
-			agent.enabled = true;
-			//freeze
-			rb.constraints = RigidbodyConstraints.FreezeAll;
-			rb.velocity = Vector3.zero;
-			rb.angularVelocity = Vector3.zero;
-		}
 	}
-	#endregion
-	#region Health Override and Hitstun
-	//to apply normal damage, use this overload
-	public override void TakeDamage(Attack atk, Vector3 attackForward)
+
+    #endregion
+
+    #region Health Override and Hitstun
+    //to apply normal damage, use this overload
+    public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
 	{
 		//if they must be executed, return
 		if (mustBeExecuted && Health < executionHealthThreshhold)
 			return;
 		// give them hitstun
-		if (atk.DealsHitstun)
+		if (atk.DealsHitstun && isBoss == false)
 		{
 			StopAllCoroutines();
-			StartCoroutine("OnHitStun");
+			hitstunCoroutine = StartCoroutine(OnHitStun());
 		}
 		// subtract health
-		base.TakeDamage(atk, attackForward);
+		base.TakeDamage(atk, attackForward, damageAmp, knockbackMultiplier);
+
 		if (isExecutable && Health <= executionHealthThreshhold)
-		{
-			rb.mass = 100f;
-			rb.velocity = Vector3.zero;
-			agent.enabled = false;
-			gameObject.layer = LayerMask.NameToLayer("EnemyExecute");
-			rb.constraints = RigidbodyConstraints.FreezeAll;
-			currentEnemyState = EnemyStates.EXECUTABLE;
-			executeTrigger.SetActive(true);
-		}
+			ToExecutionState();
 	}
+
 	protected override void OnDeath()
 	{
 		if (isExecutable)
-		{
-			rb.mass = 100f;
-			rb.velocity = Vector3.zero;
-			agent.enabled = false;
-			gameObject.layer = LayerMask.NameToLayer("EnemyExecute");
-			rb.constraints = RigidbodyConstraints.FreezeAll;
-			currentEnemyState = EnemyStates.EXECUTABLE;
-			executeTrigger.SetActive(true);
-		}
+			ToExecutionState();
 		else
 			base.OnDeath();
 	}
+
+	void ToExecutionState()
+	{
+		suckResistant = true;
+		rb.mass = 1f;
+		rb.velocity = Vector3.zero;
+		rb.useGravity = true;
+		agent.enabled = false;
+		rb.isKinematic = false;
+		gameObject.layer = LayerMask.NameToLayer("EnemyExecute");
+		rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+		currentEnemyState = EnemyStates.EXECUTABLE;
+		executeTrigger.SetActive(true);
+	}
+
+	IEnumerator ForceGibTimer()
+	{
+		yield return new WaitForSeconds(timeTillGib);
+		ForceKill();
+	}
+
 	public override void ForceKill()
 	{
 		isExecutable = false;
 		base.ForceKill();
 	}
-	//to apply black sheep damage, use this overload
+	/*//to apply black sheep damage, use this overload
 	public override void TakeDamage(SheepAttack atk, Vector3 attackForward)
 	{
 		//if they must be executed, return
@@ -318,7 +344,7 @@ public class EnemyAI : Damageable
 			currentEnemyState = EnemyStates.EXECUTABLE;
 			executeTrigger.gameObject.SetActive(true);
 		}
-	}
+	}*/
 	IEnumerator OnHitStun()
 	{
 		// save current state and set to Hitstun
@@ -327,24 +353,33 @@ public class EnemyAI : Damageable
 		//turn on rb and turn off navmesh (turned on in GroundCheck (which cant be called when hitstunned))
 		//rb.isKinematic = false;
 		agent.enabled = false;
-		rb.constraints = RigidbodyConstraints.None;
 		rb.constraints = RigidbodyConstraints.FreezeRotation;
+
+		// not the ideal fall but better than not falling
+		rb.useGravity = true;
+
 		yield return new WaitForSeconds(StunTime);
 		// stay in stun until touching the ground
 		do
 		{
 			yield return new WaitForSeconds(0.01f);
-			Debug.Log(gameObject + " groundchecking");
 			GroundCheck();
 		} while (!isGrounded);
+
 		//reset if not in execute stage
 		//Demetri this is a quick n dirty fix might need to move around execute stuff eventually
 		if (currentEnemyState != EnemyStates.EXECUTABLE)
 			currentEnemyState = stunState;
+
+		rb.useGravity = false;
+		agent.enabled = true;
+
 		// freeze dammit
 		rb.constraints = RigidbodyConstraints.FreezeAll;
 		rb.velocity = Vector3.zero;
 		rb.angularVelocity = Vector3.zero;
+
+		hitstunCoroutine = null;
 	}
 	#endregion
 }

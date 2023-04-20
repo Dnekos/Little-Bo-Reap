@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
-public class BattleArena : MonoBehaviour
+public class BattleArena : PuzzleDoor
 {
 	[System.Serializable]
 	public struct EnemyWave
@@ -25,38 +26,84 @@ public class BattleArena : MonoBehaviour
 	protected EnemyWave[] waves;
 	protected int CurrentWave = -1;
 
-	GameObject DoorsFolder;
 	Transform SpawnedEnemiesFolder;
+
+	[SerializeField] EnemyFlightPath[] FlightPaths;
+	[SerializeField] float flightPathMaxDisplacement;
 
 	[SerializeField] float slowTimeScale = 0.3f;
 	[SerializeField] float slowTimeAtEnd = 1f;
 	[SerializeField] GameObject slowTimeVolume;
+	[SerializeField] GameObject colliderMesh;
+
+	//soul spawning variables - might make this a struct later but it's only 2 varibles so it could be unnecessary.
+	[SerializeField] Transform SoulSpawnPoint;
+	[SerializeField] GameObject SoulReward;
+	[SerializeField] GameObject spawnDelayParticle;
 
 	[Header("Resetting"), SerializeField]
 	GameEvent RespawnPlayer;
 
+	[Header("Boot Player")]
+	[SerializeField] Transform bootSpawnPoint;
+
+	[Header("Music")]
+	[SerializeField] int transitionCombat;
+	[SerializeField] int afterMusic;
+
+	[Header("End Effects")]
+	[SerializeField] GameObject finalCamera;
+	[SerializeField] Vector3 yOffset;
+	[SerializeField] Transform lookPoint;
+	[SerializeField] float camSpawnSphereRadius = 5f;
+	public Vector3 finalEnemyPosition = Vector3.zero;
+	bool finalEnemyConfirmed;
+
+
+
 	// Start is called before the first frame update
-	void Start()
+	void Awake()
 	{
 		SpawnedEnemiesFolder = transform.GetChild(1);
-		DoorsFolder = transform.GetChild(2).gameObject;
-		DoorsFolder.SetActive(false); // keep doors open
+		door.SetActive(false); // keep doors open
 
-		RespawnPlayer?.listener.AddListener(delegate { ResetArena(); });
+		if (colliderMesh != null && colliderMesh.GetComponent<MeshRenderer>() != null)
+			colliderMesh.GetComponent<MeshRenderer>().enabled = false;
+
+		RespawnPlayer?.Add(delegate { ResetArena(); });
 	}
 
 	// Update is called once per frame
-	void Update()
+	override protected void Update()
 	{
 		if (SpawnedEnemiesFolder.childCount == 0 && CurrentWave >= 0 && CurrentWave < waves.Length) // if killed all enemies AND waves started
 			AdvanceWave(); // advance wave
+
+		
+
+		//if in the final wave, watch for the last enemy!
+		if (CurrentWave == waves.Length - 1)
+		{
+			Debug.Log(SpawnedEnemiesFolder.GetChild(0));
+
+			//if (!finalEnemyConfirmed && SpawnedEnemiesFolder.childCount == 1)
+			//	finalEnemyConfirmed = true;
+			//else if (SpawnedEnemiesFolder.childCount > 1)
+			if(SpawnedEnemiesFolder.GetChild(0).GetComponent<EnemyBase>()!=null || SpawnedEnemiesFolder.GetChild(0).GetComponent<BabaYagasHouseAI>() != null)
+            {
+				finalEnemyConfirmed = true;
+				finalEnemyPosition = SpawnedEnemiesFolder.GetChild(0).transform.position;
+			}
+				
+		}
 	}
 
 	void ResetArena()
 	{
-		if (CurrentWave != waves.Length) // if arena is not cleared already
+		if (!isOpened) // if arena is not cleared already
 		{
-			DoorsFolder.SetActive(false); // reopen doors
+			WorldState.instance.isInCombat = false;
+			door.SetActive(false); // reopen doors
 			CurrentWave = -1; // reset waves
 
 			foreach (Transform child in SpawnedEnemiesFolder) // clear enemies
@@ -65,45 +112,130 @@ public class BattleArena : MonoBehaviour
 
 	}
 
-	virtual protected void AdvanceWave()
+	virtual protected void IncrementWaveNumber()
 	{
 		CurrentWave++;
-		if (CurrentWave == waves.Length)
+	}
+
+	virtual protected void AdvanceWave()
+	{
+		IncrementWaveNumber();
+		if (CurrentWave == waves.Length && finalEnemyConfirmed)
 		{
+			WorldState.instance.isInCombat = false;
+
 			// if all waves done,
-			DoorsFolder.SetActive(false); // open doors
+			OpenDoor();
+			//DoorsFolder.SetActive(false); // open doors
+			WorldState.instance.ChangeMusic(afterMusic);
+			WorldState.instance.currentWorldTheme = afterMusic;
+			Instantiate(SoulReward, SoulSpawnPoint.position, SoulSpawnPoint.rotation, SpawnedEnemiesFolder); //spawn soul reward
+
+			//REVIEW: Looks good! Clear and efficient
+			var cam = Instantiate(finalCamera, finalEnemyPosition + yOffset, Quaternion.identity) as GameObject;
+			lookPoint.position = finalEnemyPosition;
+			cam.GetComponent<ArenaEndCamera>().InitCamera(lookPoint, finalEnemyPosition);
+			
 			StartCoroutine(EndBattleSlow());
 		}
 		else
 			// spawn each enemy
 			foreach (EnemySpawn enemy in waves[CurrentWave].Enemies)
 			{
+				EnemyBase currEnemyPrefab = enemy.EnemyPrefab.GetComponent<EnemyBase>();
 				for (int i = 0; i < enemy.NumEnemies; i++)
 				{
+					// get point from struct
 					Vector3 SpawnPoint = (enemy.SpawnPoint == null) ? enemy.AlternateSpawn : enemy.SpawnPoint.position;
-					SpawnPoint = SpawnPoint + new Vector3(Random.Range(-enemy.RandomRadius, enemy.RandomRadius), 0, Random.Range(-enemy.RandomRadius, enemy.RandomRadius));
-					StartCoroutine(SpawnEnemy(enemy.EnemyPrefab, enemy.EnemyPrefab.GetComponent<EnemyAI>().SpawnParticlePrefab, SpawnPoint));
 
+					// get stagger time
+					float stagger = Random.Range(currEnemyPrefab.minSpawnStagger, currEnemyPrefab.maxSpawnStagger) + currEnemyPrefab.SpawnWaitTime;
+
+					SpawnPoint = (currEnemyPrefab is FlyingEnemyAI) ? SpawnPoint : FindSpawnPoint(enemy, SpawnPoint);
+
+					// if we have a point, spawn the enemy
+					if (SpawnPoint != Vector3.negativeInfinity)
+						StartCoroutine(SpawnEnemy(enemy.EnemyPrefab, currEnemyPrefab.SpawnParticlePrefab, SpawnPoint, stagger));
 				}
 			}
-				
-
 	}
 
-	protected IEnumerator SpawnEnemy(GameObject enemy, GameObject particle, Vector3 pos)
+	Vector3 FindSpawnPoint(EnemySpawn enemy, Vector3 baseSpawnPoint)
 	{
+		NavMeshHit hit;
 
-		Instantiate(particle, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder);
-		yield return new WaitForSeconds(enemy.GetComponent<EnemyAI>().SpawnWaitTime);
-		Instantiate(enemy, pos, SpawnedEnemiesFolder.rotation, SpawnedEnemiesFolder).GetComponent<EnemyAI>().ToChase();
-	}
-
-	private void OnTriggerEnter(Collider other)
-	{
-		if (CurrentWave == -1 && other.gameObject.CompareTag("Player")) // untriggered
+		Vector3 SpawnPoint;
+		float redundancy = 20;
+		// do checks to find a valid spawnpoint
+		do
 		{
-			DoorsFolder.SetActive(true);
+			Vector2 rand = Random.insideUnitCircle;
+			SpawnPoint = baseSpawnPoint + new Vector3(rand.x * enemy.RandomRadius, 0, rand.y * enemy.RandomRadius);
+
+		} while (!NavMesh.SamplePosition(SpawnPoint, out hit, 5, NavMesh.AllAreas) && --redundancy > 0);
+
+		// if we found a point, set the spawnpoint
+		if (hit.hit)
+			return hit.position;
+		else
+		{
+			Debug.LogError("Could not find a valid point to spawn " + enemy.EnemyPrefab.name + " at " + baseSpawnPoint);
+			return Vector3.negativeInfinity;
+		}
+	}
+
+	public override void OpenDoor()
+    {
+		//for now, destroy door. can have an animation or something more pretty later
+		isOpened = true;
+		WorldState.instance.AddActivatedDoor(this);
+		door.SetActive(false);
+	}
+
+
+    protected IEnumerator SpawnEnemy(GameObject enemy, GameObject particle, Vector3 pos, float staggerDelay)
+	{
+		//delay
+		GameObject staggerParticle = Instantiate(spawnDelayParticle, pos, Quaternion.identity, SpawnedEnemiesFolder);
+		ParticleSystem.MainModule module = staggerParticle.GetComponent<ParticleSystem>().main;
+		module.duration = staggerDelay + 1;
+		module.startLifetime = staggerDelay;
+		staggerParticle.GetComponent<ParticleSystem>().Play(true);
+
+		yield return new WaitForSeconds(staggerDelay);
+
+		WorldState.instance.pools.DequeuePooledObject(particle, pos, Quaternion.identity);
+
+		yield return new WaitForSeconds(enemy.GetComponent<EnemyBase>().SpawnWaitTime);
+
+		GameObject newEnemy = Instantiate(enemy, pos, Quaternion.identity, SpawnedEnemiesFolder);
+
+		//if the enemy has a spline follower script(that means it is a flying enemy)
+		//then find the index the flying enemy has and attach it to the corresponding flight path in this script's array
+		AttachToSpline(newEnemy);
+    }
+
+	private void AttachToSpline(GameObject enemy)
+	{
+		SplineFollower sf = enemy.GetComponent<SplineFollower>();
+		if (sf != null)
+		{
+			sf.path = FlightPaths[enemy.GetComponent<FlyingEnemyAI>().flightPathIndex];
+
+			//add a random position offset. without this, they all stack up on top of each other
+			float rand = Random.Range(0f, flightPathMaxDisplacement);
+			sf.SplinePosition += rand;
+		}
+	}
+
+    private void OnTriggerEnter(Collider other)
+	{
+		if (!isOpened && CurrentWave == -1 && other.gameObject.CompareTag("Player")) // untriggered
+		{
+			door.SetActive(true);
 			AdvanceWave();
+			WorldState.instance.ChangeMusic(transitionCombat);
+			WorldState.instance.InitCombatBootPoint(bootSpawnPoint);
 		}
 	}
 
@@ -118,5 +250,6 @@ public class BattleArena : MonoBehaviour
 		slowTimeVolume.SetActive(false);
 		Time.timeScale = 1f;
 		Time.fixedDeltaTime = 0.02F * Time.timeScale;
+		
 	}
 }

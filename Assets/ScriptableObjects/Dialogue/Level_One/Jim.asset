@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7beb0fa201b3e04ea562900ec20dd15, type: 3}
+  m_Name: Jim
+  m_EditorClassIdentifier: 
+  script:
+  - body: Oh, I didn't see you there. Hi. I'm Jim.
+    changeCamera: 1
+    CameraTransitionSpeed: 1
+    CameraPos: {x: -361.2146, y: 407.877, z: -641.723}
+    CameraEuler: {x: 10.864379, y: 237.37592, z: 0.000009562915}
+  - body: What's that? You have something important to tell me?
+    changeCamera: 0
+    CameraTransitionSpeed: 1
+    CameraPos: {x: -401.58945, y: 29.331087, z: 416.2176}
+    CameraEuler: {x: 30.698877, y: 124.55263, z: 359.99164}
+  - body: Oh. I see. That's nice of Tim, but I think I'll stay up here.
+    changeCamera: 0
+    CameraTransitionSpeed: 1
+    CameraPos: {x: -401.58945, y: 29.331087, z: 416.2176}
+    CameraEuler: {x: 30.698877, y: 124.55263, z: 359.99164}
+  - body: Sorry you had to come all this way to just tell me that.
+    changeCamera: 0
+    CameraTransitionSpeed: 1
+    CameraPos: {x: -401.58945, y: 29.331087, z: 416.2176}
+    CameraEuler: {x: 30.698877, y: 124.55263, z: 359.99164}
+  - body: You can jump on this mushroom to get down.
+    changeCamera: 1
+    CameraTransitionSpeed: 1
+    CameraPos: {x: -372.83652, y: 414.15366, z: -627.8135}
+    CameraEuler: {x: 39.05391, y: 140.08768, z: 0.000016491593}
+  endTime: 0.5

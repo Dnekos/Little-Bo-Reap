@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7beb0fa201b3e04ea562900ec20dd15, type: 3}
+  m_Name: Tutorial_6_2
+  m_EditorClassIdentifier: 
+  script:
+  - body: Hey, you see that target out there?
+    changeCamera: 1
+    CameraTransitionSpeed: 1
+    CameraPos: {x: 198.6483, y: 27.946968, z: 181.7223}
+    CameraEuler: {x: 9.041019, y: 93.37164, z: 359.8959}
+  - body: "If you use <LaunchSheep> to launch sheep, \nI bet you could hit that target!"
+    changeCamera: 1
+    CameraTransitionSpeed: 1
+    CameraPos: {x: 166.60919, y: 28.28067, z: 163.27011}
+    CameraEuler: {x: 14.64587, y: 47.372444, z: 0.00022678883}
+  endTime: 0.5

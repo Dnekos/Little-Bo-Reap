@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7beb0fa201b3e04ea562900ec20dd15, type: 3}
+  m_Name: Tutorial_7
+  m_EditorClassIdentifier: 
+  script:
+  - body: W-w-woah! You scared me there!
+    changeCamera: 1
+    CameraTransitionSpeed: 1
+    CameraPos: {x: 204.24915, y: 27.614618, z: 214.9424}
+    CameraEuler: {x: 10.864352, y: 27.949171, z: 0.00022342447}
+  - body: Eh... Sorry. I'm really on edge right now. Baba Yaga's Minions are nearby.
+    changeCamera: 1
+    CameraTransitionSpeed: 1
+    CameraPos: {x: 185.94276, y: 44.274067, z: 269.44577}
+    CameraEuler: {x: 30.010483, y: 82.44106, z: 0.4919995}
+  - body: Y'know, the Chimeras? She made them herself.
+    changeCamera: 0
+    CameraTransitionSpeed: 0
+    CameraPos: {x: 0, y: 0, z: 0}
+    CameraEuler: {x: 0, y: 0, z: 0}
+  - body: I think she told them to stop a sheep wielding girl that'll come through...
+    changeCamera: 1
+    CameraTransitionSpeed: 1
+    CameraPos: {x: 204.24915, y: 27.614618, z: 214.9424}
+    CameraEuler: {x: 10.864352, y: 27.949171, z: 0.00022342447}
+  - body: 'That wouldn''t happen to be you, would it? Oh man, I hope not. '
+    changeCamera: 0
+    CameraTransitionSpeed: 0
+    CameraPos: {x: 0, y: 0, z: 0}
+    CameraEuler: {x: 0, y: 0, z: 0}
+  endTime: 0.5

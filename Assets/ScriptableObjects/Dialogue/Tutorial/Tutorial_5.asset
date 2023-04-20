@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7beb0fa201b3e04ea562900ec20dd15, type: 3}
+  m_Name: Tutorial_5
+  m_EditorClassIdentifier: 
+  script:
+  - body: Hey there! Looks like you found the souls of your dead sheep!
+    changeCamera: 1
+    CameraTransitionSpeed: 1
+    CameraPos: {x: 115.269936, y: 10.842482, z: 190.47572}
+    CameraEuler: {x: 16.708538, y: 123.002884, z: 0.00017739042}
+  - body: Those are Builder Sheep, by the way. They're pretty standard.
+    changeCamera: 0
+    CameraTransitionSpeed: 0
+    CameraPos: {x: 0, y: 0, z: 0}
+    CameraEuler: {x: 0, y: 0, z: 0}
+  - body: But... you can stack them by holding <Jump> while you're in the air.
+    changeCamera: 0
+    CameraTransitionSpeed: 0
+    CameraPos: {x: 0, y: 0, z: 0}
+    CameraEuler: {x: 0, y: 0, z: 0}
+  - body: You can also build them into a wall with <SheepActiveAbility>.
+    changeCamera: 0
+    CameraTransitionSpeed: 0
+    CameraPos: {x: 0, y: 0, z: 0}
+    CameraEuler: {x: 0, y: 0, z: 0}
+  - body: Don't forget to summon them first!
+    changeCamera: 0
+    CameraTransitionSpeed: 0
+    CameraPos: {x: 0, y: 0, z: 0}
+    CameraEuler: {x: 0, y: 0, z: 0}
+  endTime: 0.5

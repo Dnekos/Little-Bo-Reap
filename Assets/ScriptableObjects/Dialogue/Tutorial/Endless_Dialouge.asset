@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7beb0fa201b3e04ea562900ec20dd15, type: 3}
+  m_Name: Endless_Dialouge
+  m_EditorClassIdentifier: 
+  script:
+  - body: Yo. Welcome to the endless arena!
+    changeCamera: 0
+    CameraTransitionSpeed: 0
+    CameraPos: {x: 0, y: 0, z: 0}
+    CameraEuler: {x: 0, y: 0, z: 0}
+  - body: 'Interact with that bell to get some upgrades if you want.
+
+      You''ve
+      got tons of souls to spend!'
+    changeCamera: 1
+    CameraTransitionSpeed: 1
+    CameraPos: {x: 13.548701, y: 4.2969017, z: -59.658394}
+    CameraEuler: {x: 6.4627957, y: 299.32452, z: 0.0038852408}
+  - body: There's some targets here to test your abilities.
+    changeCamera: 1
+    CameraTransitionSpeed: 1
+    CameraPos: {x: 38.113552, y: 4.642335, z: -38.576485}
+    CameraEuler: {x: 3.5407085, y: 52.598133, z: 0.004368667}
+  - body: 'And when you jump down there you''ll fight for real!
+
+      If you get
+      bored press O to respawn up here.'
+    changeCamera: 1
+    CameraTransitionSpeed: 1
+    CameraPos: {x: 9.191588, y: 17.366817, z: -28.305737}
+    CameraEuler: {x: 29.15193, y: 289.35788, z: 0.0071463}
+  endTime: 0.5

@@ -17,14 +17,21 @@ public class PlayerHealth : Damageable
 	[Header("Hurt Vignette")]
 	[SerializeField] Volume hurtVignette;
 	[SerializeField] float vignetteStrength = 1, vignetteTime = 0.2f;
+	[SerializeField] float hurtCooldown = 0.1f;
+	bool isHurt = false;
 
 
 	[Header("Respawning")]
 	[SerializeField]
 	GameEvent RespawnEvent;
-	[SerializeField]
-	GameObject HUD, DeathUI;
+	[SerializeField, Tooltip("If the player y position is under this, kill the player")]
+	float minAltitude = -50;
 
+	[Header("Boot Player")]
+	[SerializeField] float bootDamage = 15;
+	[SerializeField] float bootInvulnTime = 5f;
+
+	[Header("Components")]
 	[SerializeField]
 	PlayerInput[] inputs;
 	PlayerMovement playermove;
@@ -36,7 +43,17 @@ public class PlayerHealth : Damageable
 		playermove = GetComponent<PlayerMovement>();
 		healthBar.ChangeFill(Health / MaxHealth);
 
-		RespawnEvent.listener.AddListener(delegate { ResetHealth(); });
+		RespawnEvent.Add(delegate { ResetHealth(); });
+	}
+
+	private void LateUpdate()
+	{
+		if (transform.position.y < minAltitude && Health > 0)
+		{
+			BootPlayerBack();
+			//Health = 0;
+			//OnDeath();
+		}
 	}
 
 	#region Respawn UI buttons
@@ -47,7 +64,7 @@ public class PlayerHealth : Damageable
 	}
 	public void Respawn()
 	{
-		RespawnEvent.listener.Invoke();
+		RespawnEvent.Raise();
 	}
 	#endregion
 
@@ -55,14 +72,19 @@ public class PlayerHealth : Damageable
 
 	void ResetHealth()
 	{
+		FMOD.Studio.Bus sfxBus = FMODUnity.RuntimeManager.GetBus("bus:/SFX/Gameplay/UponDeath");
+		FMOD.Studio.Bus musicBus = FMODUnity.RuntimeManager.GetBus("Bus:/Music");
 		Health = MaxHealth;
 		healthBar.ChangeFill(1);
+		sfxBus.setPaused(false);
+		musicBus.setPaused(false);
 
 		// resume collisions
 		rb.isKinematic = false;
 
-		HUD.SetActive(true);
-		DeathUI.SetActive(false);
+		WorldState.instance.HUD.CloseDeathMenu();
+		
+		
 		foreach (PlayerInput input in inputs)
 			input.enabled = true;
 
@@ -71,23 +93,52 @@ public class PlayerHealth : Damageable
 
 	}
 
+	public void BootPlayerBack()
+    {
+		if(!isHurt)
+        {
+			//get hurt, take damage, and boot yourself back up
+			StartCoroutine(HurtCooldown());
+			StartCoroutine(HitVignette());
+			StartCoroutine(BootInvuln());
+
+			//apply damage
+			if (Health > bootDamage)
+			{
+				Health -= bootDamage;
+				healthBar.ChangeFill((Health / MaxHealth));
+			}
+			else
+			{
+				Health = 1;
+				healthBar.ChangeFill((Health / MaxHealth));
+			}
+
+			WorldState.instance.BootPlayer();
+		}
+		
+    }
+
 	protected override void OnDeath()
 	{
-		WorldState.instance.Dead = true;
+		WorldState.instance.gameState = WorldState.State.Dead;
 
 		FMODUnity.RuntimeManager.PlayOneShot(deathSound, transform.position);
-
+		WorldState.instance.ChangeMusic(WorldState.instance.biomeTheme);
+		FMOD.Studio.Bus sfxBus = FMODUnity.RuntimeManager.GetBus("bus:/SFX/Gameplay/UponDeath");
+		FMOD.Studio.Bus musicBus = FMODUnity.RuntimeManager.GetBus("Bus:/Music");
+		musicBus.setPaused(true);
 		// stop collisions
 		rb.isKinematic = true;
 
-		HUD.SetActive(false);
-		DeathUI.SetActive(true);
+		WorldState.instance.HUD.OpenDeathMenu();
+			
 		foreach (PlayerInput input in inputs)
 			input.enabled = false;
 
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
-
+		sfxBus.setPaused(true);
 	}
 	#endregion
 	
@@ -98,25 +149,37 @@ public class PlayerHealth : Damageable
 
 	}
 
-	public override void TakeDamage(Attack atk, Vector3 attackForward)
+	public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
 	{
-		StopCoroutine("HitVignette");
-		StartCoroutine("HitVignette");
+		if(!isHurt && Health > 0)
+        {
+			StartCoroutine(HurtCooldown());
 
-		Debug.Log("getting attacked lmao");
+			StopCoroutine("HitVignette");
+			StartCoroutine("HitVignette");
 
-		// stop moving, to hopefully prevent too wacky knockback
-		rb.AddForce(-rb.velocity, ForceMode.VelocityChange);
+			Debug.Log("getting attacked lmao");
 
-		base.TakeDamage(atk, attackForward);
-		healthBar.ChangeFill(Health / MaxHealth);
+			// stop moving, to hopefully prevent too wacky knockback
+			rb.AddForce(-rb.velocity, ForceMode.VelocityChange);
 
-		if (atk.DealsHitstun)
-		{
-			StopCoroutine("HitstunTracker");
-			StartCoroutine("HitstunTracker");
+			base.TakeDamage(atk, attackForward);
+			healthBar.ChangeFill(Health / MaxHealth);
+
+			if (atk.DealsHitstun)
+			{
+				StopCoroutine("HitstunTracker");
+				StartCoroutine("HitstunTracker");
+			}
 		}
 	}
+
+	IEnumerator HurtCooldown()
+    {
+		isHurt = true;
+		yield return new WaitForSeconds(hurtCooldown);
+		isHurt = false;
+    }
 
 	IEnumerator HitVignette()
     {
@@ -137,4 +200,11 @@ public class PlayerHealth : Damageable
 		yield return new WaitForSeconds(hitstunTimer);
 		HitStunned = false;
 	}
+
+	IEnumerator BootInvuln()
+    {
+		isInvulnerable = true;
+		yield return new WaitForSeconds(bootInvulnTime);
+		isInvulnerable = false;
+    }
 }

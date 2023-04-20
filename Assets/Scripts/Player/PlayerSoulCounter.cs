@@ -8,6 +8,7 @@ public class PlayerSoulCounter : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI soulText;
     [SerializeField] int soulAmount;
+    [SerializeField] FMODUnity.EventReference soulSFX;
 
     // Start is called before the first frame update
     void Start()
@@ -19,6 +20,7 @@ public class PlayerSoulCounter : MonoBehaviour
     {
         soulAmount += soulValue;
         soulText.SetText("Souls: {0}", soulAmount);
+        FMODUnity.RuntimeManager.PlayOneShot(soulSFX);
     }
 }
 

@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Sounds")]
     [SerializeField] FMODUnity.EventReference jumpSound;
     [SerializeField] FMODUnity.EventReference dashSound;
-	[SerializeField] FMODUnity.StudioEventEmitter walker;
+    [SerializeField] FMODUnity.StudioEventEmitter walker;
 
 	[Header("Movement Variables")]
     [SerializeField] float maxMoveSpeed;
@@ -22,7 +22,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float currentRunTime = 0f;
     bool isMoving;
     Vector3 moveDirection;
-    Vector2 moveValue; // input value
+    public Vector2 moveValue; // input value
     Rigidbody rb;
 
     // slope crap I hate slopes
@@ -38,7 +38,7 @@ public class PlayerMovement : MonoBehaviour
     bool canJump = true;
 	[SerializeField] float CoyoteTime = 0.2f;
 	float CoyoteTimer;
-
+	Coroutine JmpCoroutine;
 
 	// GROUND POUND
 	[HideInInspector] public bool isFalling = false;
@@ -53,6 +53,7 @@ public class PlayerMovement : MonoBehaviour
 	public float LiftSpeed = 5;
 	public bool isLifting = false;
 	[HideInInspector] public bool CanLift = true;
+    [SerializeField] ParticleSystem liftFailParticle;
 
     [Header("Dash Variables")]
     [SerializeField] float dashForce;
@@ -97,6 +98,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Animations")]
     [SerializeField] string jumpAnimation;
     [SerializeField] string dashAnimation;
+    [SerializeField] string dashAnimationAir;
     [SerializeField] string landingAnimation;
     Animator animator;
 
@@ -126,7 +128,6 @@ public class PlayerMovement : MonoBehaviour
         animator = GetComponent<PlayerAnimationController>().playerAnimator;
 		liftcontroller = GetComponent<PlayerSheepLift>();
 		groundPound = GetComponent<PlayerGroundPound>();
-
 
         dashChargesCurrent = dashChargesMax;
 	}
@@ -241,7 +242,7 @@ public class PlayerMovement : MonoBehaviour
     void SpeedCheck()
     {
         //check if moving
-		isMoving = moveValue.magnitude != 0;
+		isMoving = moveValue.magnitude > 0.25f;
 
         //check current velocity
         Vector3 velocityCheck = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
@@ -269,52 +270,91 @@ public class PlayerMovement : MonoBehaviour
 			rb.AddForce(Vector3.down * fallRate);
     }
 
+	private void OnDisable()
+	{
+		// dont play footsteps when you can't move (mostly for execution)
+		if (walker.IsPlaying())
+			walker.Stop();
 
-    #region Inputs
-    public void OnMove(InputAction.CallbackContext context)
+	}
+
+	#region Getters/Setters
+	public void HaltPlayer()
+	{
+		// stop dashing
+		StopAllCoroutines();
+		dashTrail.Stop();
+		canDash = true;
+
+		// stop moving
+		moveValue = Vector3.zero;
+		//rb.AddForce(-rb.velocity, ForceMode.VelocityChange);
+	}
+
+	public void SetMovementVector(Vector2 newMoveVector)
+    {
+        moveValue = newMoveVector;
+    }
+
+    public float GetMaxMoveSpeed()
+    {
+        return maxMoveSpeed;
+    }
+    public void SetMaxMoveSpeed(float speed)
+    {
+        maxMoveSpeed = speed;
+    }
+	#endregion
+
+	#region Inputs
+	public void OnMove(InputAction.CallbackContext context)
     {
         moveValue = context.ReadValue<Vector2>();
     }
     public void OnJump(InputAction.CallbackContext context)
     {
-		if (CoyoteTimer > 0f && context.started && canJump && !isLifting)
-		{
-            //prevent super jumps
-            StartCoroutine(SuperJumpPrevention());
+        if (CoyoteTimer > 0f && context.started && canJump && !isLifting)
+        {
+			//prevent super jumps
+			if (JmpCoroutine != null)
+				StopCoroutine(JmpCoroutine);
+			JmpCoroutine = StartCoroutine(SuperJumpPrevention());
+
+			CoyoteTimer = 0;
 
 			// SOUND
 			FMODUnity.RuntimeManager.PlayOneShotAttached(jumpSound, gameObject);
 
-			// play particles
-			jumpParticles.Play();
+            // play particles
+            jumpParticles.Play();
 
-			animator.Play(jumpAnimation);
+            animator.Play(jumpAnimation);
 
-			// stop current momentum, then jump
-			if (!canDash) // for jess, it doesnt do this during dashes so that dash jump glitch works still
-				rb.AddForce(Vector3.down * rb.velocity.y, ForceMode.VelocityChange);
-			rb.AddForce(Vector3.up * jumpForce);
-		}
-		else if (context.started && CanLift && !isFalling)
-		{
+            // stop current momentum, then jump
+            if (!canDash) // for jess, it doesnt do this during dashes so that dash jump glitch works still
+                rb.AddForce(Vector3.down * rb.velocity.y, ForceMode.VelocityChange);
+            rb.AddForce(Vector3.up * jumpForce);
+        }
+        else if (context.started && CanLift && !isFalling)
+        {
 			if (liftcontroller.StartLifting())
-			{
+            {
                 GetComponent<PlayerSheepAbilities>().sheepFlocks[(int)SheepTypes.BUILD].spellParticle.Play(true);
 
-				rb.AddForce(Vector3.down * rb.velocity.y, ForceMode.VelocityChange);
+                rb.AddForce(Vector3.down * rb.velocity.y, ForceMode.VelocityChange);
 
-				CanLift = false;
-				// lifting = true is now in PlayerSheepLift
+                CanLift = false;
+                // lifting = true is now in PlayerSheepLift
 
-				StartCoroutine(GetComponent<PlayerSheepLift>().PlayerPath());
-			}
-		}
-		else if (context.canceled && isLifting)
-		{
-			rb.AddForce(Vector3.down * rb.velocity.y, ForceMode.VelocityChange);
+                StartCoroutine(GetComponent<PlayerSheepLift>().PlayerPath());
+            }
+        }
+        else if (context.canceled && isLifting)
+        {
+            rb.AddForce(Vector3.down * rb.velocity.y, ForceMode.VelocityChange);
 
-			isLifting = false;
-		}
+            isLifting = false;
+        }
     }
 
     IEnumerator SuperJumpPrevention()
@@ -324,6 +364,8 @@ public class PlayerMovement : MonoBehaviour
         canJump = true;
     }
 
+ 
+
     public void OnDash(InputAction.CallbackContext context)
     {
         if(context.started && canDash && canAirDash && !isLifting && !health.HitStunned && dashChargesCurrent > 0)
@@ -331,7 +373,8 @@ public class PlayerMovement : MonoBehaviour
             canDash = false;
 			canAirDash = false;
 
-			animator.Play(dashAnimation, 0, 0f);
+            if(!isGrounded) animator.Play(dashAnimationAir, 0, 0f);
+            else animator.Play(dashAnimation, 0, 0f);
 
             // SOUND
            FMODUnity.RuntimeManager.PlayOneShotAttached(dashSound,gameObject);
@@ -352,19 +395,19 @@ public class PlayerMovement : MonoBehaviour
             //apply the dash
             if (moveDirection.magnitude == 0)
             {
-                rb.AddForce(playerOrientation.forward * dashForce);
+				Vector3 tempDir = (playerOrientation.forward);
+				transform.rotation = Quaternion.LookRotation(tempDir);
+				rb.AddForce(tempDir * dashForce);
             }
-            else
-            {
-                rb.AddForce(moveDirection * dashForce);
-            }
+			else
+				rb.AddForce(moveDirection * dashForce);
 
             dashChargesCurrent--;
             dashCurrentFillTime = 0f;
 
             dashCharging = true;
 
-            dashIcon.CooldownUIEffect(dashTimeToRefillCharges);
+            //dashIcon.CooldownUIEffect(dashTimeToRefillCharges);
             StartCoroutine(DashCooldown());
         }
     }
@@ -377,7 +420,8 @@ public class PlayerMovement : MonoBehaviour
         dashTrail.Play();
         canDash = false;
         yield return new WaitForSeconds(dashCooldown);
-        dashTrail.Stop();
+
+		dashTrail.Stop();
         canDash = true;
     }
     IEnumerator DashChargeCooldown()
@@ -422,9 +466,9 @@ public class PlayerMovement : MonoBehaviour
 		slowTimeVolume.gameObject.SetActive(true);
 		slowTimeVolume.weight = volumeStrength;
 
-        slowTimeUI.gameObject.SetActive(true);
-		Color uiCol = new Color(slowTimeUI.color.r, slowTimeUI.color.g, slowTimeUI.color.b, slowUIOpacity);
-		slowTimeUI.color = uiCol;
+        //slowTimeUI.gameObject.SetActive(true);
+		//Color uiCol = new Color(slowTimeUI.color.r, slowTimeUI.color.g, slowTimeUI.color.b, slowUIOpacity);
+		//slowTimeUI.color = uiCol;
 
 		yield return new WaitForSecondsRealtime(dashSlowLength);
 
@@ -433,19 +477,26 @@ public class PlayerMovement : MonoBehaviour
 		Time.fixedDeltaTime = 0.02F;
 		health.isInvulnerable = false;
 
+        //// IM USING THIS DEMETRI :D
+        float inverse_time_opacity = 0.4f / dashSlowLength;
+        float newWeight = volumeStrength;
+        for (float inverse_time = 1 / dashSlowLength; slowTimeVolume.weight > 0; slowTimeVolume.weight -= Time.deltaTime * inverse_time)
+        {
+        	newWeight -= Time.deltaTime * inverse_time_opacity;
+        	yield return new WaitForEndOfFrame();
+        }
 
+        //// this makes the perfect dash fade out smoother. TODO: make this curved better. actually, maybe this should be an animation?
+        //float inverse_time_opacity = 0.4f / dashSlowLength;
+        //for (float inverse_time = 1 / dashSlowLength; slowTimeVolume.weight > 0; slowTimeVolume.weight -= Time.deltaTime * inverse_time)
+        //{
+        //	uiCol.a -= Time.deltaTime * inverse_time_opacity;
+        //	slowTimeUI.color = uiCol;
+        //	yield return new WaitForEndOfFrame();
+        //}
 
-		// this makes the perfect dash fade out smoother. TODO: make this curved better. actually, maybe this should be an animation?
-		float inverse_time_opacity = 0.4f / dashSlowLength;
-		for (float inverse_time = 1 / dashSlowLength; slowTimeVolume.weight > 0; slowTimeVolume.weight -= Time.deltaTime * inverse_time)
-		{
-			uiCol.a -= Time.deltaTime * inverse_time_opacity;
-			slowTimeUI.color = uiCol;
-			yield return new WaitForEndOfFrame();
-		}
-
-		slowTimeVolume.gameObject.SetActive(false);
-        slowTimeUI.gameObject.SetActive(false);
+        slowTimeVolume.gameObject.SetActive(false);
+        //slowTimeUI.gameObject.SetActive(false);
         
     }
 

@@ -9775,6 +9775,7 @@ GameObject:
   - component: {fileID: 5496528944874286833}
   - component: {fileID: 5496528944874286828}
   - component: {fileID: 4236544688746869251}
+  - component: {fileID: -1135250068598859770}
   m_Layer: 0
   m_Name: Test_Enemy_Gibs
   m_TagString: Untagged
@@ -9809,7 +9810,7 @@ ParticleSystem:
   serializedVersion: 8
   lengthInSec: 6
   simulationSpeed: 1
-  stopAction: 0
+  stopAction: 1
   cullingMode: 0
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
@@ -14703,3 +14704,15 @@ MonoBehaviour:
   bloodSplatterPrefab: {fileID: 5442085366775540009, guid: e9556935c5ddb734c8aaa5aa2dd52510,
     type: 3}
   amountOfSplats: 35
+--- !u!114 &-1135250068598859770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5496528944874286832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d935fffc1d1694742a7731d09a5dd159, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

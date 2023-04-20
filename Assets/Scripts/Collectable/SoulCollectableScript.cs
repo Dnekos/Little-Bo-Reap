@@ -1,23 +1,26 @@
+//REVIEW: Looks Good!
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class SoulCollectableScript : Collectable
 {
-    GameObject soulCounter;
     [SerializeField] int soulValue;
-	[SerializeField] float healingValue = 3;
-    // Start is called before the first frame update
-    void Start()
-    {
-       //soulCounter = GameObject.FindGameObjectWithTag("SoulCounter");
-    }
-    //effect: adds souls equal to value and updates the UI
+    [SerializeField] FMODUnity.EventReference soulsfx;
+    //effect: adds souls equal to value
     protected override void CollectableEffect()
     {
-		//soulCounter.GetComponent<PlayerSoulCounter>().incrementSouls(soulValue);
-		//Debug.Log("OverrideSuccessful");
+        Debug.Log("Add Souls: " + soulValue.ToString());
+        WorldState.instance.PersistentData.soulsCount += soulValue;
+        WorldState.instance.HUD.UpdateSoulCount();
+        FMODUnity.RuntimeManager.PlayOneShot(soulsfx);
+        //SheepPassives.soulsCount += soulValue;
 
-		playerBody.GetComponentInChildren<PlayerHealth>().Heal(healingValue);
+        //clamps player soul count to a positive number.
+
+        if (WorldState.instance.PersistentData.soulsCount < 0)
+        {
+            WorldState.instance.PersistentData.soulsCount = 0;
+        }
     }
 }

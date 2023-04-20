@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7beb0fa201b3e04ea562900ec20dd15, type: 3}
+  m_Name: Level_One_3
+  m_EditorClassIdentifier: 
+  script:
+  - body: WOAH! Did you break those walls??? Damn, you scared me!
+    changeCamera: 1
+    CameraTransitionSpeed: 1
+    CameraPos: {x: -135.77057, y: 19.01331, z: 327.21323}
+    CameraEuler: {x: 10.004949, y: 265.22168, z: -0.0000039013094}
+  - body: You used Rams, you say? Yeah, they look pretty dangerous.
+    changeCamera: 0
+    CameraTransitionSpeed: 0
+    CameraPos: {x: 0, y: 0, z: 0}
+    CameraEuler: {x: 0, y: 0, z: 0}
+  - body: You could probably flock someone up with that if you aren't careful.
+    changeCamera: 0
+    CameraTransitionSpeed: 0
+    CameraPos: {x: 0, y: 0, z: 0}
+    CameraEuler: {x: 0, y: 0, z: 0}
+  endTime: 0.5

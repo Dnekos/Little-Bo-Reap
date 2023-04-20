@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7beb0fa201b3e04ea562900ec20dd15, type: 3}
+  m_Name: Tutorial_1 1
+  m_EditorClassIdentifier: 
+  script:
+  - body: You want to hear it again? <WASDMovement> to Walk, and <CameraMovement>
+      to look around.
+    changeCamera: 1
+    CameraTransitionSpeed: 1
+    CameraPos: {x: 26.01546, y: 3.3645384, z: -19.431889}
+    CameraEuler: {x: 11.551934, y: 306.47455, z: 0.00000784283}
+  - body: Or were you interested in how I died? I got crushed by a tree.
+    changeCamera: 0
+    CameraTransitionSpeed: 0
+    CameraPos: {x: 0, y: 0, z: 0}
+    CameraEuler: {x: 0, y: 0, z: 0}
+  - body: Turns out, when a tree falls in the forest, it does make a sound.
+    changeCamera: 0
+    CameraTransitionSpeed: 0
+    CameraPos: {x: 0, y: 0, z: 0}
+    CameraEuler: {x: 0, y: 0, z: 0}
+  endTime: 0.5

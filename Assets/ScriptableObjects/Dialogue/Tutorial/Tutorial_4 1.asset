@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7beb0fa201b3e04ea562900ec20dd15, type: 3}
+  m_Name: Tutorial_4 1
+  m_EditorClassIdentifier: 
+  script:
+  - body: Die yet? I wasn't paying attention. Oh, did you want to know how I died?
+    changeCamera: 1
+    CameraTransitionSpeed: 1
+    CameraPos: {x: -0.99753284, y: 11.026446, z: 191.22656}
+    CameraEuler: {x: 17.224209, y: 276.0505, z: 0.00006793338}
+  - body: I just got old. Nothing more, nothing less. It happens to us all, eventually.
+    changeCamera: 0
+    CameraTransitionSpeed: 0
+    CameraPos: {x: 0, y: 0, z: 0}
+    CameraEuler: {x: 0, y: 0, z: 0}
+  - body: You're still young though. You've got plenty of time. Try to enjoy it,
+      ok?
+    changeCamera: 0
+    CameraTransitionSpeed: 0
+    CameraPos: {x: 0, y: 0, z: 0}
+    CameraEuler: {x: 0, y: 0, z: 0}
+  endTime: 0.5

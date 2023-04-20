@@ -16,8 +16,9 @@ public class PlayerSheepProjectile : MonoBehaviour
     [SerializeField] SheepAttack launchAttack;
     [SerializeField] GameObject blackSheepParticles;
     [SerializeField] GameObject gibs;
+	[SerializeField] GameObject sheepMesh;
     public bool isBlackSheep = false;
-
+	public int SheepType;
     Rigidbody rb;
 
     void Awake()
@@ -28,7 +29,8 @@ public class PlayerSheepProjectile : MonoBehaviour
 
     void DestroySheepProjectile()
     {
-        Instantiate(gibs, transform.position, transform.rotation);
+		WorldState.instance.pools.DequeuePooledObject(gibs, transform.position, transform.rotation);
+        //Instantiate();
         Destroy(gameObject);
     }
 
@@ -40,8 +42,18 @@ public class PlayerSheepProjectile : MonoBehaviour
 
 		FMOD.Studio.EventInstance eventInst = FMODUnity.RuntimeManager.CreateInstance(launchSound);
 		FMODUnity.RuntimeManager.AttachInstanceToGameObject(eventInst, this.transform, rb);
+		if (SheepType == 0 && WorldState.instance.PersistentData.activeUpgrades.HasFlag(SaveData.Upgrades.BuilderLaunchDam))
+			eventInst.setParameterByName("Progression", 1);
+		eventInst.start();
+		eventInst.release();
+
 		eventInst.start();
 	}
+
+	public void SetMeshScale(float size)
+    {
+		sheepMesh.transform.localScale = new Vector3(size, size, size);
+    }
 
 	public void LaunchProjectile()
     {
@@ -65,15 +77,41 @@ public class PlayerSheepProjectile : MonoBehaviour
 
 			if (isBlackSheep)
 			{
-				collision.gameObject?.GetComponent<Damageable>()?.TakeDamage(launchAttack, -forcePoint);
+				if (SheepType == 0)
+				{
+					collision.gameObject?.GetComponent<Damageable>()?.TakeDamage(launchAttack.BSAttack, -forcePoint, WorldState.instance.passiveValues.builderLaunchDam, 1.0f);
+				}
+				if (SheepType == 1)
+				{
+					collision.gameObject?.GetComponent<Damageable>()?.TakeDamage(launchAttack.BSAttack, -forcePoint, WorldState.instance.passiveValues.ramDamage, WorldState.instance.passiveValues.ramKnockback);
+				}
+				else if (SheepType == 2) //checks for fluffy sheep by checking if it's not a ram OR a builder. Because we don't have an isFluffySheep. The fuck?
+				{
+					collision.gameObject?.GetComponent<Damageable>()?.TakeDamage(launchAttack.BSAttack, -forcePoint);
+				}
 				Instantiate(launchAttack.explosionEffect, transform.position, transform.rotation);
 				DestroySheepProjectile();
 			}
 			else
 			{
-				collision.gameObject?.GetComponent<Damageable>()?.TakeDamage((Attack)launchAttack, -forcePoint);
+				if (SheepType == 0) 
+				{ 
+					collision.gameObject?.GetComponent<Damageable>()?.TakeDamage(launchAttack, -forcePoint, WorldState.instance.passiveValues.builderLaunchDam); 
+				}
+				if (SheepType == 1)
+				{ 
+					collision.gameObject?.GetComponent<Damageable>()?.TakeDamage(launchAttack, -forcePoint, WorldState.instance.passiveValues.ramDamage, WorldState.instance.passiveValues.ramKnockback); 
+				}
+				else if (SheepType == 2) //checks for fluffy sheep by checking if it's not a ram OR a builder. Because we don't have an isFluffySheep. The fuck?
+                {
+					collision.gameObject?.GetComponent<Damageable>()?.TakeDamage(launchAttack, -forcePoint);
+				}
 				Invoke("DestroySheepProjectile", lifeTimeAfterAttack);
 			}
 		}
+		else if (collision.gameObject.CompareTag("Target"))
+        {
+			collision.gameObject.GetComponent<LaunchTarget>().OpenKey();
+        }
 	}
 }

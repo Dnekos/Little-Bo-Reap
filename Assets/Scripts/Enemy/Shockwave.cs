@@ -9,6 +9,7 @@ public class Shockwave : MonoBehaviour
 
 	[Header("Transform Properties"), SerializeField]
 	float maxTimeAlive = 2;
+	[SerializeField,Tooltip("how many seconds in which being in the donut hole still deals damage (for really close range attacks)")] float FilledHoleTime = 0.1f;
 	[SerializeField]
 	Vector3 maxScale;
 	[Header("Holy SHIT do not touch"), SerializeField, Tooltip("HIGHLY dependant on torus shape and scale, dont touch this or torus shape :)")]
@@ -20,11 +21,17 @@ public class Shockwave : MonoBehaviour
 
 	float currTimeAlive = 0;
 
+	[Header("Sound")]
+	[SerializeField] FMODUnity.EventReference shockwaveSound;
+
 	private void Start()
 	{
 		hitTargets = new List<Damageable>();
 
-		origPos = transform.position; 
+		origPos = transform.position;
+
+		FMODUnity.RuntimeManager.PlayOneShot(shockwaveSound, origPos);
+
 	}
 	// Update is called once per frame
 	void Update()
@@ -41,7 +48,7 @@ public class Shockwave : MonoBehaviour
 		if (currTimeAlive >= maxTimeAlive)
 			Destroy(gameObject);
 	}
-	private void OnTriggerEnter(Collider other)
+	private void OnTriggerStay(Collider other)
 	{
 		Vector3 flattenedOtherPos = new Vector3(other.transform.position.x, transform.position.y, other.transform.position.z);
 		Damageable targetHealth = other.GetComponent<Damageable>();
@@ -49,11 +56,11 @@ public class Shockwave : MonoBehaviour
 		//Debug.Log(Vector3.Distance(flattenedOtherPos, transform.position) + " < " + (InnerDiameter * transform.localScale.x * 0.5f));
 		
 		// distance check to see if the player is in the hitbox or inside the inner radius (as triggers have to be convex)
-		if (Vector3.Distance(flattenedOtherPos, origPos) < InnerDiameter * transform.localScale.x * 0.5f)
+		if (Vector3.Distance(flattenedOtherPos, origPos) < InnerDiameter * transform.localScale.x * 0.5f && FilledHoleTime < currTimeAlive)
 		{
 			Debug.Log(other.gameObject.name + " safe inside shockwave");
 		}
-		else if (targetHealth != null && !hitTargets.Contains(targetHealth))
+		else if (targetHealth != null && !hitTargets.Contains(targetHealth) && !other.isTrigger)
 		{
 			hitTargets.Add(targetHealth);
 			Debug.Log(other.gameObject.name + " hit by shockwave");

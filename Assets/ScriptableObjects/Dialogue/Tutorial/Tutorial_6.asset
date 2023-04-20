@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7beb0fa201b3e04ea562900ec20dd15, type: 3}
+  m_Name: Tutorial_6
+  m_EditorClassIdentifier: 
+  script:
+  - body: HEY! YOU THERE! SHEEP GIRL!
+    changeCamera: 1
+    CameraTransitionSpeed: 1
+    CameraPos: {x: 127.72785, y: 28.21344, z: 171.9682}
+    CameraEuler: {x: 17.911745, y: 119.04948, z: 0.00015881548}
+  - body: 'DON''T JUST LET THOSE SHEEP STAND AROUND DOING NOTHING! '
+    changeCamera: 1
+    CameraTransitionSpeed: 1
+    CameraPos: {x: 139.48364, y: 30.96745, z: 172.58884}
+    CameraEuler: {x: 16.260153, y: 163.37485, z: 359.78824}
+  - body: USE <SheepAttack> TO TELL THEM TO ATTACK THOSE TARGETS!
+    changeCamera: 0
+    CameraTransitionSpeed: 0
+    CameraPos: {x: 0, y: 0, z: 0}
+    CameraEuler: {x: 0, y: 0, z: 0}
+  - body: USE <Execute> TO BRING THEM BACK TO YOU WHEN YOU'RE DONE!
+    changeCamera: 1
+    CameraTransitionSpeed: 0
+    CameraPos: {x: 148.99379, y: 28.192059, z: 161.5481}
+    CameraEuler: {x: 13.614564, y: 292.13998, z: 0.00009575183}
+  endTime: 0.5

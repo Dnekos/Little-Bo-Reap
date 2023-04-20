@@ -161,7 +161,6 @@ Transform:
   - {fileID: 426741379166760419}
   - {fileID: 426741377753046947}
   - {fileID: 426741379166052166}
-  - {fileID: 5199182049682783102}
   m_Father: {fileID: 426741378606355000}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -250,6 +249,8 @@ Transform:
   m_Children:
   - {fileID: 426741378263486879}
   - {fileID: 3171478351851915431}
+  - {fileID: 4368368180489273121}
+  - {fileID: 5078584668114409717}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -287,9 +288,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4de3925a6fab897459dbb71af2ab3b07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Health: 35
-  MaxHealth: 35
-  gibs: {fileID: 9082597936765375905, guid: 954fa77ba0781eb49a21da27f26832ec, type: 3}
+  Health: 30
+  MaxHealth: 30
+  gibs: {fileID: 8039274497699848023, guid: c149dc1e77ba2b3409f557bd827b3191, type: 3}
   damageNumber: {fileID: 758784450076825086, guid: 917e1ac09e21f3f499d8aa30f802b69e,
     type: 3}
   damageNumberGoth: {fileID: 758784450076825086, guid: 0a7b484cc73c2c047b45b91fd1f75b6d,
@@ -309,15 +310,21 @@ MonoBehaviour:
       Data3: 855789978
       Data4: 2067519149
     Path: event:/Little Guy/Death
-  soulValue: 5
+  soulValue: 0
+  healthValue: 5
   soulSpeed: 4
   soulSpawnHeight: 4
-  soulCollectableOne: {fileID: 6060198684946403098, guid: 4b17e9d88b42899429f3f7846d72d21d,
-    type: 3}
-  graph: {fileID: 11400000, guid: 118cb8cae2d2c3446bad753040c4c172, type: 2}
+  soulCollectables:
+  - {fileID: 1450159934537412182, guid: fd915cf40c047624094e479099915e79, type: 3}
+  - {fileID: 4645614311413259885, guid: 65e6efa8b57965944b8661f42caea478, type: 3}
+  - {fileID: 4645614311413259885, guid: a60042d03826ac94cb621599b2118db9, type: 3}
+  - {fileID: 4645614311413259885, guid: 2ea8437ad6787b049b56c5883a68aae6, type: 3}
+  - {fileID: 4645614311413259885, guid: 484308373c7ce7249b0a2955d5de5e32, type: 3}
+  - {fileID: 6060198684946403098, guid: 4b17e9d88b42899429f3f7846d72d21d, type: 3}
   SpawnParticlePrefab: {fileID: 2684900647289607401, guid: b47d97f3181406b40a873ad78d950bd9,
     type: 3}
   SpawnWaitTime: 0
+  graph: {fileID: 11400000, guid: 118cb8cae2d2c3446bad753040c4c172, type: 2}
   currentEnemyState: 3
   StunTime: 0.3
   playerLayer:
@@ -326,13 +333,16 @@ MonoBehaviour:
   NearbyGuys: []
   delayBetweenAttacks: 1
   StickCollider: {fileID: 5292186470773176089}
-  anim: {fileID: 698929894327262353}
+  anim: {fileID: 4268591538955714863}
+  distracted: 0
+  bellLoc: {x: 0, y: 0, z: 0}
   isExecutable: 0
   mustBeExecuted: 0
   executionHealthThreshhold: 0
   executeTrigger: {fileID: 0}
   executePlayerPos: {fileID: 0}
   execution: {fileID: 0}
+  timeTillGib: 10
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -355,7 +365,6 @@ MonoBehaviour:
       Data3: 1148032658
       Data4: 922800040
     Path: event:/Big Guy/Club Hit
-  printAttackTests: 0
   player: {fileID: 0}
 --- !u!54 &426741378606355007
 Rigidbody:
@@ -397,7 +406,7 @@ Animator:
   m_GameObject: {fileID: 426741378606354996}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: d76e2d0ff5ab47f4c996fd67d2c162bd, type: 2}
+  m_Controller: {fileID: 22100000, guid: f065d75b7852e0147acaaa76cf6bd75e, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -521,60 +530,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &2049568724155644797
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5199182049682783102}
-  - component: {fileID: 698929894327262353}
-  m_Layer: 12
-  m_Name: Little Guy Sword Holster
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5199182049682783102
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2049568724155644797}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.26666665, y: 0.39999998, z: 0.26666665}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 4368368180489273121}
-  - {fileID: 5078584668114409717}
-  m_Father: {fileID: 426741378263486879}
-  m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &698929894327262353
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2049568724155644797}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 7785d2768bac00847b9f118d909d6778, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &6475678942801526642
 GameObject:
   m_ObjectHideFlags: 0
@@ -645,12 +600,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6572324513058762817}
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0.000000104308114}
-  m_LocalPosition: {x: 3.34, y: 3.11, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalPosition: {x: 1.3359995, y: 1.2439998, z: 0}
+  m_LocalScale: {x: 0.79999995, y: 0.79999995, z: 0.79999995}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1804714023745737312}
-  m_Father: {fileID: 5199182049682783102}
+  m_Father: {fileID: 426741378606355000}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &58914157725109552
@@ -659,7 +614,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 2
-    m_TransformParent: {fileID: 5199182049682783102}
+    m_TransformParent: {fileID: 426741378606355000}
     m_Modifications:
     - target: {fileID: 5092321877322765764, guid: 6a92e48e8bc1d7a42a5d4056a8f112cd,
         type: 3}
@@ -674,17 +629,17 @@ PrefabInstance:
     - target: {fileID: 5092321877322765765, guid: 6a92e48e8bc1d7a42a5d4056a8f112cd,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 7.5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5092321877322765765, guid: 6a92e48e8bc1d7a42a5d4056a8f112cd,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 7.5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5092321877322765765, guid: 6a92e48e8bc1d7a42a5d4056a8f112cd,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 7.5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5092321877322765765, guid: 6a92e48e8bc1d7a42a5d4056a8f112cd,
         type: 3}
@@ -694,12 +649,12 @@ PrefabInstance:
     - target: {fileID: 5092321877322765765, guid: 6a92e48e8bc1d7a42a5d4056a8f112cd,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.9750004
+      value: 2.39
       objectReference: {fileID: 0}
     - target: {fileID: 5092321877322765765, guid: 6a92e48e8bc1d7a42a5d4056a8f112cd,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.82
+      value: 1.5279999
       objectReference: {fileID: 0}
     - target: {fileID: 5092321877322765765, guid: 6a92e48e8bc1d7a42a5d4056a8f112cd,
         type: 3}

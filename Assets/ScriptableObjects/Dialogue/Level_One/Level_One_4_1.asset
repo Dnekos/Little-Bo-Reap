@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7beb0fa201b3e04ea562900ec20dd15, type: 3}
+  m_Name: Level_One_4_1
+  m_EditorClassIdentifier: 
+  script:
+  - body: Hey, Baba Yaga isn't this way, just so you know.
+    changeCamera: 1
+    CameraTransitionSpeed: 1
+    CameraPos: {x: -601.05396, y: 39.467075, z: 215.73897}
+    CameraEuler: {x: 6.739087, y: 136.30618, z: 0.00000021492838}
+  - body: But that's good! There's a lot of stuff you can find if you go poking around.
+    changeCamera: 0
+    CameraTransitionSpeed: 1
+    CameraPos: {x: -401.58945, y: 29.331087, z: 416.2176}
+    CameraEuler: {x: 30.698877, y: 124.55263, z: 359.99164}
+  - body: Since you came all this way, I'll let you in on a secret.
+    changeCamera: 0
+    CameraTransitionSpeed: 1
+    CameraPos: {x: -602.91095, y: 42.487835, z: 211.11809}
+    CameraEuler: {x: 335.9714, y: 164.34006, z: 359.9739}
+  - body: I saw something up at the top of those rocks, over the door.
+    changeCamera: 1
+    CameraTransitionSpeed: 1
+    CameraPos: {x: -602.91095, y: 42.487835, z: 211.11809}
+    CameraEuler: {x: 335.9714, y: 164.34006, z: 359.9739}
+  - body: I can't get there, but I'm sure you could!
+    changeCamera: 0
+    CameraTransitionSpeed: 1
+    CameraPos: {x: -602.91095, y: 42.487835, z: 211.11809}
+    CameraEuler: {x: 335.9714, y: 164.34006, z: 359.9739}
+  endTime: 0.5

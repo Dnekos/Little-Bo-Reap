@@ -8,5 +8,5 @@ public class OrientWorldSpaceCanvasToCamera : MonoBehaviour
     {
 		if (Camera.main != null && Camera.main.enabled)
 			transform.LookAt(Camera.main.transform);
-    }
+	}
 }

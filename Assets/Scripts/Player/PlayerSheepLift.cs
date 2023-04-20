@@ -4,10 +4,18 @@ using UnityEngine;
 
 public class PlayerSheepLift : MonoBehaviour
 {
+	[Header("Settings")]
 	[SerializeField] int AllowedSurvivingSheep = 5;
 	[SerializeField] float SheepSpacingMod = 0.5f;
-	[Tooltip("this should be the primary collider on the player"), SerializeField] CapsuleCollider mainCollider;
+	[Tooltip("this should be the primary collider on the player"), SerializeField] 
+	CapsuleCollider mainCollider;
+	[SerializeField,Min(1)] int maxSheep = 15;
 	float sheepHeight;
+
+	[Header("Juice")]
+	[SerializeField] FMODUnity.EventReference placeSound;
+	[SerializeField] FMODUnity.EventReference failSound;
+	[SerializeField] ParticleSystem liftFailParticle;
 
 	[SerializeField] float SheepLerpSpeed = 0.5f;
 
@@ -63,11 +71,16 @@ public class PlayerSheepLift : MonoBehaviour
 		bool hitGround = Physics.Raycast(transform.position, Vector3.down, out info, 100, LayerMask.GetMask("Ground"), QueryTriggerInteraction.Ignore);
 
 		Debug.DrawLine(transform.position, info.point, Color.red, 3);
-		Debug.Log("sheep lift attempt at height "+ (info.distance * SheepSpacingMod) +", estimated sheep height is "+ (sheepHeight * flocks.GetSheepFlock(SheepTypes.BUILD).Count));
+		Debug.Log("sheep lift attempt at height "+ (info.distance * SheepSpacingMod) +", estimated sheep height is "+ (sheepHeight * flocks.GetActiveSheep(SheepTypes.BUILD).Count));
 		
 		// not enough sheep to make the ladder
-		if (!hitGround || info.distance * SheepSpacingMod > sheepHeight * flocks.GetSheepFlock(SheepTypes.BUILD).Count || info.collider.CompareTag("Sheep") || info.collider.gameObject == platform)
+		if (!hitGround || info.distance * SheepSpacingMod > sheepHeight * flocks.GetActiveSheep(SheepTypes.BUILD).Count || info.collider.CompareTag("Sheep") || info.collider.gameObject == platform)
+        {
+			liftFailParticle.Play(true);
+			FMODUnity.RuntimeManager.PlayOneShot(failSound, transform.position);
 			return false;
+		}
+			
 
 
 		shouldCollapseTower = false;
@@ -106,7 +119,7 @@ public class PlayerSheepLift : MonoBehaviour
 	// returns false if you cannot place a sheep
 	bool PlacePoint(Vector3 newPos, bool PlaceAtTop)
 	{
-		if (usedSheep >= flocks.GetSheepFlock(SheepTypes.BUILD).Count)
+		if (usedSheep >= flocks.GetActiveSheep(SheepTypes.BUILD).Count || usedSheep > maxSheep)
 		{
 			player.isLifting = false;
 			return false;
@@ -121,10 +134,10 @@ public class PlayerSheepLift : MonoBehaviour
 		// check if theres room to add a sheep to the stack
 		if (distTowardsNextSheep * SheepSpacingMod >= sheepHeight)
 		{
-			StartCoroutine(SheepFollow(flocks.GetSheepFlock(SheepTypes.BUILD)[usedSheep], PlaceAtTop ? RecordedPositions.Count - 1 : 0, usedSheep));
+			StartCoroutine(SheepFollow(flocks.GetActiveSheep(SheepTypes.BUILD)[usedSheep], PlaceAtTop ? RecordedPositions.Count - 1 : 0, usedSheep));
 
 			// give them a new rotation
-			flocks.GetSheepFlock(SheepTypes.BUILD)[usedSheep].transform.eulerAngles = new Vector3(0, Random.Range(0, 360));
+			flocks.GetActiveSheep(SheepTypes.BUILD)[usedSheep].transform.eulerAngles = new Vector3(0, Random.Range(0, 360));
 			usedSheep++;
 			distTowardsNextSheep = 0;
 		}
@@ -146,6 +159,7 @@ public class PlayerSheepLift : MonoBehaviour
 		platform.layer = LayerMask.NameToLayer("Ground");
 		platform.tag = "Sheep";
 		platform.AddComponent<BoxCollider>().size = PlatformSize;
+		
 	}
 
 	IEnumerator SheepFollow(PlayerSheepAI playerSheep,int startingIndex, int sheepIndex)
@@ -156,7 +170,7 @@ public class PlayerSheepLift : MonoBehaviour
 		float lerpSpeed = SheepLerpSpeed;
 
 
-		while (player.isLifting && playerSheep != null)
+		while (player.isLifting && playerSheep != null && playerSheep.gameObject.activeInHierarchy)
 		{
 			yield return new WaitForEndOfFrame();
 
@@ -165,6 +179,7 @@ public class PlayerSheepLift : MonoBehaviour
 				playerSheep.transform.position = Vector3.Lerp(playerSheep.transform.position, RecordedPositions[index], lerpSpeed);
 				index++;
 				lerpSpeed += Time.deltaTime * 2;
+				FMODUnity.RuntimeManager.PlayOneShot(placeSound, playerSheep.transform.position);
 			}
 		}
 
@@ -172,11 +187,11 @@ public class PlayerSheepLift : MonoBehaviour
 		playerSheep.transform.position = RecordedPositions[Mathf.Clamp(index, 0, RecordedPositions.Count - 1)];
 
 		// keep them in the tower till something knocks them over or they die
-		yield return new WaitUntil(() => shouldCollapseTower || playerSheep == null || playerSheep.GetSheepState() != SheepStates.LIFT);
+		yield return new WaitUntil(() => shouldCollapseTower || playerSheep == null || !playerSheep.gameObject.activeInHierarchy || playerSheep.GetSheepState() != SheepStates.LIFT);
 
 		CollapseTower();
 
-		if (playerSheep?.GetSheepState() == SheepStates.LIFT)
+		if (playerSheep?.GetSheepState() == SheepStates.LIFT && playerSheep.gameObject.activeInHierarchy)
 			playerSheep.EndLift(sheepIndex > AllowedSurvivingSheep);
 	}
 	#endregion
@@ -188,7 +203,10 @@ public class PlayerSheepLift : MonoBehaviour
 			player.CanLift = false;
 			//CollapseTower();
 		}
-		else if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+	}
+	private void OnCollisionEnter(Collision collision)
+	{
+		if (platform != null && collision.gameObject != platform && collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
 			CollapseTower();
 	}
 }

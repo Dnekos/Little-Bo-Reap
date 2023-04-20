@@ -5,19 +5,30 @@ using UnityEngine.InputSystem;
 
 public class PlayerGroundPound : MonoBehaviour
 {
-    [Header("Ground Pound Variables")]
+    [Header("Visuals")]
     [SerializeField] FMODUnity.EventReference explodeSound;
     [SerializeField] string heavyAirAnimation;
+    [SerializeField] ParticleSystem eyeFlashParticle;
+
+    [Header("Timing / Conditions")]
     [SerializeField] float coolDown = 3f;
     [SerializeField] float timeTillSlamDown = 0.25f;
+    [SerializeField] float minHeight;
+    [SerializeField, Tooltip("how far the raycast goes")] float maxHeight = 100;
+    [SerializeField] LayerMask groundMask;
+
+    [Header("Damage")]
     [SerializeField] float baseGroundDamage = 25f;
     [SerializeField] float baseGroundDamageBlack = 50f;
     Vector3 startFallPos;
+
+    [Header("Physics")]
     [SerializeField] float airUpForce;
     [SerializeField] float airDownForce;
     [SerializeField] PlayerCameraFollow playerCam;
 
-	[Header("Explosion")]
+    [Header("Explosion")]
+    [SerializeField] GameObject crackAndDirtParticles;
 	[SerializeField] float DamageMultiplier = 1;
     [SerializeField] GameObject heavyParticle;
     [SerializeField] Transform particleOrigin;
@@ -42,12 +53,11 @@ public class PlayerGroundPound : MonoBehaviour
     {
         if (playerMovement.isFalling)
         {
-			playerMovement.isFalling = false;
+            FMODUnity.RuntimeManager.PlayOneShotAttached(explodeSound, gameObject);
+            playerMovement.isFalling = false;
             animator.SetBool("isFalling", false);
             Instantiate(heavyParticle, transform.position, transform.rotation);
-
-            //TEMP SOUND
-            FMODUnity.RuntimeManager.PlayOneShotAttached(explodeSound,gameObject);
+            GameObject dirt = Instantiate(crackAndDirtParticles, transform.position, transform.rotation);
 
             //camera shake!
             playerCam.ShakeCamera(true);
@@ -63,15 +73,15 @@ public class PlayerGroundPound : MonoBehaviour
 					float damage = Mathf.Max(0, startFallPos.y - transform.position.y) * DamageMultiplier;
 					var dir = -(transform.position - hit.transform.position).normalized;
 
-                    if (GetComponent<PlayerGothMode>().isGothMode)
+                    if (GetComponent<PlayerGothMode>().gothMode == PlayerGothMode.GothState.Goth)
                     {
-                        groundPoundAttack.damageBlack = baseGroundDamageBlack * damage;
-						enemy.TakeDamage(groundPoundAttack, dir);
+                        groundPoundAttack.BSAttack.damage = baseGroundDamageBlack * damage;
+						enemy.TakeDamage(groundPoundAttack.BSAttack, dir);
                     }
                     else
                     {
                         groundPoundAttack.damage = baseGroundDamage * damage;
-						enemy.TakeDamage((Attack)groundPoundAttack, dir);
+						enemy.TakeDamage(groundPoundAttack, dir);
                     }
                 }
             }
@@ -80,7 +90,6 @@ public class PlayerGroundPound : MonoBehaviour
     public void SpawnHeavyParticle()
     {
         GameObject explode = Instantiate(heavyParticle, particleOrigin.position, particleOrigin.rotation);
-
         
     }
     public void HeavySlamDown()
@@ -88,6 +97,7 @@ public class PlayerGroundPound : MonoBehaviour
 		startFallPos = transform.position;
 
 		animator.SetBool("isFalling", playerMovement.isFalling);
+        
 
         //called from animator, slam down!!
         rb.AddForce(-rb.velocity, ForceMode.VelocityChange);
@@ -95,17 +105,24 @@ public class PlayerGroundPound : MonoBehaviour
     }
     public void OnHeavyAttack(InputAction.CallbackContext context)
     {
-        //if airborne, do a little lift then slam down into the ground!
+        //if airborne, do a little lift then slam down into the ground!0
         if (context.started && canAttack && !playerMovement.isLifting)
         {
+            RaycastHit info;
+            bool didHit = Physics.Raycast(transform.position, Vector3.down, out info, maxHeight, groundMask);
+            Debug.Log("GroundPount dist: " + info.distance);
+            if (!didHit || info.distance < minHeight)
+                return;
+
 			playerMovement.isFalling = true;
 
             canAttack = false;
             StartCoroutine(GroundPoundCooldown());
 
-            groundPoundIcon.CooldownUIEffect(coolDown);
+            //groundPoundIcon.CooldownUIEffect(coolDown);
 
             animator.Play(heavyAirAnimation);
+            
 
             StartCoroutine(SlamDown());
 
@@ -118,6 +135,7 @@ public class PlayerGroundPound : MonoBehaviour
     IEnumerator SlamDown()
     {
         yield return new WaitForSeconds(timeTillSlamDown);
+        eyeFlashParticle.Play(true);
         HeavySlamDown();
     }
 
