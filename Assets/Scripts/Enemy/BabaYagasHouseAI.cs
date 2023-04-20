@@ -12,11 +12,11 @@ public class BabaYagasHouseAI : EnemyAI
 
 	[Header("Spawning Enemies")]
 	[SerializeField] bool enemiesSpawned = false;
-    [HideInInspector] public bool spawningEnemies = false;
+	[HideInInspector] public bool spawningEnemies = false;
 	[SerializeField] int numEnemiesSpawned;
 	[SerializeField] Transform enemySpawnPoint;
-    [HideInInspector] GameObject enemySpawnerPlaceholder = null;//this will be filled in when it gets created
-	//include which enemies will spawn 
+	[HideInInspector] GameObject enemySpawnerPlaceholder = null;//this will be filled in when it gets created
+																//include which enemies will spawn 
 
 	[Header("Fire Breath")]
 	[SerializeField] float fireBreathDamage;
@@ -24,7 +24,7 @@ public class BabaYagasHouseAI : EnemyAI
 
 	[Header("Ranged Attack")]
 	[SerializeField] float rangedAttackDamage;
-    [SerializeField] Transform rangedAttackSpawnPoint;
+	[SerializeField] Transform rangedAttackSpawnPoint;
 	[SerializeField] ParticleSystem rangedAttackIndicator;
 
 
@@ -32,7 +32,7 @@ public class BabaYagasHouseAI : EnemyAI
 	[SerializeField] GameObject ArmorBar;
 	[SerializeField] Image HealthBar;
 
-    [Header("Stun Objects")]
+	[Header("Stun Objects")]
 	[SerializeField] GameObject[] armorObjects;
 	[SerializeField] GameObject pinwheelObjectLeft;
 	[SerializeField] GameObject pinwheelObjectRight;
@@ -47,7 +47,7 @@ public class BabaYagasHouseAI : EnemyAI
 	[Header("Sounds")]
 	[SerializeField] FMODUnity.EventReference armorBreakingSFX;
 	[SerializeField] FMODUnity.EventReference armorBlockingSFX;
-	
+
 	bool isSuspended = false;
 
 	float bossFallRate = 2000;
@@ -57,6 +57,12 @@ public class BabaYagasHouseAI : EnemyAI
 
 	[SerializeField] EnemyAttack stompAtk;
 
+
+	void Awake()
+    {
+		GetAnimator().Play("BBYGH_Reveal_01 1");
+
+	}
 
 	// Start is called before the first frame update
 	override protected void Start()
@@ -71,7 +77,6 @@ public class BabaYagasHouseAI : EnemyAI
 
 		float armorBarScale = (Health / MaxHealth);
 		HealthBar.fillAmount = 1;
-		GetAnimator().Play("BBYGH_Reveal_01 1");
 	}
 
 	private void FixedUpdate()
