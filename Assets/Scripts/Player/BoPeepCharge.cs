@@ -19,6 +19,9 @@ public class BoPeepCharge : MonoBehaviour
 	[SerializeField] float chargeDuration = 1.5f;
 	[SerializeField] PlayerMovement moveController;
 
+	[Header("Sound")]
+	[SerializeField] protected FMODUnity.EventReference stampedeSound;
+
 	[Header("Stop Killing Yourself")]
 	[SerializeField] LayerMask groundLayer;
 	[SerializeField] float forwardCliffOffset = 5;
@@ -88,6 +91,10 @@ public class BoPeepCharge : MonoBehaviour
 		moveController.SetMaxMoveSpeed(chargeSpeed);
 		moveController.SetMovementVector(MovementVector);
 		GetComponent<PlayerInput>().SwitchCurrentActionMap("RamCharge");
+
+		// sound
+		FMODUnity.RuntimeManager.PlayOneShotAttached(stampedeSound, gameObject);
+
 		/*
 		rb.isKinematic = true;
 		agent.enabled = true;
