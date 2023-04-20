@@ -282,13 +282,15 @@ public class PlayerMovement : MonoBehaviour
 	public void HaltPlayer()
 	{
 		// stop dashing
-		StopAllCoroutines();
+		StopAllCoroutines(); // I HATE YOU I HATE YOU
 		dashTrail.Stop();
 		canDash = true;
 
 		// stop moving
 		moveValue = Vector3.zero;
-		//rb.AddForce(-rb.velocity, ForceMode.VelocityChange);
+
+		// re-enable jump
+		canJump = true;
 	}
 
 	public void SetMovementVector(Vector2 newMoveVector)
@@ -363,8 +365,6 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(superJumpPreventionTimer);
         canJump = true;
     }
-
- 
 
     public void OnDash(InputAction.CallbackContext context)
     {
