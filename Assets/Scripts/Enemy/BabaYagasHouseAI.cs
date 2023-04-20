@@ -212,7 +212,10 @@ public class BabaYagasHouseAI : EnemyAI
 
 	public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
     {
-		if(GetAnimator().GetCurrentAnimatorStateInfo(0).IsName("BBYGH_Reveal_01 1"))
+		if(GetAnimator().GetCurrentAnimatorStateInfo(0).IsName("BBYGH_Reveal_01 1") ||
+		   GetAnimator().GetCurrentAnimatorStateInfo(0).IsName("Boss_Spawn")		||
+		   GetAnimator().GetCurrentAnimatorStateInfo(0).IsName("BBYGH_Spawn_Start 1")||
+		   GetAnimator().GetCurrentAnimatorStateInfo(0).IsName("BBYGH_Spawn_Cycle 1"))
         {
 			return;
         }

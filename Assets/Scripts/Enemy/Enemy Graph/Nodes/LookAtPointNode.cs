@@ -39,7 +39,7 @@ namespace XNode.Examples.StateGraph
 					Mathf.LerpAngle(lerpedAngle.z, endRot.z, elapsedTime),
 					Mathf.LerpAngle(lerpedAngle.w, endRot.w, elapsedTime));
 
-				Debug.Log("elapsed:" + elapsedTime);
+				//Debug.Log("elapsed:" + elapsedTime);
 				elapsedTime += Time.deltaTime;
 
 				trn.rotation = lerpedAngle;

@@ -15,8 +15,13 @@ public class RangedAttack : MonoBehaviour
     float currentTimeAlive = 0;
 
     //small cheat
-    public Transform player;
-   
+    private Transform player;
+
+    [SerializeField] ParticleSystem destroyExplosion;
+    [SerializeField] SphereCollider collider;
+    [SerializeField] ParticleSystem[] attackParticles;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -36,6 +41,8 @@ public class RangedAttack : MonoBehaviour
 
         if (currentTimeAlive >= maxTimeAlive)
             Destroy(gameObject);
+
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -52,6 +59,34 @@ public class RangedAttack : MonoBehaviour
             Debug.Log(other.gameObject.name + "hit by Ranged Attack");
             targetHealth.TakeDamage(BossRangedAttack, (flattenedOtherPos - origPos).normalized);
         }
+        if(6 == other.gameObject.layer)
+        {
+            //Vector3 tempPos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+            //Quaternion tempRot = new Quaternion(transform.rotation.x, transform.rotation.y, transform.rotation.z, transform.rotation.w);
+            //Instantiate(destroyExplosion, tempPos, tempRot);
+            //Destroy(gameObject);
+            //WorldState.instance.pools.DequeuePooledObject(destroyExplosion.gameObject, tempPos, tempRot);
+            StartCoroutine(DestroyProjectile());
+        }
+
+    }
+
+    IEnumerator DestroyProjectile()
+    {
+        yield return new WaitForSeconds(0.1f);
+        Vector3 tempPos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+        Quaternion tempRot = new Quaternion(transform.rotation.x, transform.rotation.y, transform.rotation.z, transform.rotation.w);
+        //WorldState.instance.pools.DequeuePooledObject(destroyExplosion.gameObject, tempPos, tempRot);
+        Instantiate(destroyExplosion, tempPos, tempRot);
+        Destroy(gameObject);
+
+        //collider.enabled = false;
+        //foreach (ParticleSystem ps in attackParticles)
+        //{
+        //    ps.Stop();
+        //}
+
+        //gameObject.SetActive(false);
     }
 
     private void FireProjectile()
