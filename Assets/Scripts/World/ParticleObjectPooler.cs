@@ -37,7 +37,6 @@ public class ParticleObjectPooler : MonoBehaviour
 
 		// look through pool to see if there is an eligable spawned object
 		Queue<GameObject> pool = objectPool[prefab];
-		Debug.Log(prefab.name +" "+pool.Count);
 		if (pool.Count > 0)
 		{
 			GameObject cueball = pool.Dequeue();
@@ -46,17 +45,7 @@ public class ParticleObjectPooler : MonoBehaviour
 			cueball.transform.position = pos;
 			cueball.transform.rotation = rot;
 			return cueball;
-		}/*for (int i = 0; i < pool.Count; i++)
-		{
-			if (pool[i] != null && !pool[i].activeInHierarchy)
-			{
-				pool[i].SetActive(true);
-				pool[i].GetComponent<ParticleSystem>().Play();
-				pool[i].transform.position = pos;
-				pool[i].transform.rotation = rot;
-				return pool[i];
-			}
-		}*/
+		}
 
 		// instantiate new object
 		if (MaxInstancesPerPool > pool.Count)

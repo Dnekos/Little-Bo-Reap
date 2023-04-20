@@ -160,15 +160,16 @@ public class PlayerVortex : MonoBehaviour
 
 				isDefending = true;
 
-				//if (blackHole)
+				// sound
+				vortexStartEmitter.Play();
 				if (WorldState.instance.PersistentData.activeUpgrades.HasFlag(SaveData.Upgrades.FluffyActive))
 				{
 					blackHoleObj.SetActive(true);
-					vortexStartEmitter.SetParameter("Progression", 1);
+
+					vortexStartEmitter.EventInstance.setParameterByName("Progression", 1);
 				}
 				else
-					vortexStartEmitter.SetParameter("Progression", 0);
-				vortexStartEmitter.Play();
+					vortexStartEmitter.EventInstance.setParameterByName("Progression", 0);
 
 				flocks.GetSheepFlock(SheepTypes.FLUFFY).spellParticle.Play(true);
 

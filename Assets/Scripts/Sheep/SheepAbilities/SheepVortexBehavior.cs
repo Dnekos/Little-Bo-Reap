@@ -48,10 +48,8 @@ public class SheepVortexBehavior : SheepBehavior
 	public override void Begin(PlayerSheepAI ps, Vector3 targettedPos)
 	{
 		float radAngle = (ps.sheepPoolIndex / (float)ps.activeSheepPool.Count) * Mathf.PI * 2;
-		Debug.Log("sheep at index: " + ps.sheepPoolIndex + " has angle of " + radAngle);
 
-		//
-		Debug.Log("SO begin");
+		//Debug.Log("SO begin");
 		ps.agent.enabled = false;
 
 		float randAnimSpeed = Random.Range(1f, 3f);
