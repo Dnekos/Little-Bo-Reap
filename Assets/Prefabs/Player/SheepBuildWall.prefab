@@ -38996,6 +38996,7 @@ GameObject:
   - component: {fileID: 2485881377867994816}
   - component: {fileID: 6500726643264503314}
   - component: {fileID: 1924897193698859292}
+  - component: {fileID: 7432738774149365971}
   m_Layer: 6
   m_Name: SheepBuildWall
   m_TagString: Untagged
@@ -39135,6 +39136,45 @@ MonoBehaviour:
   delay: 0.1
   PlacementGuesses: 40
   HeightStep: 0.01
+--- !u!114 &7432738774149365971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3677815942122897683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf504b52f9521c34eadbbdf2b1814ad0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Health: 999
+  MaxHealth: 999
+  gibs: {fileID: 0}
+  damageNumber: {fileID: 0}
+  damageNumberGoth: {fileID: 0}
+  isInvulnerable: 1
+  hurtSound:
+    Guid:
+      Data1: 949191789
+      Data2: 1270817466
+      Data3: 1528027779
+      Data4: 427792418
+    Path: event:/Sheep/SheepBaa
+  deathSound:
+    Guid:
+      Data1: -1891297472
+      Data2: 1225720330
+      Data3: 1266031252
+      Data4: 1675569259
+    Path: event:/Progression/Compaction
+  soulValue: 0
+  healthValue: 0
+  soulSpeed: 0
+  soulSpawnHeight: 0
+  soulCollectables: []
+  damageMultiplier: 2
+  spread: 5
 --- !u!1 &4090916879727087470
 GameObject:
   m_ObjectHideFlags: 0

@@ -174,8 +174,8 @@ public class SheepConstruct : SheepHolder
 		while (CurveT <= 1)
 		{
 			// make a guess at a good spot to place sheep, within -0.5,0.5
-			Vector3 sheepPlacement = new Vector3(Random.Range(-adjustedColExt.x, adjustedColExt.x), 
-				Mathf.Lerp(-adjustedColExt.y, adjustedColExt.y, CurveT), 
+			Vector3 sheepPlacement = new Vector3(Random.Range(-adjustedColExt.x, adjustedColExt.x),
+				Mathf.Lerp(-adjustedColExt.y, adjustedColExt.y, CurveT),
 				Random.Range(-adjustedColExt.z, adjustedColExt.z));
 
 			// apply matrix to bring it to the correct scale and rotation
@@ -247,6 +247,13 @@ public class SheepConstruct : SheepHolder
 
 		}
 
+	}
+	#endregion
+
+	#region Utility
+	public List<PlayerSheepAI> GetContainedSheep()
+	{
+		return containedSheep;
 	}
 
 	// TODO: if collider on final sheep ends up being a capsule, will need new math for calculating displacement

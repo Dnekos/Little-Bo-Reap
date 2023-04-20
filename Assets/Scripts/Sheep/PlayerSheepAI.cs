@@ -102,6 +102,7 @@ public enum SheepStates
 	public Vector3 constructPos;
 	[HideInInspector]
 	public float Radius;
+	public const int DamageFromConstruct = 0;
 
 	[Header("DEBUG")]
 	public PlayerSheepAI leaderSheep;
@@ -520,7 +521,7 @@ public enum SheepStates
     }
     public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
     {
-        if (atk.DealsHitstun)
+        if (atk.DealsHitstun && currentSheepState != SheepStates.CONSTRUCT)
             SetHitstun(SheepStates.WANDER);
 
 		Debug.Log("Took Damage in a " + currentSheepState.ToString() + " State.");
@@ -531,7 +532,11 @@ public enum SheepStates
                 base.TakeDamage(atk, attackForward, WorldState.instance.passiveValues.builderConstructDR);
                 break;
             case SheepStates.CONSTRUCT:  //If you are in a CONSTRUCT state, take damage modified by the ConstructDR multiplier
-                base.TakeDamage(atk, attackForward, WorldState.instance.passiveValues.builderConstructDR);
+				if (knockbackMultiplier == DamageFromConstruct) // if theres 0 knockback, we can assume its from the construct. damageAmp is set to be a % of the damage, spread between sheep
+				{
+					float damageMult = (WorldState.instance.passiveValues.builderConstructDR <= 0) ? damageAmp : WorldState.instance.passiveValues.builderConstructDR * damageAmp;
+					base.TakeDamage(atk, attackForward, damageMult, DamageFromConstruct);
+				}
                 break;
             case SheepStates.ABILITY:  //If you are in a STAMPEDE state, take damage modified by the StampedeDR multiplier
 				if (ability is SheepStampedeBehavior)
@@ -565,17 +570,20 @@ public enum SheepStates
     }
 	protected override void PlayHurtSound()
 	{
-		// muted baa for stampede
-		if (sheepType == 1 && WorldState.instance.PersistentData.activeUpgrades.HasFlag(SaveData.Upgrades.RamChargeDR) )
+		if (currentSheepState != SheepStates.CONSTRUCT)
 		{
-			FMOD.Studio.EventInstance instance = FMODUnity.RuntimeManager.CreateInstance(hurtSound);
-			instance.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(transform.position));
-			instance.setParameterByName("Progression", 1); // the line that makes it muted, the rest is copied from the internal FMOD PlayOneshot
-			instance.start();
-			instance.release();
+			// muted baa for stampede
+			if (sheepType == 1 && WorldState.instance.PersistentData.activeUpgrades.HasFlag(SaveData.Upgrades.RamChargeDR))
+			{
+				FMOD.Studio.EventInstance instance = FMODUnity.RuntimeManager.CreateInstance(hurtSound);
+				instance.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(transform.position));
+				instance.setParameterByName("Progression", 1); // the line that makes it muted, the rest is copied from the internal FMOD PlayOneshot
+				instance.start();
+				instance.release();
+			}
+			else
+				base.PlayHurtSound();
 		}
-		else
-			base.PlayHurtSound();
 	}
 	#endregion
 

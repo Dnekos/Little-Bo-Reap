@@ -13,7 +13,7 @@ public class PoolQueuer : MonoBehaviour
 		{
 			if (originalPrefab == null)
 				Debug.LogError(gameObject.name + " is missing prefab reference!!");
-			else
+			else if (WorldState.instance.isActiveAndEnabled)
 				WorldState.instance.pools.QueuePooledObject(this);
 		}
 	}
