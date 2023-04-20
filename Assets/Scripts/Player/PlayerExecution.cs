@@ -103,7 +103,7 @@ public class PlayerExecution : MonoBehaviour
 					// play execution animations
 					anim.playerAnimator.Play(enemyToExecute.execution.playerAnimation, 0, 0);
 					enemyToExecute.GetComponent<Animator>().Play(enemyToExecute.execution.enemyAnimation);
-					enemyToExecute.getExecuteTrigger().active = false;//disables ability to execute twice on accident
+					enemyToExecute.getExecuteTrigger().SetActive(false);//disables ability to execute twice on accident
 
 					Debug.Log(enemyToExecute.execution.executionLength);
 					StartCoroutine(ExecuteEnemy(enemyToExecute.execution.executionLength));

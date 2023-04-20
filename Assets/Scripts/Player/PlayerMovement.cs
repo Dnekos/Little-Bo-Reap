@@ -270,6 +270,14 @@ public class PlayerMovement : MonoBehaviour
 			rb.AddForce(Vector3.down * fallRate);
     }
 
+	private void OnDisable()
+	{
+		// dont play footsteps when you can't move (mostly for execution)
+		if (walker.IsPlaying())
+			walker.Stop();
+
+	}
+
 	#region Getters/Setters
 	public void HaltPlayer()
 	{
