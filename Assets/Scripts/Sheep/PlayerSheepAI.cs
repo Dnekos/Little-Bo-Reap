@@ -54,6 +54,10 @@ public enum SheepStates
     [SerializeField] GameObject meshParent;
     public float currentSize;
 
+    [Header("Easter Eggs!")]
+    [SerializeField] List<GameObject> easterEggMeshes;
+    [SerializeField] float percentChanceToEasterEgg = 1f;
+
 	[Header("Sounds")]
 	[SerializeField] FMODUnity.EventReference biteSound;
 	[SerializeField] FMODUnity.EventReference petSound;
@@ -160,6 +164,23 @@ public enum SheepStates
         canAttack = true;
         attackTargetCurrent = null;
         attackTargets.Clear();
+
+
+        //hehe easter eggs
+        //turn em all off
+        for(int i = 0; i < easterEggMeshes.Count; i++)
+        {
+            easterEggMeshes[i].SetActive(false);
+        }
+        //get random number
+        float easterEgg = Random.Range(0f, 100f);
+        if(easterEgg <= percentChanceToEasterEgg)
+        {
+            int easterEggIndex = Random.Range(0, easterEggMeshes.Count);
+            easterEggMeshes[easterEggIndex].SetActive(true);
+        }
+
+
 
         //get random follow stopping distance
         //this prevents sheep from clumping up and getting jittery when in a flock behind player
