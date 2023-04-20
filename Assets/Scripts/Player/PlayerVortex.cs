@@ -76,8 +76,8 @@ public class PlayerVortex : MonoBehaviour
 
 	void EndSheepDefend()
 	{
-		//if (blackHole)
-		if(WorldState.instance.PersistentData.activeUpgrades.HasFlag(SaveData.Upgrades.FluffyActive))
+		bool hasUpgrade = WorldState.instance.PersistentData.activeUpgrades.HasFlag(SaveData.Upgrades.FluffyActive);
+		if (hasUpgrade)
 		{
 			blackHoleObj.GetComponent<SuckEnemies>().BlackHoleChuckALL();
 		}
@@ -93,8 +93,13 @@ public class PlayerVortex : MonoBehaviour
 
 		animator.Play(defendAnimation);
 
-		//TEMP SOUND
-		FMODUnity.RuntimeManager.PlayOneShotAttached(vortexEndSound, gameObject);
+		// SOUND
+		FMOD.Studio.EventInstance endSound = FMODUnity.RuntimeManager.CreateInstance(vortexEndSound);
+		FMODUnity.RuntimeManager.AttachInstanceToGameObject(endSound, gameObject.transform, gameObject.GetComponent<Rigidbody>());
+		if (hasUpgrade)
+			endSound.setParameterByName("Progression", 1); 
+		endSound.start();
+		endSound.release();
 		vortexStartEmitter.Stop();
 
 		flocks.GetSheepFlock(SheepTypes.FLUFFY).spellParticle.Play(true);
@@ -159,7 +164,11 @@ public class PlayerVortex : MonoBehaviour
 				if (WorldState.instance.PersistentData.activeUpgrades.HasFlag(SaveData.Upgrades.FluffyActive))
 				{
 					blackHoleObj.SetActive(true);
+					vortexStartEmitter.SetParameter("Progression", 1);
 				}
+				else
+					vortexStartEmitter.SetParameter("Progression", 0);
+				vortexStartEmitter.Play();
 
 				flocks.GetSheepFlock(SheepTypes.FLUFFY).spellParticle.Play(true);
 
@@ -167,9 +176,6 @@ public class PlayerVortex : MonoBehaviour
 				defendPivotRotateSpeed = defendRotateBaseSpeed;
 
 				animator.Play(defendAnimation);
-
-				// SOUND
-				vortexStartEmitter.Play();
 
 				// turn on vfx
 				for (int i = 0; i < defendPoints.Count; i++)

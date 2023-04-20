@@ -42,6 +42,11 @@ public class PlayerSheepProjectile : MonoBehaviour
 
 		FMOD.Studio.EventInstance eventInst = FMODUnity.RuntimeManager.CreateInstance(launchSound);
 		FMODUnity.RuntimeManager.AttachInstanceToGameObject(eventInst, this.transform, rb);
+		if (SheepType == 0 && WorldState.instance.PersistentData.activeUpgrades.HasFlag(SaveData.Upgrades.BuilderLaunchDam))
+			eventInst.setParameterByName("Progression", 1);
+		eventInst.start();
+		eventInst.release();
+
 		eventInst.start();
 	}
 
