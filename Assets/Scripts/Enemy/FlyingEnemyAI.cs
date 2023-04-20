@@ -95,6 +95,7 @@ public class FlyingEnemyAI : EnemyBase
         {
             activeAttack.SpawnObject(attackPoint.position, attackPoint.rotation);
             activeAttack.damage = attackDamage;
+            FMODUnity.RuntimeManager.PlayOneShot(attackSound, attackPoint.position);
         }
     }
 

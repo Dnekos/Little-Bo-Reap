@@ -10,8 +10,8 @@ public class Fireball : MonoBehaviour
 	[SerializeField]
 	float force = 20;
 
-	[SerializeField]
-	GameObject Explosion;
+	[SerializeField] GameObject Explosion;
+	[SerializeField] FMODUnity.EventReference whistle;
 
     // Start is called before the first frame update
     void Start()
@@ -19,6 +19,7 @@ public class Fireball : MonoBehaviour
 		Transform target = GameObject.FindGameObjectWithTag("Player").transform;
 		GetComponent<Rigidbody>().AddRelativeForce( (target.position - transform.position).normalized * force, ForceMode.Impulse);
 		Destroy(gameObject, 3);
+		FMODUnity.RuntimeManager.PlayOneShot(whistle, transform.position);
     }
 	private void OnCollisionEnter(Collision collision)
 	{

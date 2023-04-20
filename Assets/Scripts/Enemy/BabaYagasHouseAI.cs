@@ -45,11 +45,8 @@ public class BabaYagasHouseAI : EnemyAI
 	[SerializeField] GameObject endGameObject;
 
 	[Header("Sounds")]
-	[SerializeField]FMODUnity.EventReference fire;
-	[SerializeField] FMODUnity.EventReference creaking;
-	[SerializeField] FMODUnity.EventReference stomp;
-	[SerializeField] FMODUnity.EventReference doorOpen;
-	[SerializeField] FMODUnity.EventReference doorClose;
+	[SerializeField] FMODUnity.EventReference armorBreakingSFX;
+	[SerializeField] FMODUnity.EventReference armorBlockingSFX;
 	
 	bool isSuspended = false;
 
@@ -101,6 +98,7 @@ public class BabaYagasHouseAI : EnemyAI
 
 
 		CheckPinwheels();
+		MusicHealth();
 	}
 
 	protected override void OnDeath()
@@ -240,7 +238,7 @@ public class BabaYagasHouseAI : EnemyAI
 			//I-Frames
 			StartCoroutine(ShieldRecentlyBroken());
 
-			//armor break sound
+			FMODUnity.RuntimeManager.PlayOneShot(armorBreakingSFX,transform.position);
 		}
 		else if (armorBroken == false)
 		{
@@ -348,6 +346,30 @@ public class BabaYagasHouseAI : EnemyAI
 		//Debug.Log(result);
 
 		return result;
+		
+	}
 
+	private void MusicHealth()
+    {
+		if (Health >= MaxHealth * .75f)
+		{
+			FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Boos Loop Transitions", 0);
+		}
+		else if (Health >= MaxHealth * .5f)
+		{
+			FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Boos Loop Transitions", 1);
+		}
+		else if (Health >= MaxHealth * .25f)
+		{
+			FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Boos Loop Transitions", 2);
+		}
+		else if (Health > 0)
+        {
+			FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Boos Loop Transitions", 3);
+		}
+		else if (Health == 0)
+        {
+			FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Boos Loop Transitions", 4);
+		}
 	}
 }

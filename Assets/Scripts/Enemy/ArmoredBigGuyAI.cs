@@ -11,6 +11,7 @@ public class ArmoredBigGuyAI : BigGuyAI
     [SerializeField] ParticleSystem destroyParticles;
     [SerializeField] ParticleSystem armorSparks;
     [SerializeField] FMODUnity.EventReference armorBreakSFX;
+    [SerializeField] FMODUnity.EventReference armorReflectSFX;
     private bool armorBroken = false;
     private bool armorRecentlyBroken = false;
 
@@ -50,6 +51,10 @@ public class ArmoredBigGuyAI : BigGuyAI
             StartCoroutine(ShieldRecentlyBroken());
 
             //armor break sound
+        }
+        else if ((atk.name != "Ram_Attack_Charge" || atk.name != "HammerAttack") && armorBroken == false)
+        {
+            FMODUnity.RuntimeManager.PlayOneShot(armorReflectSFX, transform.position);
         }
         //add a section for attacks that dont break shield for the sound 
         else if(armorBroken == false)

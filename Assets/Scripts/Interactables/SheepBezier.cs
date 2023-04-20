@@ -230,7 +230,7 @@ public class SheepBezier : SheepHolder
 			if (!Filled) // if empty, place sheep there
 			{
 				containedSheep.Add(newSheep);
-				Debug.Log("Sheep " + containedSheep.Count +" took " + RandomCount + " tries and checked "+ SheepChecked+" sheep");
+				//Debug.Log("Sheep " + containedSheep.Count +" took " + RandomCount + " tries and checked "+ SheepChecked+" sheep");
 
 				// set state of AI
 				newSheep.GetComponent<PlayerSheepAI>()?.DoConstruct(sheepPlacement);
