@@ -354,6 +354,10 @@ public class EnemyAI : EnemyBase
 		//rb.isKinematic = false;
 		agent.enabled = false;
 		rb.constraints = RigidbodyConstraints.FreezeRotation;
+
+		// not the ideal fall but better than not falling
+		rb.useGravity = true;
+
 		yield return new WaitForSeconds(StunTime);
 		// stay in stun until touching the ground
 		do
@@ -367,7 +371,7 @@ public class EnemyAI : EnemyBase
 		if (currentEnemyState != EnemyStates.EXECUTABLE)
 			currentEnemyState = stunState;
 
-		//rb.isKinematic = true;
+		rb.useGravity = false;
 		agent.enabled = true;
 
 		// freeze dammit

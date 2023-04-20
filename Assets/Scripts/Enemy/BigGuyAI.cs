@@ -22,13 +22,9 @@ public class BigGuyAI : EnemyAI
 	}
 
 	void FixedUpdate()
-    {
-		if (currentEnemyState == EnemyStates.HITSTUN || executeTrigger.activeInHierarchy == true)
-        {
-			GetAnimator().Play("BigGuy_Stun");
-        }
-
-	}		
+	{
+		GetAnimator().SetBool("isStunned", currentEnemyState == EnemyStates.HITSTUN || executeTrigger.activeInHierarchy == true);
+	}	
 
 	// for animation trigger
 	public void SpawnShockwave()
@@ -53,6 +49,20 @@ public class BigGuyAI : EnemyAI
 
 	public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
 	{
+		// stop enemies when they get stunned
+		if (atk.DealsHitstun)
+		{
+			// make sure agent is NOT moving if we want them to stop
+			NavMeshAgent agent = GetAgent();
+			if (agent.enabled)
+			{
+				agent.speed = 0;
+				agent.acceleration = 0;
+				agent.isStopped = true;
+				agent.velocity = Vector3.zero;
+			}
+		}
+
 		base.TakeDamage(atk, attackForward);
 
 		// when taking damage, open healthbar

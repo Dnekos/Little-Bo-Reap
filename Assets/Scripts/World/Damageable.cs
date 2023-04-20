@@ -47,7 +47,7 @@ public class Damageable : MonoBehaviour
 		if (!isInvulnerable || Health <= 0)
 		{
 			float damage = atk.damage * ((damageAmp <= 0) ? 1 : damageAmp);
-			Debug.Log(atk.damage + " * " + damageAmp + " = " + damage);
+
 			// deal damage
 			Health -= damage;
 

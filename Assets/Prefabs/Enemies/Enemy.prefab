@@ -182,7 +182,7 @@ MonoBehaviour:
   maxSpawnStagger: 2
   suckResistant: 0
   graph: {fileID: 11400000, guid: 118cb8cae2d2c3446bad753040c4c172, type: 2}
-  currentEnemyState: 3
+  currentEnemyState: 0
   StunTime: 0.3
   playerLayer:
     serializedVersion: 2
@@ -223,6 +223,7 @@ MonoBehaviour:
       Data4: 922800040
     Path: event:/Big Guy/Club Hit
   player: {fileID: 0}
+  isBoss: 0
 --- !u!54 &426741378606355007
 Rigidbody:
   m_ObjectHideFlags: 0
