@@ -166,6 +166,7 @@ public enum SheepStates
         attackTargetCurrent = null;
         attackTargets.Clear();
 
+        //if (System.DateTime.Today.Month == 4 && System.DateTime.Today.Day == 20) Debug.Log("April foolks!");
 
         //hehe easter eggs
         //turn em all off
@@ -175,7 +176,7 @@ public enum SheepStates
         }
         //get random number
         float easterEgg = Random.Range(0f, 100f);
-        if(easterEgg <= percentChanceToEasterEgg)
+        if(easterEgg <= percentChanceToEasterEgg || System.DateTime.Today.Month == 4 && System.DateTime.Today.Day == 1 || System.DateTime.Today.Month == 10 && System.DateTime.Today.Day == 31)
         {
             int easterEggIndex = Random.Range(0, easterEggMeshes.Count);
             easterEggMeshes[easterEggIndex].SetActive(true);
