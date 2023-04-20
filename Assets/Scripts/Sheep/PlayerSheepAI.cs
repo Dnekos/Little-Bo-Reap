@@ -563,10 +563,24 @@ public enum SheepStates
                 break;
         }
     }
-    #endregion
+	protected override void PlayHurtSound()
+	{
+		// muted baa for stampede
+		if (sheepType == 1 && WorldState.instance.PersistentData.activeUpgrades.HasFlag(SaveData.Upgrades.RamChargeDR) )
+		{
+			FMOD.Studio.EventInstance instance = FMODUnity.RuntimeManager.CreateInstance(hurtSound);
+			instance.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(transform.position));
+			instance.setParameterByName("Progression", 1); // the line that makes it muted, the rest is copied from the internal FMOD PlayOneshot
+			instance.start();
+			instance.release();
+		}
+		else
+			base.PlayHurtSound();
+	}
+	#endregion
 
-    #region Follow Player
-    void DoFollowPlayer()
+	#region Follow Player
+	void DoFollowPlayer()
     {
         //if player is too close, part the red sea!
         float checkDistance = Vector3.Distance(transform.position, player.position);
