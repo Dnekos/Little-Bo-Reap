@@ -10,6 +10,7 @@ public class BoPeepCharge : MonoBehaviour
 {
 	[Header("Stampeding")]
 	[SerializeField] float chargeSpeed = 35f;
+	[SerializeField] Attack ramAttack;
 	//[SerializeField] float chargePointRadius = 10f;
 	//[SerializeField] float chargeStopDistance = 0f;
 	//[SerializeField] float destinationDist = 20f;
@@ -24,6 +25,7 @@ public class BoPeepCharge : MonoBehaviour
 	[SerializeField] float forwardCliffCheckDistance = 3;
 	[SerializeField] float wallCheckDistance = 2;
 	[SerializeField] float wallCheckOffset = 1.3f;
+	
 	bool isGoingToDie;
 	bool isCharging;
 
@@ -145,5 +147,29 @@ public class BoPeepCharge : MonoBehaviour
 		Gizmos.DrawLine(transform.position + transform.forward * wallCheckOffset, transform.position + transform.forward * wallCheckOffset + transform.forward * wallCheckDistance);
 	}
 	*/
+	private void OnTriggerEnter(Collider other)
+	{
+		Damageable targetHealth = other.GetComponent<Damageable>();
+		if (other.tag == "Enemy")
+		{
+			DealDamage(targetHealth);
+		}
+	}
+	private void OnCollisionEnter(Collision collision)
+	{
+		Damageable targetHealth = collision.gameObject.GetComponent<Damageable>();
+		if (collision.gameObject.tag == "Enemy")
+		{
+			DealDamage(targetHealth);
+		}
+	}
 
+	public void DealDamage(Damageable targetHealth)
+	{
+		// make sure it has health to be damaged
+		if (targetHealth != null && isCharging)
+		{
+			targetHealth.TakeDamage(ramAttack, transform.forward);
+		}
+	}
 }

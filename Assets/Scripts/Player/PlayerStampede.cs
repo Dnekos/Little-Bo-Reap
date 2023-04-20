@@ -142,7 +142,7 @@ public class PlayerStampede : MonoBehaviour
 				//sheep[i].SetStopDist(recallingStopDist);
 			}
 		}
-		else if (context.canceled && isPreparingCharge && flocks.GetSheepFlock(flockType).MaxSize > 0)
+		else if (context.canceled && isPreparingCharge && flocks.GetSheepFlock(flockType).MaxSize > 0 && canCharge)
 		{
 			DoStampede();
 		}
@@ -203,6 +203,14 @@ public class PlayerStampede : MonoBehaviour
 	IEnumerator ChargeCooldown()
 	{
 		yield return new WaitForSeconds(chargeCooldown);
+		SheepTypes flockType = SheepTypes.RAM;
+		for (int i = 0; i < flocks.GetActiveSheep(flockType).Count; i++)
+		{
+			if (flocks.GetActiveSheep(flockType)[i].GetSheepState() == SheepStates.ABILITY)
+			{
+				flocks.GetActiveSheep(flockType)[i].SetSheepState(SheepStates.WANDER);
+			}
+		}
 		canCharge = true;
 	}
 	#endregion
