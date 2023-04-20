@@ -58490,6 +58490,11 @@ PrefabInstance:
       propertyPath: SheepRadiusMult
       value: 0.8
       objectReference: {fileID: 0}
+    - target: {fileID: 1924897193698859292, guid: e77e9bc22dd5e1a4982a66c4172e67e3,
+        type: 3}
+      propertyPath: disableChildrenOnBuild
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3677815942122897683, guid: e77e9bc22dd5e1a4982a66c4172e67e3,
         type: 3}
       propertyPath: m_Name
@@ -58604,20 +58609,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 2
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8332483381826104837
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5823414533874670124}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc87b3ac4388ebe4298728d8ea2e81fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  range: 2
-  isDistracting: 0
 --- !u!114 &6944608714677294944
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58648,6 +58639,20 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 150
+--- !u!114 &8332483381826104837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5823414533874670124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc87b3ac4388ebe4298728d8ea2e81fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  range: 2
+  isDistracting: 0
 --- !u!4 &6054836524043080406 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4025601284740827625, guid: e77e9bc22dd5e1a4982a66c4172e67e3,
