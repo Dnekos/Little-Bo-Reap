@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Speaker : Interactable
 {
-	[Header("Speaker vars"), ]
+	[Header("Speaker vars"),]
 	public Conversation script;
 
 	//[SerializeField] FMODUnity.EventReference talkSound;
@@ -17,7 +17,8 @@ public class Speaker : Interactable
 	DialogBox DB; // speechbubble
 
 	[Header("Repeating Dialog"), SerializeField, Tooltip("If filled, the repeating dialog will play instead of the normal script anytime after the first that the player interacts with it.")]
-	Conversation repeatingScript;
+	public Conversation repeatingScript;
+	[HideInInspector] public int scriptIndex;
 
 	Animator anim;
 
@@ -42,7 +43,7 @@ public class Speaker : Interactable
 		DB.ActivateUI(this);
 
 		if (repeatingScript != null)
-			script = repeatingScript;
+			scriptIndex = (scriptIndex + 1) % 2;//script = secondScript;
 	}
 	
 	public void SetTalking(bool value)

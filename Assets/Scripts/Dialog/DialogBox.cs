@@ -94,7 +94,11 @@ public class DialogBox : MonoBehaviour
 		// set up speaker vars
 		currentspeaker = active_conversation;
 		DialoguePanel.SetActive(true);
-		activeCon = currentspeaker.script;
+		if (currentspeaker.scriptIndex == 0)
+			activeCon = currentspeaker.script;
+		else
+			activeCon = currentspeaker.repeatingScript;
+
 		lineIndex = 0;
 
 		// switch cameras
