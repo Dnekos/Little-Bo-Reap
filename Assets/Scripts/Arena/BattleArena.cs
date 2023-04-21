@@ -106,6 +106,11 @@ public class BattleArena : PuzzleDoor
 			door.SetActive(false); // reopen doors
 			CurrentWave = -1; // reset waves
 
+			StopAllCoroutines();
+			// doublecheck SlowBattleEnd values
+			slowTimeVolume.SetActive(false);
+
+
 			foreach (Transform child in SpawnedEnemiesFolder) // clear enemies
 				Destroy(child.gameObject);
 		}
