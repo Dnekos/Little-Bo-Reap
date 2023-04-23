@@ -7,6 +7,7 @@ public class BellDistract : MonoBehaviour
     [SerializeField] float range;
     public bool isDistracting = false;
     List<EnemyAI> distractedEnemies = new List<EnemyAI>();
+	[SerializeField] GameObject bellparticles;
 
 	SheepConstruct construct;
 	// Start is called before the first frame update
@@ -22,6 +23,7 @@ public class BellDistract : MonoBehaviour
 		float currentSheepCount = construct.GetSheepCount();
 
 		isDistracting = currentSheepCount > 0;
+		bellparticles.SetActive(isDistracting);
 		if (!isDistracting)
 		{
 			EndDistract();
