@@ -11,10 +11,6 @@ public class ActiveButton : MonoBehaviour
 
 	private AbilityIcon icon;
 
-    void Start()
-    {
-		m_hudManager.activePanelChange += HUD_activePanelChange;
-    }
 
 	private void HUD_activePanelChange(GameObject obj)
 	{
