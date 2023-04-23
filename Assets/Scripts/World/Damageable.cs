@@ -86,7 +86,8 @@ public class Damageable : MonoBehaviour
 
 	protected virtual void PlayHurtSound()
 	{
-		FMODUnity.RuntimeManager.PlayOneShot(hurtSound, transform.position);
+		if (!hurtSound.IsNull)
+			FMODUnity.RuntimeManager.PlayOneShot(hurtSound, transform.position);
 	}
 
 	// TODO: Mitko fix this function 

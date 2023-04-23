@@ -41,7 +41,6 @@ public class HUDManager : MonoBehaviour
 
 	[Header("Progression")]
 	[SerializeField] GameObject ProgressionMenu;
-	public event Action<GameObject> activePanelChange;
 	[SerializeField] ProgressionParent[] upgradeTrees;
 	[SerializeField] TextMeshProUGUI SoulNumber;
     [SerializeField] Animator SoulUIAnimator;
@@ -216,13 +215,7 @@ public class HUDManager : MonoBehaviour
 			int currentPosition = i - currentFlock;
 
 			if(currentPosition < 0)
-			{
 				currentPosition = sheepIcons.Length + currentPosition;
-			}
-			else if(currentPosition == 0)
-			{
-				//activePanelChange.Invoke(sheepIcons[currentFlock].Marker);
-			}
 
 			//You can either use the instant move or the lower one which lerps between the points
 			//MoveToPosition(spritePositions[currentPosition].transform, sheepIcons[i].Marker.transform);

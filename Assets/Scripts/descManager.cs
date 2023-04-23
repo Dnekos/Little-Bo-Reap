@@ -27,6 +27,10 @@ public class descManager : MonoBehaviour
 
 	void OpenTooltip()
 	{
+		// if things aren't set, double check they are
+		if (panelImage == null)
+			Start();
+
 		descTextBox.enabled = true;
 		panelImage.enabled = true;
 
@@ -36,6 +40,10 @@ public class descManager : MonoBehaviour
 	}
 	void CloseTooltip()
 	{
+		// if things aren't set, double check they are
+		if (panelImage == null)
+			Start();
+
 		descTextBox.enabled = false;
 		panelImage.enabled = false;
 		descTextBox.text = "";

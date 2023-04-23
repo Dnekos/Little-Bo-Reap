@@ -54,7 +54,7 @@ public class EnemyAI : EnemyBase
 	[SerializeField] Transform groundCheckOriginBack;
 	[SerializeField] float groundCheckDistance;
 	public bool isGrounded = false;
-	[SerializeField] float fallRate = 50;
+	[SerializeField] protected float fallRate = 50;
 	Coroutine hitstunCoroutine = null;
 
 	[Header("Sounds")]
@@ -285,7 +285,14 @@ public class EnemyAI : EnemyBase
 			hitstunCoroutine = StartCoroutine(OnHitStun());
 		}
 		// subtract health
-		base.TakeDamage(atk, attackForward, damageAmp, knockbackMultiplier);
+		if(isBoss == false)
+        {
+			base.TakeDamage(atk, attackForward, damageAmp, knockbackMultiplier);
+		}
+		if(isBoss == true)
+        {
+			base.TakeDamage(atk, attackForward, damageAmp, 0.0f);
+		}
 
 		if (isExecutable && Health <= executionHealthThreshhold)
 			ToExecutionState();
