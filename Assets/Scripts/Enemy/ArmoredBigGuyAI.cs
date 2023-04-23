@@ -19,11 +19,25 @@ public class ArmoredBigGuyAI : BigGuyAI
     {
         base.Start();
 
-		ArmorBarUI.SetActive(true);
+
+        ArmorBarUI.SetActive(true);
 		HealthBarCanvas.SetActive(true);
 	}
 
-	public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
+    protected override void Update()
+    {
+
+        if (ArmorBarUI.activeSelf && HealthBarCanvas.activeSelf && isBoss == false)
+        {
+            HealthBarCanvas.transform.LookAt(Camera.main.transform);
+            ArmorBarUI.transform.LookAt(Camera.main.transform);
+        }
+
+        base.Update();
+
+    }
+
+    public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
     {
         if(armorBroken == true && armorRecentlyBroken == false)
         {

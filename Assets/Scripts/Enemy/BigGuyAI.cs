@@ -50,7 +50,7 @@ public class BigGuyAI : EnemyAI
 	public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
 	{
 		// stop enemies when they get stunned
-		if (atk.DealsHitstun)
+		if (atk.DealsHitstun && isBoss == false)
 		{
 			// make sure agent is NOT moving if we want them to stop
 			NavMeshAgent agent = GetAgent();
