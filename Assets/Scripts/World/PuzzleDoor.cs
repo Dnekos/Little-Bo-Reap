@@ -15,9 +15,11 @@ public class PuzzleDoor : MonoBehaviour
 	bool isStoped = false;
 	FMOD.Studio.Bus myBus;
 	float doorTime;
+	float distencedoor;
     private void Start()
     {
 		myBus = FMODUnity.RuntimeManager.GetBus("bus:/SFX/Gameplay/UponDeath/DoorDrop");
+		distencedoor = Mathf.Abs(doorMinY) + door.transform.localPosition.y;
 	}
     virtual protected void Update()
     {
@@ -44,10 +46,11 @@ public class PuzzleDoor : MonoBehaviour
 					
 					
 				}
-				doorTime = doorTime - 1;
+				doorTime = doorTime -Time.deltaTime;
 				
-			}
-			if (doorTime <= 0 && isOpened && !isStoped)
+
+            }
+            if (doorTime <= 0 && isOpened && !isStoped)
             {
 				myBus.stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
 				//isPlaying = false;
@@ -64,7 +67,7 @@ public class PuzzleDoor : MonoBehaviour
 		isOpened = true;
 		WorldState.instance.AddActivatedDoor(this);
 		dustParticles.Play();
-		doorTime = doorDropRate * 60;
+		doorTime = distencedoor/doorDropRate;
 	    
 	}
 	
