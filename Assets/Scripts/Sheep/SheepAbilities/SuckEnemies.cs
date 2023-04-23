@@ -19,10 +19,8 @@ public class SuckEnemies : MonoBehaviour
     [SerializeField] float inVortexLerpSpeed = 0.6f;
     [SerializeField] bool inVortexLerpUseDt = false;
 
-    [Header("Finisher Damage")]
-    [SerializeField] float finishDamage = 20;
-    [SerializeField] float upKnock;
-    [SerializeField] float forwardKnock;
+	[Header("Finisher Damage")]
+	[SerializeField] Attack ChuckAtack;
 
     [Header("Chuck Timings")]
     [SerializeField] float spinTime;
@@ -45,11 +43,17 @@ public class SuckEnemies : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Spin();
-        Suck();
     }
 
-    private void OnDrawGizmos()
+	private void LateUpdate()
+	{
+		Spin();
+
+		Suck();
+
+	}
+
+	private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(transform.position, suckDistance);
     }
@@ -70,10 +74,10 @@ public class SuckEnemies : MonoBehaviour
             if (dist <= suckDistance && dist >= spinDistance)
             {
                 Vector3 pushForce = (transform.position - enemy.Key.transform.position).normalized * suckForce;
-                //enemy.GetComponent<Rigidbody>().AddForce(pushForce);
-                enemy.Key.transform.position = new Vector3(enemy.Key.transform.position.x + pushForce.x,
-                                                       enemy.Key.transform.position.y,
-                                                       enemy.Key.transform.position.z + pushForce.z);
+				//enemy.GetComponent<Rigidbody>().AddForce(pushForce);
+				enemy.Key.transform.position = Vector3.Lerp(enemy.Key.transform.position, new Vector3(enemy.Key.transform.position.x + pushForce.x,
+													   enemy.Key.transform.position.y,
+													   enemy.Key.transform.position.z + pushForce.z), 0.6f);
                 //stun the enemies
                 Attack stunAttack = new Attack();
                 stunAttack.damage = 0;
@@ -145,14 +149,12 @@ public class SuckEnemies : MonoBehaviour
         }
         if (Vector3.Distance(enemiesStuck[index].Key.transform.position, this.transform.position) <= suckDistance)
         {
-            Attack finishAttack = new Attack();
-            finishAttack.damage = finishDamage;
-            finishAttack.DealsHitstun = true;
-            finishAttack.forwardKnockback = forwardKnock;
-            finishAttack.upwardKnockback = upKnock;
             Vector3 knockDir = (enemiesStuck[index].Key.transform.position - transform.position);
-            enemiesStuck[index].Key.GetComponent<EnemyAI>().TakeDamage(finishAttack, knockDir);
-            enemiesStuck[index].Key.GetComponent<EnemyBase>().SuckResistTimer(suckResistDuration);
+
+			EnemyBase enemy = enemiesStuck[index].Key.GetComponent<EnemyAI>();
+
+			enemy.TakeDamage(ChuckAtack, knockDir);
+			enemy.SuckResistTimer(suckResistDuration);
             enemiesStuck.RemoveAt(index);
             //body>().AddForce(knockForce);            
         }

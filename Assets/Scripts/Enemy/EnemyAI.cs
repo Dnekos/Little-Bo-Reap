@@ -54,7 +54,7 @@ public class EnemyAI : EnemyBase
 	[SerializeField] Transform groundCheckOriginBack;
 	[SerializeField] float groundCheckDistance;
 	public bool isGrounded = false;
-	[SerializeField] float fallRate = 50;
+	[SerializeField] protected float fallRate = 50;
 	Coroutine hitstunCoroutine = null;
 
 	[Header("Sounds")]
