@@ -21,7 +21,6 @@ public class PuzzleDoor : MonoBehaviour
 	}
     virtual protected void Update()
     {
-		Debug.Log(doorTime);
 		if (!isOpened)
 		{
 			for (int i = 0; i < keys.Length; i++)
