@@ -50,7 +50,7 @@ public class PlayerBuildWall : MonoBehaviour
 		{
 			//draw ray from camera forward to point
 			RaycastHit hit;
-			if (Physics.Raycast(Camera.main.transform.position + raycastOffset, Quaternion.AngleAxis(xAngleOffset,Camera.main.transform.right)  * Camera.main.transform.forward , out hit, Mathf.Infinity, targetLayers) 
+			if (Physics.Raycast(Camera.main.transform.position + raycastOffset, Quaternion.AngleAxis(xAngleOffset,Camera.main.transform.right)  * Camera.main.transform.forward , out hit, Mathf.Infinity, targetLayers, QueryTriggerInteraction.Ignore) 
 				&& Vector3.Angle(hit.normal,Vector3.up) < maxSlope)
 			{
 				//draw charge point
