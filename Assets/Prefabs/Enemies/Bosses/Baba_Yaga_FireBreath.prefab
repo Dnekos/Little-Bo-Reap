@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 3814149920428538228}
   - component: {fileID: 8763743146017046502}
   - component: {fileID: 5113319771215700583}
+  - component: {fileID: 3559161021961586602}
   m_Layer: 13
-  m_Name: FireBreathAttack
+  m_Name: Baba_Yaga_FireBreath
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -65,6 +66,36 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &3559161021961586602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3869038466190413348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -79541372
+      Data2: 1146686219
+      Data3: -1738906742
+      Data4: -625583049
+    Path: event:/Boba Yada/Fire
+  Event: 
+  PlayEvent: 11
+  StopEvent: 12
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 0
+  OverrideMaxDistance: 400
 --- !u!1 &5166387867274804222
 GameObject:
   m_ObjectHideFlags: 0

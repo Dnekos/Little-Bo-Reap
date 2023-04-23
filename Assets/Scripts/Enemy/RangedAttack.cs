@@ -11,14 +11,16 @@ public class RangedAttack : MonoBehaviour
     Vector3 origPos;
 
     [SerializeField]float maxTimeAlive = 2.5f;
-    [SerializeField] FMODUnity.EventReference whistle;
-    float currentTimeAlive = 0;
+	[SerializeField] FMODUnity.EventReference explosion;
+
+
+	float currentTimeAlive = 0;
 
     //small cheat
     private Transform player;
 
     [SerializeField] ParticleSystem destroyExplosion;
-    [SerializeField] SphereCollider collider;
+    [SerializeField] SphereCollider col;
     [SerializeField] ParticleSystem[] attackParticles;
 
 
@@ -76,8 +78,10 @@ public class RangedAttack : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         Vector3 tempPos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
         Quaternion tempRot = new Quaternion(transform.rotation.x, transform.rotation.y, transform.rotation.z, transform.rotation.w);
-        //WorldState.instance.pools.DequeuePooledObject(destroyExplosion.gameObject, tempPos, tempRot);
-        Instantiate(destroyExplosion, tempPos, tempRot);
+
+		FMODUnity.RuntimeManager.PlayOneShot(explosion, transform.position);
+
+		Instantiate(destroyExplosion, tempPos, tempRot);
         Destroy(gameObject);
 
         //collider.enabled = false;
@@ -93,7 +97,6 @@ public class RangedAttack : MonoBehaviour
     {
         Vector3 fireDirection = new Vector3(player.position.x, player.position.y + 10f, player.position.z) - transform.position;
         this.GetComponent<Rigidbody>().AddForce(fireDirection.normalized * (70f * fireDirection.magnitude));
-        FMODUnity.RuntimeManager.PlayOneShot(whistle, player.transform.position);
         
     }
 }

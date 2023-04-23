@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
+using UnityEditor;
 
 public class BabaYagasHouseAI : EnemyAI
 {
@@ -49,10 +50,11 @@ public class BabaYagasHouseAI : EnemyAI
 	[SerializeField] FMODUnity.EventReference armorBlockingSFX;
 
 	bool isSuspended = false;
-
+	float origSpeed;
 	float bossFallRate = 2000;
 
-	public Vector3 spawnPoint;
+	[Header("Movement")]
+	[HideInInspector] public Vector3 spawnPoint;
 	public float movementRadius = 100f;
 
 	[SerializeField] EnemyAttack stompAtk;
@@ -61,7 +63,6 @@ public class BabaYagasHouseAI : EnemyAI
 	void Awake()
     {
 		GetAnimator().Play("BBYGH_Reveal_01 1");
-
 	}
 
 	// Start is called before the first frame update
@@ -77,6 +78,7 @@ public class BabaYagasHouseAI : EnemyAI
 
 		float armorBarScale = (Health / MaxHealth);
 		HealthBar.fillAmount = 1;
+		origSpeed = GetAgent().speed;
 	}
 
 	private void FixedUpdate()
@@ -93,16 +95,18 @@ public class BabaYagasHouseAI : EnemyAI
 			ArmorBar.SetActive(true);
 		}
 
-		if(GetAnimator().GetBool("isMoving"))
-        {
+		CheckPinwheels();
+		MusicHealth();
+	}
+	protected override void Update()
+	{
+		base.Update();
+		if (GetAnimator().GetBool("isMoving"))
+		{
 			GetAnimator().Play("Baba_Yagas_House_Move");
 			//GetAgent().velocity = -GetAgent().velocity;
 			//RunAttack(stompAtk);
 		}
-
-
-		CheckPinwheels();
-		MusicHealth();
 	}
 
 	protected override void OnDeath()
@@ -113,8 +117,10 @@ public class BabaYagasHouseAI : EnemyAI
         base.OnDeath();
     }
 
-    // for animation trigger
-    public void SpawnShockwave()//this will be the Slam attack
+
+	#region animation triggers
+	// for animation trigger
+	public void SpawnShockwave()//this will be the Slam attack
 	{
 		if (activeAttack != null)
 		{
@@ -124,7 +130,18 @@ public class BabaYagasHouseAI : EnemyAI
 		}
 
 	}
+	public void StartAgent()
+	{
+		GetAgent().speed = origSpeed;
+		//GetAgent().isStopped = false;
 
+	}
+	public void StopAgent()
+	{
+		GetAgent().speed = 1;
+		//GetAgent().isStopped = true;
+	}
+	#endregion
 	public float GetHeath()
     {
 		return Health;
@@ -378,5 +395,13 @@ public class BabaYagasHouseAI : EnemyAI
         {
 			FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Boos Loop Transitions", 4);
 		}
+	}
+
+	private void OnDrawGizmos()
+	{
+#if UNITY_EDITOR
+
+		UnityEditor.Handles.DrawWireDisc(spawnPoint, Vector3.up, movementRadius);
+#endif
 	}
 }

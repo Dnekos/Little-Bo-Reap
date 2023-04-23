@@ -25459,7 +25459,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 8
-  m_Speed: 7
+  m_Speed: 20
   m_Acceleration: 100
   avoidancePriority: 50
   m_AngularSpeed: 270
@@ -25563,7 +25563,7 @@ MonoBehaviour:
   maxSpawnStagger: 1
   suckResistant: 1
   graph: {fileID: 11400000, guid: 442bfc3177149354b8a25f6e1f06aaad, type: 2}
-  currentEnemyState: 3
+  currentEnemyState: 0
   StunTime: 0
   playerLayer:
     serializedVersion: 2
@@ -25646,10 +25646,8 @@ MonoBehaviour:
       Data4: 1457420623
     Path: event:/Big Guy/ArmorReflect
   spawnPoint: {x: 0, y: 0, z: 0}
-  movementRadius: 0
+  movementRadius: 70
   stompAtk: {fileID: 11400000, guid: ce2d4d1c327ce564ebb6f9e7d2f8fd96, type: 2}
-  meshGeo: {fileID: 2134322924531314184}
-  meshRoot: {fileID: 2730991344883953069}
 --- !u!54 &6442876334591913545
 Rigidbody:
   m_ObjectHideFlags: 0

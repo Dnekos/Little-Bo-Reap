@@ -6,13 +6,24 @@ public class BBYGHArenaMeshManager : MonoBehaviour
 {
     [SerializeField] GameObject EnemyWaveChild;
     [SerializeField] GameObject BBYGHMesh;
+	[SerializeField] GameEvent respawn;
 
-    // Update is called once per frame
-    void Update()
+	private void Start()
+	{
+		respawn.Add(ReEnable);
+	}
+
+	// Update is called once per frame
+	void Update()
     {
         if(EnemyWaveChild.transform.childCount >= 2)
         {
-            Destroy(BBYGHMesh);
+            BBYGHMesh.SetActive(false);
         }
     }
+
+	void ReEnable()
+	{
+		BBYGHMesh.SetActive(true);
+	}
 }

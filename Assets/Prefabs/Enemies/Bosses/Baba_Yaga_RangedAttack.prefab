@@ -43767,8 +43767,9 @@ GameObject:
   - component: {fileID: 4876434964605431915}
   - component: {fileID: 3674704862548229404}
   - component: {fileID: 505014513506563164}
+  - component: {fileID: 5130936008650263035}
   m_Layer: 13
-  m_Name: RangedAttack
+  m_Name: Baba_Yaga_RangedAttack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43809,16 +43810,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BossRangedAttack: {fileID: 11400000, guid: 5bbfb7f27afaab444a993429ada5d773, type: 2}
   maxTimeAlive: 5
-  whistle:
+  explosion:
     Guid:
-      Data1: -642122934
-      Data2: 1265980493
-      Data3: 1058606979
-      Data4: -1720648209
-    Path: event:/Boba Yada/Whistle
+      Data1: 636418834
+      Data2: 1218073178
+      Data3: 636605083
+      Data4: -331098105
+    Path: event:/Other/Explosion
   destroyExplosion: {fileID: 685056078269626814, guid: 7ba8395486460304ab6129176935e45c,
     type: 3}
-  collider: {fileID: 5514634934275859786}
+  col: {fileID: 0}
   attackParticles:
   - {fileID: 505014513506563164}
   - {fileID: 6066756108041450191}
@@ -48687,3 +48688,33 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!114 &5130936008650263035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9027372737618875912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -642122934
+      Data2: 1265980493
+      Data3: 1058606979
+      Data4: -1720648209
+    Path: event:/Boba Yada/Whistle
+  Event: 
+  PlayEvent: 11
+  StopEvent: 12
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 90

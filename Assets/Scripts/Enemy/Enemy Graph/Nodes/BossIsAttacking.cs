@@ -12,18 +12,9 @@ namespace XNode.Examples.StateGraph
 		public override bool Evaluate()
 		{
 			Animator anim = (graph as StateGraph).currentUser.GetAnimator();
+			AnimatorStateInfo animstate = anim.GetCurrentAnimatorStateInfo(0);
 			// name is the attack ones and are in the middle of the animation
-			bool result = ((anim.GetCurrentAnimatorStateInfo(0).IsName("Baba_Yagas_House_Move") || 
-							anim.GetCurrentAnimatorStateInfo(0).IsName("Boss_Ranged_Attack")    ||
-							anim.GetCurrentAnimatorStateInfo(0).IsName("Boss_Flamethower")     ||
-							anim.GetCurrentAnimatorStateInfo(0).IsName("Boss_Stomp")			||
-							anim.GetCurrentAnimatorStateInfo(0).IsName("BBYGH_Perch 1") ||
-							anim.GetCurrentAnimatorStateInfo(0).IsName("Boss_Spawn")			||
-							anim.GetCurrentAnimatorStateInfo(0).IsName("BBYGH_Fire_Start 1")	||
-							anim.GetCurrentAnimatorStateInfo(0).IsName("BBYGH_Fire_Cycle 1")||
-							anim.GetCurrentAnimatorStateInfo(0).IsName("BBYGH_Spawn_Start 1") || 
-							anim.GetCurrentAnimatorStateInfo(0).IsName("BBYGH_Reveal_01 1") &&
-							anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f));
+			bool result = ((animstate.IsTag("Attack") && (animstate.normalizedTime <= 1.0f || animstate.loop)) || anim.IsInTransition(0));
 
 			//anim.SetBool("isAttacking", true);
 

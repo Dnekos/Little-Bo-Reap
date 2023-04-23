@@ -32,7 +32,7 @@ public class EnemyAI : EnemyBase
 	protected EnemyAttack activeAttack;
 	[SerializeField, Tooltip("how frequently the enemy checks their behavior tree")] float delayBetweenAttacks = 1;
 	[SerializeField] Collider StickCollider;
-	[SerializeField] Animator anim;
+	[SerializeField] protected Animator anim;
 
 	[Header("Bell")]
 	public bool distracted;
@@ -85,8 +85,7 @@ public class EnemyAI : EnemyBase
 	// Update is called once per frame
 	protected virtual void Update()
 	{
-		if (anim != null)
-			anim.SetBool("isMoving", agent.velocity.magnitude > 1);
+		CheckMoving();
 
 		if (agent.desiredVelocity.sqrMagnitude > 0.8f)
 		{
@@ -100,6 +99,12 @@ public class EnemyAI : EnemyBase
 
 		foreach (var key in Cooldowns.Keys.ToList())
 			Cooldowns[key] -= Time.deltaTime;
+	}
+
+	protected virtual void CheckMoving()
+	{
+		if (anim != null)
+			anim.SetBool("isMoving", agent.velocity.magnitude > 1);
 	}
 	private void FixedUpdate()
 	{
