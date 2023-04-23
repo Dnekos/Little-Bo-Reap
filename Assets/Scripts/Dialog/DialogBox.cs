@@ -28,6 +28,13 @@ public class DialogBox : MonoBehaviour
 	float textTimer = 0;
 	[SerializeField]
 	bool AdvancingText = false;
+	bool closing = false;
+	Coroutine camSwitch;
+
+	[Header("Panel Animation"), SerializeField]
+	float EnterPos = 0;
+	[SerializeField] float ExitPos = -406, animTime = 0.5f;
+
 
 	[Header("Looking"), SerializeField]
 	CameraOffsetAdjuster player;
@@ -84,6 +91,11 @@ public class DialogBox : MonoBehaviour
 	/// </summary>
 	public void ActivateUI(Speaker active_conversation)
 	{
+		closing = false;
+
+
+		StopAllCoroutines();
+
 		// disable HUD
 		WorldState.instance.HUD.ToggleHud(false);
 
@@ -93,7 +105,8 @@ public class DialogBox : MonoBehaviour
 
 		// set up speaker vars
 		currentspeaker = active_conversation;
-		DialoguePanel.SetActive(true);
+		StartCoroutine(MoveTextBox(true));
+
 		if (currentspeaker.scriptIndex == 0)
 			activeCon = currentspeaker.script;
 		else
@@ -121,23 +134,12 @@ public class DialogBox : MonoBehaviour
 	/// </summary>
 	public void CloseUI()
 	{
+		Debug.Log("closeUI");
+	//	inputs.DeactivateInput();
 
 		// turn off dialog
-		TextBody.text = "";
-		DialoguePanel.SetActive(false);
-
-		// switch cameras
-		gameCamera.enabled = true;
-		cinematicCamera.enabled = false;
-
-		// enable HUD and world
-		WorldState.instance.HUD.ToggleHud(true);
-		if (WorldState.instance.gameState == WorldState.State.Dialog) // if statement needed in case it conflicts with respawn
-			WorldState.instance.gameState = WorldState.State.Play;
-
-		// sometimes its not??
-		if (inputs.isActiveAndEnabled)
-			inputs.SwitchCurrentActionMap("PlayerMovement");
+		StartCoroutine(MoveTextBox(false));
+		closing = true;
 
 		// player look
 		if (player != null)
@@ -145,8 +147,10 @@ public class DialogBox : MonoBehaviour
 
 		if (isFinalConvo == true)
 		{
-            // save game
-            if (WorldState.instance != null)
+			inputs.ActivateInput();
+
+			// save game
+			if (WorldState.instance != null)
             {
                 WorldState.instance.SetSaveNextLevel(SceneManager.GetSceneByName("Main_Menu").buildIndex);
             }
@@ -155,6 +159,72 @@ public class DialogBox : MonoBehaviour
             myBus.stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
             SceneManager.LoadScene("Main_Menu");
         }
+
+	}
+
+	IEnumerator MoveTextBox(bool entering)
+	{
+		Debug.Log("startMove");
+		RectTransform rt = DialoguePanel.GetComponent<RectTransform>();
+
+		float rate = 1 / animTime;
+		if (entering)
+		{
+			DialoguePanel.SetActive(true);
+
+			rt.anchoredPosition = new Vector2(0, ExitPos);
+			for (float t = 0; t < 1; t += Time.unscaledDeltaTime * rate)
+			{
+				float smoothT = Mathf.SmoothStep(0.0f, 1.0f, Mathf.SmoothStep(0.0f, 1.0f, t));
+
+				rt.anchoredPosition = new Vector2(0, Mathf.Lerp(ExitPos, EnterPos, smoothT));
+				//t += animTime * Time.unscaledDeltaTime;
+				//Debug.Log(t + " " + rt.anchoredPosition);
+
+				yield return new WaitForEndOfFrame();
+			}
+			rt.anchoredPosition = new Vector2(0, EnterPos);
+
+			// switch cameras
+			gameCamera.enabled = false;
+			cinematicCamera.enabled = true;
+
+		}
+		else
+		{
+			rt.anchoredPosition = new Vector2(0, EnterPos);
+			for (float t = 0; t < 1; t += Time.unscaledDeltaTime * rate)
+			{
+				float smoothT = Mathf.SmoothStep(0.0f, 1.0f, Mathf.SmoothStep(0.0f, 1.0f, t));
+
+				rt.anchoredPosition = new Vector2(0, Mathf.Lerp(EnterPos, ExitPos, smoothT));
+				//t += animTime * Time.unscaledDeltaTime;
+				//Debug.Log(t + " " + rt.anchoredPosition);
+				yield return new WaitForEndOfFrame();
+			}
+			rt.anchoredPosition = new Vector2(0, ExitPos);
+			DialoguePanel.SetActive(false);
+
+			// switch cameras
+			gameCamera.enabled = true;
+			cinematicCamera.enabled = false;
+
+			// enable HUD and world
+			WorldState.instance.HUD.ToggleHud(true);
+			if (WorldState.instance.gameState == WorldState.State.Dialog) // if statement needed in case it conflicts with respawn
+				WorldState.instance.gameState = WorldState.State.Play;
+
+			// turn off dialog
+			TextBody.text = "";
+
+			// sometimes its not??
+			inputs.ActivateInput();
+			if (inputs.isActiveAndEnabled)
+				inputs.SwitchCurrentActionMap("PlayerMovement");
+
+			closing = false;
+		}
+
 
 	}
 	#endregion
@@ -175,8 +245,9 @@ public class DialogBox : MonoBehaviour
 			// change camera pos
 			if (activeCon[lineIndex].changeCamera)
 			{
-				StopAllCoroutines();
-				StartCoroutine(ChangeCameraPos(activeCon[lineIndex].CameraPos, Quaternion.Euler(activeCon[lineIndex].CameraEuler), activeCon[lineIndex].CameraTransitionSpeed));
+				if (camSwitch != null)
+					StopCoroutine(camSwitch);
+				camSwitch = StartCoroutine(ChangeCameraPos(activeCon[lineIndex].CameraPos, Quaternion.Euler(activeCon[lineIndex].CameraEuler), activeCon[lineIndex].CameraTransitionSpeed));
 			}
 			// set dialogue line
 			Line = activeCon[lineIndex++].body;
@@ -186,7 +257,7 @@ public class DialogBox : MonoBehaviour
 		}
 		else // if end of the knot
 		{
-			DialoguePanel.SetActive(false);
+			//DialoguePanel.SetActive(false);
 			StartCoroutine(ChangeCameraPos(gameCamera.transform.position, gameCamera.transform.rotation, activeCon.endTime, true));
 		}
 	}
@@ -213,8 +284,10 @@ public class DialogBox : MonoBehaviour
 		// double check that its in the right spot
 		cinematicCamera.transform.position = pos;
 		cinematicCamera.transform.rotation = rot;
-		if (endCinematic)
+		if (endCinematic && !closing)
 			CloseUI();
+
+		camSwitch = null;
 	}
 
 

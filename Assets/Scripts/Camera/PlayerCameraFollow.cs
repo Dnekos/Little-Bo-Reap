@@ -117,7 +117,7 @@ public class PlayerCameraFollow : MonoBehaviour
         if(inKioskMode && ((Keyboard.current != null && Keyboard.current.anyKey.isPressed) || (Gamepad.current != null && Gamepad.current.leftStick.IsActuated())))
         {
             inKioskMode = false;
-            WorldState.instance.HUD.ToggleHud(true);
+			WorldState.instance.HUD.ToggleHud(true);
             currentIdleTime = 0f;
         }
 
@@ -129,7 +129,7 @@ public class PlayerCameraFollow : MonoBehaviour
         {
             if (!inKioskMode)
             {
-                WorldState.instance.HUD.ToggleHud(false);
+				WorldState.instance.HUD.ToggleHud(false);
                 inKioskMode = true;
             }
             yRotation += kioskCamSpeed * Time.deltaTime;

@@ -18,7 +18,9 @@ public class HUDManager : MonoBehaviour
 {
 	[SerializeField]
 	PlayerInput inputs;
+	[Header("HUD")] 
 	[SerializeField] GameObject HUD;
+	[SerializeField] float HUDspeed = 0.25f;
 
 	[Header("Sheep UI")]
 	[SerializeField] TextMeshProUGUI redText;
@@ -51,24 +53,87 @@ public class HUDManager : MonoBehaviour
 	[SerializeField] GameObject deathUI;
 
 
+	Coroutine moveHUD = null;
+
 	public void ToggleHud()
 	{
 		HUD.SetActive(!HUD.activeInHierarchy);
 	}
 	public void ToggleHud(bool value)
 	{
-		HUD.SetActive(value);
+		if (WorldState.instance.HUD.isHUDActive() != value)
+		{
+			Debug.Log("toggling");
+			if (moveHUD != null)
+				StopCoroutine(moveHUD);
+			moveHUD = StartCoroutine(MoveHUD(value));
+
+		}
+	}
+	public bool isHUDActive()
+	{
+		return (moveHUD != null) != HUD.activeInHierarchy;
+	}
+
+	IEnumerator MoveHUD(bool entering)
+	{
+		RectTransform rt = HUD.GetComponent<RectTransform>();
+
+		float rate = 1 / HUDspeed;
+		if (entering)
+		{
+			HUD.SetActive(true);
+
+			rt.offsetMin = new Vector2(-550, rt.offsetMin.y);
+			rt.offsetMax = new Vector2(550, rt.offsetMax.y);
+			for (float t = 0; t < 1; t += Time.unscaledDeltaTime * rate)
+			{
+				float smoothT = Mathf.SmoothStep(0.0f, 1.0f, Mathf.SmoothStep(0.0f, 1.0f, t));
+				float pos = Mathf.Lerp(-550, 0, smoothT);
+
+				rt.offsetMin = new Vector2(pos, rt.offsetMin.y);
+				rt.offsetMax = new Vector2(-pos, rt.offsetMax.y);
+
+				yield return new WaitForEndOfFrame();
+			}
+			rt.offsetMin = new Vector2(0, rt.offsetMin.y);
+			rt.offsetMax = new Vector2(0, rt.offsetMax.y);
+
+
+		}
+		else
+		{
+			rt.offsetMin = new Vector2(0, rt.offsetMin.y);
+			rt.offsetMax = new Vector2(0, rt.offsetMax.y);
+			for (float t = 0; t < 1; t += Time.unscaledDeltaTime * rate)
+			{
+				float smoothT = Mathf.SmoothStep(0.0f, 1.0f, Mathf.SmoothStep(0.0f, 1.0f, t));
+				float pos = Mathf.Lerp(0, -550, smoothT);
+
+				rt.offsetMin = new Vector2(pos, rt.offsetMin.y);
+				rt.offsetMax = new Vector2(-pos, rt.offsetMax.y);
+
+				yield return new WaitForEndOfFrame();
+			}
+			rt.offsetMin = new Vector2(-550, rt.offsetMin.y);
+			rt.offsetMax = new Vector2(550, rt.offsetMax.y);
+			HUD.SetActive(false);
+
+			// switch cameras
+		}
+
+		moveHUD = null;
 	}
 
 	#region Opening and Closing menus
 	public void OpenDeathMenu()
 	{
-		HUD.SetActive(false);
+			ToggleHud(false);
 		deathUI.SetActive(true);
 	}
 	public void CloseDeathMenu()
 	{
-		HUD.SetActive(true);
+		ToggleHud(true);
 		deathUI.SetActive(false);
 	}
 	public void ToggleProgressionMenu(bool value)
