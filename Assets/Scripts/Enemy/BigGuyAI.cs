@@ -24,7 +24,11 @@ public class BigGuyAI : EnemyAI
 	void FixedUpdate()
 	{
 		GetAnimator().SetBool("isStunned", currentEnemyState == EnemyStates.HITSTUN || executeTrigger.activeInHierarchy == true);
-	}	
+
+		//apply gravity if falling
+		if (currentEnemyState == EnemyStates.HITSTUN || currentEnemyState == EnemyStates.EXECUTABLE)
+			rb.AddForce(Vector3.down * fallRate, ForceMode.Impulse);//was previously accelerationd
+	}
 
 	// for animation trigger
 	public void SpawnShockwave()
