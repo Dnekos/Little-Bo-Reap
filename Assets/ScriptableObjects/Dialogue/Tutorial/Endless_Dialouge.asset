@@ -14,14 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   script:
   - body: Yo. Welcome to the endless arena!
-    changeCamera: 0
+    changeCamera: 1
     CameraTransitionSpeed: 0
-    CameraPos: {x: 0, y: 0, z: 0}
-    CameraEuler: {x: 0, y: 0, z: 0}
-  - body: 'Interact with that bell to get some upgrades if you want.
-
-      You''ve
-      got tons of souls to spend!'
+    CameraPos: {x: 36.548145, y: 0.7012092, z: -65.70142}
+    CameraEuler: {x: 9.832996, y: 315.7205, z: 0.00023828825}
+  - body: Interact with that bell to get some upgrades if you want.
     changeCamera: 1
     CameraTransitionSpeed: 1
     CameraPos: {x: 13.548701, y: 4.2969017, z: -59.658394}
@@ -31,12 +28,14 @@ MonoBehaviour:
     CameraTransitionSpeed: 1
     CameraPos: {x: 38.113552, y: 4.642335, z: -38.576485}
     CameraEuler: {x: 3.5407085, y: 52.598133, z: 0.004368667}
-  - body: 'And when you jump down there you''ll fight for real!
-
-      If you get
-      bored press O to respawn up here.'
+  - body: And when you jump down there you'll fight for real!
     changeCamera: 1
     CameraTransitionSpeed: 1
     CameraPos: {x: 9.191588, y: 17.366817, z: -28.305737}
     CameraEuler: {x: 29.15193, y: 289.35788, z: 0.0071463}
+  - body: If you get bored, press O to respawn up here.
+    changeCamera: 1
+    CameraTransitionSpeed: 1
+    CameraPos: {x: 36.548145, y: 0.7012092, z: -65.70142}
+    CameraEuler: {x: 9.832996, y: 315.7205, z: 0.00023828825}
   endTime: 0.5
