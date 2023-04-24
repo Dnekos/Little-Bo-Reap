@@ -269,6 +269,7 @@ public class BabaYagasHouseAI : EnemyAI
 			//Sparks and armor hit sound
 			//Instantiate(armorSparks, armorObjects[1].transform);
 			WorldState.instance.pools.DequeuePooledObject(armorSparks.gameObject, armorObjects[1].transform.position, armorObjects[1].transform.rotation);
+			FMODUnity.RuntimeManager.PlayOneShot(armorBlockingSFX, transform.position);
 
 			//this would be an attack that doesnt break the shield
 			//Debug.Log(Time.time % 10f);
