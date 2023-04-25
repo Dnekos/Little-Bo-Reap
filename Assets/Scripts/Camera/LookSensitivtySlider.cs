@@ -18,7 +18,7 @@ public class LookSensitivtySlider : MonoBehaviour
 		musicSlider.onValueChanged.AddListener(ChangeMusicVolume);
 		SFXSlider.onValueChanged.AddListener(ChangeSFXVolume);
 
-		senitivitySlider.value = PlayerPrefs.GetFloat("sensitivity", senitivitySlider.value);
+		senitivitySlider.value = PlayerPrefs.GetFloat("sensitivity", 1);
 		musicSlider.value = PlayerPrefs.GetFloat("music", 1) * 100;
 		SFXSlider.value = PlayerPrefs.GetFloat("sfx", 1) * 100;
 	}
