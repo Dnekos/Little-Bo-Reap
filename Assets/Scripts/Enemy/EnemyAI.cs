@@ -110,7 +110,7 @@ public class EnemyAI : EnemyBase
 	{
 		//apply gravity if falling
 		if (currentEnemyState == EnemyStates.HITSTUN || currentEnemyState == EnemyStates.EXECUTABLE)
-			rb.AddForce(Vector3.down * fallRate,ForceMode.Impulse);//was previously acceleration
+			rb.AddForce(Vector3.down * fallRate,ForceMode.Acceleration);//was previously acceleration
 	}
 
 	#region UtilityFunctions

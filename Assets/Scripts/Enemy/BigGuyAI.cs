@@ -27,7 +27,7 @@ public class BigGuyAI : EnemyAI
 
 		//apply gravity if falling
 		if (currentEnemyState == EnemyStates.HITSTUN || currentEnemyState == EnemyStates.EXECUTABLE)
-			rb.AddForce(Vector3.down * fallRate, ForceMode.Impulse);//was previously accelerationd
+			rb.AddForce(Vector3.down * fallRate, ForceMode.Acceleration);//was previously accelerationd
 	}
 
 	// for animation trigger
