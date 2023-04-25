@@ -13,7 +13,7 @@ public class BabaYagasHouseAI : EnemyAI
 
 	[Header("Spawning Enemies")]
 	[SerializeField] bool enemiesSpawned = false;
-	[HideInInspector] public bool spawningEnemies = false;
+	[SerializeField] public bool spawningEnemies = false;
 	[SerializeField] int numEnemiesSpawned;
 	[SerializeField] Transform enemySpawnPoint;
 	[HideInInspector] GameObject enemySpawnerPlaceholder = null;//this will be filled in when it gets created
@@ -107,6 +107,7 @@ public class BabaYagasHouseAI : EnemyAI
 			//GetAgent().velocity = -GetAgent().velocity;
 			//RunAttack(stompAtk);
 		}
+
 	}
 
 	protected override void OnDeath()
