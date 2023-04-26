@@ -84,8 +84,6 @@ public class BattleArena : PuzzleDoor
 		//if in the final wave, watch for the last enemy!
 		if (CurrentWave == waves.Length - 1)
 		{
-			Debug.Log(SpawnedEnemiesFolder.GetChild(0));
-
 			//if (!finalEnemyConfirmed && SpawnedEnemiesFolder.childCount == 1)
 			//	finalEnemyConfirmed = true;
 			//else if (SpawnedEnemiesFolder.childCount > 1)

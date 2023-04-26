@@ -256,7 +256,14 @@ public class HUDManager : MonoBehaviour
 
 	private void LerpUIObject(Transform endPosition, Transform uiObject)
 	{
-		StartCoroutine(LerpingCoroutine(endPosition, uiObject));
+		if (gameObject.activeInHierarchy)
+			StartCoroutine(LerpingCoroutine(endPosition, uiObject));
+		else
+		{
+			uiObject.SetParent(endPosition);
+			uiObject.localPosition = Vector3.zero;
+			uiObject.localScale = Vector3.one;
+		}
 	}
 
 	public void UpdateFlockWheelText(int index, int active, int max)
