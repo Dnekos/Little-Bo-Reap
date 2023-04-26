@@ -201,7 +201,7 @@ public class BattleArena : PuzzleDoor
 		//delay
 		GameObject staggerParticle = Instantiate(spawnDelayParticle, pos, Quaternion.identity, SpawnedEnemiesFolder);
 		ParticleSystem.MainModule module = staggerParticle.GetComponent<ParticleSystem>().main;
-		module.duration = staggerDelay + 1;
+		module.duration = staggerDelay + 0.15f;
 		module.startLifetime = staggerDelay;
 		staggerParticle.GetComponent<ParticleSystem>().Play(true);
 
