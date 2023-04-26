@@ -141,6 +141,20 @@ public class BattleArena : PuzzleDoor
 			
 			StartCoroutine(EndBattleSlow());
 		}
+		else if (CurrentWave >= waves.Length)
+        {
+			WorldState.instance.isInCombat = false;
+
+			// if all waves done,
+			OpenDoor();
+			//DoorsFolder.SetActive(false); // open doors
+			WorldState.instance.ChangeMusic(afterMusic);
+			WorldState.instance.currentWorldTheme = afterMusic;
+			Instantiate(SoulReward, SoulSpawnPoint.position, SoulSpawnPoint.rotation, SpawnedEnemiesFolder); //spawn soul reward
+
+			//in this case don;t do camera, since enemy wasnt found
+			StartCoroutine(EndBattleSlow());
+		}
 		else
 			// spawn each enemy
 			foreach (EnemySpawn enemy in waves[CurrentWave].Enemies)
