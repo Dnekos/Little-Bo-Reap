@@ -421,7 +421,7 @@ public enum SheepStates
 	}
 	public bool IsCommandable()
 	{
-		return currentSheepState == SheepStates.ABILITY || currentSheepState == SheepStates.FOLLOW_PLAYER || currentSheepState == SheepStates.WANDER;
+		return (currentSheepState == SheepStates.ABILITY && ability.IsRecallable(this)) || currentSheepState == SheepStates.FOLLOW_PLAYER || currentSheepState == SheepStates.WANDER;
 	}
 	float GetRandomSheepBaseSpeed()
 	{
@@ -746,7 +746,7 @@ public enum SheepStates
 			SheepSetDestination(attackTargetCurrent.transform.position);
 
 
-        if (canAttack)
+        if (canAttack && IsCommandable())
         {
             //first check if we have a target and are in range
             if (attackTargetCurrent != null && Vector3.Distance(transform.position, attackTargetCurrent.transform.position) - attackTargetCurrent.GetRadius() <= distanceToAttack)
