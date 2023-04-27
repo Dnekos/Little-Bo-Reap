@@ -8,6 +8,11 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1095515627058238768, guid: 8b735b699a109b044ad08a09a3c97878,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1095515627206512652, guid: 8b735b699a109b044ad08a09a3c97878,
         type: 3}
       propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.scalar
@@ -85,6 +90,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1095515628264178033, guid: 8b735b699a109b044ad08a09a3c97878,
         type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1095515628264178033, guid: 8b735b699a109b044ad08a09a3c97878,
+        type: 3}
+      propertyPath: InitialModule.startSize.minScalar
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1095515628264178033, guid: 8b735b699a109b044ad08a09a3c97878,
+        type: 3}
       propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.scalar
       value: 3
       objectReference: {fileID: 0}
@@ -92,11 +107,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 5374b48fac9599f4e96d802eb5895afb, type: 2}
+      objectReference: {fileID: 2100000, guid: 8e5d56cb540df2547a0528c7b53187cb, type: 2}
     - target: {fileID: 1095515628264178047, guid: 8b735b699a109b044ad08a09a3c97878,
         type: 3}
       propertyPath: m_Name
       value: FX_Gore_Sheep_Builder
+      objectReference: {fileID: 0}
+    - target: {fileID: 1095515628795695130, guid: 8b735b699a109b044ad08a09a3c97878,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1095515628796173844, guid: 8b735b699a109b044ad08a09a3c97878,
+        type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 1095515628796173844, guid: 8b735b699a109b044ad08a09a3c97878,
         type: 3}
