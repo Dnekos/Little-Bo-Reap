@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using System.Linq;
 
 public enum ActiveUpgrade
 {
@@ -420,6 +421,9 @@ public class WorldState : MonoBehaviour
 		// check if correct scene
 		if (PersistentData.currentLevelIndex != SceneManager.GetActiveScene().buildIndex)
 			PersistentData.currentCheckpoint = -1;
+
+		for (int i = 0; i < PersistentData.currentCheckpoint; i++)
+			SpawnPoints[i].SkipRing();
 
 		// move player if found loaded stuff
 		if (PersistentData.currentCheckpoint > -1)
