@@ -125,7 +125,7 @@ public class BabaYagasHouseAI : EnemyAI
 	{
 		if (activeAttack != null)
 		{
-			activeAttack.SpawnObject(StompSpawnPoint.position, StompSpawnPoint.rotation);
+			activeAttack.SpawnObject(StompSpawnPoint.position, Quaternion.identity);
 			activeAttack.damage = StompDamage;
 			//StartCoroutine(DelayMovement());
 		}

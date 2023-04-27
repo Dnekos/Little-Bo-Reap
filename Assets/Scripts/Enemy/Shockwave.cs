@@ -12,6 +12,10 @@ public class Shockwave : MonoBehaviour
 	[SerializeField,Tooltip("how many seconds in which being in the donut hole still deals damage (for really close range attacks)")] float FilledHoleTime = 0.1f;
 	[SerializeField]
 	Vector3 maxScale;
+	[SerializeField]
+	float scalePosMod = 1;
+
+
 	[Header("Holy SHIT do not touch"), SerializeField, Tooltip("HIGHLY dependant on torus shape and scale, dont touch this or torus shape :)")]
 	float InnerDiameter = 3.5f;
 
@@ -42,8 +46,7 @@ public class Shockwave : MonoBehaviour
 
 		// probuilder is fuck-y and translates when scaled, so this counters that
 
-		transform.position = origPos + new Vector3(0, (transform.localScale.y - 1) * 0.08674145f, (transform.localScale.z - 1) * -0.9176273f);
-
+		transform.position = origPos + new Vector3(0, (transform.localScale.y - 1) * 0.08674145f * scalePosMod, (transform.localScale.z - 1) * -0.9176273f * scalePosMod);
 
 		if (currTimeAlive >= maxTimeAlive)
 			Destroy(gameObject);
