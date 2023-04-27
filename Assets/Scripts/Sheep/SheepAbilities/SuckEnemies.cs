@@ -142,7 +142,7 @@ public class SuckEnemies : MonoBehaviour
 
     private void ChuckEnemy(int index)
     {
-        if (enemiesStuck[index].Key == null)
+        if (enemiesStuck[index].Key == null && !enemiesStuck[index].Key.activeInHierarchy)
         {
             enemiesStuck.RemoveAt(index);
             return;
@@ -157,6 +157,10 @@ public class SuckEnemies : MonoBehaviour
 			enemy.SuckResistTimer(suckResistDuration);
             enemiesStuck.RemoveAt(index);
             //body>().AddForce(knockForce);            
+        }
+        else
+        {
+            enemiesStuck.RemoveAt(index);
         }
     }
 
