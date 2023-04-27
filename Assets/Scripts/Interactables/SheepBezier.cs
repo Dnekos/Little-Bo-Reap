@@ -58,8 +58,23 @@ public class SheepBezier : SheepHolder
 		newVertices = new List<Vector3>();
 		newTriangles = new List<int>();
 	}
+    protected override void Update()
+    {
+        base.Update();
+		if (containedSheep.Count > 0)
+		{
+			containedSheep.RemoveAll(x => x == null || !x.gameObject.activeInHierarchy || x.GetSheepState() != SheepStates.CONSTRUCT);
+			if (containedSheep.Count <= 0)
+			{
+                newTriangles.Clear();
+                newVertices.Clear();
+                mesh.Clear();
+				col.sharedMesh = null;
+            }
+		}
+    }
 
-	private void OnDrawGizmos()
+    private void OnDrawGizmos()
 	{
 		for (float i = 0; i < 1; i += 0.01f)
 		{
