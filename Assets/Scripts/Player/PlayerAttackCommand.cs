@@ -80,7 +80,7 @@ public class PlayerAttackCommand : MonoBehaviour
         if (canAttack && !stampede.isPreparingCharge && !stampede.hasCharged)
 		{
 
-			if (context.canceled && flocks.GetActiveSheep(flockType).Count > 0)
+			if (context.canceled && flocks.GetActiveSheep(flockType).Count > 0 && sheepAttackPoint != null)
 			{
 				DoAttack();
 			}
