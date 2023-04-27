@@ -33,29 +33,33 @@ public class Speaker : Interactable
 		if (DB == null) //Dialogue box wasn't properly set/this object was spawned later and needs to find one
 		{
 			//Debug.Log("Attempted to get Dialogue Box. Number of Children = " + WorldState.instance.player.transform.parent.gameObject.transform.GetChild(6).name.ToString());
-            //this is such fucking bad implementation I'm so sorry Demetri
-            DB = WorldState.instance.player.transform.parent.gameObject.transform.GetChild(6).GetChild(0).GetComponent<DialogBox>();
+			//this is such fucking bad implementation I'm so sorry Demetri
+			DB = WorldState.instance.player.transform.parent.gameObject.transform.GetChild(7).GetChild(0).GetComponent<DialogBox>();
 			DB.SetFinalDialogue(isFinalDialogue);
 		}
 	}
 	public override void Interact()
 	{
-		DB.ActivateUI(this);
+		if (isFinalDialogue)
+		{
+			WorldState.instance.player.transform.parent.gameObject.transform.GetChild(4).gameObject.SetActive(true);
+		}
+		DB.ActivateUI(this, isFinalDialogue);
 
 		if (repeatingScript != null)
 			scriptIndex = (scriptIndex + 1) % 2;//script = secondScript;
 	}
-	
+
 	public void SetTalking(bool value)
 	{
 		if (emitter != null)
 		{
-            if (value && !emitter.IsPlaying())
-                emitter.Play();
-            else if (!value && emitter.IsPlaying())
-                emitter.Stop();
-            anim.SetBool("Talking", value);
-        }
+			if (value && !emitter.IsPlaying())
+				emitter.Play();
+			else if (!value && emitter.IsPlaying())
+				emitter.Stop();
+			anim.SetBool("Talking", value);
+		}
 	}
 
 	// currently depricated
