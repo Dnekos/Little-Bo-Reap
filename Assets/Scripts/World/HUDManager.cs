@@ -60,7 +60,7 @@ public class HUDManager : MonoBehaviour
 	}
 	public void ToggleHud(bool value)
 	{
-		if (WorldState.instance.HUD.isHUDActive() != value)
+		if (isHUDActive() != value)
 		{
 			Debug.Log("toggling");
 			if (moveHUD != null)

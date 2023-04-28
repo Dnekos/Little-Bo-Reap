@@ -127,8 +127,10 @@ public class DialogBox : MonoBehaviour
             WorldState.instance.gameState = WorldState.State.Dialog;
             inputs.SwitchCurrentActionMap("Dialog");
 
-            // player look
-            if (player != null)
+			WorldState.instance.HUD.ToggleHud(false);
+
+			// player look
+			if (player != null)
                 player.LookTarget = active_conversation.transform;
 
             ReadNextLine();
@@ -359,6 +361,8 @@ public class DialogBox : MonoBehaviour
 					IncrementCurrentLine();
 
 					//SoundManager.PlaySound(Sound.TextScroll); // sound effect
+					// band-aid, close HUD
+					WorldState.instance.HUD.ToggleHud(false);
 
 					textTimer = 0; // reset timer
 

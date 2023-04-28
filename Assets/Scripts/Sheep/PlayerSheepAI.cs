@@ -160,8 +160,7 @@ public enum SheepStates
 		//make sure off mesh link is null
 		link = null;
 
-        Debug.Log("init sheep");
-        //clear attack data
+		//clear attack data
         canAttack = true;
         attackTargetCurrent = null;
         attackTargets.Clear();
@@ -421,7 +420,7 @@ public enum SheepStates
 	}
 	public bool IsCommandable()
 	{
-		return (currentSheepState == SheepStates.ABILITY && ability.IsRecallable(this)) || currentSheepState == SheepStates.FOLLOW_PLAYER || currentSheepState == SheepStates.WANDER;
+		return (currentSheepState == SheepStates.ABILITY && ability.IsRecallable(this)) || currentSheepState == SheepStates.ATTACK || currentSheepState == SheepStates.FOLLOW_PLAYER || currentSheepState == SheepStates.WANDER;
 	}
 	float GetRandomSheepBaseSpeed()
 	{
@@ -745,7 +744,7 @@ public enum SheepStates
 		if (attackTargetCurrent != null)
 			SheepSetDestination(attackTargetCurrent.transform.position);
 
-
+		Debug.Log(IsCommandable() + " " + currentSheepState);
         if (canAttack && IsCommandable())
         {
             //first check if we have a target and are in range
