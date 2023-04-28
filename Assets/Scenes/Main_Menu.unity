@@ -6827,6 +6827,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 596970882}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &616664355 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4016259675076083575, guid: 22ebe845e0f71434a9d81ad160ddbe23,
+    type: 3}
+  m_PrefabInstance: {fileID: 1148995698}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &628167691 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7805692773841599678, guid: 60da3e05f5ca85a4cad90754d04b5270,
@@ -13138,6 +13144,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1148995698}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1148995705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 616664355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff08d47d2e3f70f42bdcda9087712427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1155817600
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16106,6 +16124,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Prop_Campfire
+      objectReference: {fileID: 0}
+    - target: {fileID: 8947750209251909275, guid: 94e7d9fdc9631f546a64775a842a55da,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
@@ -23858,7 +23881,7 @@ MonoBehaviour:
   endlessLevelToLoad: Level_Endless_Battle
   bossLevel: Level_One
   Continue: {fileID: 109271980}
-  BossSaveData: {fileID: 4900000, guid: bd9cd067e11466548a54433226d950be, type: 3}
+  BossSaveData: {fileID: 4900000, guid: b4fe9d30847a29541bd6e243490272e5, type: 3}
   menuSheep:
   - {fileID: 569872343}
   - {fileID: 1198205041}
@@ -38666,7 +38689,7 @@ PrefabInstance:
         Boice\r\n\r\nVoices\r\nFrannie McCarthy\r\nMichael Silverio\r\nDaniel VanRyn\r\nAiden
         Wright\r\nBrendan Smith\r\n\r\nMocap Performer\r\nDemetrius Nekos\r\n\r\nSpecial
         Thanks\r\nMaya D'Amico\r\nEric Winebrenner\r\nGreg Bemis\r\nSurvios\r\nSony
-        Bend\r\nChamplain College \nSound Studio\nJohn Levee"
+        Bend\r\nChamplain College \nSound Studio\nJohn Thomas Levee"
       objectReference: {fileID: 0}
     - target: {fileID: 4469911503608465309, guid: 758b7ea1e8324624a9d40869b9fed539,
         type: 3}

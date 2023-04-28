@@ -17,7 +17,7 @@ public class GoreBodyPart : MonoBehaviour
 
     void Chunks()
     {
-        Instantiate(goreFx, transform.position, transform.rotation);
+        WorldState.instance.pools.DequeuePooledObject(goreFx, transform.position, transform.rotation);
         Destroy(gameObject);
     }
 }

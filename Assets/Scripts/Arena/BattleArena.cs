@@ -84,8 +84,6 @@ public class BattleArena : PuzzleDoor
 		//if in the final wave, watch for the last enemy!
 		if (CurrentWave == waves.Length - 1)
 		{
-			Debug.Log(SpawnedEnemiesFolder.GetChild(0));
-
 			//if (!finalEnemyConfirmed && SpawnedEnemiesFolder.childCount == 1)
 			//	finalEnemyConfirmed = true;
 			//else if (SpawnedEnemiesFolder.childCount > 1)
@@ -105,6 +103,11 @@ public class BattleArena : PuzzleDoor
 			WorldState.instance.isInCombat = false;
 			door.SetActive(false); // reopen doors
 			CurrentWave = -1; // reset waves
+
+			StopAllCoroutines();
+			// doublecheck SlowBattleEnd values
+			slowTimeVolume.SetActive(false);
+
 
 			foreach (Transform child in SpawnedEnemiesFolder) // clear enemies
 				Destroy(child.gameObject);
@@ -136,6 +139,20 @@ public class BattleArena : PuzzleDoor
 			lookPoint.position = finalEnemyPosition;
 			cam.GetComponent<ArenaEndCamera>().InitCamera(lookPoint, finalEnemyPosition);
 			
+			StartCoroutine(EndBattleSlow());
+		}
+		else if (CurrentWave >= waves.Length)
+        {
+			WorldState.instance.isInCombat = false;
+
+			// if all waves done,
+			OpenDoor();
+			//DoorsFolder.SetActive(false); // open doors
+			WorldState.instance.ChangeMusic(afterMusic);
+			WorldState.instance.currentWorldTheme = afterMusic;
+			Instantiate(SoulReward, SoulSpawnPoint.position, SoulSpawnPoint.rotation, SpawnedEnemiesFolder); //spawn soul reward
+
+			//in this case don;t do camera, since enemy wasnt found
 			StartCoroutine(EndBattleSlow());
 		}
 		else
@@ -198,7 +215,7 @@ public class BattleArena : PuzzleDoor
 		//delay
 		GameObject staggerParticle = Instantiate(spawnDelayParticle, pos, Quaternion.identity, SpawnedEnemiesFolder);
 		ParticleSystem.MainModule module = staggerParticle.GetComponent<ParticleSystem>().main;
-		module.duration = staggerDelay + 1;
+		module.duration = staggerDelay + 0.15f;
 		module.startLifetime = staggerDelay;
 		staggerParticle.GetComponent<ParticleSystem>().Play(true);
 

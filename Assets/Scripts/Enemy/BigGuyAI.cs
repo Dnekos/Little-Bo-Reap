@@ -24,7 +24,11 @@ public class BigGuyAI : EnemyAI
 	void FixedUpdate()
 	{
 		GetAnimator().SetBool("isStunned", currentEnemyState == EnemyStates.HITSTUN || executeTrigger.activeInHierarchy == true);
-	}	
+
+		//apply gravity if falling
+		if (currentEnemyState == EnemyStates.HITSTUN || currentEnemyState == EnemyStates.EXECUTABLE)
+			rb.AddForce(Vector3.down * fallRate, ForceMode.Acceleration);//was previously accelerationd
+	}
 
 	// for animation trigger
 	public void SpawnShockwave()
@@ -50,7 +54,7 @@ public class BigGuyAI : EnemyAI
 	public override void TakeDamage(Attack atk, Vector3 attackForward, float damageAmp = 1, float knockbackMultiplier = 1)
 	{
 		// stop enemies when they get stunned
-		if (atk.DealsHitstun)
+		if (atk.DealsHitstun && isBoss == false)
 		{
 			// make sure agent is NOT moving if we want them to stop
 			NavMeshAgent agent = GetAgent();

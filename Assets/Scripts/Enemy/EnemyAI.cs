@@ -32,7 +32,7 @@ public class EnemyAI : EnemyBase
 	protected EnemyAttack activeAttack;
 	[SerializeField, Tooltip("how frequently the enemy checks their behavior tree")] float delayBetweenAttacks = 1;
 	[SerializeField] Collider StickCollider;
-	[SerializeField] Animator anim;
+	[SerializeField] protected Animator anim;
 
 	[Header("Bell")]
 	public bool distracted;
@@ -54,7 +54,7 @@ public class EnemyAI : EnemyBase
 	[SerializeField] Transform groundCheckOriginBack;
 	[SerializeField] float groundCheckDistance;
 	public bool isGrounded = false;
-	[SerializeField] float fallRate = 50;
+	[SerializeField] protected float fallRate = 50;
 	Coroutine hitstunCoroutine = null;
 
 	[Header("Sounds")]
@@ -85,8 +85,7 @@ public class EnemyAI : EnemyBase
 	// Update is called once per frame
 	protected virtual void Update()
 	{
-		if (anim != null)
-			anim.SetBool("isMoving", agent.velocity.magnitude > 1);
+		CheckMoving();
 
 		if (agent.desiredVelocity.sqrMagnitude > 0.8f)
 		{
@@ -101,11 +100,17 @@ public class EnemyAI : EnemyBase
 		foreach (var key in Cooldowns.Keys.ToList())
 			Cooldowns[key] -= Time.deltaTime;
 	}
+
+	protected virtual void CheckMoving()
+	{
+		if (anim != null)
+			anim.SetBool("isMoving", agent.velocity.magnitude > 1);
+	}
 	private void FixedUpdate()
 	{
 		//apply gravity if falling
 		if (currentEnemyState == EnemyStates.HITSTUN || currentEnemyState == EnemyStates.EXECUTABLE)
-			rb.AddForce(Vector3.down * fallRate,ForceMode.Impulse);//was previously acceleration
+			rb.AddForce(Vector3.down * fallRate,ForceMode.Acceleration);//was previously acceleration
 	}
 
 	#region UtilityFunctions
@@ -280,7 +285,14 @@ public class EnemyAI : EnemyBase
 			hitstunCoroutine = StartCoroutine(OnHitStun());
 		}
 		// subtract health
-		base.TakeDamage(atk, attackForward, damageAmp, knockbackMultiplier);
+		if(isBoss == false)
+        {
+			base.TakeDamage(atk, attackForward, damageAmp, knockbackMultiplier);
+		}
+		if(isBoss == true)
+        {
+			base.TakeDamage(atk, attackForward, damageAmp, 0.0f);
+		}
 
 		if (isExecutable && Health <= executionHealthThreshhold)
 			ToExecutionState();

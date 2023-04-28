@@ -50,7 +50,7 @@ public class KioskMode : MonoBehaviour
 
     public void OnMouseMove(InputAction.CallbackContext context)
     {
-        Debug.Log("onmousemove");
+        //Debug.Log("onmousemove");
 
         if(context.performed)
         {

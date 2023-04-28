@@ -91,7 +91,7 @@ public class PlayerCameraFollow : MonoBehaviour
 
     IEnumerator CameraShake(float magnitude, float duration)
     {
-        Vector3 originalPos = Camera.main.transform.localPosition;
+        Vector3 originalPos = playerCamera.transform.localPosition;
 
         float elapsed = 0;
 
@@ -100,14 +100,14 @@ public class PlayerCameraFollow : MonoBehaviour
             float x = Random.Range(-1f, 1f) * magnitude;
             float y = Random.Range(-1f, 1f) * magnitude;
 
-            Camera.main.transform.localPosition = new Vector3(x, y, Camera.main.transform.localPosition.z);
+			playerCamera.transform.localPosition = new Vector3(x, y, playerCamera.transform.localPosition.z);
 
             elapsed += Time.deltaTime;
 
             yield return null;
         }
 
-        Camera.main.transform.localPosition = new Vector3(originalPos.x, originalPos.y, Camera.main.transform.localPosition.z);
+		playerCamera.transform.localPosition = new Vector3(originalPos.x, originalPos.y, playerCamera.transform.localPosition.z);
     }
 	#endregion
 
@@ -117,7 +117,7 @@ public class PlayerCameraFollow : MonoBehaviour
         if(inKioskMode && ((Keyboard.current != null && Keyboard.current.anyKey.isPressed) || (Gamepad.current != null && Gamepad.current.leftStick.IsActuated())))
         {
             inKioskMode = false;
-            WorldState.instance.HUD.ToggleHud(true);
+			WorldState.instance.HUD.ToggleHud(true);
             currentIdleTime = 0f;
         }
 
@@ -129,7 +129,7 @@ public class PlayerCameraFollow : MonoBehaviour
         {
             if (!inKioskMode)
             {
-                WorldState.instance.HUD.ToggleHud(false);
+				WorldState.instance.HUD.ToggleHud(false);
                 inKioskMode = true;
             }
             yRotation += kioskCamSpeed * Time.deltaTime;

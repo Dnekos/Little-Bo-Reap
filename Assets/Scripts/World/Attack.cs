@@ -15,4 +15,5 @@ public class Attack : ScriptableObject
 	[Header("Knockback")]
 	public float forwardKnockback;
 	public float upwardKnockback;
+	public ForceMode knockbackForceMode = ForceMode.Impulse;
 }

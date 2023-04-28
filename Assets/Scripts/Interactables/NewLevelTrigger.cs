@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class NewLevelTrigger : MonoBehaviour
 {
     [SerializeField] string levelToLoad;
+	[SerializeField] FMODUnity.EventReference EndSFX;
 
 	// hye michael, why couldnt we use the old level transition script :(
 
@@ -19,6 +20,7 @@ public class NewLevelTrigger : MonoBehaviour
 
 			FMOD.Studio.Bus myBus = FMODUnity.RuntimeManager.GetBus("bus:/SFX");
 			myBus.stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
+			FMODUnity.RuntimeManager.PlayOneShot(EndSFX);
 			SceneManager.LoadScene(levelToLoad);
 		}
     }

@@ -19,15 +19,18 @@ public class PlayerGothMode : MonoBehaviour
 	[SerializeField] GameObject gothParticles;
 	[SerializeField] VolumeProfile gothVolume;
 	[SerializeField] GameObject explosion;
+
+	// music
 	[SerializeField] FMODUnity.EventReference gothSound;
 	[SerializeField] FMODUnity.EventReference gothMusic;
 	FMOD.Studio.Bus music;
+	FMOD.Studio.EventInstance musicInst;
+
 	[SerializeField] FillBar gothMeter;
 	[Range(0,1), SerializeField] float GothMeterCount = 0;
 	[SerializeField] float gothMeterChargeTime;
 	[SerializeField] float gothMeterDuration;
 	public GothState gothMode = GothState.Normal;
-	WorldState ws;
 
 	[Header("Hammer")]
 	[SerializeField, Tooltip("minimum amount of active sheep to make hammer, if less go straight to goth")] float MinSheep;
@@ -85,9 +88,15 @@ public class PlayerGothMode : MonoBehaviour
 		input = GetComponent<PlayerInput>();
 		movement = GetComponent<PlayerMovement>();
 		wall = GetComponent<PlayerBuildWall>();
-		ws = FindObjectOfType<WorldState>();
-		previousMusic = ws.currentWorldTheme;
+		previousMusic = WorldState.instance.currentWorldTheme;
 		music = FMODUnity.RuntimeManager.GetBus("bus:/Music/Non-Goth");
+	}
+	private void OnDisable()
+	{
+		if (gothMode != GothState.Normal)
+		{
+			ResetGoth();
+		}
 	}
 
 	void ResetGoth()
@@ -103,7 +112,17 @@ public class PlayerGothMode : MonoBehaviour
 		// zero out fill
 		GothMeterCount = 0;
 		gothMeter.ChangeFill(GothMeterCount);
+
+		// sound off
+		musicMute = false;
+		visualsOn = false;
+		music.setMute(false);
+		musicInst.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+		musicInst.release();
+		//FMODUnity.RuntimeManager.GetBus("bus:/Music/Goth").stopAllEvents(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
 	}
+
+
 
 	public void AddToGothMeter(float amount)
 	{
@@ -116,20 +135,8 @@ public class PlayerGothMode : MonoBehaviour
 	{
 		if (gothMode == GothState.Goth && GothMeterCount <= 0)
 		{
-			foreach (SkinnedMeshRenderer mesh in meshes)
-			{
-				mesh.material = defaultMat;
-			}
+			ResetGoth();
 			Instantiate(explosion, transform.position, transform.rotation);
-
-			gothMode = GothState.Normal;
-			gothParticles.SetActive(false);
-
-			musicMute = false;
-			visualsOn = false;
-			music.setMute(false);
-
-
 		}
 		else if (gothMode == GothState.Hammer && !anim.GetCurrentAnimatorStateInfo(0).IsName(hammerAnimation))
 		{
@@ -232,6 +239,9 @@ public class PlayerGothMode : MonoBehaviour
 		FMODUnity.RuntimeManager.PlayOneShotAttached(gothSound, gameObject);
 		music.setMute(true);
 		musicMute = true;
-		FMODUnity.RuntimeManager.PlayOneShot(gothMusic);
+
+		// music
+		musicInst = FMODUnity.RuntimeManager.CreateInstance(gothMusic);
+		musicInst.start();
 	}
 }

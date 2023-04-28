@@ -1036,6 +1036,16 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2767817014939317940, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -1.6623535
+      objectReference: {fileID: 0}
+    - target: {fileID: 2767817014939317940, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 39.949707
+      objectReference: {fileID: 0}
     - target: {fileID: 2775433368905771773, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
         type: 3}
       propertyPath: m_IsActive
@@ -2784,6 +2794,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 2.5500107
+      objectReference: {fileID: 0}
+    - target: {fileID: 7328168954467463921, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 100.244934
       objectReference: {fileID: 0}
     - target: {fileID: 7365709854251074856, guid: 2e0a77c7e15f13244aecf1c2b3c50bd9,
         type: 3}
@@ -9277,18 +9292,18 @@ MonoBehaviour:
   isInvulnerable: 0
   hurtSound:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: -1298036795
+      Data2: 1081733376
+      Data3: 734408361
+      Data4: 1586482529
+    Path: event:/Other/Target
   deathSound:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: -1298036795
+      Data2: 1081733376
+      Data3: 734408361
+      Data4: 1586482529
+    Path: event:/Other/Target
   soulValue: 0
   healthValue: 0
   soulSpeed: 0
@@ -25809,7 +25824,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh42938
+  m_Name: pb_Mesh190390
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -29068,18 +29083,18 @@ MonoBehaviour:
   isInvulnerable: 0
   hurtSound:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: -1298036795
+      Data2: 1081733376
+      Data3: 734408361
+      Data4: 1586482529
+    Path: event:/Other/Target
   deathSound:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: -1298036795
+      Data2: 1081733376
+      Data3: 734408361
+      Data4: 1586482529
+    Path: event:/Other/Target
   soulValue: 0
   healthValue: 0
   soulSpeed: 0
@@ -31765,7 +31780,7 @@ GameObject:
   - component: {fileID: 1134535709}
   - component: {fileID: 1134535716}
   - component: {fileID: 1134535717}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: KillCube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -32107,7 +32122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PolyMesh:
-    name: pb_Mesh42938
+    name: pb_Mesh190390
     vertices:
     - {x: -625, y: -0.5, z: 500}
     - {x: 625, y: -0.5, z: 500}
@@ -43453,6 +43468,13 @@ MonoBehaviour:
   doorDropRate: 15
   dustParticles: {fileID: 0}
   isOpened: 0
+  doorSounds:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   waves:
   - Enemies:
     - EnemyPrefab: {fileID: 8888413981868254825, guid: 957813092bdb7ef40a2ad13caae2a189,
@@ -43600,6 +43622,7 @@ MonoBehaviour:
     type: 3}
   RespawnPlayer: {fileID: 11400000, guid: 19937298da8f18b41b1d2572d7bb5bcb, type: 2}
   bootSpawnPoint: {fileID: 306003754}
+  transitionCombat: 0
   afterMusic: 0
   finalCamera: {fileID: 4872236329810728023, guid: cc50bcbe95095b94db3bbce8fc30c5e4,
     type: 3}
@@ -44977,18 +45000,18 @@ MonoBehaviour:
   isInvulnerable: 0
   hurtSound:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: -1298036795
+      Data2: 1081733376
+      Data3: 734408361
+      Data4: 1586482529
+    Path: event:/Other/Target
   deathSound:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: -1298036795
+      Data2: 1081733376
+      Data3: 734408361
+      Data4: 1586482529
+    Path: event:/Other/Target
   soulValue: 0
   healthValue: 0
   soulSpeed: 0

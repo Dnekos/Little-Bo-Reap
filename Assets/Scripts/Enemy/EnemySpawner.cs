@@ -48,8 +48,11 @@ public class EnemySpawner : MonoBehaviour
         if(SpawnedEnemiesFolder.childCount == 0)
         {
 			Destroy(gameObject);
-        }
-    }
+			transform.parent.GetComponent<BabaYagasHouseAI>().NotSpawningEnemies();
+			transform.parent.GetComponent<BabaYagasHouseAI>().GetAnimator().Play("BBYGH_Perch_Idle_Getup 1");
+
+		}
+	}
 
 	protected IEnumerator SpawnEnemy(GameObject enemy, GameObject particle, Vector3 pos)
 	{

@@ -12,10 +12,17 @@ public class PuzzleDoor : MonoBehaviour
 	[HideInInspector] public bool isOpened = false;
 	[SerializeField] FMODUnity.EventReference doorSounds;
 	bool isPlaying = false ;
+	bool isStoped = false;
 	FMOD.Studio.Bus myBus;
 	float doorTime;
-	virtual protected void Update()
-	{
+	float distencedoor;
+    private void Start()
+    {
+		myBus = FMODUnity.RuntimeManager.GetBus("bus:/SFX/Gameplay/UponDeath/DoorDrop");
+		distencedoor = Mathf.Abs(doorMinY) + door.transform.localPosition.y;
+	}
+    virtual protected void Update()
+    {
 		if (!isOpened)
 		{
 			for (int i = 0; i < keys.Length; i++)
@@ -36,14 +43,19 @@ public class PuzzleDoor : MonoBehaviour
 				{
 					FMODUnity.RuntimeManager.PlayOneShot(doorSounds,transform.localPosition);
 					isPlaying = true;
-					myBus = FMODUnity.RuntimeManager.GetBus("bus:/SFX/Gameplay/UponDeath/DoorDrop");
-					doorTime = doorDropRate;
+					
+					
 				}
-				doorTime = doorTime - Time.deltaTime;
-			}
-			if (doorTime <= 0 && isOpened)
+				doorTime = doorTime -Time.deltaTime;
+				
+
+            }
+            if (doorTime <= 0 && isOpened && !isStoped)
             {
 				myBus.stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
+				//isPlaying = false;
+				isStoped = true;
+				
 
 			}
         }
@@ -55,6 +67,7 @@ public class PuzzleDoor : MonoBehaviour
 		isOpened = true;
 		WorldState.instance.AddActivatedDoor(this);
 		dustParticles.Play();
+		doorTime = distencedoor/doorDropRate;
 	    
 	}
 	

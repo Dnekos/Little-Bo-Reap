@@ -5,7 +5,7 @@ using UnityEngine;
 public class Checkpoint : MonoBehaviour
 {
 	[SerializeField]
-	Animation anim;
+	Animator anim;
 
 	public Transform RespawnPoint;
 
@@ -34,7 +34,7 @@ public class Checkpoint : MonoBehaviour
 			CheckpointMusic();
 
 			hasEntered = true;
-			anim.Play();
+			anim.SetTrigger("Interact");
 		}
 	}
 	public void CheckpointMusic()
@@ -45,4 +45,9 @@ public class Checkpoint : MonoBehaviour
 			ws.biomeTheme = checkMusic;
 		}
 	}
+
+	public void SkipRing()
+	{
+        anim.SetTrigger("Skip");
+    }
 }

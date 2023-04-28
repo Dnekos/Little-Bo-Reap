@@ -14,6 +14,9 @@ public class PlayerPauseMenu : MonoBehaviour
 
 	string lastActionMap;
 
+	[Header("Disables")]
+	[SerializeField] GameObject[] disableOnResume;
+
     //TODO
     //make this better, fix edge cases, prevent inputs in game etc bla bla bla
     public void OnPauseMenu(InputAction.CallbackContext context)
@@ -55,6 +58,9 @@ public class PlayerPauseMenu : MonoBehaviour
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
             FMODUnity.RuntimeManager.PlayOneShot(resumeSFX);
-        }
-    }
+
+			for (int i = 0; i < disableOnResume.Length; i++)
+				disableOnResume[i].SetActive(false);
+		}
+	}
 }

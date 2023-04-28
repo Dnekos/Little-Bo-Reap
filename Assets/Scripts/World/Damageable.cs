@@ -52,7 +52,7 @@ public class Damageable : MonoBehaviour
 			Health -= damage;
 
 			// knockback
-			DealKnockback(attackForward, atk.forwardKnockback, atk.upwardKnockback, knockbackMultiplier);
+			DealKnockback(attackForward, atk.forwardKnockback, atk.upwardKnockback, knockbackMultiplier, atk.knockbackForceMode);
 			
 			//Debug.Log(gameObject.name + " took " + atk.damage * ((damageAmp <= 0) ? 1 : damageAmp) + " damage (force: " + knockbackForce + ", mag " + knockbackForce.magnitude + ")");
 			//Debug.Log(gameObject.name + " took " + atk.damage + " damage (force: " + knockbackForce + ", mag " + knockbackForce.magnitude + ")");
@@ -86,7 +86,8 @@ public class Damageable : MonoBehaviour
 
 	protected virtual void PlayHurtSound()
 	{
-		FMODUnity.RuntimeManager.PlayOneShot(hurtSound, transform.position);
+		if (!hurtSound.IsNull)
+			FMODUnity.RuntimeManager.PlayOneShot(hurtSound, transform.position);
 	}
 
 	// TODO: Mitko fix this function 
@@ -123,7 +124,7 @@ public class Damageable : MonoBehaviour
 	//}
 	//------------------------------------------------------------------
 
-	void DealKnockback(Vector3 forward, float f_mag, float u_mag, float mult = 1)
+	void DealKnockback(Vector3 forward, float f_mag, float u_mag, float mult = 1, ForceMode mode = ForceMode.Impulse)
 	{
 		Vector3 knockbackForce = (forward * f_mag + Vector3.up * u_mag) * mult;
 
@@ -135,7 +136,7 @@ public class Damageable : MonoBehaviour
 			//rb.AddForce((knockbackForce - rb.velocity) * knockbackMult, ForceMode.Impulse
 			//rb.AddForce((knockbackForce.normalized * knockbackForce.magnitude), ForceMode.Impulse);
 
-			rb.AddForce(knockbackForce - rb.velocity, ForceMode.Impulse);
+			rb.AddForce(knockbackForce - rb.velocity, mode);
 			//this worked the best
 
 			//Debug.Log("before vel: " + rb.velocity + " " + rb.velocity.magnitude);

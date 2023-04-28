@@ -66,6 +66,7 @@ MonoBehaviour:
   script: {fileID: 11400000, guid: e89e6d702c8b3744897bf7ce5c0d8805, type: 2}
   DB: {fileID: 0}
   repeatingScript: {fileID: 0}
+  scriptIndex: 0
   isFinalDialogue: 1
 --- !u!1 &173784402827191319
 GameObject:
@@ -1557,6 +1558,97 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 173784402929744037}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1056109709795018228 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a5f8d5b1be4e7b94289e270127e3889e,
+    type: 3}
+  m_PrefabInstance: {fileID: 173784402929744037}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5284097063188296545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1056109709795018228}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4de3925a6fab897459dbb71af2ab3b07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Health: 0
+  MaxHealth: 0
+  gibs: {fileID: 0}
+  damageNumber: {fileID: 0}
+  damageNumberGoth: {fileID: 0}
+  isInvulnerable: 0
+  hurtSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  deathSound:
+    Guid:
+      Data1: -669321399
+      Data2: 1285422189
+      Data3: 931844489
+      Data4: -557579677
+    Path: event:/Boba Yada/Creaking
+  soulValue: 0
+  healthValue: 0
+  soulSpeed: 0
+  soulSpawnHeight: 0
+  soulCollectables: []
+  SpawnParticlePrefab: {fileID: 0}
+  SpawnWaitTime: 2
+  minSpawnStagger: 0
+  maxSpawnStagger: 1
+  suckResistant: 0
+  graph: {fileID: 0}
+  currentEnemyState: 0
+  StunTime: 0.3
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  NearbyGuys: []
+  delayBetweenAttacks: 1
+  StickCollider: {fileID: 0}
+  anim: {fileID: 0}
+  distracted: 0
+  bellLoc: {x: 0, y: 0, z: 0}
+  isExecutable: 0
+  mustBeExecuted: 0
+  executionHealthThreshhold: 0
+  executeTrigger: {fileID: 0}
+  executePlayerPos: {fileID: 0}
+  execution: {fileID: 0}
+  timeTillGib: 10
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  groundCheckOriginFront: {fileID: 0}
+  groundCheckOriginBack: {fileID: 0}
+  groundCheckDistance: 0
+  isGrounded: 0
+  fallRate: 50
+  swingSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  clubHitSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  player: {fileID: 0}
+  isBoss: 0
 --- !u!4 &5860174705673845522 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5997354509876741047, guid: a5f8d5b1be4e7b94289e270127e3889e,
@@ -1716,7 +1808,8 @@ PrefabInstance:
       propertyPath: EmissionModule.m_Bursts.Array.data[0].repeatInterval
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -3639114595960369250, guid: 8b735b699a109b044ad08a09a3c97878, type: 3}
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 8b735b699a109b044ad08a09a3c97878, type: 3}
 --- !u!4 &4164215894440920143 stripped
