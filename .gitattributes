@@ -13,7 +13,7 @@
 *.asset eol=lf -text
 *.meta merge=unityyamlmerge eol=lf
 *.controller merge=unityyamlmerge eol=lf
-
+*.cubemap
 
 ## git-lfs ##
 
@@ -53,3 +53,6 @@
 *.rns filter=lfs diff=lfs merge=lfs -text
 *.reason filter=lfs diff=lfs merge=lfs -text
 *.lxo filter=lfs diff=lfs merge=lfs -text
+
+Assets/Materials/Skybox_Test/Skybox_Cubemap_Green.cubemap
+Assets/Materials/Skybox_Test/Skybox_Cubemap_Blue.cubemap
